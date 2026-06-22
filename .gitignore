@@ -1,0 +1,26 @@
+# ROS / catkin generated files
+build/
+devel/
+install/
+log/
+.catkin_tools/
+
+# Python
+__pycache__/
+*.pyc
+
+# macOS / Windows
+.DS_Store
+Thumbs.db
+
+# Editors
+.vscode/
+.idea/
+
+# Large ROS data
+*.bag
+*.db3
+
+# Secrets
+.env
+*.env
