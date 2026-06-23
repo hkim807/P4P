@@ -1,0 +1,14 @@
+<launch>
+  <arg name="speed" default="0.25" />
+  <arg name="turn" default="0.7" />
+
+  <node pkg="teleop_twist_keyboard"
+        type="teleop_twist_keyboard.py"
+        name="teleop_twist_keyboard"
+        output="screen"
+        launch-prefix="xterm -e">
+    <remap from="cmd_vel" to="/cmd_vel_mux/input/teleop" />
+    <param name="speed" value="$(arg speed)" />
+    <param name="turn" value="$(arg turn)" />
+  </node>
+</launch>

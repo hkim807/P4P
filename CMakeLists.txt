@@ -8,13 +8,19 @@ project(lab_navigation)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
+  cartographer_ros
+  depthimage_to_laserscan
   geometry_msgs
+  map_server
   nav_msgs
   roscpp
   rospy
+  rviz
   sensor_msgs
   std_msgs
+  teleop_twist_keyboard
   tf
+  turtlebot_bringup
 )
 
 ## System dependencies are found with CMake's conventions
@@ -109,7 +115,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES lab_navigation
-#  CATKIN_DEPENDS geometry_msgs nav_msgs roscpp rospy sensor_msgs std_msgs tf
+  CATKIN_DEPENDS cartographer_ros depthimage_to_laserscan geometry_msgs map_server nav_msgs roscpp rospy rviz sensor_msgs std_msgs teleop_twist_keyboard tf turtlebot_bringup
 #  DEPENDS system_lib
 )
 
@@ -163,10 +169,10 @@ include_directories(
 
 ## Mark executable scripts (Python etc.) for installation
 ## in contrast to setup.py, you can choose the destination
-# catkin_install_python(PROGRAMS
-#   scripts/my_python_script
-#   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-# )
+catkin_install_python(PROGRAMS
+  scripts/save_map.sh
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
 
 ## Mark executables for installation
 ## See http://docs.ros.org/melodic/api/catkin/html/howto/format1/building_executables.html
@@ -190,11 +196,12 @@ include_directories(
 # )
 
 ## Mark other files for installation (e.g. launch and bag files, etc.)
-# install(FILES
-#   # myfile1
-#   # myfile2
-#   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
-# )
+install(DIRECTORY
+  config
+  launch
+  rviz
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+)
 
 #############
 ## Testing ##

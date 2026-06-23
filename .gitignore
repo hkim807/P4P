@@ -20,6 +20,10 @@ Thumbs.db
 # Large ROS data
 *.bag
 *.db3
+*.pbstream
+maps/*.pgm
+maps/*.yaml
+!maps/.gitkeep
 
 # Secrets
 .env

@@ -49,27 +49,45 @@
   <!-- Use doc_depend for packages you need only for building documentation: -->
   <!--   <doc_depend>doxygen</doc_depend> -->
   <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>cartographer_ros</build_depend>
+  <build_depend>depthimage_to_laserscan</build_depend>
   <build_depend>geometry_msgs</build_depend>
+  <build_depend>map_server</build_depend>
   <build_depend>nav_msgs</build_depend>
   <build_depend>roscpp</build_depend>
   <build_depend>rospy</build_depend>
+  <build_depend>rviz</build_depend>
   <build_depend>sensor_msgs</build_depend>
   <build_depend>std_msgs</build_depend>
+  <build_depend>teleop_twist_keyboard</build_depend>
   <build_depend>tf</build_depend>
+  <build_depend>turtlebot_bringup</build_depend>
+  <build_export_depend>cartographer_ros</build_export_depend>
+  <build_export_depend>depthimage_to_laserscan</build_export_depend>
   <build_export_depend>geometry_msgs</build_export_depend>
+  <build_export_depend>map_server</build_export_depend>
   <build_export_depend>nav_msgs</build_export_depend>
   <build_export_depend>roscpp</build_export_depend>
   <build_export_depend>rospy</build_export_depend>
+  <build_export_depend>rviz</build_export_depend>
   <build_export_depend>sensor_msgs</build_export_depend>
   <build_export_depend>std_msgs</build_export_depend>
+  <build_export_depend>teleop_twist_keyboard</build_export_depend>
   <build_export_depend>tf</build_export_depend>
+  <build_export_depend>turtlebot_bringup</build_export_depend>
+  <exec_depend>cartographer_ros</exec_depend>
+  <exec_depend>depthimage_to_laserscan</exec_depend>
   <exec_depend>geometry_msgs</exec_depend>
+  <exec_depend>map_server</exec_depend>
   <exec_depend>nav_msgs</exec_depend>
   <exec_depend>roscpp</exec_depend>
   <exec_depend>rospy</exec_depend>
+  <exec_depend>rviz</exec_depend>
   <exec_depend>sensor_msgs</exec_depend>
   <exec_depend>std_msgs</exec_depend>
+  <exec_depend>teleop_twist_keyboard</exec_depend>
   <exec_depend>tf</exec_depend>
+  <exec_depend>turtlebot_bringup</exec_depend>
 
 
   <!-- The export tag contains other, unspecified, tags -->
