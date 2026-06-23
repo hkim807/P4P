@@ -1,9 +1,9 @@
-footprint: [[0.20, 0.17], [0.20, -0.17], [-0.20, -0.17], [-0.20, 0.17]]
-footprint_padding: 0.02
+footprint: [[0.18, 0.15], [0.18, -0.15], [-0.18, -0.15], [-0.18, 0.15]]
+footprint_padding: 0.01
 
-obstacle_range: 4.5
-raytrace_range: 5.5
-inflation_radius: 0.30
+obstacle_range: 3.0
+raytrace_range: 3.5
+inflation_radius: 0.18
 transform_tolerance: 0.5
 
 observation_sources: laser_scan_sensor
