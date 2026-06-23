@@ -41,7 +41,6 @@ sudo apt install \
   ros-${ROS_DISTRO}-cartographer-ros \
   ros-${ROS_DISTRO}-costmap-2d \
   ros-${ROS_DISTRO}-depthimage-to-laserscan \
-  ros-${ROS_DISTRO}-dwa-local-planner \
   ros-${ROS_DISTRO}-map-server \
   ros-${ROS_DISTRO}-move-base \
   ros-${ROS_DISTRO}-navfn \
@@ -189,7 +188,9 @@ In RViz:
   ```
 
 - The footprint and local planner settings are conservative starting points.
-  Tune `footprint`, `inflation_radius`, `max_vel_x`, and goal tolerances first
+  This package uses `TrajectoryPlannerROS` as the local planner because it is
+  typically calmer than DWA on older Kobuki/TurtleBot 2 stacks.
+- Tune `footprint`, `inflation_radius`, `max_vel_x`, and goal tolerances first
   if the robot cuts corners, oscillates, or stops too far from goals.
 
 ### Navigation Verification Checklist

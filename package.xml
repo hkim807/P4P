@@ -54,7 +54,6 @@
   <exec_depend>cartographer_ros</exec_depend>
   <exec_depend>costmap_2d</exec_depend>
   <exec_depend>depthimage_to_laserscan</exec_depend>
-  <exec_depend>dwa_local_planner</exec_depend>
   <exec_depend>geometry_msgs</exec_depend>
   <exec_depend>map_server</exec_depend>
   <exec_depend>move_base</exec_depend>
