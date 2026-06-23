@@ -8,7 +8,7 @@ options = {
   -- Cartographer owns map->odom; turtlebot_bringup/kobuki owns odom->base_footprint.
   map_frame = "map",
   odom_frame = "odom",
-  published_frame = "odom",
+  published_frame = "base_link",
   provide_odom_frame = false,
   publish_frame_projected_to_2d = true,
 
@@ -39,9 +39,9 @@ options = {
 MAP_BUILDER.use_trajectory_builder_2d = true
 
 TRAJECTORY_BUILDER_2D.use_imu_data = false
-TRAJECTORY_BUILDER_2D.min_range = 0.45
-TRAJECTORY_BUILDER_2D.max_range = 4.0
-TRAJECTORY_BUILDER_2D.missing_data_ray_length = 4.0
+TRAJECTORY_BUILDER_2D.min_range = 0.02
+TRAJECTORY_BUILDER_2D.max_range = 5.60
+TRAJECTORY_BUILDER_2D.missing_data_ray_length = 5.60
 TRAJECTORY_BUILDER_2D.num_accumulated_range_data = 1
 TRAJECTORY_BUILDER_2D.submaps.grid_options_2d.resolution = 0.05
 
