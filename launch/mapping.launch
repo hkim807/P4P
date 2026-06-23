@@ -20,16 +20,16 @@
   <arg name="laser_yaw" default="0.0" />
 
   <node if="$(arg publish_base_footprint_to_base_link_tf)"
-        pkg="tf"
+        pkg="tf2_ros"
         type="static_transform_publisher"
         name="base_footprint_to_base_link_tf"
-        args="0 0 $(arg base_link_z) 0 0 0 base_footprint base_link 100" />
+        args="0 0 $(arg base_link_z) 0 0 0 base_footprint base_link" />
 
   <node if="$(arg publish_base_link_to_laser_tf)"
-        pkg="tf"
+        pkg="tf2_ros"
         type="static_transform_publisher"
         name="base_link_to_laser_tf"
-        args="$(arg laser_x) $(arg laser_y) $(arg laser_z) $(arg laser_roll) $(arg laser_pitch) $(arg laser_yaw) base_link $(arg laser_frame) 100" />
+        args="$(arg laser_x) $(arg laser_y) $(arg laser_z) $(arg laser_roll) $(arg laser_pitch) $(arg laser_yaw) base_link $(arg laser_frame)" />
 
   <node if="$(arg use_depthimage_to_laserscan)"
         pkg="depthimage_to_laserscan"
