@@ -4,7 +4,8 @@
 
 This package provides PHASE 1 baseline mapping for a TurtleBot 2: manually
 drive the robot while Google Cartographer builds a 2D map, then save the map
-for later `map_server` / AMCL use. It does not start autonomous navigation.
+for later `map_server` / AMCL use. It also includes a baseline AMCL +
+`move_base` navigation setup for point-to-point testing with a saved map.
 
 ### Detected Platform and Assumptions
 
@@ -35,9 +36,15 @@ For ROS Kinetic or Melodic apt-based installs:
 
 ```bash
 sudo apt install \
+  ros-${ROS_DISTRO}-amcl \
+  ros-${ROS_DISTRO}-base-local-planner \
   ros-${ROS_DISTRO}-cartographer-ros \
+  ros-${ROS_DISTRO}-costmap-2d \
   ros-${ROS_DISTRO}-depthimage-to-laserscan \
+  ros-${ROS_DISTRO}-dwa-local-planner \
   ros-${ROS_DISTRO}-map-server \
+  ros-${ROS_DISTRO}-move-base \
+  ros-${ROS_DISTRO}-navfn \
   ros-${ROS_DISTRO}-rviz \
   ros-${ROS_DISTRO}-teleop-twist-keyboard
 ```
@@ -130,3 +137,66 @@ rosrun cartographer_ros cartographer_pbstream_to_ros_map \
 - RViz shows the live `/map`, `/scan`, and TF while teleoperating.
 - Loop closures visibly improve map alignment after revisiting areas.
 - `${HOME}/maps/lab.pgm` and `${HOME}/maps/lab.yaml` load with `map_server`.
+
+## Navigation
+
+This navigation setup assumes the robot bringup is still started separately
+and is already publishing `/odom`, `/scan`, and the Kobuki velocity command
+path. `lab_navigation` only provides localization, costmaps, `move_base`, and
+RViz.
+
+### Run Localization Only
+
+```bash
+roslaunch lab_navigation localization.launch \
+  map_file:=${HOME}/maps/lab.yaml \
+  open_rviz:=true
+```
+
+In RViz:
+
+1. Use `2D Pose Estimate` to seed AMCL near the robot's real position.
+2. Confirm `/amcl_pose` settles and the particle cloud converges.
+
+### Run Point-To-Point Navigation
+
+```bash
+roslaunch lab_navigation navigation.launch \
+  map_file:=${HOME}/maps/lab.yaml \
+  open_rviz:=true
+```
+
+In RViz:
+
+1. Use `2D Pose Estimate` once after startup.
+2. Use `2D Nav Goal` to send a goal in the map.
+3. Watch `/move_base` global and local plans update while the robot drives.
+
+### Navigation Notes
+
+- The navigation config assumes `base_link` is the robot base frame and
+  `laser` is the scan frame.
+- `navigation.launch` publishes `base_footprint -> base_link` by default with
+  `base_link_z:=0.05`.
+- If the robot does not already publish `base_link -> laser`, enable the
+  built-in static transform publisher:
+
+  ```bash
+  roslaunch lab_navigation navigation.launch \
+    map_file:=${HOME}/maps/lab.yaml \
+    publish_base_link_to_laser_tf:=true \
+    laser_z:=0.28
+  ```
+
+- The footprint and local planner settings are conservative starting points.
+  Tune `footprint`, `inflation_radius`, `max_vel_x`, and goal tolerances first
+  if the robot cuts corners, oscillates, or stops too far from goals.
+
+### Navigation Verification Checklist
+
+- `map_server`, `amcl`, and `move_base` all start without TF errors.
+- RViz fixed frame is `map`.
+- `2D Pose Estimate` causes the AMCL particle cloud to converge.
+- A `2D Nav Goal` produces both a global plan and a local plan.
+- The robot can drive between nearby waypoints without repeated recovery or
+  oscillation.
