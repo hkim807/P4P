@@ -6,7 +6,7 @@ kld_z: 0.99
 update_min_d: 0.10
 update_min_a: 0.15
 resample_interval: 1
-transform_tolerance: 0.5
+transform_tolerance: 1.0
 recovery_alpha_slow: 0.0
 recovery_alpha_fast: 0.0
 
