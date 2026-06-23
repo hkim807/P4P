@@ -1,16 +1,11 @@
 <launch>
   <arg name="open_rviz" default="true" />
-  <arg name="start_base" default="true" />
-  <arg name="start_3dsensor" default="true" />
-  <arg name="use_depthimage_to_laserscan" default="true" />
+  <arg name="use_depthimage_to_laserscan" default="false" />
 
   <arg name="scan_topic" default="/scan" />
   <arg name="depth_image_topic" default="/camera/depth/image_raw" />
   <arg name="depth_camera_info_topic" default="/camera/depth/camera_info" />
   <arg name="scan_frame" default="camera_depth_frame" />
-
-  <include if="$(arg start_base)" file="$(find turtlebot_bringup)/launch/minimal.launch" />
-  <include if="$(arg start_3dsensor)" file="$(find turtlebot_bringup)/launch/3dsensor.launch" />
 
   <node if="$(arg use_depthimage_to_laserscan)"
         pkg="depthimage_to_laserscan"
