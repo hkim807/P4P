@@ -30,12 +30,12 @@
     <arg name="laser_yaw" value="$(arg laser_yaw)" />
   </include>
 
-  <rosparam command="load" file="$(find lab_navigation)/config/costmap_common_params.yaml" ns="global_costmap" />
-  <rosparam command="load" file="$(find lab_navigation)/config/costmap_common_params.yaml" ns="local_costmap" />
-  <rosparam command="load" file="$(find lab_navigation)/config/global_costmap_params.yaml" ns="global_costmap" />
-  <rosparam command="load" file="$(find lab_navigation)/config/local_costmap_params.yaml" ns="local_costmap" />
-  <rosparam command="load" file="$(find lab_navigation)/config/move_base_params.yaml" />
-  <rosparam command="load" file="$(find lab_navigation)/config/trajectory_local_planner_params.yaml" />
+  <rosparam command="load" file="$(find lab_navigation)/config/costmap_common_params.yaml" ns="move_base/global_costmap" />
+  <rosparam command="load" file="$(find lab_navigation)/config/costmap_common_params.yaml" ns="move_base/local_costmap" />
+  <rosparam command="load" file="$(find lab_navigation)/config/global_costmap_params.yaml" ns="move_base/global_costmap" />
+  <rosparam command="load" file="$(find lab_navigation)/config/local_costmap_params.yaml" ns="move_base/local_costmap" />
+  <rosparam command="load" file="$(find lab_navigation)/config/move_base_params.yaml" ns="move_base" />
+  <rosparam command="load" file="$(find lab_navigation)/config/trajectory_local_planner_params.yaml" ns="move_base" />
 
   <node pkg="move_base"
         type="move_base"
