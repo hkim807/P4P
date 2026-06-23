@@ -7,21 +7,7 @@ project(lab_navigation)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED COMPONENTS
-  cartographer_ros
-  depthimage_to_laserscan
-  geometry_msgs
-  map_server
-  nav_msgs
-  roscpp
-  rospy
-  rviz
-  sensor_msgs
-  std_msgs
-  teleop_twist_keyboard
-  tf
-  turtlebot_bringup
-)
+find_package(catkin REQUIRED)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -115,7 +101,6 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES lab_navigation
-  CATKIN_DEPENDS cartographer_ros depthimage_to_laserscan geometry_msgs map_server nav_msgs roscpp rospy rviz sensor_msgs std_msgs teleop_twist_keyboard tf turtlebot_bringup
 #  DEPENDS system_lib
 )
 
