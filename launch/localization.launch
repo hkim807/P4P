@@ -1,6 +1,7 @@
 <launch>
   <arg name="map_file" default="$(env HOME)/maps/lab.yaml" />
   <arg name="open_rviz" default="false" />
+  <arg name="scan_topic" default="/scan" />
 
   <arg name="publish_base_footprint_to_base_link_tf" default="true" />
   <arg name="base_link_z" default="0.05" />
@@ -38,7 +39,7 @@
         type="amcl"
         name="amcl"
         output="screen">
-    <remap from="scan" to="/scan" />
+    <remap from="scan" to="$(arg scan_topic)" />
   </node>
 
   <node if="$(arg open_rviz)"

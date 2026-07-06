@@ -184,6 +184,7 @@ install(PROGRAMS
 install(DIRECTORY
   config
   launch
+  maps
   rviz
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 )

@@ -136,6 +136,8 @@ rosrun cartographer_ros cartographer_pbstream_to_ros_map \
 - RViz shows the live `/map`, `/scan`, and TF while teleoperating.
 - Loop closures visibly improve map alignment after revisiting areas.
 - `${HOME}/maps/lab.pgm` and `${HOME}/maps/lab.yaml` load with `map_server`.
+- The checked-in sample map can be launched with
+  `map_file:=$(rospack find lab_navigation)/maps/carto_v1.yaml`.
 
 ## Navigation
 
@@ -149,6 +151,7 @@ RViz.
 ```bash
 roslaunch lab_navigation localization.launch \
   map_file:=${HOME}/maps/lab.yaml \
+  scan_topic:=/scan \
   open_rviz:=true
 ```
 
@@ -162,6 +165,7 @@ In RViz:
 ```bash
 roslaunch lab_navigation navigation.launch \
   map_file:=${HOME}/maps/lab.yaml \
+  scan_topic:=/scan \
   open_rviz:=true
 ```
 
@@ -173,8 +177,10 @@ In RViz:
 
 ### Navigation Notes
 
-- The navigation config assumes `base_link` is the robot base frame and
-  `laser` is the scan frame.
+- The navigation config assumes `base_link` is the robot base frame and uses
+  `laser_frame:=laser` by default for costmap obstacle observations and the
+  optional static laser transform. If `rostopic echo -n1 /scan/header` reports
+  a different frame, pass it as `laser_frame:=...`.
 - `navigation.launch` publishes `base_footprint -> base_link` by default with
   `base_link_z:=0.05`.
 - If the robot does not already publish `base_link -> laser`, enable the
@@ -183,7 +189,9 @@ In RViz:
   ```bash
   roslaunch lab_navigation navigation.launch \
     map_file:=${HOME}/maps/lab.yaml \
+    scan_topic:=/scan \
     publish_base_link_to_laser_tf:=true \
+    laser_frame:=laser \
     laser_z:=0.28
   ```
 

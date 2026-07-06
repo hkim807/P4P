@@ -1,6 +1,7 @@
 <launch>
   <arg name="map_file" default="$(env HOME)/maps/lab.yaml" />
   <arg name="open_rviz" default="true" />
+  <arg name="scan_topic" default="/scan" />
   <arg name="cmd_vel_topic" default="/cmd_vel_mux/input/teleop" />
 
   <arg name="publish_base_footprint_to_base_link_tf" default="true" />
@@ -18,6 +19,7 @@
   <include file="$(find lab_navigation)/launch/localization.launch">
     <arg name="map_file" value="$(arg map_file)" />
     <arg name="open_rviz" value="false" />
+    <arg name="scan_topic" value="$(arg scan_topic)" />
     <arg name="publish_base_footprint_to_base_link_tf" value="$(arg publish_base_footprint_to_base_link_tf)" />
     <arg name="base_link_z" value="$(arg base_link_z)" />
     <arg name="publish_base_link_to_laser_tf" value="$(arg publish_base_link_to_laser_tf)" />
@@ -30,8 +32,8 @@
     <arg name="laser_yaw" value="$(arg laser_yaw)" />
   </include>
 
-  <rosparam command="load" file="$(find lab_navigation)/config/costmap_common_params.yaml" ns="move_base/global_costmap" />
-  <rosparam command="load" file="$(find lab_navigation)/config/costmap_common_params.yaml" ns="move_base/local_costmap" />
+  <rosparam command="load" file="$(find lab_navigation)/config/costmap_common_params.yaml" ns="move_base/global_costmap" subst_value="true" />
+  <rosparam command="load" file="$(find lab_navigation)/config/costmap_common_params.yaml" ns="move_base/local_costmap" subst_value="true" />
   <rosparam command="load" file="$(find lab_navigation)/config/global_costmap_params.yaml" ns="move_base/global_costmap" />
   <rosparam command="load" file="$(find lab_navigation)/config/local_costmap_params.yaml" ns="move_base/local_costmap" />
   <rosparam command="load" file="$(find lab_navigation)/config/move_base_params.yaml" ns="move_base" />
