@@ -35,7 +35,7 @@
   <rosparam command="load" file="$(find lab_navigation)/config/costmap_common_params.yaml" ns="move_base/global_costmap" subst_value="true" />
   <rosparam command="load" file="$(find lab_navigation)/config/costmap_common_params.yaml" ns="move_base/local_costmap" subst_value="true" />
   <rosparam command="load" file="$(find lab_navigation)/config/global_costmap_params.yaml" ns="move_base/global_costmap" />
-  <rosparam command="load" file="$(find lab_navigation)/config/local_costmap_params.yaml" ns="move_base/local_costmap" />
+  <rosparam command="load" file="$(find lab_navigation)/config/local_costmap_params.yaml" ns="move_base/local_costmap" subst_value="true" />
   <rosparam command="load" file="$(find lab_navigation)/config/move_base_params.yaml" ns="move_base" />
   <rosparam command="load" file="$(find lab_navigation)/config/trajectory_local_planner_params.yaml" ns="move_base" />
 
