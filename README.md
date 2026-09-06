@@ -31,6 +31,7 @@ Ollama is the local model runtime. It performs inference on the computer where i
 
 ```text
 app/
+  adapters/       Synthetic and future robot/replay observation sources
   config.py       Environment configuration
   domain/         Versioned pipeline contracts and schema generator
   llm.py          Ollama client
@@ -200,6 +201,44 @@ python3 -m app.domain.schema
 ```
 
 The test suite fails if the committed schemas do not match the models.
+
+## Synthetic museum and laboratory scenarios
+
+The synthetic adapter produces deterministic, contract-valid `ObservationFrame`
+sequences for newcomer encounters without requiring Navel or Ollama. Exact map
+trajectories and scenario labels are kept in separate ground truth so they do not
+leak into perception inputs.
+
+List the available guide-robot scenarios:
+
+```bash
+python3 -m app.adapters.synthetic --list
+```
+
+Export one scenario as replayable newline-delimited JSON:
+
+```bash
+python3 -m app.adapters.synthetic \
+  --scenario newcomer_requests_guidance \
+  --output recordings/synthetic/newcomer_requests_guidance.jsonl
+```
+
+Optional position noise, gaze noise, and observation dropout are deterministic
+for a supplied seed:
+
+```bash
+python3 -m app.adapters.synthetic \
+  --scenario newcomer_occluded_by_exhibit \
+  --output recordings/synthetic/noisy_occlusion.jsonl \
+  --seed 42 \
+  --position-noise-std-m 0.05 \
+  --gaze-noise-std 0.03 \
+  --dropout-probability 0.05
+```
+
+The initial catalogue covers requests for guidance, non-engaging passersby,
+path crossing, normal following, falling behind, exhibit occlusion, and a pair
+of newcomers requesting guidance.
 
 ## Next milestone
 
