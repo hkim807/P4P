@@ -240,6 +240,35 @@ The initial catalogue covers requests for guidance, non-engaging passersby,
 path crossing, normal following, falling behind, exhibit occlusion, and a pair
 of newcomers requesting guidance.
 
+## Reading observation JSONL
+
+`JsonlObservationIterator` streams recordings without loading the complete file
+into memory. Each line is validated as an `ObservationFrame`, and timestamps
+must be strictly increasing by default:
+
+```python
+from app.adapters.jsonl import JsonlObservationIterator
+
+source = JsonlObservationIterator(
+    "recordings/synthetic/newcomer_requests_guidance.jsonl"
+)
+for observation in source:
+    # Pass only the observation to temporal state estimation.
+    print(observation.observation_id, observation.timestamp_us)
+```
+
+Ground truth is deliberately available only through the separate record API:
+
+```python
+for record in source.iter_records():
+    observation = record.observation
+    ground_truth = record.ground_truth  # Evaluation only; never model input.
+```
+
+Set `require_ground_truth=True` for evaluation jobs that should fail if labels
+are absent. Malformed JSON, contract violations, empty files, and non-monotonic
+timestamps raise `JsonlObservationError` with the source path and line number.
+
 ## Next milestone
 
 The next step is to replace free-form `/chat` output with a strict social-navigation decision schema. The decision layer should select only approved high-level actions and parameters. A deterministic safety controller must validate those decisions before any physical behaviour is executed.
