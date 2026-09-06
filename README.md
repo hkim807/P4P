@@ -269,6 +269,37 @@ Set `require_ground_truth=True` for evaluation jobs that should fail if labels
 are absent. Malformed JSON, contract violations, empty files, and non-monotonic
 timestamps raise `JsonlObservationError` with the source path and line number.
 
+## Temporal social-state estimation
+
+The deterministic MVP estimator consumes every observation and emits one
+contract-valid `SocialState`. It maintains five seconds of per-person history
+and derives basic motion, distance trend, gaze history, attention, engagement,
+short-occlusion prediction, proxemics, and crowd counts:
+
+```python
+from app.adapters.jsonl import JsonlObservationIterator
+from app.state import TemporalSocialStateEstimator
+
+observations = JsonlObservationIterator(
+    "recordings/synthetic/newcomer_requests_guidance.jsonl"
+)
+estimator = TemporalSocialStateEstimator()
+
+for social_state in estimator.process(observations):
+    print(social_state.state_id, social_state.humans)
+```
+
+Use a fresh estimator per experiment or call `reset()` before starting another
+recording. The MVP requires monotonic `ROBOT_BASE` observations. Missing cues
+remain unknown, and a missing track is retained for up to two seconds as
+`predicted_only` with increasing uncertainty. Ground truth never enters the
+estimator.
+
+This version uses transparent thresholds and finite differences. Kalman
+filtering, rotation-aware ego-motion compensation, advanced trajectory and path
+conflict prediction, group inference, learned engagement, and crowd-flow
+estimation remain later improvements.
+
 ## Next milestone
 
 The next step is to replace free-form `/chat` output with a strict social-navigation decision schema. The decision layer should select only approved high-level actions and parameters. A deterministic safety controller must validate those decisions before any physical behaviour is executed.
