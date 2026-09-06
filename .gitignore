@@ -6,6 +6,7 @@ log/
 .catkin_tools/
 
 # Python
+.venv/
 __pycache__/
 *.pyc
 

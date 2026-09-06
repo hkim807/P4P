@@ -1,0 +1,196 @@
+{
+  "$defs": {
+    "Action": {
+      "enum": [
+        "CONTINUE",
+        "MONITOR",
+        "ORIENT",
+        "SLOW",
+        "YIELD",
+        "AVOID",
+        "APPROACH",
+        "GREET",
+        "GUIDE",
+        "WAIT",
+        "RESUME",
+        "DISENGAGE"
+      ],
+      "title": "Action",
+      "type": "string"
+    },
+    "BehaviorPreferences": {
+      "additionalProperties": false,
+      "properties": {
+        "hold_duration_s": {
+          "anyOf": [
+            {
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Hold Duration S"
+        },
+        "orientation_target_rad": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Orientation Target Rad"
+        },
+        "passing_side": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/PassingSide"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "preferred_social_distance_m": {
+          "anyOf": [
+            {
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Preferred Social Distance M"
+        },
+        "target_speed_mps": {
+          "anyOf": [
+            {
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Target Speed Mps"
+        }
+      },
+      "title": "BehaviorPreferences",
+      "type": "object"
+    },
+    "PassingSide": {
+      "enum": [
+        "LEFT",
+        "RIGHT",
+        "EITHER"
+      ],
+      "title": "PassingSide",
+      "type": "string"
+    }
+  },
+  "$id": "https://p4p.local/schemas/v1/behavior-intent.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "High-level policy proposal that must be validated before execution.",
+  "properties": {
+    "action": {
+      "$ref": "#/$defs/Action"
+    },
+    "created_at_us": {
+      "minimum": 0,
+      "title": "Created At Us",
+      "type": "integer"
+    },
+    "decision_confidence": {
+      "anyOf": [
+        {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Decision Confidence"
+    },
+    "decision_id": {
+      "maxLength": 256,
+      "minLength": 1,
+      "title": "Decision Id",
+      "type": "string"
+    },
+    "observation_id": {
+      "maxLength": 256,
+      "minLength": 1,
+      "title": "Observation Id",
+      "type": "string"
+    },
+    "preferences": {
+      "$ref": "#/$defs/BehaviorPreferences"
+    },
+    "reason_codes": {
+      "items": {
+        "pattern": "^[A-Z][A-Z0-9_]{1,63}$",
+        "type": "string"
+      },
+      "maxItems": 16,
+      "minItems": 1,
+      "title": "Reason Codes",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "social_state_id": {
+      "maxLength": 256,
+      "minLength": 1,
+      "title": "Social State Id",
+      "type": "string"
+    },
+    "target_human_id": {
+      "anyOf": [
+        {
+          "maxLength": 128,
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Target Human Id"
+    },
+    "valid_for_ms": {
+      "exclusiveMinimum": 0,
+      "maximum": 60000,
+      "title": "Valid For Ms",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "schema_version",
+    "decision_id",
+    "observation_id",
+    "social_state_id",
+    "created_at_us",
+    "action",
+    "valid_for_ms",
+    "reason_codes"
+  ],
+  "title": "BehaviorIntent",
+  "type": "object"
+}

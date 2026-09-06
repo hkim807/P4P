@@ -32,11 +32,13 @@ Ollama is the local model runtime. It performs inference on the computer where i
 ```text
 app/
   config.py       Environment configuration
+  domain/         Versioned pipeline contracts and schema generator
   llm.py          Ollama client
   server.py       Flask API
 client.py         Minimal client for Navel or another computer
 docs/
   architecture.jpg
+schemas/v1/       Generated JSON Schemas for public contracts
 tests/
   test_server.py  Offline API tests
 .env.example
@@ -179,6 +181,25 @@ The tests use a fake model, so they do not need Ollama:
 ```bash
 python3 -m unittest discover -s tests -v
 ```
+
+## Domain contracts
+
+The robot-independent pipeline contracts are strict Pydantic models in
+`app/domain/models.py`:
+
+- `ObservationFrame` contains synchronized raw observations and image references.
+- `SocialState` contains temporal, derived, and uncertainty-aware social state.
+- `BehaviorIntent` contains a high-level policy proposal that must be validated
+  before execution.
+
+Their versioned JSON Schema files are committed under `schemas/v1/`. Regenerate
+them after changing a model:
+
+```bash
+python3 -m app.domain.schema
+```
+
+The test suite fails if the committed schemas do not match the models.
 
 ## Next milestone
 

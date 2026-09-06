@@ -1,0 +1,866 @@
+{
+  "$defs": {
+    "BoundingBox2D": {
+      "additionalProperties": false,
+      "properties": {
+        "image_id": {
+          "anyOf": [
+            {
+              "maxLength": 256,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Image Id"
+        },
+        "x_max_px": {
+          "minimum": 0,
+          "title": "X Max Px",
+          "type": "integer"
+        },
+        "x_min_px": {
+          "minimum": 0,
+          "title": "X Min Px",
+          "type": "integer"
+        },
+        "y_max_px": {
+          "minimum": 0,
+          "title": "Y Max Px",
+          "type": "integer"
+        },
+        "y_min_px": {
+          "minimum": 0,
+          "title": "Y Min Px",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "x_min_px",
+        "y_min_px",
+        "x_max_px",
+        "y_max_px"
+      ],
+      "title": "BoundingBox2D",
+      "type": "object"
+    },
+    "CapabilityManifest": {
+      "additionalProperties": false,
+      "properties": {
+        "adapter_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "title": "Adapter Id",
+          "type": "string"
+        },
+        "available_fields": {
+          "items": {
+            "maxLength": 256,
+            "minLength": 1,
+            "type": "string"
+          },
+          "title": "Available Fields",
+          "type": "array"
+        },
+        "notes": {
+          "items": {
+            "maxLength": 500,
+            "minLength": 1,
+            "type": "string"
+          },
+          "title": "Notes",
+          "type": "array"
+        },
+        "robot_type": {
+          "maxLength": 256,
+          "minLength": 1,
+          "title": "Robot Type",
+          "type": "string"
+        },
+        "unavailable_fields": {
+          "items": {
+            "maxLength": 256,
+            "minLength": 1,
+            "type": "string"
+          },
+          "title": "Unavailable Fields",
+          "type": "array"
+        }
+      },
+      "required": [
+        "adapter_id",
+        "robot_type"
+      ],
+      "title": "CapabilityManifest",
+      "type": "object"
+    },
+    "ClockDomain": {
+      "enum": [
+        "MONOTONIC",
+        "ROBOT",
+        "UNIX_EPOCH",
+        "REPLAY"
+      ],
+      "title": "ClockDomain",
+      "type": "string"
+    },
+    "ControllerStatus": {
+      "enum": [
+        "IDLE",
+        "ACTIVE",
+        "STOPPED",
+        "FAULT",
+        "EMERGENCY_STOP"
+      ],
+      "title": "ControllerStatus",
+      "type": "string"
+    },
+    "CoordinateFrame": {
+      "enum": [
+        "ROBOT_BASE",
+        "ODOMETRY",
+        "MAP",
+        "HEAD_CAMERA",
+        "CHEST_CAMERA",
+        "UNDEFINED"
+      ],
+      "title": "CoordinateFrame",
+      "type": "string"
+    },
+    "FacialExpressionScores": {
+      "additionalProperties": false,
+      "properties": {
+        "anger": {
+          "anyOf": [
+            {
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Anger"
+        },
+        "happy": {
+          "anyOf": [
+            {
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Happy"
+        },
+        "neutral": {
+          "anyOf": [
+            {
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Neutral"
+        },
+        "sad": {
+          "anyOf": [
+            {
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Sad"
+        },
+        "surprise": {
+          "anyOf": [
+            {
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Surprise"
+        }
+      },
+      "title": "FacialExpressionScores",
+      "type": "object"
+    },
+    "FreeSpaceObservation": {
+      "additionalProperties": false,
+      "properties": {
+        "forward_m": {
+          "anyOf": [
+            {
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Forward M"
+        },
+        "left_m": {
+          "anyOf": [
+            {
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Left M"
+        },
+        "rear_m": {
+          "anyOf": [
+            {
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Rear M"
+        },
+        "right_m": {
+          "anyOf": [
+            {
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Right M"
+        }
+      },
+      "title": "FreeSpaceObservation",
+      "type": "object"
+    },
+    "HumanObservation": {
+      "additionalProperties": false,
+      "properties": {
+        "body_yaw_rad": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Body Yaw Rad"
+        },
+        "detection_confidence": {
+          "anyOf": [
+            {
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Detection Confidence"
+        },
+        "distance_m": {
+          "anyOf": [
+            {
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Distance M"
+        },
+        "face_bbox": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/BoundingBox2D"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "facial_expression": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/FacialExpressionScores"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "gaze_to_robot_score": {
+          "anyOf": [
+            {
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Gaze To Robot Score"
+        },
+        "gaze_unit": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Vector3"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "group_observation_id": {
+          "anyOf": [
+            {
+              "maxLength": 128,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Group Observation Id"
+        },
+        "head_rpy_rad": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Vector3"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "identity_confidence": {
+          "anyOf": [
+            {
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Identity Confidence"
+        },
+        "observed": {
+          "default": true,
+          "title": "Observed",
+          "type": "boolean"
+        },
+        "position_robot_m": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Vector3"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "sensor_sources": {
+          "items": {
+            "$ref": "#/$defs/SensorSource"
+          },
+          "minItems": 1,
+          "title": "Sensor Sources",
+          "type": "array"
+        },
+        "source_timestamp_us": {
+          "minimum": 0,
+          "title": "Source Timestamp Us",
+          "type": "integer"
+        },
+        "speech_activity": {
+          "anyOf": [
+            {
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Speech Activity"
+        },
+        "state_age_ms": {
+          "default": 0,
+          "minimum": 0,
+          "title": "State Age Ms",
+          "type": "integer"
+        },
+        "track_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Track Id",
+          "type": "string"
+        },
+        "uncertainty": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Uncertainty"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "track_id",
+        "source_timestamp_us",
+        "sensor_sources"
+      ],
+      "title": "HumanObservation",
+      "type": "object"
+    },
+    "ImageEncoding": {
+      "enum": [
+        "JPEG",
+        "PNG",
+        "RGB8"
+      ],
+      "title": "ImageEncoding",
+      "type": "string"
+    },
+    "ImageFrameReference": {
+      "additionalProperties": false,
+      "properties": {
+        "calibration_id": {
+          "anyOf": [
+            {
+              "maxLength": 256,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Calibration Id"
+        },
+        "camera_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "title": "Camera Id",
+          "type": "string"
+        },
+        "coordinate_frame": {
+          "$ref": "#/$defs/CoordinateFrame"
+        },
+        "encoding": {
+          "$ref": "#/$defs/ImageEncoding"
+        },
+        "height_px": {
+          "exclusiveMinimum": 0,
+          "title": "Height Px",
+          "type": "integer"
+        },
+        "image_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "title": "Image Id",
+          "type": "string"
+        },
+        "sha256": {
+          "anyOf": [
+            {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Sha256"
+        },
+        "timestamp_us": {
+          "minimum": 0,
+          "title": "Timestamp Us",
+          "type": "integer"
+        },
+        "uri": {
+          "maxLength": 2048,
+          "minLength": 1,
+          "title": "Uri",
+          "type": "string"
+        },
+        "width_px": {
+          "exclusiveMinimum": 0,
+          "title": "Width Px",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "image_id",
+        "camera_id",
+        "timestamp_us",
+        "coordinate_frame",
+        "uri",
+        "width_px",
+        "height_px",
+        "encoding"
+      ],
+      "title": "ImageFrameReference",
+      "type": "object"
+    },
+    "NavigationTask": {
+      "enum": [
+        "IDLE",
+        "GUIDING",
+        "APPROACHING",
+        "INTERACTING",
+        "PAUSED",
+        "COMPLETE",
+        "ERROR"
+      ],
+      "title": "NavigationTask",
+      "type": "string"
+    },
+    "Pose2D": {
+      "additionalProperties": false,
+      "properties": {
+        "heading_rad": {
+          "title": "Heading Rad",
+          "type": "number"
+        },
+        "x_m": {
+          "title": "X M",
+          "type": "number"
+        },
+        "y_m": {
+          "title": "Y M",
+          "type": "number"
+        }
+      },
+      "required": [
+        "x_m",
+        "y_m",
+        "heading_rad"
+      ],
+      "title": "Pose2D",
+      "type": "object"
+    },
+    "RobotObservation": {
+      "additionalProperties": false,
+      "properties": {
+        "angular_velocity_radps": {
+          "default": 0.0,
+          "title": "Angular Velocity Radps",
+          "type": "number"
+        },
+        "controller_status": {
+          "$ref": "#/$defs/ControllerStatus"
+        },
+        "destination_id": {
+          "anyOf": [
+            {
+              "maxLength": 256,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Destination Id"
+        },
+        "free_space": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/FreeSpaceObservation"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "goal": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Pose2D"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "linear_velocity_mps": {
+          "$ref": "#/$defs/Vector2"
+        },
+        "pose": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Pose2D"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "stopping_distance_m": {
+          "anyOf": [
+            {
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Stopping Distance M"
+        },
+        "task": {
+          "$ref": "#/$defs/NavigationTask"
+        }
+      },
+      "required": [
+        "linear_velocity_mps",
+        "task",
+        "controller_status"
+      ],
+      "title": "RobotObservation",
+      "type": "object"
+    },
+    "SensorSource": {
+      "enum": [
+        "HEAD_RGB",
+        "CHEST_RGB",
+        "DEPTH",
+        "LIDAR",
+        "SONAR",
+        "ODOMETRY",
+        "MICROPHONE",
+        "EXTERNAL",
+        "SYNTHETIC",
+        "REPLAY"
+      ],
+      "title": "SensorSource",
+      "type": "string"
+    },
+    "Uncertainty": {
+      "additionalProperties": false,
+      "properties": {
+        "heading_std_rad": {
+          "anyOf": [
+            {
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Heading Std Rad"
+        },
+        "occlusion_probability": {
+          "anyOf": [
+            {
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Occlusion Probability"
+        },
+        "position_std_m": {
+          "anyOf": [
+            {
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Position Std M"
+        },
+        "velocity_std_mps": {
+          "anyOf": [
+            {
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Velocity Std Mps"
+        }
+      },
+      "title": "Uncertainty",
+      "type": "object"
+    },
+    "Vector2": {
+      "additionalProperties": false,
+      "properties": {
+        "x": {
+          "title": "X",
+          "type": "number"
+        },
+        "y": {
+          "title": "Y",
+          "type": "number"
+        }
+      },
+      "required": [
+        "x",
+        "y"
+      ],
+      "title": "Vector2",
+      "type": "object"
+    },
+    "Vector3": {
+      "additionalProperties": false,
+      "properties": {
+        "x": {
+          "title": "X",
+          "type": "number"
+        },
+        "y": {
+          "title": "Y",
+          "type": "number"
+        },
+        "z": {
+          "title": "Z",
+          "type": "number"
+        }
+      },
+      "required": [
+        "x",
+        "y",
+        "z"
+      ],
+      "title": "Vector3",
+      "type": "object"
+    }
+  },
+  "$id": "https://p4p.local/schemas/v1/observation-frame.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Robot-independent observations at one synchronized pipeline instant.",
+  "properties": {
+    "capabilities": {
+      "$ref": "#/$defs/CapabilityManifest"
+    },
+    "clock_domain": {
+      "$ref": "#/$defs/ClockDomain"
+    },
+    "coordinate_frame": {
+      "$ref": "#/$defs/CoordinateFrame"
+    },
+    "humans": {
+      "items": {
+        "$ref": "#/$defs/HumanObservation"
+      },
+      "title": "Humans",
+      "type": "array"
+    },
+    "images": {
+      "items": {
+        "$ref": "#/$defs/ImageFrameReference"
+      },
+      "title": "Images",
+      "type": "array"
+    },
+    "observation_id": {
+      "maxLength": 256,
+      "minLength": 1,
+      "title": "Observation Id",
+      "type": "string"
+    },
+    "robot": {
+      "$ref": "#/$defs/RobotObservation"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "timestamp_us": {
+      "minimum": 0,
+      "title": "Timestamp Us",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "schema_version",
+    "observation_id",
+    "timestamp_us",
+    "clock_domain",
+    "coordinate_frame",
+    "robot",
+    "capabilities"
+  ],
+  "title": "ObservationFrame",
+  "type": "object"
+}

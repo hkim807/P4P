@@ -1,0 +1,1238 @@
+{
+  "$defs": {
+    "AttentionEvidence": {
+      "additionalProperties": false,
+      "properties": {
+        "gaze_mean_2s": {
+          "anyOf": [
+            {
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Gaze Mean 2S"
+        },
+        "gaze_mean_500ms": {
+          "anyOf": [
+            {
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Gaze Mean 500Ms"
+        },
+        "gaze_ratio_2s": {
+          "anyOf": [
+            {
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Gaze Ratio 2S"
+        },
+        "gaze_switch_rate_2s_hz": {
+          "anyOf": [
+            {
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Gaze Switch Rate 2S Hz"
+        },
+        "gaze_to_robot_score": {
+          "anyOf": [
+            {
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Gaze To Robot Score"
+        },
+        "longest_mutual_gaze_2s_s": {
+          "anyOf": [
+            {
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Longest Mutual Gaze 2S S"
+        },
+        "state": {
+          "$ref": "#/$defs/AttentionState",
+          "default": "UNKNOWN"
+        },
+        "time_since_gaze_s": {
+          "anyOf": [
+            {
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Time Since Gaze S"
+        }
+      },
+      "title": "AttentionEvidence",
+      "type": "object"
+    },
+    "AttentionState": {
+      "enum": [
+        "UNKNOWN",
+        "NOT_ATTENDING",
+        "GLANCE",
+        "INTERMITTENT",
+        "SUSTAINED"
+      ],
+      "title": "AttentionState",
+      "type": "string"
+    },
+    "ClockDomain": {
+      "enum": [
+        "MONOTONIC",
+        "ROBOT",
+        "UNIX_EPOCH",
+        "REPLAY"
+      ],
+      "title": "ClockDomain",
+      "type": "string"
+    },
+    "ControllerStatus": {
+      "enum": [
+        "IDLE",
+        "ACTIVE",
+        "STOPPED",
+        "FAULT",
+        "EMERGENCY_STOP"
+      ],
+      "title": "ControllerStatus",
+      "type": "string"
+    },
+    "CoordinateFrame": {
+      "enum": [
+        "ROBOT_BASE",
+        "ODOMETRY",
+        "MAP",
+        "HEAD_CAMERA",
+        "CHEST_CAMERA",
+        "UNDEFINED"
+      ],
+      "title": "CoordinateFrame",
+      "type": "string"
+    },
+    "CrowdState": {
+      "additionalProperties": false,
+      "properties": {
+        "density_people_m2": {
+          "anyOf": [
+            {
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Density People M2"
+        },
+        "flow_entropy": {
+          "anyOf": [
+            {
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Flow Entropy"
+        },
+        "flow_velocity_mps": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Vector2"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "free_space_fraction": {
+          "anyOf": [
+            {
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Free Space Fraction"
+        },
+        "people_within_1m": {
+          "default": 0,
+          "minimum": 0,
+          "title": "People Within 1M",
+          "type": "integer"
+        },
+        "people_within_2m": {
+          "default": 0,
+          "minimum": 0,
+          "title": "People Within 2M",
+          "type": "integer"
+        },
+        "people_within_3m": {
+          "default": 0,
+          "minimum": 0,
+          "title": "People Within 3M",
+          "type": "integer"
+        }
+      },
+      "title": "CrowdState",
+      "type": "object"
+    },
+    "DistanceTrend": {
+      "enum": [
+        "UNKNOWN",
+        "DECREASING",
+        "STABLE",
+        "INCREASING"
+      ],
+      "title": "DistanceTrend",
+      "type": "string"
+    },
+    "EngagementEvidence": {
+      "additionalProperties": false,
+      "properties": {
+        "addressee_probability": {
+          "anyOf": [
+            {
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Addressee Probability"
+        },
+        "engagement_probability": {
+          "anyOf": [
+            {
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Engagement Probability"
+        },
+        "speech_activity": {
+          "anyOf": [
+            {
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Speech Activity"
+        },
+        "state": {
+          "$ref": "#/$defs/EngagementState",
+          "default": "UNKNOWN"
+        },
+        "time_since_speech_s": {
+          "anyOf": [
+            {
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Time Since Speech S"
+        }
+      },
+      "title": "EngagementEvidence",
+      "type": "object"
+    },
+    "EngagementState": {
+      "enum": [
+        "UNKNOWN",
+        "DISENGAGED",
+        "AVAILABLE",
+        "ATTENDING",
+        "HUMAN_SPEAKING",
+        "ROBOT_SPEAKING",
+        "TRANSITION"
+      ],
+      "title": "EngagementState",
+      "type": "string"
+    },
+    "FacialExpressionScores": {
+      "additionalProperties": false,
+      "properties": {
+        "anger": {
+          "anyOf": [
+            {
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Anger"
+        },
+        "happy": {
+          "anyOf": [
+            {
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Happy"
+        },
+        "neutral": {
+          "anyOf": [
+            {
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Neutral"
+        },
+        "sad": {
+          "anyOf": [
+            {
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Sad"
+        },
+        "surprise": {
+          "anyOf": [
+            {
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Surprise"
+        }
+      },
+      "title": "FacialExpressionScores",
+      "type": "object"
+    },
+    "FreeSpaceObservation": {
+      "additionalProperties": false,
+      "properties": {
+        "forward_m": {
+          "anyOf": [
+            {
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Forward M"
+        },
+        "left_m": {
+          "anyOf": [
+            {
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Left M"
+        },
+        "rear_m": {
+          "anyOf": [
+            {
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Rear M"
+        },
+        "right_m": {
+          "anyOf": [
+            {
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Right M"
+        }
+      },
+      "title": "FreeSpaceObservation",
+      "type": "object"
+    },
+    "GestureEvidence": {
+      "additionalProperties": false,
+      "properties": {
+        "ended_at_us": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Ended At Us"
+        },
+        "gesture_class": {
+          "maxLength": 256,
+          "minLength": 1,
+          "title": "Gesture Class",
+          "type": "string"
+        },
+        "probability": {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Probability",
+          "type": "number"
+        },
+        "started_at_us": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Started At Us"
+        },
+        "target_id": {
+          "anyOf": [
+            {
+              "maxLength": 128,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Target Id"
+        }
+      },
+      "required": [
+        "gesture_class",
+        "probability"
+      ],
+      "title": "GestureEvidence",
+      "type": "object"
+    },
+    "GroupState": {
+      "additionalProperties": false,
+      "properties": {
+        "centroid_robot_m": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Vector2"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "confidence": {
+          "anyOf": [
+            {
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Confidence"
+        },
+        "group_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Group Id",
+          "type": "string"
+        },
+        "interaction_space_radius_m": {
+          "anyOf": [
+            {
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Interaction Space Radius M"
+        },
+        "member_ids": {
+          "items": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "minItems": 2,
+          "title": "Member Ids",
+          "type": "array"
+        },
+        "openness_score": {
+          "anyOf": [
+            {
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Openness Score"
+        }
+      },
+      "required": [
+        "group_id",
+        "member_ids"
+      ],
+      "title": "GroupState",
+      "type": "object"
+    },
+    "HumanSocialState": {
+      "additionalProperties": false,
+      "properties": {
+        "acceleration_mps2": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Acceleration Mps2"
+        },
+        "attention": {
+          "$ref": "#/$defs/AttentionEvidence"
+        },
+        "body_yaw_rad": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Body Yaw Rad"
+        },
+        "closing_speed_mps": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Closing Speed Mps"
+        },
+        "distance_at_closest_approach_m": {
+          "anyOf": [
+            {
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Distance At Closest Approach M"
+        },
+        "distance_m": {
+          "anyOf": [
+            {
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Distance M"
+        },
+        "distance_trend": {
+          "$ref": "#/$defs/DistanceTrend",
+          "default": "UNKNOWN"
+        },
+        "engagement": {
+          "$ref": "#/$defs/EngagementEvidence"
+        },
+        "evidence_codes": {
+          "items": {
+            "maxLength": 256,
+            "minLength": 1,
+            "type": "string"
+          },
+          "title": "Evidence Codes",
+          "type": "array"
+        },
+        "facial_expression": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/FacialExpressionScores"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "gesture": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/GestureEvidence"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "group_id": {
+          "anyOf": [
+            {
+              "maxLength": 128,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Group Id"
+        },
+        "head_rpy_rad": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Vector3"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "heading_rad": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Heading Rad"
+        },
+        "motion_relation": {
+          "$ref": "#/$defs/MotionRelation",
+          "default": "UNKNOWN"
+        },
+        "observed": {
+          "title": "Observed",
+          "type": "boolean"
+        },
+        "path_conflict_probability": {
+          "anyOf": [
+            {
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Path Conflict Probability"
+        },
+        "personal_space_cost": {
+          "anyOf": [
+            {
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Personal Space Cost"
+        },
+        "position_robot_m": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Vector3"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "predicted_only": {
+          "default": false,
+          "title": "Predicted Only",
+          "type": "boolean"
+        },
+        "predicted_positions": {
+          "items": {
+            "$ref": "#/$defs/PredictedPosition"
+          },
+          "title": "Predicted Positions",
+          "type": "array"
+        },
+        "proxemic_zone": {
+          "$ref": "#/$defs/ProxemicZone",
+          "default": "UNKNOWN"
+        },
+        "speed_mps": {
+          "anyOf": [
+            {
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Speed Mps"
+        },
+        "state_age_ms": {
+          "minimum": 0,
+          "title": "State Age Ms",
+          "type": "integer"
+        },
+        "time_since_seen_s": {
+          "minimum": 0.0,
+          "title": "Time Since Seen S",
+          "type": "number"
+        },
+        "time_to_closest_approach_s": {
+          "anyOf": [
+            {
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Time To Closest Approach S"
+        },
+        "track_age_s": {
+          "minimum": 0.0,
+          "title": "Track Age S",
+          "type": "number"
+        },
+        "track_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Track Id",
+          "type": "string"
+        },
+        "uncertainty": {
+          "$ref": "#/$defs/Uncertainty"
+        },
+        "velocity_robot_mps": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Vector2"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "track_id",
+        "observed",
+        "state_age_ms",
+        "track_age_s",
+        "time_since_seen_s",
+        "uncertainty"
+      ],
+      "title": "HumanSocialState",
+      "type": "object"
+    },
+    "MotionRelation": {
+      "enum": [
+        "UNKNOWN",
+        "STATIONARY",
+        "APPROACHING",
+        "RECEDING",
+        "CROSSING",
+        "PARALLEL",
+        "APPROACHING_CROSSING"
+      ],
+      "title": "MotionRelation",
+      "type": "string"
+    },
+    "NavigationTask": {
+      "enum": [
+        "IDLE",
+        "GUIDING",
+        "APPROACHING",
+        "INTERACTING",
+        "PAUSED",
+        "COMPLETE",
+        "ERROR"
+      ],
+      "title": "NavigationTask",
+      "type": "string"
+    },
+    "Pose2D": {
+      "additionalProperties": false,
+      "properties": {
+        "heading_rad": {
+          "title": "Heading Rad",
+          "type": "number"
+        },
+        "x_m": {
+          "title": "X M",
+          "type": "number"
+        },
+        "y_m": {
+          "title": "Y M",
+          "type": "number"
+        }
+      },
+      "required": [
+        "x_m",
+        "y_m",
+        "heading_rad"
+      ],
+      "title": "Pose2D",
+      "type": "object"
+    },
+    "PredictedPosition": {
+      "additionalProperties": false,
+      "properties": {
+        "horizon_s": {
+          "exclusiveMinimum": 0.0,
+          "title": "Horizon S",
+          "type": "number"
+        },
+        "position_robot_m": {
+          "$ref": "#/$defs/Vector2"
+        },
+        "position_std_m": {
+          "anyOf": [
+            {
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Position Std M"
+        }
+      },
+      "required": [
+        "horizon_s",
+        "position_robot_m"
+      ],
+      "title": "PredictedPosition",
+      "type": "object"
+    },
+    "ProxemicZone": {
+      "enum": [
+        "UNKNOWN",
+        "INTIMATE",
+        "PERSONAL",
+        "SOCIAL",
+        "PUBLIC"
+      ],
+      "title": "ProxemicZone",
+      "type": "string"
+    },
+    "RobotSocialState": {
+      "additionalProperties": false,
+      "properties": {
+        "angular_velocity_radps": {
+          "default": 0.0,
+          "title": "Angular Velocity Radps",
+          "type": "number"
+        },
+        "controller_status": {
+          "$ref": "#/$defs/ControllerStatus"
+        },
+        "destination_id": {
+          "anyOf": [
+            {
+              "maxLength": 256,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Destination Id"
+        },
+        "free_space": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/FreeSpaceObservation"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "goal": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Pose2D"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "linear_velocity_mps": {
+          "$ref": "#/$defs/Vector2"
+        },
+        "pose": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Pose2D"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "stopping_distance_m": {
+          "anyOf": [
+            {
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Stopping Distance M"
+        },
+        "task": {
+          "$ref": "#/$defs/NavigationTask"
+        }
+      },
+      "required": [
+        "linear_velocity_mps",
+        "task",
+        "controller_status"
+      ],
+      "title": "RobotSocialState",
+      "type": "object"
+    },
+    "Uncertainty": {
+      "additionalProperties": false,
+      "properties": {
+        "heading_std_rad": {
+          "anyOf": [
+            {
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Heading Std Rad"
+        },
+        "occlusion_probability": {
+          "anyOf": [
+            {
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Occlusion Probability"
+        },
+        "position_std_m": {
+          "anyOf": [
+            {
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Position Std M"
+        },
+        "velocity_std_mps": {
+          "anyOf": [
+            {
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Velocity Std Mps"
+        }
+      },
+      "title": "Uncertainty",
+      "type": "object"
+    },
+    "Vector2": {
+      "additionalProperties": false,
+      "properties": {
+        "x": {
+          "title": "X",
+          "type": "number"
+        },
+        "y": {
+          "title": "Y",
+          "type": "number"
+        }
+      },
+      "required": [
+        "x",
+        "y"
+      ],
+      "title": "Vector2",
+      "type": "object"
+    },
+    "Vector3": {
+      "additionalProperties": false,
+      "properties": {
+        "x": {
+          "title": "X",
+          "type": "number"
+        },
+        "y": {
+          "title": "Y",
+          "type": "number"
+        },
+        "z": {
+          "title": "Z",
+          "type": "number"
+        }
+      },
+      "required": [
+        "x",
+        "y",
+        "z"
+      ],
+      "title": "Vector3",
+      "type": "object"
+    }
+  },
+  "$id": "https://p4p.local/schemas/v1/social-state.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Temporally derived, uncertainty-aware state supplied to a policy.",
+  "properties": {
+    "clock_domain": {
+      "$ref": "#/$defs/ClockDomain"
+    },
+    "coordinate_frame": {
+      "$ref": "#/$defs/CoordinateFrame"
+    },
+    "crowd": {
+      "$ref": "#/$defs/CrowdState"
+    },
+    "groups": {
+      "items": {
+        "$ref": "#/$defs/GroupState"
+      },
+      "title": "Groups",
+      "type": "array"
+    },
+    "history_window_s": {
+      "exclusiveMinimum": 0.0,
+      "title": "History Window S",
+      "type": "number"
+    },
+    "humans": {
+      "items": {
+        "$ref": "#/$defs/HumanSocialState"
+      },
+      "title": "Humans",
+      "type": "array"
+    },
+    "robot": {
+      "$ref": "#/$defs/RobotSocialState"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "selected_image_ids": {
+      "items": {
+        "maxLength": 256,
+        "minLength": 1,
+        "type": "string"
+      },
+      "title": "Selected Image Ids",
+      "type": "array"
+    },
+    "source_observation_id": {
+      "maxLength": 256,
+      "minLength": 1,
+      "title": "Source Observation Id",
+      "type": "string"
+    },
+    "state_id": {
+      "maxLength": 256,
+      "minLength": 1,
+      "title": "State Id",
+      "type": "string"
+    },
+    "timestamp_us": {
+      "minimum": 0,
+      "title": "Timestamp Us",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "schema_version",
+    "state_id",
+    "source_observation_id",
+    "timestamp_us",
+    "clock_domain",
+    "coordinate_frame",
+    "history_window_s",
+    "robot"
+  ],
+  "title": "SocialState",
+  "type": "object"
+}
