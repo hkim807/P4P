@@ -300,6 +300,36 @@ filtering, rotation-aware ego-motion compensation, advanced trajectory and path
 conflict prediction, group inference, learned engagement, and crowd-flow
 estimation remain later improvements.
 
+## Event-driven decision scheduling
+
+`DecisionScheduler` examines every `SocialState` but requests a model decision
+only when the social situation changes or an active-scene refresh is due:
+
+```python
+from app.decision import DecisionScheduler
+
+scheduler = DecisionScheduler()
+for social_state in estimator.process(observations):
+    request = scheduler.evaluate(social_state)
+    if request is None:
+        # Maintain the controller's existing behaviour: initially, keep roaming.
+        continue
+
+    print(request.trigger_codes)
+    # intent = policy.decide(request.state)
+```
+
+The first detected human triggers a decision so the future policy can choose
+between continuing the fixed roaming route and actions such as approaching or
+greeting. Further triggers include human departure, motion, distance trend,
+attention, engagement, speaking, proxemic-zone, robot-context, occlusion, and
+reacquisition changes. Events within the default 0.5-second minimum interval
+are coalesced, and an active human scene is refreshed every two seconds even if
+no discrete event occurs. Empty unchanged scenes do not invoke the model.
+
+Use a fresh scheduler per experiment or call `reset()`. Timing and departure
+behaviour are configurable through `SchedulerConfig`.
+
 ## Next milestone
 
 The next step is to replace free-form `/chat` output with a strict social-navigation decision schema. The decision layer should select only approved high-level actions and parameters. A deterministic safety controller must validate those decisions before any physical behaviour is executed.
