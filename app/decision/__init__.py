@@ -1,4 +1,6 @@
-"""Decision scheduling, policy orchestration, and intent validation."""
+"""Decision scheduling and read-only policy orchestration."""
+
+from app.decision.llm_policy import LLMPolicyBridge, render_decision_prompt
 
 from app.decision.scheduler import (
     DecisionRequest,
@@ -14,4 +16,6 @@ __all__ = [
     "DecisionSchedulerError",
     "DecisionTrigger",
     "SchedulerConfig",
+    "LLMPolicyBridge",
+    "render_decision_prompt",
 ]
