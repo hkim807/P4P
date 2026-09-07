@@ -110,6 +110,37 @@ Robot Navigation with VLMs](https://arxiv.org/abs/2601.14622), 2026 preprint;
 
 ## Runtime contract
 
+### Intrinsic action contract
+
+The policy selection must be internally coherent before it can become a
+`BehaviorIntent`. The immutable `ACTION_CONTRACTS` table is authoritative for
+runtime validation and generates the `action_contract` object included in every
+prompt. Omitted and explicit `null` preference values are equivalent: required
+preferences must be non-null, forbidden preferences must be omitted or null,
+and optional preferences may be omitted, null, or valid.
+
+| Action | Target | Required preferences | Optional preferences | Forbidden preferences |
+| --- | --- | --- | --- | --- |
+| `CONTINUE` | Forbidden | — | — | `target_speed_mps`, `preferred_social_distance_m`, `passing_side`, `orientation_target_rad`, `hold_duration_s` |
+| `MONITOR` | Forbidden | — | — | `target_speed_mps`, `preferred_social_distance_m`, `passing_side`, `orientation_target_rad`, `hold_duration_s` |
+| `ORIENT` | Required | — | `orientation_target_rad` | `target_speed_mps`, `preferred_social_distance_m`, `passing_side`, `hold_duration_s` |
+| `SLOW` | Optional | `target_speed_mps` | — | `preferred_social_distance_m`, `passing_side`, `orientation_target_rad`, `hold_duration_s` |
+| `YIELD` | Optional | — | `target_speed_mps`, `preferred_social_distance_m`, `passing_side`, `hold_duration_s` | `orientation_target_rad` |
+| `AVOID` | Optional | — | `target_speed_mps`, `preferred_social_distance_m`, `passing_side` | `orientation_target_rad`, `hold_duration_s` |
+| `APPROACH` | Required | `preferred_social_distance_m` | `target_speed_mps` | `passing_side`, `orientation_target_rad`, `hold_duration_s` |
+| `GREET` | Required | — | — | `target_speed_mps`, `preferred_social_distance_m`, `passing_side`, `orientation_target_rad`, `hold_duration_s` |
+| `GUIDE` | Required | — | `target_speed_mps`, `preferred_social_distance_m`, `passing_side` | `orientation_target_rad`, `hold_duration_s` |
+| `WAIT` | Forbidden | `hold_duration_s` | — | `target_speed_mps`, `preferred_social_distance_m`, `passing_side`, `orientation_target_rad` |
+| `RESUME` | Forbidden | — | — | `target_speed_mps`, `preferred_social_distance_m`, `passing_side`, `orientation_target_rad`, `hold_duration_s` |
+| `DISENGAGE` | Required | — | — | `target_speed_mps`, `preferred_social_distance_m`, `passing_side`, `orientation_target_rad`, `hold_duration_s` |
+
+Optional targets on `SLOW`, `YIELD`, and `AVOID` identify the human associated
+with the global navigation response when one track is relevant. This contract
+does not decide whether that target remains fresh, whether a speed is safe, or
+whether the robot is in a state where `RESUME` is feasible. Those contextual
+checks remain responsibilities of the later deterministic validator and
+controller.
+
 `LLMPolicyBridge.decide(state, triggers)` performs these steps:
 
 1. Render a deterministic compact request containing the prompt version, task

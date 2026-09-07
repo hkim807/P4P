@@ -11,7 +11,9 @@ import hashlib
 import json
 import math
 import re
+from dataclasses import dataclass
 from enum import Enum
+from types import MappingProxyType
 from typing import Annotated, Any, Protocol, Sequence
 
 from pydantic import BaseModel, ConfigDict, Field, ValidationError, model_validator
@@ -32,6 +34,141 @@ MAX_SOCIAL_DISTANCE_M = 1.4
 MIN_INTENT_VALIDITY_MS = 250
 MAX_INTENT_VALIDITY_MS = 2_000
 MAX_HOLD_DURATION_S = 10.0
+
+PREFERENCE_FIELD_NAMES = (
+    "target_speed_mps",
+    "preferred_social_distance_m",
+    "passing_side",
+    "orientation_target_rad",
+    "hold_duration_s",
+)
+
+
+class TargetRequirement(str, Enum):
+    REQUIRED = "REQUIRED"
+    OPTIONAL = "OPTIONAL"
+    FORBIDDEN = "FORBIDDEN"
+
+
+@dataclass(frozen=True)
+class ActionContract:
+    """Intrinsic target and preference rules for one policy action."""
+
+    target: TargetRequirement
+    required_preferences: frozenset[str]
+    optional_preferences: frozenset[str]
+    forbidden_preferences: frozenset[str]
+
+
+def _contract(
+    target: TargetRequirement,
+    *,
+    required: tuple[str, ...] = (),
+    optional: tuple[str, ...] = (),
+) -> ActionContract:
+    required_fields = frozenset(required)
+    optional_fields = frozenset(optional)
+    forbidden_fields = (
+        frozenset(PREFERENCE_FIELD_NAMES) - required_fields - optional_fields
+    )
+    return ActionContract(
+        target=target,
+        required_preferences=required_fields,
+        optional_preferences=optional_fields,
+        forbidden_preferences=forbidden_fields,
+    )
+
+
+# One source of truth for intrinsic intent coherence. Contextual checks such as
+# freshness, controller state, free space, and collision feasibility remain the
+# responsibility of the later deterministic validator.
+ACTION_CONTRACTS = MappingProxyType(
+    {
+        Action.CONTINUE.value: _contract(TargetRequirement.FORBIDDEN),
+        Action.MONITOR.value: _contract(TargetRequirement.FORBIDDEN),
+        Action.ORIENT.value: _contract(
+            TargetRequirement.REQUIRED,
+            optional=("orientation_target_rad",),
+        ),
+        Action.SLOW.value: _contract(
+            TargetRequirement.OPTIONAL,
+            required=("target_speed_mps",),
+        ),
+        Action.YIELD.value: _contract(
+            TargetRequirement.OPTIONAL,
+            optional=(
+                "target_speed_mps",
+                "preferred_social_distance_m",
+                "passing_side",
+                "hold_duration_s",
+            ),
+        ),
+        Action.AVOID.value: _contract(
+            TargetRequirement.OPTIONAL,
+            optional=(
+                "target_speed_mps",
+                "preferred_social_distance_m",
+                "passing_side",
+            ),
+        ),
+        Action.APPROACH.value: _contract(
+            TargetRequirement.REQUIRED,
+            required=("preferred_social_distance_m",),
+            optional=("target_speed_mps",),
+        ),
+        Action.GREET.value: _contract(TargetRequirement.REQUIRED),
+        Action.GUIDE.value: _contract(
+            TargetRequirement.REQUIRED,
+            optional=(
+                "target_speed_mps",
+                "preferred_social_distance_m",
+                "passing_side",
+            ),
+        ),
+        Action.WAIT.value: _contract(
+            TargetRequirement.FORBIDDEN,
+            required=("hold_duration_s",),
+        ),
+        Action.RESUME.value: _contract(TargetRequirement.FORBIDDEN),
+        Action.DISENGAGE.value: _contract(TargetRequirement.REQUIRED),
+    }
+)
+
+
+def _validate_action_contracts() -> None:
+    action_values = {action.value for action in Action}
+    contract_values = set(ACTION_CONTRACTS)
+    if action_values != contract_values:
+        missing = sorted(action_values - contract_values)
+        unknown = sorted(contract_values - action_values)
+        raise RuntimeError(
+            f"action contract coverage mismatch; missing={missing}, unknown={unknown}"
+        )
+
+    preference_fields = set(PREFERENCE_FIELD_NAMES)
+    for action, contract in ACTION_CONTRACTS.items():
+        classifications = (
+            contract.required_preferences,
+            contract.optional_preferences,
+            contract.forbidden_preferences,
+        )
+        overlaps = any(
+            left & right
+            for index, left in enumerate(classifications)
+            for right in classifications[index + 1 :]
+        )
+        if overlaps:
+            raise RuntimeError(f"action {action} classifies a preference more than once")
+        classified = set().union(*classifications)
+        if classified != preference_fields:
+            raise RuntimeError(
+                f"action {action} preference coverage mismatch; "
+                f"missing={sorted(preference_fields - classified)}, "
+                f"unknown={sorted(classified - preference_fields)}"
+            )
+
+
+_validate_action_contracts()
 
 # Stable labels make decisions easier to compare across the LLM and future VLM
 # conditions. Scheduler triggers and valid state evidence codes are added to
@@ -100,7 +237,7 @@ Action meanings:
 
 Output rules:
 - Return only one JSON object matching response_json_schema; no Markdown or prose outside it.
-- Select exactly one action. ORIENT, APPROACH, GREET, and GUIDE require a target_human_id from the current state.
+- Select exactly one action and follow the action_contract supplied in the input. REQUIRED values must be non-null; FORBIDDEN values must be omitted or null; OPTIONAL values may be omitted, null, or valid.
 - Omit irrelevant preferences. Keep speed at 0.0-0.8 m/s, social distance at 1.0-1.4 m, orientation at -pi to pi radians, hold duration at 0-10 s, and validity at 250-2000 ms.
 - Use EITHER for passing_side unless the state provides a justified side. Use only grounded reason codes from allowed_reason_codes.
 - decision_confidence reports evidence sufficiency; it is not a safety guarantee. Do not expose private chain-of-thought."""
@@ -163,15 +300,34 @@ class _PolicySelection(BaseModel):
     ]
 
     @model_validator(mode="after")
-    def validate_action_target(self) -> "_PolicySelection":
-        targeted_actions = {
-            Action.ORIENT.value,
-            Action.APPROACH.value,
-            Action.GREET.value,
-            Action.GUIDE.value,
-        }
-        if self.action in targeted_actions and self.target_human_id is None:
+    def validate_action_contract(self) -> "_PolicySelection":
+        contract = ACTION_CONTRACTS[self.action]
+        if (
+            contract.target == TargetRequirement.REQUIRED
+            and self.target_human_id is None
+        ):
             raise ValueError(f"{self.action} requires target_human_id")
+        if (
+            contract.target == TargetRequirement.FORBIDDEN
+            and self.target_human_id is not None
+        ):
+            raise ValueError(f"{self.action} forbids target_human_id")
+
+        supplied_preferences = {
+            field_name
+            for field_name in PREFERENCE_FIELD_NAMES
+            if getattr(self.preferences, field_name) is not None
+        }
+        missing = contract.required_preferences - supplied_preferences
+        if missing:
+            raise ValueError(
+                f"{self.action} requires non-null preferences: {sorted(missing)}"
+            )
+        forbidden = contract.forbidden_preferences & supplied_preferences
+        if forbidden:
+            raise ValueError(
+                f"{self.action} forbids non-null preferences: {sorted(forbidden)}"
+            )
         return self
 
 
@@ -222,6 +378,32 @@ def behavior_selection_schema(
     return schema
 
 
+def action_contract_payload() -> dict[str, dict[str, Any]]:
+    """Return prompt-facing action rules derived from the validation contract."""
+    payload: dict[str, dict[str, Any]] = {}
+    for action in (item.value for item in Action):
+        contract = ACTION_CONTRACTS[action]
+        payload[action] = {
+            "target_human_id": contract.target.value,
+            "required_preferences": [
+                name
+                for name in PREFERENCE_FIELD_NAMES
+                if name in contract.required_preferences
+            ],
+            "optional_preferences": [
+                name
+                for name in PREFERENCE_FIELD_NAMES
+                if name in contract.optional_preferences
+            ],
+            "forbidden_preferences": [
+                name
+                for name in PREFERENCE_FIELD_NAMES
+                if name in contract.forbidden_preferences
+            ],
+        }
+    return payload
+
+
 def render_decision_prompt(state: SocialState, triggers: Sequence[Any]) -> str:
     """Render a stable, self-contained policy request with no null state fields."""
     trigger_codes = _trigger_codes(triggers)
@@ -236,6 +418,7 @@ def render_decision_prompt(state: SocialState, triggers: Sequence[Any]) -> str:
         },
         "scheduler_triggers": list(trigger_codes),
         "allowed_reason_codes": list(_allowed_reason_codes(state, trigger_codes)),
+        "action_contract": action_contract_payload(),
         "social_state": state_payload,
         # Ollama recommends including the same schema in the prompt as well as
         # supplying it through response_format.
@@ -286,8 +469,10 @@ class LLMPolicyBridge:
         try:
             selection = _PolicySelection.model_validate_json(raw_response)
         except ValidationError as error:
+            details = error.errors(include_url=False, include_input=False)
             raise LLMPolicyError(
-                "LLM response does not match the behavior-selection schema"
+                "LLM response does not match the behavior-selection schema: "
+                f"{details}"
             ) from error
 
         known_humans = {human.track_id: human for human in state.humans}
