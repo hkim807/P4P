@@ -6,11 +6,13 @@ import json
 import threading
 import unittest
 from types import SimpleNamespace as NS
+from unittest.mock import Mock
 
 from werkzeug.serving import make_server
 
 from app.server import create_app
 from robot.navel_client.adapter import NavelAdapterConfig, NavelObservationAdapter
+from robot.navel_client.behavior import BehaviorController, BehaviorHandlingStatus
 from robot.navel_client.transport import ObservationTransport
 
 
@@ -112,6 +114,13 @@ class NavelServerEndToEndTests(unittest.TestCase):
             ],
             ["17"],
         )
+        with self.assertLogs("robot.navel_client.behavior", "INFO") as logs:
+            robot = Mock()
+            handled = BehaviorController(robot).handle_response(response.payload)
+        self.assertEqual(handled.status, BehaviorHandlingStatus.HANDLED)
+        self.assertEqual(handled.execution.action.value, "ORIENT")
+        self.assertIn("action=ORIENT dry_run=true", logs.output[-1])
+        self.assertEqual(robot.mock_calls, [])
 
 
 if __name__ == "__main__":

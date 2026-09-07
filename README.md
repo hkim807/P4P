@@ -23,6 +23,7 @@ Navel next_frame + next_locomotion
   -> LLMPolicyBridge
   -> Ollama structured response
   -> validated BehaviorIntent in the HTTP response
+  -> typed Navel behavior command and dry-run handler
 ```
 
 The simpler `POST /chat` route remains available only as an Ollama connectivity
@@ -32,7 +33,8 @@ This path is covered offline with Navel SDK-shaped perception and locomotion
 objects, a real local HTTP request, and a fake structured LLM. A live test still
 requires the Navel SDK and sockets on the robot, a network route to the gateway,
 and the configured Ollama model on the lab computer. VLM input, final validation
-for execution, and physical robot control are not implemented.
+for execution, and physical robot control are not implemented. See
+`docs/behavior-intent-output-mapping.md` for the dry-run output architecture.
 
 Ollama is the local model runtime. It performs inference on the computer where it is installed; requests are not sent to an Ollama cloud model. The Python gateway and Ollama are expected to run on the same server computer by default. Navel calls the gateway using that computer's LAN IP address.
 
@@ -48,7 +50,7 @@ app/
   server.py       Flask API
   state/          Temporal social-state estimation
 robot/
-  navel_client/   Read-only Navel adapter, transport, and executable collector
+  navel_client/   Read-only collection, transport, and dry-run behavior mapping
 client.py         Minimal client for Navel or another computer
 docs/
   architecture.jpg
@@ -463,7 +465,7 @@ where the repository may be stored:
 git clone https://github.com/hkim807/P4P.git
 cd P4P
 git fetch origin
-git switch feature/prompt-builder-rebuild
+git switch feature/behavior-intent-output-mapper
 git pull --ff-only
 python3 --version
 python3 -m robot.navel_client.main \
@@ -472,9 +474,9 @@ python3 -m robot.navel_client.main \
 ```
 
 Until this feature is merged into `main`, both computers must check out
-`feature/prompt-builder-rebuild`. The robot must use Python 3.10 or newer. The
-Navel SDK is provided on the robot; the robot client itself otherwise uses
-Python's standard library.
+`feature/behavior-intent-output-mapper`. The robot must use Python 3.10 or newer.
+The Navel SDK is provided on the robot; install the project's Python
+requirements for shared contract validation.
 
 The client collects locomotion concurrently, keeps only the newest unsent frame,
 and performs blocking standard-library HTTP in a worker thread. Temporary SDK
@@ -542,7 +544,7 @@ decision with no scheduler event therefore returns an empty trigger array and
    person IDs, distances, gaze values, and measured locomotion velocity.
 4. Run normally against `http://<LAPTOP_IP>:6000`. A visible person should cause
    `accepted=true`, a `social_state_id`, `HUMAN_DETECTED`, and eventually a
-   printed `behavior_intent`.
+   a structured `[NAVEL BEHAVIOR] ... dry_run=true` log.
 5. If no person is present, use one brief `--force-decision` run to exercise the
    structured Ollama response, then stop it immediately.
 6. Confirm malformed model output is reported as
@@ -552,8 +554,9 @@ The live test is successful only after a response contains a non-null
 `behavior_intent` that matches `schemas/v1/behavior-intent.schema.json`.
 
 This proof of concept remains read-only throughout these stages. A structured
-LLM selection is parsed and validated into `BehaviorIntent`, then printed for
-inspection; it is never executed as a robot behavior.
+LLM selection is parsed and validated into `BehaviorIntent`, mapped to an
+action-specific command, and dispatched to a dry-run handler; it is never
+executed as a robot behavior.
 
 ## Next milestone
 
