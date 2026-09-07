@@ -8,8 +8,8 @@ from dataclasses import fields
 from enum import Enum
 from typing import Any, Generic, TypeVar
 
-from app.domain.models import Action
 from robot.navel_client.behavior.commands import RobotBehaviorCommand
+from robot.navel_client.behavior.intent import NavelAction
 from robot.navel_client.behavior.results import BehaviorExecutionResult
 
 
@@ -28,7 +28,7 @@ class BehaviorHandler(ABC, Generic[CommandT]):
         """Execute one exact command; current implementations remain dry-run."""
 
     def _dry_run(
-        self, action: Action, command: CommandT
+        self, action: NavelAction, command: CommandT
     ) -> tuple[BehaviorExecutionResult, str]:
         parameters = tuple(
             (field.name, value)

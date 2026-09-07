@@ -8,7 +8,7 @@ from dataclasses import dataclass, replace
 from enum import Enum
 from threading import RLock
 
-from app.domain.models import Action, BehaviorIntent
+from robot.navel_client.behavior.intent import NavelAction, NavelBehaviorIntent
 
 
 class BehaviorExecutionStatus(str, Enum):
@@ -20,7 +20,7 @@ class BehaviorExecutionStatus(str, Enum):
 
 @dataclass(frozen=True)
 class BehaviorExecutionSnapshot:
-    action: Action
+    action: NavelAction
     status: BehaviorExecutionStatus
     decision_id: str
     target_human_id: str | None
@@ -44,10 +44,10 @@ class BehaviorExecutionState:
         with self._lock:
             return self._snapshot
 
-    def accept(self, intent: BehaviorIntent) -> None:
+    def accept(self, intent: NavelBehaviorIntent) -> None:
         with self._lock:
             self._snapshot = BehaviorExecutionSnapshot(
-                action=Action(intent.action),
+                action=NavelAction(intent.action),
                 status=BehaviorExecutionStatus.ACCEPTED,
                 decision_id=intent.decision_id,
                 target_human_id=intent.target_human_id,

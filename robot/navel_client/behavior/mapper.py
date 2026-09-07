@@ -5,7 +5,6 @@ from __future__ import annotations
 from collections.abc import Callable
 from typing import TypeAlias, TypeVar
 
-from app.domain.models import Action, BehaviorIntent, PassingSide
 from robot.navel_client.behavior.commands import (
     COMMAND_TYPES,
     ApproachCommand,
@@ -22,6 +21,10 @@ from robot.navel_client.behavior.commands import (
     WaitCommand,
     YieldCommand,
 )
+from robot.navel_client.behavior.intent import (
+    NavelAction,
+    NavelBehaviorIntent,
+)
 
 
 class BehaviorMappingError(ValueError):
@@ -29,48 +32,45 @@ class BehaviorMappingError(ValueError):
 
 
 MapperEntry: TypeAlias = tuple[
-    type[RobotBehaviorCommand], Callable[[BehaviorIntent], RobotBehaviorCommand]
+    type[RobotBehaviorCommand],
+    Callable[[NavelBehaviorIntent], RobotBehaviorCommand],
 ]
 RequiredT = TypeVar("RequiredT", str, float)
 
 
 def _required(
-    value: RequiredT | None, field_name: str, action: Action
+    value: RequiredT | None, field_name: str, action: NavelAction
 ) -> RequiredT:
     if value is None:
         raise BehaviorMappingError(f"{action.value} requires {field_name}")
     return value
 
 
-def _passing_side(value: PassingSide | str | None) -> PassingSide | None:
-    return PassingSide(value) if value is not None else None
-
-
 class BehaviorIntentMapper:
     """Deterministically map every canonical action without runtime side effects."""
 
     def __init__(self) -> None:
-        self._mappers: dict[Action, MapperEntry] = {
-            Action.CONTINUE: (ContinueCommand, lambda intent: ContinueCommand()),
-            Action.MONITOR: (MonitorCommand, lambda intent: MonitorCommand()),
-            Action.ORIENT: (OrientCommand, self._orient),
-            Action.SLOW: (SlowCommand, self._slow),
-            Action.YIELD: (YieldCommand, self._yield),
-            Action.AVOID: (AvoidCommand, self._avoid),
-            Action.APPROACH: (ApproachCommand, self._approach),
-            Action.GREET: (GreetCommand, self._greet),
-            Action.GUIDE: (GuideCommand, self._guide),
-            Action.WAIT: (WaitCommand, self._wait),
-            Action.RESUME: (ResumeCommand, lambda intent: ResumeCommand()),
-            Action.DISENGAGE: (DisengageCommand, self._disengage),
+        self._mappers: dict[NavelAction, MapperEntry] = {
+            NavelAction.CONTINUE: (ContinueCommand, lambda intent: ContinueCommand()),
+            NavelAction.MONITOR: (MonitorCommand, lambda intent: MonitorCommand()),
+            NavelAction.ORIENT: (OrientCommand, self._orient),
+            NavelAction.SLOW: (SlowCommand, self._slow),
+            NavelAction.YIELD: (YieldCommand, self._yield),
+            NavelAction.AVOID: (AvoidCommand, self._avoid),
+            NavelAction.APPROACH: (ApproachCommand, self._approach),
+            NavelAction.GREET: (GreetCommand, self._greet),
+            NavelAction.GUIDE: (GuideCommand, self._guide),
+            NavelAction.WAIT: (WaitCommand, self._wait),
+            NavelAction.RESUME: (ResumeCommand, lambda intent: ResumeCommand()),
+            NavelAction.DISENGAGE: (DisengageCommand, self._disengage),
         }
         mapped_types = {entry[0] for entry in self._mappers.values()}
-        if set(self._mappers) != set(Action) or mapped_types != set(COMMAND_TYPES):
+        if set(self._mappers) != set(NavelAction) or mapped_types != set(COMMAND_TYPES):
             raise RuntimeError("behavior mapper does not cover every action and command type")
 
-    def map(self, intent: BehaviorIntent) -> RobotBehaviorCommand:
+    def map(self, intent: NavelBehaviorIntent) -> RobotBehaviorCommand:
         try:
-            action = Action(intent.action)
+            action = NavelAction(intent.action)
             expected_type, mapper = self._mappers[action]
         except (ValueError, KeyError) as error:
             raise BehaviorMappingError(
@@ -85,92 +85,96 @@ class BehaviorIntentMapper:
         return command
 
     @staticmethod
-    def _orient(intent: BehaviorIntent) -> OrientCommand:
+    def _orient(intent: NavelBehaviorIntent) -> OrientCommand:
         return OrientCommand(
             target_human_id=_required(
-                intent.target_human_id, "target_human_id", Action.ORIENT
+                intent.target_human_id, "target_human_id", NavelAction.ORIENT
             ),
             orientation_target_rad=intent.preferences.orientation_target_rad,
         )
 
     @staticmethod
-    def _slow(intent: BehaviorIntent) -> SlowCommand:
+    def _slow(intent: NavelBehaviorIntent) -> SlowCommand:
         return SlowCommand(
             target_speed_mps=_required(
                 intent.preferences.target_speed_mps,
                 "target_speed_mps",
-                Action.SLOW,
+                NavelAction.SLOW,
             ),
             target_human_id=intent.target_human_id,
         )
 
     @staticmethod
-    def _yield(intent: BehaviorIntent) -> YieldCommand:
+    def _yield(intent: NavelBehaviorIntent) -> YieldCommand:
         preferences = intent.preferences
         return YieldCommand(
             target_human_id=intent.target_human_id,
             target_speed_mps=preferences.target_speed_mps,
             preferred_social_distance_m=preferences.preferred_social_distance_m,
-            passing_side=_passing_side(preferences.passing_side),
+            passing_side=preferences.passing_side,
             hold_duration_s=preferences.hold_duration_s,
         )
 
     @staticmethod
-    def _avoid(intent: BehaviorIntent) -> AvoidCommand:
+    def _avoid(intent: NavelBehaviorIntent) -> AvoidCommand:
         preferences = intent.preferences
         return AvoidCommand(
             target_human_id=intent.target_human_id,
             target_speed_mps=preferences.target_speed_mps,
             preferred_social_distance_m=preferences.preferred_social_distance_m,
-            passing_side=_passing_side(preferences.passing_side),
+            passing_side=preferences.passing_side,
         )
 
     @staticmethod
-    def _approach(intent: BehaviorIntent) -> ApproachCommand:
+    def _approach(intent: NavelBehaviorIntent) -> ApproachCommand:
         return ApproachCommand(
             target_human_id=_required(
-                intent.target_human_id, "target_human_id", Action.APPROACH
+                intent.target_human_id, "target_human_id", NavelAction.APPROACH
             ),
             preferred_social_distance_m=_required(
                 intent.preferences.preferred_social_distance_m,
                 "preferred_social_distance_m",
-                Action.APPROACH,
+                NavelAction.APPROACH,
             ),
             target_speed_mps=intent.preferences.target_speed_mps,
         )
 
     @staticmethod
-    def _greet(intent: BehaviorIntent) -> GreetCommand:
+    def _greet(intent: NavelBehaviorIntent) -> GreetCommand:
         return GreetCommand(
             target_human_id=_required(
-                intent.target_human_id, "target_human_id", Action.GREET
+                intent.target_human_id, "target_human_id", NavelAction.GREET
             )
         )
 
     @staticmethod
-    def _guide(intent: BehaviorIntent) -> GuideCommand:
+    def _guide(intent: NavelBehaviorIntent) -> GuideCommand:
         preferences = intent.preferences
         return GuideCommand(
             target_human_id=_required(
-                intent.target_human_id, "target_human_id", Action.GUIDE
+                intent.target_human_id, "target_human_id", NavelAction.GUIDE
             ),
             target_speed_mps=preferences.target_speed_mps,
             preferred_social_distance_m=preferences.preferred_social_distance_m,
-            passing_side=_passing_side(preferences.passing_side),
+            passing_side=preferences.passing_side,
         )
 
     @staticmethod
-    def _wait(intent: BehaviorIntent) -> WaitCommand:
+    def _wait(intent: NavelBehaviorIntent) -> WaitCommand:
         return WaitCommand(
             hold_duration_s=_required(
-                intent.preferences.hold_duration_s, "hold_duration_s", Action.WAIT
+                intent.preferences.hold_duration_s,
+                "hold_duration_s",
+                NavelAction.WAIT,
             )
         )
 
     @staticmethod
-    def _disengage(intent: BehaviorIntent) -> DisengageCommand:
+    def _disengage(intent: NavelBehaviorIntent) -> DisengageCommand:
         return DisengageCommand(
             target_human_id=_required(
-                intent.target_human_id, "target_human_id", Action.DISENGAGE
+                intent.target_human_id,
+                "target_human_id",
+                NavelAction.DISENGAGE,
             )
         )

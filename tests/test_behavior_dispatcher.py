@@ -6,12 +6,12 @@ import unittest
 from dataclasses import dataclass
 from unittest.mock import Mock
 
-from app.domain.models import Action
 from robot.navel_client.behavior.commands import COMMAND_TYPES, ContinueCommand
 from robot.navel_client.behavior.dispatcher import (
     BehaviorDispatchError,
     BehaviorDispatcher,
 )
+from robot.navel_client.behavior.intent import NavelAction as Action
 from robot.navel_client.behavior.registry import build_handler_registry
 from robot.navel_client.behavior.results import BehaviorExecutionResult
 

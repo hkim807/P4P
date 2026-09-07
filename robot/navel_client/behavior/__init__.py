@@ -7,6 +7,13 @@ from robot.navel_client.behavior.execution_state import (
     BehaviorExecutionState,
     BehaviorExecutionStatus,
 )
+from robot.navel_client.behavior.intent import (
+    NavelAction,
+    NavelBehaviorIntent,
+    NavelBehaviorPreferences,
+    NavelIntentParseError,
+    NavelPassingSide,
+)
 from robot.navel_client.behavior.mapper import BehaviorIntentMapper
 from robot.navel_client.behavior.results import (
     BehaviorExecutionResult,
@@ -24,4 +31,9 @@ __all__ = [
     "BehaviorHandlingResult",
     "BehaviorHandlingStatus",
     "BehaviorIntentMapper",
+    "NavelAction",
+    "NavelBehaviorIntent",
+    "NavelBehaviorPreferences",
+    "NavelIntentParseError",
+    "NavelPassingSide",
 ]

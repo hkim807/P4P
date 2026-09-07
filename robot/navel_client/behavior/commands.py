@@ -5,7 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import TypeAlias, get_args
 
-from app.domain.models import PassingSide
+from robot.navel_client.behavior.intent import NavelPassingSide
 
 
 @dataclass(frozen=True)
@@ -35,7 +35,7 @@ class YieldCommand:
     target_human_id: str | None = None
     target_speed_mps: float | None = None
     preferred_social_distance_m: float | None = None
-    passing_side: PassingSide | None = None
+    passing_side: NavelPassingSide | None = None
     hold_duration_s: float | None = None
 
 
@@ -44,7 +44,7 @@ class AvoidCommand:
     target_human_id: str | None = None
     target_speed_mps: float | None = None
     preferred_social_distance_m: float | None = None
-    passing_side: PassingSide | None = None
+    passing_side: NavelPassingSide | None = None
 
 
 @dataclass(frozen=True)
@@ -64,7 +64,7 @@ class GuideCommand:
     target_human_id: str
     target_speed_mps: float | None = None
     preferred_social_distance_m: float | None = None
-    passing_side: PassingSide | None = None
+    passing_side: NavelPassingSide | None = None
 
 
 @dataclass(frozen=True)

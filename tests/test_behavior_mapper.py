@@ -3,9 +3,9 @@
 from __future__ import annotations
 
 import unittest
+from dataclasses import replace
 from types import SimpleNamespace
 
-from app.domain.models import Action, BehaviorIntent, PassingSide
 from robot.navel_client.behavior.commands import (
     COMMAND_TYPES,
     ApproachCommand,
@@ -21,11 +21,18 @@ from robot.navel_client.behavior.commands import (
     WaitCommand,
     YieldCommand,
 )
+from robot.navel_client.behavior.intent import (
+    NavelAction as Action,
+    NavelBehaviorIntent,
+    NavelPassingSide as PassingSide,
+)
 from robot.navel_client.behavior.mapper import BehaviorIntentMapper, BehaviorMappingError
 
 
-def intent(action: Action, *, target=None, preferences=None) -> BehaviorIntent:
-    return BehaviorIntent.model_validate(
+def intent(
+    action: Action, *, target=None, preferences=None
+) -> NavelBehaviorIntent:
+    return NavelBehaviorIntent.from_payload(
         {
             "schema_version": "1.0",
             "decision_id": f"decision-{action.value.lower()}",
@@ -161,8 +168,15 @@ class BehaviorIntentMapperTests(unittest.TestCase):
         self.assertFalse(hasattr(command, "travel_distance_m"))
 
     def test_missing_required_preference_fails_instead_of_silently_mapping(self):
+        valid = intent(
+            Action.SLOW, preferences={"target_speed_mps": 0.3}
+        )
+        impossible = replace(
+            valid,
+            preferences=replace(valid.preferences, target_speed_mps=None),
+        )
         with self.assertRaisesRegex(BehaviorMappingError, "target_speed_mps"):
-            self.mapper.map(intent(Action.SLOW))
+            self.mapper.map(impossible)
 
     def test_unsupported_action_fails_clearly(self):
         with self.assertRaisesRegex(BehaviorMappingError, "FLY"):

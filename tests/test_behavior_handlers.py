@@ -6,7 +6,6 @@ import logging
 import unittest
 from unittest.mock import Mock, patch
 
-from app.domain.models import Action, PassingSide
 from robot.navel_client.behavior.commands import (
     ApproachCommand,
     AvoidCommand,
@@ -22,6 +21,10 @@ from robot.navel_client.behavior.commands import (
     YieldCommand,
 )
 from robot.navel_client.behavior.dispatcher import BehaviorDispatcher
+from robot.navel_client.behavior.intent import (
+    NavelAction as Action,
+    NavelPassingSide as PassingSide,
+)
 from robot.navel_client.behavior.registry import build_handler_registry
 
 

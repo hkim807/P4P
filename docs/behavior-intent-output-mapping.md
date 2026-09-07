@@ -5,7 +5,7 @@ dry-run-only behavior boundary:
 
 ```text
 POST /api/v1/observations response
-  -> BehaviorIntent schema parsing
+  -> standard-library NavelBehaviorIntent parsing
   -> BehaviorController
   -> BehaviorIntentMapper
   -> action-specific immutable RobotBehaviorCommand
@@ -15,12 +15,15 @@ POST /api/v1/observations response
   -> future Navel SDK call (not implemented)
 ```
 
-The server's `LLMPolicyBridge` validates policy-output semantics before the
-intent enters the response. The client parses that response using the shared
-canonical `BehaviorIntent`; it does not define a second transport contract.
-The mapper narrows generic intent preferences into only the fields relevant to
-a concrete Navel command. Social distance remains a desired stand-off distance
-and is never interpreted as travel distance.
+The server's `LLMPolicyBridge` and canonical Pydantic `BehaviorIntent` validate
+policy-output semantics before the intent enters the response. The client maps
+the unchanged JSON wire values into a lightweight immutable
+`NavelBehaviorIntent`. Its parser uses only the Python standard library and
+performs defensive type, structure, finite-number, supported-action, and
+mapper-required-value checks. The mapper narrows generic intent preferences
+into only the fields relevant to a concrete Navel command. Social distance
+remains a desired stand-off distance and is never interpreted as travel
+distance.
 
 The dispatcher uses exact command types, so handlers can be replaced one at a
 time when robot integration is implemented. Construction fails if its registry
@@ -36,6 +39,7 @@ robot/navel_client/behavior/
 ├── controller.py
 ├── dispatcher.py
 ├── execution_state.py
+├── intent.py
 ├── mapper.py
 ├── registry.py
 ├── results.py
@@ -93,3 +97,12 @@ Real execution remains future work. Each handler will eventually directly use
 the injected Navel SDK robot instance. Target freshness, controller-state and
 runtime safety validation, collision and free-space checking, and motion
 feasibility must be added before any physical handler is enabled.
+
+## Runtime dependencies
+
+`requirements.txt` belongs to the application server and retains Flask,
+Pydantic, and the model-client dependencies. The Navel client does not import
+those packages. `requirements-navel.txt` documents that the client needs no
+additional PyPI packages beyond the Navel SDK already installed by the robot
+environment, so it runs with the robot's system `python3` without a virtual
+environment or internet installation.

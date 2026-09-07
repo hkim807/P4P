@@ -69,6 +69,10 @@ requirements.txt
 - Ollama installed on the server computer
 - Enough CPU/GPU memory for the selected model
 
+These are server prerequisites. The server dependencies, including Pydantic,
+are listed in `requirements.txt`. The robot-side dependency boundary is
+documented separately in `requirements-navel.txt`.
+
 Install and start Ollama according to the installation instructions for the server's operating system, then download the default model:
 
 ```bash
@@ -475,12 +479,21 @@ python3 -m robot.navel_client.main \
 
 Until this feature is merged into `main`, both computers must check out
 `feature/behavior-intent-output-mapper`. The robot must use Python 3.10 or newer.
-The Navel SDK is provided on the robot; install the project's Python
-requirements for shared contract validation.
+The Navel SDK is provided on the robot. The client uses only that SDK and the
+Python standard library: no virtual environment, internet connection, or
+installation from the server's `requirements.txt` is required. The
+`requirements-navel.txt` file records that there are currently no additional
+PyPI dependencies.
 
 The client collects locomotion concurrently, keeps only the newest unsent frame,
 and performs blocking standard-library HTTP in a worker thread. Temporary SDK
 and HTTP timeouts are reported without immediately terminating collection.
+
+Before running the full pipeline on the robot, verify the dependency boundary:
+
+```bash
+python3 -c "import robot.navel_client.main; print('Navel client imports OK')"
+```
 
 Useful diagnostics:
 

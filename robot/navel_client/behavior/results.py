@@ -5,12 +5,12 @@ from __future__ import annotations
 from dataclasses import dataclass
 from enum import Enum
 
-from app.domain.models import Action
+from robot.navel_client.behavior.intent import NavelAction
 
 
 @dataclass(frozen=True)
 class BehaviorExecutionResult:
-    action: Action
+    action: NavelAction
     command_type: str
     dry_run: bool
     parameters: tuple[tuple[str, object], ...]

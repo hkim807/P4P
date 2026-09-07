@@ -7,11 +7,11 @@ import unittest
 from dataclasses import FrozenInstanceError
 from unittest.mock import Mock
 
-from app.domain.models import Action
 from robot.navel_client.behavior.controller import (
     BehaviorController,
     BehaviorHandlingStatus,
 )
+from robot.navel_client.behavior.intent import NavelAction as Action
 from robot.navel_client.behavior.dispatcher import BehaviorDispatcher
 from robot.navel_client.behavior.execution_state import (
     BehaviorExecutionState,

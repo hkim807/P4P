@@ -6,13 +6,14 @@ import logging
 from collections.abc import Mapping
 from typing import Any
 
-from pydantic import ValidationError
-
-from app.domain.models import BehaviorIntent
 from robot.navel_client.behavior.dispatcher import BehaviorDispatcher
 from robot.navel_client.behavior.execution_state import (
     BehaviorExecutionSnapshot,
     BehaviorExecutionState,
+)
+from robot.navel_client.behavior.intent import (
+    NavelBehaviorIntent,
+    NavelIntentParseError,
 )
 from robot.navel_client.behavior.mapper import BehaviorIntentMapper
 from robot.navel_client.behavior.registry import build_handler_registry
@@ -64,11 +65,10 @@ class BehaviorController:
         if raw_intent is None:
             return BehaviorHandlingResult(BehaviorHandlingStatus.NO_INTENT)
         try:
-            intent = BehaviorIntent.model_validate(raw_intent)
-        except ValidationError as error:
+            intent = NavelBehaviorIntent.from_payload(raw_intent)
+        except NavelIntentParseError as error:
             self._logger.warning(
-                "[NAVEL BEHAVIOR] invalid behavior_intent rejected: %s",
-                error.errors(include_url=False, include_input=False),
+                "[NAVEL BEHAVIOR] invalid behavior_intent rejected: %s", error
             )
             return BehaviorHandlingResult(
                 BehaviorHandlingStatus.INVALID_INTENT,
@@ -76,7 +76,7 @@ class BehaviorController:
             )
         return self.handle(intent)
 
-    def handle(self, intent: BehaviorIntent) -> BehaviorHandlingResult:
+    def handle(self, intent: NavelBehaviorIntent) -> BehaviorHandlingResult:
         self._execution_state.accept(intent)
         try:
             command = self._mapper.map(intent)
