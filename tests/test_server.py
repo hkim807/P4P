@@ -20,12 +20,26 @@ class FakeLLM:
             "available_models": [self.model],
         }
 
-    def generate(self, message, *, system_prompt=None, temperature=0.2):
+    def generate(
+        self,
+        message,
+        *,
+        system_prompt=None,
+        temperature=0.2,
+        response_schema=None,
+    ):
         return f"received: {message}"
 
 
 class FailingLLM(FakeLLM):
-    def generate(self, message, *, system_prompt=None, temperature=0.2):
+    def generate(
+        self,
+        message,
+        *,
+        system_prompt=None,
+        temperature=0.2,
+        response_schema=None,
+    ):
         raise RuntimeError("connection refused")
 
 

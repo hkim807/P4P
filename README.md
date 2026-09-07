@@ -29,9 +29,9 @@ Qwen 2.5 model
 
 The canonical observation pipeline is separately available at
 `POST /api/v1/observations`. It validates `ObservationFrame`, maintains temporal
-state per adapter ID, schedules model calls, and returns raw advisory LLM text.
-Structured action selection, `BehaviorIntent` production, VLM input, validation
-for execution, and physical robot control are intentionally not implemented.
+state per adapter ID, schedules model calls, requests an Ollama JSON-schema
+response, and returns a validated `BehaviorIntent`. VLM input, final validation
+for execution, and physical robot control are not implemented.
 
 Ollama is the local model runtime. It performs inference on the computer where it is installed; requests are not sent to an Ollama cloud model. The Python gateway and Ollama are expected to run on the same server computer by default. Navel calls the gateway using that computer's LAN IP address.
 
@@ -41,7 +41,7 @@ Ollama is the local model runtime. It performs inference on the computer where i
 app/
   adapters/       Synthetic and future robot/replay observation sources
   config.py       Environment configuration
-  decision/       Event scheduler and free-form LLM policy bridge
+  decision/       Event scheduler and schema-constrained LLM policy bridge
   domain/         Versioned pipeline contracts and schema generator
   llm.py          Ollama client
   server.py       Flask API
@@ -343,11 +343,11 @@ no discrete event occurs. Empty unchanged scenes do not invoke the model.
 Use a fresh scheduler per experiment or call `reset()`. Timing and departure
 behaviour are configurable through `SchedulerConfig`.
 
-## Read-only Navel observation pipeline
+## Navel observation-to-policy pipeline
 
 The Navel integration reads perception and locomotion only. It does not call any
-motion, navigation, head, gaze, speech, or actuator API, and it never interprets
-the LLM response as `BehaviorIntent`.
+motion, navigation, head, gaze, speech, or actuator API. The server validates the
+LLM selection as `BehaviorIntent`, but the robot client only prints it.
 
 The implemented flow is:
 
@@ -359,8 +359,12 @@ Navel next_frame/next_locomotion
   -> TemporalSocialStateEstimator
   -> DecisionScheduler
   -> Ollama only when scheduled
-  -> raw advisory text returned to the Navel client
+  -> schema validation and canonical BehaviorIntent
+  -> intent returned for inspection, never execution
 ```
+
+The prompt and its research rationale are documented in
+[`docs/llm-policy-prompt-design.md`](docs/llm-policy-prompt-design.md).
 
 Server state is isolated by `capabilities.adapter_id`. Give each robot or replay
 source a stable unique adapter ID. A non-increasing timestamp for the same ID is
@@ -456,8 +460,9 @@ speech activity, and groups remain absent.
 
 `POST /api/v1/observations` accepts exactly one canonical `ObservationFrame`.
 Invalid contracts return HTTP 400. Out-of-order frames return HTTP 409. An LLM
-failure returns HTTP 502 while retaining `"accepted": true`, because estimation
-and scheduling have already succeeded and their temporal state is preserved.
+provider failure or invalid structured selection returns HTTP 502 while retaining
+`"accepted": true`, because estimation and scheduling have already succeeded
+and their temporal state is preserved.
 
 For a single manual end-to-end check, use:
 
@@ -481,10 +486,12 @@ decision with no scheduler event therefore returns an empty trigger array and
 8. Enable one short `--force-decision` run to verify the Ollama round trip.
 9. Stop it and return to normal scheduler-controlled operation.
 
-This proof of concept remains read-only throughout these stages. Raw LLM text is
-printed for inspection and is never parsed, validated, or executed as a robot
-behavior.
+This proof of concept remains read-only throughout these stages. A structured
+LLM selection is parsed and validated into `BehaviorIntent`, then printed for
+inspection; it is never executed as a robot behavior.
 
 ## Next milestone
 
-The next step is to replace free-form `/chat` output with a strict social-navigation decision schema. The decision layer should select only approved high-level actions and parameters. A deterministic safety controller must validate those decisions before any physical behaviour is executed.
+Add deterministic state-freshness, action-precondition, capability, and motion
+safety validation plus a conservative fallback policy. Only after those gates
+and shadow-mode trials should a robot-specific executor consume an intent.

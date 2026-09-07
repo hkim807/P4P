@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import unittest
 
 from app.adapters.synthetic import SyntheticObservationAdapter, museum_guide_scenarios
@@ -19,15 +20,34 @@ class FakeLLM:
     def __init__(self) -> None:
         self.calls = []
         self.fail = False
+        self.response_override = None
 
     def health(self):
         return {"reachable": True, "model_available": True, "available_models": [self.model]}
 
-    def generate(self, message, *, system_prompt=None, temperature=0.2):
-        self.calls.append((message, system_prompt, temperature))
+    def generate(
+        self,
+        message,
+        *,
+        system_prompt=None,
+        temperature=0.2,
+        response_schema=None,
+    ):
+        self.calls.append((message, system_prompt, temperature, response_schema))
         if self.fail:
             raise RuntimeError("simulated failure")
-        return "Maintain distance and monitor the visitor."
+        if self.response_override is not None:
+            return self.response_override
+        return json.dumps(
+            {
+                "action": "MONITOR",
+                "target_human_id": None,
+                "preferences": {},
+                "valid_for_ms": 1_000,
+                "reason_codes": ["INSUFFICIENT_EVIDENCE"],
+                "decision_confidence": 0.55,
+            }
+        )
 
 
 def observation_payload(*, adapter_id="source-a", timestamp_us=1_000_000, humans=True):
@@ -78,7 +98,7 @@ class ObservationEndpointTests(unittest.TestCase):
         self.assertFalse(response.get_json()["decision_triggered"])
         self.assertEqual(self.llm.calls, [])
 
-    def test_scheduler_trigger_calls_llm_once_and_returns_raw_text(self):
+    def test_scheduler_trigger_returns_validated_behavior_intent(self):
         response = self.client.post(
             "/api/v1/observations", json=observation_payload(humans=True)
         )
@@ -86,7 +106,18 @@ class ObservationEndpointTests(unittest.TestCase):
         self.assertEqual(len(self.llm.calls), 1)
         self.assertTrue(body["decision_triggered"])
         self.assertIn("HUMAN_DETECTED", body["triggers"])
-        self.assertEqual(body["llm_output"], "Maintain distance and monitor the visitor.")
+        intent = body["behavior_intent"]
+        self.assertEqual(intent["action"], "MONITOR")
+        self.assertEqual(intent["observation_id"], body["observation_id"])
+        self.assertEqual(intent["social_state_id"], body["social_state_id"])
+        self.assertTrue(intent["decision_id"].startswith("decision-"))
+        _, system_prompt, temperature, response_schema = self.llm.calls[0]
+        self.assertIn("Decision priority", system_prompt)
+        self.assertEqual(temperature, 0.0)
+        self.assertEqual(
+            response_schema["properties"]["target_human_id"]["anyOf"][0]["enum"],
+            ["visitor-1"],
+        )
 
     def test_force_decision_calls_llm_once_without_inventing_scheduler_trigger(self):
         response = self.client.post(
@@ -98,6 +129,7 @@ class ObservationEndpointTests(unittest.TestCase):
         self.assertTrue(body["forced_decision"])
         self.assertEqual(body["triggers"], [])
         self.assertEqual(len(self.llm.calls), 1)
+        self.assertEqual(body["behavior_intent"]["action"], "MONITOR")
 
     def test_llm_failure_preserves_observation_acceptance_and_state(self):
         self.llm.fail = True
@@ -113,6 +145,17 @@ class ObservationEndpointTests(unittest.TestCase):
         )
         self.assertEqual(later.status_code, 200)
         self.assertTrue(later.get_json()["accepted"])
+
+    def test_invalid_llm_selection_is_rejected_without_losing_state(self):
+        self.llm.response_override = "not JSON"
+        response = self.client.post(
+            "/api/v1/observations", json=observation_payload(timestamp_us=1_000_000)
+        )
+        body = response.get_json()
+        self.assertEqual(response.status_code, 502)
+        self.assertTrue(body["accepted"])
+        self.assertIsNone(body["behavior_intent"])
+        self.assertEqual(body["error"]["code"], "invalid_llm_behavior_selection")
 
     def test_state_is_isolated_between_adapter_ids(self):
         first = self.client.post(
@@ -148,6 +191,8 @@ class ObservationEndpointTests(unittest.TestCase):
         compact_json = first.split("Input JSON: ", 1)[1]
         self.assertNotIn(": ", compact_json)
         self.assertIn('"scheduler_triggers":["HUMAN_DETECTED"]', first)
+        self.assertIn('"policy_prompt_version":"llm-social-navigation-v1"', first)
+        self.assertIn('"response_json_schema"', first)
 
 
 if __name__ == "__main__":
