@@ -10,9 +10,9 @@ from flask import Flask, jsonify, request
 from pydantic import ValidationError
 
 from app.config import Settings
-from app.decision.llm_policy import LLMPolicyBridge
+from app.decision.llm_policy import LLMPolicyBridge, LLMPolicyError
 from app.decision.scheduler import DecisionScheduler, DecisionSchedulerError
-from app.domain.models import ObservationFrame, SocialState
+from app.domain.models import BehaviorIntent, ObservationFrame, SocialState
 from app.llm import OllamaLLM
 from app.state.estimator import TemporalSocialStateError, TemporalSocialStateEstimator
 
@@ -30,6 +30,7 @@ class LLMClient(Protocol):
         *,
         system_prompt: str | None = None,
         temperature: float = 0.2,
+        response_schema: dict[str, Any] | None = None,
     ) -> str: ...
 
 
@@ -44,8 +45,8 @@ class ObservationPipelineResult:
     state: SocialState
     decision_triggered: bool
     triggers: tuple[str, ...]
-    llm_output: str | None
-    llm_failed: bool = False
+    behavior_intent: BehaviorIntent | None
+    error_code: str | None = None
 
 
 class ObservationPipeline:
@@ -80,24 +81,32 @@ class ObservationPipeline:
                 state=state,
                 decision_triggered=False,
                 triggers=(),
-                llm_output=None,
+                behavior_intent=None,
             )
 
         try:
-            output = self._policy.decide(state, triggers)
+            intent = self._policy.decide(state, triggers)
+        except LLMPolicyError:
+            return ObservationPipelineResult(
+                state=state,
+                decision_triggered=True,
+                triggers=triggers,
+                behavior_intent=None,
+                error_code="invalid_llm_behavior_selection",
+            )
         except Exception:
             return ObservationPipelineResult(
                 state=state,
                 decision_triggered=True,
                 triggers=triggers,
-                llm_output=None,
-                llm_failed=True,
+                behavior_intent=None,
+                error_code="llm_request_failed",
             )
         return ObservationPipelineResult(
             state=state,
             decision_triggered=True,
             triggers=triggers,
-            llm_output=output,
+            behavior_intent=intent,
         )
 
 
@@ -287,12 +296,23 @@ def create_app(
             "decision_triggered": result.decision_triggered,
             "forced_decision": force_decision,
             "triggers": list(result.triggers),
-            "llm_output": result.llm_output,
+            "behavior_intent": (
+                result.behavior_intent.model_dump(mode="json")
+                if result.behavior_intent is not None
+                else None
+            ),
         }
-        if result.llm_failed:
+        if result.error_code is not None:
+            if result.error_code == "invalid_llm_behavior_selection":
+                message = (
+                    "The observation was accepted, but the LLM response was not "
+                    "a valid behavior selection."
+                )
+            else:
+                message = "The observation was accepted, but the LLM request failed."
             response["error"] = {
-                "code": "llm_request_failed",
-                "message": "The observation was accepted, but the LLM request failed.",
+                "code": result.error_code,
+                "message": message,
             }
             return jsonify(response), 502
         return jsonify(response)

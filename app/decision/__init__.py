@@ -1,6 +1,12 @@
-"""Decision scheduling and read-only policy orchestration."""
+"""Decision scheduling and schema-constrained policy orchestration."""
 
-from app.decision.llm_policy import LLMPolicyBridge, render_decision_prompt
+from app.decision.llm_policy import (
+    LLMPolicyBridge,
+    LLMPolicyError,
+    POLICY_PROMPT_VERSION,
+    behavior_selection_schema,
+    render_decision_prompt,
+)
 
 from app.decision.scheduler import (
     DecisionRequest,
@@ -17,5 +23,8 @@ __all__ = [
     "DecisionTrigger",
     "SchedulerConfig",
     "LLMPolicyBridge",
+    "LLMPolicyError",
+    "POLICY_PROMPT_VERSION",
+    "behavior_selection_schema",
     "render_decision_prompt",
 ]

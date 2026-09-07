@@ -40,8 +40,19 @@ class OllamaLLM:
         *,
         system_prompt: str | None = None,
         temperature: float = 0.2,
+        response_schema: dict[str, Any] | None = None,
     ) -> str:
         """Return the model's text response for one input message."""
+        request_options: dict[str, Any] = {}
+        if response_schema is not None:
+            request_options["response_format"] = {
+                "type": "json_schema",
+                "json_schema": {
+                    "name": "social_navigation_behavior_selection",
+                    "strict": True,
+                    "schema": response_schema,
+                },
+            }
         response = self._client.chat.completions.create(
             model=self.model,
             messages=[
@@ -52,6 +63,7 @@ class OllamaLLM:
                 {"role": "user", "content": message},
             ],
             temperature=temperature,
+            **request_options,
         )
         content = response.choices[0].message.content
         if not content:

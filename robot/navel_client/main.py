@@ -112,8 +112,11 @@ async def _send_observations(
             f"accepted={str(accepted).lower()} decision_triggered={str(triggered).lower()} "
             f"triggers={','.join(str(item) for item in triggers) or '-'}"
         )
-        if payload.get("llm_output") is not None:
-            print(f"llm_output: {payload['llm_output']}")
+        if payload.get("behavior_intent") is not None:
+            print(
+                "behavior_intent: "
+                f"{json.dumps(payload['behavior_intent'], sort_keys=True)}"
+            )
         if payload.get("error") is not None:
             print(f"server_error: {payload['error']}")
         last_sent_at = time.monotonic()
