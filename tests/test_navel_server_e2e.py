@@ -73,7 +73,18 @@ def navel_perception():
 
 
 def navel_locomotion():
-    return NS(odometry=NS(velocity=NS(x=0.0, y=0.0, r=0.0)))
+    return NS(
+        odometry=NS(
+            velocity=NS(
+                linear_x=0.0,
+                linear_y=0.0,
+                linear_z=0.0,
+                angular_x=0.0,
+                angular_y=0.0,
+                angular_z=0.0,
+            )
+        )
+    )
 
 
 class NavelServerEndToEndTests(unittest.TestCase):

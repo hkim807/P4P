@@ -278,9 +278,9 @@ class NavelObservationAdapter:
     ) -> tuple[dict[str, Any], list[str], list[str]]:
         odometry = getattr(locomotion, "odometry", None)
         velocity = getattr(odometry, "velocity", None)
-        linear_x = _finite_number(getattr(velocity, "x", None))
-        linear_y = _finite_number(getattr(velocity, "y", None))
-        angular = self._first_finite(velocity, ("r", "yaw", "z"))
+        linear_x = _finite_number(getattr(velocity, "linear_x", None))
+        linear_y = _finite_number(getattr(velocity, "linear_y", None))
+        angular = _finite_number(getattr(velocity, "angular_z", None))
 
         available: list[str] = []
         notes: list[str] = []
