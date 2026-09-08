@@ -1,0 +1,2 @@
+# The Navel SDK is provided by the robot environment.
+# The Navel client currently requires no additional PyPI packages.
