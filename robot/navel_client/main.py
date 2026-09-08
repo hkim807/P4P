@@ -167,7 +167,7 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--server",
-        default=os.getenv("NAVEL_PIPELINE_SERVER", "http://127.0.0.1:6000"),
+        default=os.getenv("NAVEL_PIPELINE_SERVER", "http://127.0.0.1:6060"),
         help="Central server base URL",
     )
     parser.add_argument(

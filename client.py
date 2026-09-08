@@ -26,7 +26,7 @@ def main() -> int:
     parser.add_argument("message", help="Text to send to the model")
     parser.add_argument(
         "--server",
-        default=os.getenv("LLM_GATEWAY_URL", "http://127.0.0.1:6000"),
+        default=os.getenv("LLM_GATEWAY_URL", "http://127.0.0.1:6060"),
         help="Gateway base URL",
     )
     args = parser.parse_args()

@@ -98,7 +98,7 @@ OLLAMA_HOST=127.0.0.1
 OLLAMA_PORT=11434
 OLLAMA_MODEL=qwen2.5:7b
 API_HOST=0.0.0.0
-API_PORT=6000
+API_PORT=6060
 ```
 
 Start the gateway:
@@ -107,18 +107,48 @@ Start the gateway:
 python3 -m app.server
 ```
 
+## Pipeline Lens monitor
+
+Pipeline Lens is the local shadow-mode recorder and replayer included with the
+gateway. It visualizes each observation as it moves through validation, social
+state estimation, scheduling, policy selection, and intent validation. Replays
+use fresh estimator/scheduler state and never call a robot actuation API.
+
+Build the web client once:
+
+```bash
+cd web
+npm install
+npm run build
+cd ..
+```
+
+Then start the gateway and open `http://127.0.0.1:6060`. The monitor discovers
+the checked-in synthetic JSONL recordings automatically. Select a recording to
+create an isolated replay, then use restart, play/pause, single-step, speed, the
+timeline, stage cards, transition diff, payload inspector, and latency view.
+
+For frontend development, leave the gateway running and use `npm run dev` from
+`web/`; Vite serves the UI at `http://127.0.0.1:5173` and proxies monitor API
+requests to port 6060.
+
+Live Navel observations continue to use `POST /api/v1/observations`. Connected
+sources appear automatically, and the record control stores canonical
+observations plus `trace.jsonl` under the ignored `var/recordings` directory.
+The monitor is deliberately read-only with respect to connected robots.
+
 ## Test input and output
 
 Check both the Ollama connection and selected model:
 
 ```bash
-curl http://127.0.0.1:6000/health
+curl http://127.0.0.1:6060/health
 ```
 
 Send an input to the model:
 
 ```bash
-curl -X POST http://127.0.0.1:6000/chat \
+curl -X POST http://127.0.0.1:6060/chat \
   -H 'Content-Type: application/json' \
   -d '{"message":"Reply with exactly: LLM connection successful"}'
 ```
@@ -156,14 +186,14 @@ Find the LAN IP of the computer running this gateway. If it is `192.168.1.100`,
 the Navel observation client should use this gateway base URL:
 
 ```text
-http://192.168.1.100:6000
+http://192.168.1.100:6060
 ```
 
 `ObservationTransport` appends `/api/v1/observations`. Do not point the Navel
 pipeline at `/chat`; that endpoint accepts free-form text, not an
 `ObservationFrame`.
 
-Port `6000` must be permitted by the server firewall. Ollama can remain bound to `127.0.0.1`; only this gateway needs to be exposed to the robot network.
+Port `6060` must be permitted by the server firewall. Ollama can remain bound to `127.0.0.1`; only this gateway needs to be exposed to the robot network.
 
 Do not configure the Navel robot to use `127.0.0.1`, because that address would refer to Navel itself. It must use the gateway computer's actual LAN IP.
 
@@ -172,7 +202,7 @@ diagnostic and does not exercise the observation pipeline:
 
 ```bash
 python3 client.py \
-  --server http://192.168.1.100:6000 \
+  --server http://192.168.1.100:6060 \
   "Reply with a short connection confirmation"
 ```
 
@@ -448,7 +478,7 @@ API_HOST=0.0.0.0 python3 -m app.server
 Confirm the selected model is reachable:
 
 ```bash
-curl http://127.0.0.1:6000/health
+curl http://127.0.0.1:6060/health
 ```
 
 Only the Flask port needs to be reachable from the robot. Keep Ollama local when
@@ -467,7 +497,7 @@ git switch feature/prompt-builder-rebuild
 git pull --ff-only
 python3 --version
 python3 -m robot.navel_client.main \
-  --server http://<LAPTOP_IP>:6000 \
+  --server http://<LAPTOP_IP>:6060 \
   --adapter-id navel-<ROBOT_ID>
 ```
 
@@ -488,7 +518,7 @@ python3 -m robot.navel_client.main --print-only
 
 # Make this diagnostic run bypass normal scheduling.
 python3 -m robot.navel_client.main \
-  --server http://<LAPTOP_IP>:6000 \
+  --server http://<LAPTOP_IP>:6060 \
   --force-decision
 ```
 
@@ -507,7 +537,7 @@ contract's `ROBOT_BASE`, opt in explicitly:
 
 ```bash
 python3 -m robot.navel_client.main \
-  --server http://<LAPTOP_IP>:6000 \
+  --server http://<LAPTOP_IP>:6060 \
   --robot-base-coordinate-system <VERIFIED_SDK_LABEL>
 ```
 
@@ -540,7 +570,7 @@ decision with no scheduler event therefore returns an empty trigger array and
    `model_available=true`.
 3. On Navel, run the client with `--print-only`. Confirm frames contain plausible
    person IDs, distances, gaze values, and measured locomotion velocity.
-4. Run normally against `http://<LAPTOP_IP>:6000`. A visible person should cause
+4. Run normally against `http://<LAPTOP_IP>:6060`. A visible person should cause
    `accepted=true`, a `social_state_id`, `HUMAN_DETECTED`, and eventually a
    printed `behavior_intent`.
 5. If no person is present, use one brief `--force-decision` run to exercise the

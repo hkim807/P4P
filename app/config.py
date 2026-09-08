@@ -17,7 +17,7 @@ class Settings:
     ollama_port: int = int(os.getenv("OLLAMA_PORT", "11434"))
     ollama_model: str = os.getenv("OLLAMA_MODEL", "qwen2.5:7b")
     api_host: str = os.getenv("API_HOST", "0.0.0.0")
-    api_port: int = int(os.getenv("API_PORT", "6000"))
+    api_port: int = int(os.getenv("API_PORT", "6060"))
     request_timeout_seconds: float = float(os.getenv("REQUEST_TIMEOUT_SECONDS", "30"))
     max_input_characters: int = int(os.getenv("MAX_INPUT_CHARACTERS", "20000"))
     system_prompt: str = os.getenv(

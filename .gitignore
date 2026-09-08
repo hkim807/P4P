@@ -25,3 +25,11 @@ Thumbs.db
 # Secrets
 .env
 *.env
+
+# Runtime recordings and frontend output
+var/
+web/dist/
+web/node_modules/
+web/*.tsbuildinfo
+web/vite.config.js
+web/vite.config.d.ts

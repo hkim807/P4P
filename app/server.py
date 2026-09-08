@@ -2,11 +2,14 @@
 
 from __future__ import annotations
 
+import json
 from dataclasses import dataclass
+from pathlib import Path
 from threading import RLock
-from typing import Any, Protocol
+from time import perf_counter
+from typing import Any, Callable, Protocol
 
-from flask import Flask, jsonify, request
+from flask import Flask, Response, jsonify, request, send_from_directory, stream_with_context
 from pydantic import ValidationError
 
 from app.config import Settings
@@ -14,6 +17,7 @@ from app.decision.llm_policy import LLMPolicyBridge, LLMPolicyError
 from app.decision.scheduler import DecisionScheduler, DecisionSchedulerError
 from app.domain.models import BehaviorIntent, ObservationFrame, SocialState
 from app.llm import OllamaLLM
+from app.monitor import DeterministicReplayLLM, MonitorService
 from app.state.estimator import TemporalSocialStateError, TemporalSocialStateEstimator
 
 
@@ -58,8 +62,32 @@ class ObservationPipeline:
         self._lock = RLock()
 
     def process(
-        self, observation: ObservationFrame, *, force_decision: bool = False
+        self,
+        observation: ObservationFrame,
+        *,
+        force_decision: bool = False,
+        trace: Callable[[dict[str, Any]], None] | None = None,
     ) -> ObservationPipelineResult:
+        def emit(
+            stage: str,
+            status: str,
+            *,
+            started_at: float,
+            payload: dict[str, Any] | None = None,
+            error: str | None = None,
+        ) -> None:
+            if trace is None:
+                return
+            trace(
+                {
+                    "stage": stage,
+                    "status": status,
+                    "duration_ms": round((perf_counter() - started_at) * 1_000, 3),
+                    "payload": payload,
+                    "error": error,
+                }
+            )
+
         source_id = observation.capabilities.adapter_id
         with self._lock:
             source = self._sources.get(source_id)
@@ -69,14 +97,52 @@ class ObservationPipeline:
                     scheduler=DecisionScheduler(),
                 )
                 self._sources[source_id] = source
-            state = source.estimator.update(observation)
-            request_to_decide = source.scheduler.evaluate(state)
+            state_started = perf_counter()
+            try:
+                state = source.estimator.update(observation)
+            except Exception as error:
+                emit("state", "failed", started_at=state_started, error=str(error))
+                raise
+            emit(
+                "state",
+                "completed",
+                started_at=state_started,
+                payload=state.model_dump(mode="json"),
+            )
+
+            scheduler_started = perf_counter()
+            try:
+                request_to_decide = source.scheduler.evaluate(state)
+            except Exception as error:
+                emit(
+                    "scheduler",
+                    "failed",
+                    started_at=scheduler_started,
+                    error=str(error),
+                )
+                raise
+            emit(
+                "scheduler",
+                "triggered" if request_to_decide is not None else "skipped",
+                started_at=scheduler_started,
+                payload={
+                    "decision_triggered": request_to_decide is not None,
+                    "triggers": (
+                        list(request_to_decide.trigger_codes)
+                        if request_to_decide is not None
+                        else []
+                    ),
+                },
+            )
 
         triggers = (
             request_to_decide.trigger_codes if request_to_decide is not None else ()
         )
         decision_triggered = request_to_decide is not None or force_decision
         if not decision_triggered:
+            now = perf_counter()
+            emit("policy", "skipped", started_at=now)
+            emit("intent", "skipped", started_at=now)
             return ObservationPipelineResult(
                 state=state,
                 decision_triggered=False,
@@ -84,9 +150,13 @@ class ObservationPipeline:
                 behavior_intent=None,
             )
 
+        policy_started = perf_counter()
         try:
             intent = self._policy.decide(state, triggers)
-        except LLMPolicyError:
+        except LLMPolicyError as error:
+            emit("policy", "failed", started_at=policy_started, error=str(error))
+            now = perf_counter()
+            emit("intent", "rejected", started_at=now, error=str(error))
             return ObservationPipelineResult(
                 state=state,
                 decision_triggered=True,
@@ -94,7 +164,10 @@ class ObservationPipeline:
                 behavior_intent=None,
                 error_code="invalid_llm_behavior_selection",
             )
-        except Exception:
+        except Exception as error:
+            emit("policy", "failed", started_at=policy_started, error=str(error))
+            now = perf_counter()
+            emit("intent", "skipped", started_at=now, error=str(error))
             return ObservationPipelineResult(
                 state=state,
                 decision_triggered=True,
@@ -102,6 +175,19 @@ class ObservationPipeline:
                 behavior_intent=None,
                 error_code="llm_request_failed",
             )
+        emit(
+            "policy",
+            "completed",
+            started_at=policy_started,
+            payload={"action": intent.action, "decision_id": intent.decision_id},
+        )
+        intent_started = perf_counter()
+        emit(
+            "intent",
+            "completed",
+            started_at=intent_started,
+            payload=intent.model_dump(mode="json"),
+        )
         return ObservationPipelineResult(
             state=state,
             decision_triggered=True,
@@ -114,15 +200,26 @@ def create_app(
     llm: LLMClient | None = None,
     settings: Settings | None = None,
     observation_pipeline: ObservationPipeline | None = None,
+    monitor_service: MonitorService | None = None,
 ) -> Flask:
     """Create the Flask application; injectable arguments keep tests offline."""
     active_settings = settings or Settings()
     active_llm = llm or OllamaLLM(active_settings)
     active_pipeline = observation_pipeline or ObservationPipeline(active_llm)
-    flask_app = Flask(__name__)
+    project_root = Path(__file__).resolve().parents[1]
+    web_dist = project_root / "web" / "dist"
+    active_monitor = monitor_service or MonitorService(
+        project_root=project_root,
+        pipeline_factory=lambda mode: ObservationPipeline(
+            active_llm if mode == "current" else DeterministicReplayLLM()
+        ),
+    )
+    flask_app = Flask(__name__, static_folder=None)
 
     @flask_app.get("/")
     def index():
+        if (web_dist / "index.html").is_file():
+            return send_from_directory(web_dist, "index.html")
         return jsonify(
             {
                 "service": "social-navigation-llm-gateway",
@@ -135,6 +232,10 @@ def create_app(
                 },
             }
         )
+
+    @flask_app.get("/assets/<path:filename>")
+    def web_assets(filename: str):
+        return send_from_directory(web_dist / "assets", filename)
 
     @flask_app.get("/health")
     def health():
@@ -269,10 +370,27 @@ def create_app(
             "true",
             "yes",
         }
+        trace_events: list[dict[str, Any]] = [
+            {
+                "stage": "observation",
+                "status": "completed",
+                "duration_ms": 0.0,
+                "payload": observation.model_dump(mode="json"),
+                "error": None,
+            },
+            {
+                "stage": "validation",
+                "status": "completed",
+                "duration_ms": 0.0,
+                "payload": {"schema_version": observation.schema_version},
+                "error": None,
+            },
+        ]
         try:
             result = active_pipeline.process(
                 observation,
                 force_decision=force_decision,
+                trace=trace_events.append,
             )
         except (TemporalSocialStateError, DecisionSchedulerError) as error:
             return (
@@ -288,6 +406,8 @@ def create_app(
                 ),
                 409,
             )
+
+        active_monitor.observe_live(observation, result, trace_events)
 
         response = {
             "accepted": True,
@@ -316,6 +436,112 @@ def create_app(
             }
             return jsonify(response), 502
         return jsonify(response)
+
+    @flask_app.get("/api/v1/monitor/bootstrap")
+    def monitor_bootstrap():
+        return jsonify(active_monitor.bootstrap())
+
+    @flask_app.get("/api/v1/monitor/sources")
+    def monitor_sources():
+        return jsonify({"sources": active_monitor.list_sources()})
+
+    @flask_app.get("/api/v1/monitor/recordings")
+    def monitor_recordings():
+        return jsonify({"recordings": active_monitor.list_recordings()})
+
+    @flask_app.get("/api/v1/monitor/runs")
+    def monitor_runs():
+        return jsonify({"runs": active_monitor.list_runs()})
+
+    @flask_app.get("/api/v1/monitor/runs/<run_id>")
+    def monitor_run(run_id: str):
+        try:
+            return jsonify(active_monitor.get_run(run_id))
+        except KeyError as error:
+            return jsonify({"error": str(error)}), 404
+
+    @flask_app.post("/api/v1/monitor/replays")
+    def create_replay():
+        payload = request.get_json(silent=True) or {}
+        if not isinstance(payload, dict) or not isinstance(payload.get("recording_id"), str):
+            return jsonify({"error": "recording_id is required"}), 400
+        try:
+            run = active_monitor.create_replay(
+                payload["recording_id"], payload.get("policy_mode", "stub")
+            )
+        except (FileNotFoundError, ValueError) as error:
+            return jsonify({"error": str(error)}), 400
+        return jsonify(run), 201
+
+    @flask_app.post("/api/v1/monitor/replays/<run_id>/step")
+    def step_replay(run_id: str):
+        payload = request.get_json(silent=True) or {}
+        count = payload.get("count", 1) if isinstance(payload, dict) else 1
+        if isinstance(count, bool) or not isinstance(count, int):
+            return jsonify({"error": "count must be an integer"}), 400
+        try:
+            return jsonify(active_monitor.step_replay(run_id, count))
+        except KeyError as error:
+            return jsonify({"error": str(error)}), 404
+        except ValueError as error:
+            return jsonify({"error": str(error)}), 400
+
+    @flask_app.post("/api/v1/monitor/replays/<run_id>/reset")
+    def reset_replay(run_id: str):
+        try:
+            return jsonify(active_monitor.reset_replay(run_id))
+        except KeyError as error:
+            return jsonify({"error": str(error)}), 404
+
+    @flask_app.post("/api/v1/monitor/recordings/start")
+    def start_recording():
+        payload = request.get_json(silent=True) or {}
+        if not isinstance(payload, dict) or not isinstance(payload.get("source_id"), str):
+            return jsonify({"error": "source_id is required"}), 400
+        try:
+            return jsonify(active_monitor.start_recording(payload["source_id"])), 201
+        except KeyError as error:
+            return jsonify({"error": str(error)}), 404
+        except ValueError as error:
+            return jsonify({"error": str(error)}), 409
+
+    @flask_app.post("/api/v1/monitor/recordings/<run_id>/stop")
+    def stop_recording(run_id: str):
+        try:
+            return jsonify(active_monitor.stop_recording(run_id))
+        except KeyError as error:
+            return jsonify({"error": str(error)}), 404
+
+    @flask_app.get("/api/v1/monitor/events")
+    def monitor_events():
+        header_id = request.headers.get("Last-Event-ID", "0")
+        query_id = request.args.get("after", header_id)
+        try:
+            after_id = max(0, int(query_id))
+        except ValueError:
+            after_id = 0
+
+        @stream_with_context
+        def stream():
+            cursor = after_id
+            while True:
+                events = active_monitor.events_after(cursor)
+                if not events:
+                    yield ": keep-alive\n\n"
+                    continue
+                for event in events:
+                    cursor = event["id"]
+                    yield (
+                        f"id: {event['id']}\n"
+                        f"event: {event['type']}\n"
+                        f"data: {json.dumps(event['data'], separators=(',', ':'))}\n\n"
+                    )
+
+        return Response(
+            stream(),
+            mimetype="text/event-stream",
+            headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
+        )
 
     return flask_app
 
