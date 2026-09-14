@@ -10,8 +10,21 @@ from app.domain.models import ObservationFrame
 from robot.navel_client.adapter import NavelAdapterConfig, NavelObservationAdapter
 
 
-def locomotion() -> NS:
-    return NS(odometry=NS(velocity=NS(x=0.2, y=0.0, r=0.1)))
+def locomotion(
+    *, linear_x: float = 0.2, linear_y: float = 0.0, angular_z: float = 0.1
+) -> NS:
+    return NS(
+        odometry=NS(
+            velocity=NS(
+                linear_x=linear_x,
+                linear_y=linear_y,
+                linear_z=0.0,
+                angular_x=0.0,
+                angular_y=0.0,
+                angular_z=angular_z,
+            )
+        )
+    )
 
 
 def person(uid: int = 17, **overrides) -> NS:
@@ -147,6 +160,47 @@ class NavelObservationAdapterTests(unittest.TestCase):
         self.assertIn("images", capabilities["unavailable_fields"])
         self.assertEqual(payload["humans"][0]["sensor_sources"], ["HEAD_RGB"])
 
+    def test_stationary_sdk_velocity_is_a_valid_measurement(self):
+        payload = self.adapter().convert(
+            NS(persons=[]), locomotion(linear_x=0.0, linear_y=0.0, angular_z=0.0)
+        )
+
+        self.assertEqual(payload["robot"]["linear_velocity_mps"], {"x": 0.0, "y": 0.0})
+        self.assertEqual(payload["robot"]["angular_velocity_radps"], 0.0)
+        self.assertIn(
+            "robot.linear_velocity_mps",
+            payload["capabilities"]["available_fields"],
+        )
+
+    def test_moving_sdk_linear_x_maps_to_canonical_x(self):
+        payload = self.adapter().convert(
+            NS(persons=[]), locomotion(linear_x=0.35)
+        )
+
+        self.assertEqual(payload["robot"]["linear_velocity_mps"]["x"], 0.35)
+
+    def test_sdk_linear_y_maps_to_canonical_y(self):
+        payload = self.adapter().convert(
+            NS(persons=[]), locomotion(linear_y=-0.12)
+        )
+
+        self.assertEqual(payload["robot"]["linear_velocity_mps"]["y"], -0.12)
+
+    def test_sdk_angular_z_maps_to_canonical_yaw_velocity(self):
+        payload = self.adapter().convert(
+            NS(persons=[]), locomotion(angular_z=0.4)
+        )
+
+        self.assertEqual(payload["robot"]["angular_velocity_radps"], 0.4)
+
+    def test_missing_sdk_linear_x_keeps_existing_failure_behavior(self):
+        packet = NS(
+            odometry=NS(velocity=NS(linear_y=0.0, angular_z=0.0))
+        )
+
+        with self.assertRaisesRegex(ValueError, "locomotion velocity is unavailable"):
+            self.adapter().convert(NS(persons=[]), packet)
+
     def test_stationary_fallback_is_explicit_and_disabled_by_default(self):
         with self.assertRaisesRegex(ValueError, "stationary_velocity_fallback"):
             self.adapter().convert(NS(persons=[]), None)
@@ -158,6 +212,34 @@ class NavelObservationAdapterTests(unittest.TestCase):
         self.assertIn(
             "robot.linear_velocity_mps",
             configured["capabilities"]["unavailable_fields"],
+        )
+
+    def test_stationary_fallback_applies_when_sdk_linear_x_is_unavailable(self):
+        packet = NS(
+            odometry=NS(velocity=NS(linear_y=0.3, angular_z=0.2))
+        )
+        payload = NavelObservationAdapter(
+            NavelAdapterConfig(stationary_velocity_fallback=True),
+            monotonic_ns=lambda: 1_000_000_000,
+        ).convert(NS(persons=[]), packet)
+
+        self.assertEqual(payload["robot"]["linear_velocity_mps"], {"x": 0.0, "y": 0.0})
+        self.assertEqual(payload["robot"]["angular_velocity_radps"], 0.0)
+
+    def test_real_sdk_measurement_takes_precedence_over_stationary_fallback(self):
+        payload = NavelObservationAdapter(
+            NavelAdapterConfig(stationary_velocity_fallback=True),
+            monotonic_ns=lambda: 1_000_000_000,
+        ).convert(
+            NS(persons=[]),
+            locomotion(linear_x=0.25, linear_y=0.05, angular_z=-0.15),
+        )
+
+        self.assertEqual(payload["robot"]["linear_velocity_mps"], {"x": 0.25, "y": 0.05})
+        self.assertEqual(payload["robot"]["angular_velocity_radps"], -0.15)
+        self.assertIn(
+            "robot.linear_velocity_mps",
+            payload["capabilities"]["available_fields"],
         )
 
     def test_observation_ids_and_timestamps_are_monotonically_unique(self):

@@ -112,12 +112,12 @@ Robot Navigation with VLMs](https://arxiv.org/abs/2601.14622), 2026 preprint;
 
 ### Intrinsic action contract
 
-The policy selection must be internally coherent before it can become a
+The policy selection should be internally coherent before it can become a
 `BehaviorIntent`. The immutable `ACTION_CONTRACTS` table is authoritative for
-runtime validation and generates the `action_contract` object included in every
-prompt. Omitted and explicit `null` preference values are equivalent: required
-preferences must be non-null, forbidden preferences must be omitted or null,
-and optional preferences may be omitted, null, or valid.
+the requested output and generates the `action_contract` object included in
+every prompt. Omitted and explicit `null` preference values are equivalent:
+required preferences must be non-null, forbidden preferences must be omitted or
+null, and optional preferences may be omitted, null, or valid.
 
 | Action | Target | Required preferences | Optional preferences | Forbidden preferences |
 | --- | --- | --- | --- | --- |
@@ -148,12 +148,17 @@ controller.
    fields, and the response JSON Schema.
 2. Send the same response schema through Ollama's OpenAI-compatible
    `response_format`, at temperature zero.
-3. Parse the response strictly. Markdown, explanatory prose, unknown fields,
-   invalid enums, missing required fields, NaN, and out-of-range values fail.
-4. Check the selected human ID against tracks in the current state. Assertive
-   interaction actions cannot target predicted-only tracks.
+3. Parse and type-check the response strictly. Markdown, explanatory prose,
+   unknown fields, invalid enums, invalid types, unsupported reason codes, NaN,
+   infinity, and out-of-range values fail.
+4. Normalise only safe omissions: remove preferences forbidden for the selected
+   action; default `SLOW.target_speed_mps` to 0.2,
+   `APPROACH.preferred_social_distance_m` to 1.2, and `WAIT.hold_duration_s` to
+   1.0; and fill a required target only when exactly one currently observed
+   human is eligible. Unknown, predicted-only, stale, or ambiguous targets fail.
 5. Add `decision_id`, observation/state IDs, schema version, and the state clock
-   timestamp in deterministic code, producing the public `BehaviorIntent`.
+   timestamp in deterministic code, then validate the complete result through
+   the public `BehaviorIntent` model.
 
 Ollama recommends both passing a JSON schema to the structured-output API and
 including it in the prompt, followed by application-side validation. The bridge

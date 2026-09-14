@@ -9,19 +9,19 @@ from __future__ import annotations
 
 import hashlib
 import json
+import logging
 import math
 import re
 from dataclasses import dataclass
 from enum import Enum
 from types import MappingProxyType
-from typing import Annotated, Any, Protocol, Sequence
+from typing import Annotated, Any, NoReturn, Protocol, Sequence
 
-from pydantic import BaseModel, ConfigDict, Field, ValidationError, model_validator
+from pydantic import BaseModel, ConfigDict, Field, ValidationError
 
 from app.domain.models import (
     Action,
     BehaviorIntent,
-    BehaviorPreferences,
     PassingSide,
     SocialState,
 )
@@ -34,6 +34,9 @@ MAX_SOCIAL_DISTANCE_M = 1.4
 MIN_INTENT_VALIDITY_MS = 250
 MAX_INTENT_VALIDITY_MS = 2_000
 MAX_HOLD_DURATION_S = 10.0
+RAW_RESPONSE_LOG_LIMIT = 500
+
+logger = logging.getLogger(__name__)
 
 PREFERENCE_FIELD_NAMES = (
     "target_speed_mps",
@@ -134,6 +137,19 @@ ACTION_CONTRACTS = MappingProxyType(
     }
 )
 
+# These values are deliberately the only action-specific values runtime
+# normalisation may invent. Keep this table next to the action contracts so a
+# new required preference cannot silently acquire an implicit default.
+SAFE_REQUIRED_PREFERENCE_DEFAULTS = MappingProxyType(
+    {
+        Action.SLOW.value: MappingProxyType({"target_speed_mps": 0.2}),
+        Action.APPROACH.value: MappingProxyType(
+            {"preferred_social_distance_m": 1.2}
+        ),
+        Action.WAIT.value: MappingProxyType({"hold_duration_s": 1.0}),
+    }
+)
+
 
 def _validate_action_contracts() -> None:
     action_values = {action.value for action in Action}
@@ -166,6 +182,20 @@ def _validate_action_contracts() -> None:
                 f"missing={sorted(preference_fields - classified)}, "
                 f"unknown={sorted(classified - preference_fields)}"
             )
+
+    required_by_action = {
+        action: contract.required_preferences
+        for action, contract in ACTION_CONTRACTS.items()
+        if contract.required_preferences
+    }
+    defaults_by_action = {
+        action: frozenset(defaults)
+        for action, defaults in SAFE_REQUIRED_PREFERENCE_DEFAULTS.items()
+    }
+    if required_by_action != defaults_by_action:
+        raise RuntimeError(
+            "safe preference defaults must exactly cover required preferences"
+        )
 
 
 _validate_action_contracts()
@@ -259,7 +289,9 @@ class TextLLM(Protocol):
 
 
 class _PolicyPreferences(BaseModel):
-    model_config = ConfigDict(extra="forbid", frozen=True, use_enum_values=True)
+    model_config = ConfigDict(
+        extra="forbid", frozen=True, strict=True, use_enum_values=True
+    )
 
     target_speed_mps: Annotated[
         float, Field(ge=0.0, le=MAX_POLICY_SPEED_MPS, allow_inf_nan=False)
@@ -284,10 +316,14 @@ class _PolicyPreferences(BaseModel):
 class _PolicySelection(BaseModel):
     """The small, dynamic portion of BehaviorIntent selected by the model."""
 
-    model_config = ConfigDict(extra="forbid", frozen=True, use_enum_values=True)
+    model_config = ConfigDict(
+        extra="forbid", frozen=True, strict=True, use_enum_values=True
+    )
 
     action: Action
-    target_human_id: Annotated[str, Field(min_length=1, max_length=128)] | None
+    target_human_id: Annotated[
+        str, Field(min_length=1, max_length=128)
+    ] | None = None
     preferences: _PolicyPreferences
     valid_for_ms: Annotated[
         int, Field(ge=MIN_INTENT_VALIDITY_MS, le=MAX_INTENT_VALIDITY_MS)
@@ -298,38 +334,6 @@ class _PolicySelection(BaseModel):
     decision_confidence: Annotated[
         float, Field(ge=0.0, le=1.0, allow_inf_nan=False)
     ]
-
-    @model_validator(mode="after")
-    def validate_action_contract(self) -> "_PolicySelection":
-        contract = ACTION_CONTRACTS[self.action]
-        if (
-            contract.target == TargetRequirement.REQUIRED
-            and self.target_human_id is None
-        ):
-            raise ValueError(f"{self.action} requires target_human_id")
-        if (
-            contract.target == TargetRequirement.FORBIDDEN
-            and self.target_human_id is not None
-        ):
-            raise ValueError(f"{self.action} forbids target_human_id")
-
-        supplied_preferences = {
-            field_name
-            for field_name in PREFERENCE_FIELD_NAMES
-            if getattr(self.preferences, field_name) is not None
-        }
-        missing = contract.required_preferences - supplied_preferences
-        if missing:
-            raise ValueError(
-                f"{self.action} requires non-null preferences: {sorted(missing)}"
-            )
-        forbidden = contract.forbidden_preferences & supplied_preferences
-        if forbidden:
-            raise ValueError(
-                f"{self.action} forbids non-null preferences: {sorted(forbidden)}"
-            )
-        return self
-
 
 def _trigger_code(trigger: Any) -> str:
     if isinstance(trigger, Enum):
@@ -361,7 +365,7 @@ def behavior_selection_schema(
     """Return the Ollama JSON schema, narrowed to this state's IDs and evidence."""
     trigger_codes = _trigger_codes(triggers)
     schema = _PolicySelection.model_json_schema()
-    known_human_ids = sorted(human.track_id for human in state.humans)
+    known_human_ids = sorted(_eligible_human_ids(state))
     target_schema: dict[str, Any] = {"type": "null"}
     if known_human_ids:
         target_schema = {
@@ -376,6 +380,17 @@ def behavior_selection_schema(
         "enum": list(_allowed_reason_codes(state, trigger_codes)),
     }
     return schema
+
+
+def _eligible_human_ids(state: SocialState) -> set[str]:
+    """Return tracks backed by an observation in the current state frame."""
+    return {
+        human.track_id
+        for human in state.humans
+        if human.observed
+        and not human.predicted_only
+        and human.time_since_seen_s == 0.0
+    }
 
 
 def action_contract_payload() -> dict[str, dict[str, Any]]:
@@ -455,6 +470,31 @@ class LLMPolicyBridge:
     def __init__(self, llm: TextLLM) -> None:
         self.llm = llm
 
+    @property
+    def _model_name(self) -> str:
+        return str(getattr(self.llm, "model", type(self.llm).__name__))
+
+    def _reject(
+        self,
+        message: str,
+        *,
+        raw_response: str,
+        selected_action: object,
+        validation_errors: object,
+        normalisations: Sequence[str] = (),
+    ) -> NoReturn:
+        logger.warning(
+            "LLM policy response rejected validation_mode=tolerant model=%r "
+            "raw_response=%r selected_action=%r validation_errors=%r "
+            "applied_normalisations=%r final_decision_id=None",
+            self._model_name,
+            raw_response[:RAW_RESPONSE_LOG_LIMIT],
+            selected_action,
+            validation_errors,
+            list(normalisations),
+        )
+        raise LLMPolicyError(message)
+
     def decide(
         self, state: SocialState, triggers: Sequence[Any]
     ) -> BehaviorIntent:
@@ -466,57 +506,139 @@ class LLMPolicyBridge:
             temperature=0.0,
             response_schema=response_schema,
         )
+        selected_action: object = None
+        try:
+            parsed_response = json.loads(raw_response)
+            if isinstance(parsed_response, dict):
+                selected_action = parsed_response.get("action")
+        except (json.JSONDecodeError, TypeError):
+            # Pydantic produces the canonical validation diagnostics below.
+            pass
         try:
             selection = _PolicySelection.model_validate_json(raw_response)
         except ValidationError as error:
             details = error.errors(include_url=False, include_input=False)
-            raise LLMPolicyError(
+            self._reject(
                 "LLM response does not match the behavior-selection schema: "
-                f"{details}"
-            ) from error
+                f"{details}",
+                raw_response=raw_response,
+                selected_action=selected_action,
+                validation_errors=details,
+            )
 
-        known_humans = {human.track_id: human for human in state.humans}
+        selected_action = selection.action
+        normalisations: list[str] = []
+        contract = ACTION_CONTRACTS[selection.action]
         target_id = selection.target_human_id
-        if target_id is not None and target_id not in known_humans:
-            raise LLMPolicyError(
-                f"LLM selected unknown target_human_id {target_id!r}"
+        if contract.target == TargetRequirement.FORBIDDEN and target_id is not None:
+            self._reject(
+                f"{selection.action} forbids target_human_id",
+                raw_response=raw_response,
+                selected_action=selected_action,
+                validation_errors=[f"forbidden target_human_id {target_id!r}"],
             )
-        if (
-            target_id is not None
-            and selection.action
-            in {Action.APPROACH.value, Action.GREET.value, Action.GUIDE.value}
-            and (
-                not known_humans[target_id].observed
-                or known_humans[target_id].predicted_only
+        eligible_human_ids = _eligible_human_ids(state)
+        if target_id is not None and target_id not in eligible_human_ids:
+            known_human_ids = {human.track_id for human in state.humans}
+            target_error = (
+                f"unknown target_human_id {target_id!r}"
+                if target_id not in known_human_ids
+                else f"target_human_id {target_id!r} is not currently observed"
             )
-        ):
-            raise LLMPolicyError(
-                f"{selection.action} requires a currently observed target"
+            self._reject(
+                f"LLM selected {target_error}",
+                raw_response=raw_response,
+                selected_action=selected_action,
+                validation_errors=[target_error],
             )
+        if contract.target == TargetRequirement.REQUIRED and target_id is None:
+            if len(eligible_human_ids) != 1:
+                target_error = (
+                    f"{selection.action} requires target_human_id, but "
+                    f"{len(eligible_human_ids)} currently observed humans are eligible"
+                )
+                self._reject(
+                    target_error,
+                    raw_response=raw_response,
+                    selected_action=selected_action,
+                    validation_errors=[target_error],
+                )
+            target_id = next(iter(eligible_human_ids))
+            normalisations.append(f"target_human_id={target_id!r}")
 
         allowed_reason_codes = set(_allowed_reason_codes(state, trigger_codes))
         unsupported_codes = set(selection.reason_codes) - allowed_reason_codes
         if unsupported_codes:
-            raise LLMPolicyError(
+            message = (
                 "LLM selected unsupported reason codes: "
                 f"{sorted(unsupported_codes)}"
             )
+            self._reject(
+                message,
+                raw_response=raw_response,
+                selected_action=selected_action,
+                validation_errors=[message],
+                normalisations=normalisations,
+            )
 
-        preferences = BehaviorPreferences.model_validate(
-            selection.preferences.model_dump(mode="json")
+        preference_updates = selection.preferences.model_dump(mode="json")
+        for field_name in PREFERENCE_FIELD_NAMES:
+            if field_name not in contract.forbidden_preferences:
+                continue
+            if preference_updates[field_name] is not None:
+                preference_updates[field_name] = None
+                normalisations.append(f"removed preferences.{field_name}")
+        defaults = SAFE_REQUIRED_PREFERENCE_DEFAULTS.get(selection.action, {})
+        for field_name in contract.required_preferences:
+            if preference_updates[field_name] is None:
+                preference_updates[field_name] = defaults[field_name]
+                normalisations.append(
+                    f"preferences.{field_name}={defaults[field_name]!r}"
+                )
+
+        preferences = selection.preferences.model_copy(update=preference_updates)
+        selection = selection.model_copy(
+            update={"target_human_id": target_id, "preferences": preferences}
         )
-        return BehaviorIntent(
-            schema_version="1.0",
-            decision_id=_decision_id(state, trigger_codes, selection),
-            observation_id=state.source_observation_id,
-            social_state_id=state.state_id,
-            # Use the state's clock-domain timestamp so replayed experiments are
-            # deterministic and freshness can be checked in one clock domain.
-            created_at_us=state.timestamp_us,
-            action=selection.action,
-            target_human_id=target_id,
-            preferences=preferences,
-            valid_for_ms=selection.valid_for_ms,
-            reason_codes=selection.reason_codes,
-            decision_confidence=selection.decision_confidence,
+        decision_id = _decision_id(state, trigger_codes, selection)
+
+        try:
+            intent = BehaviorIntent.model_validate(
+                {
+                    "schema_version": "1.0",
+                    "decision_id": decision_id,
+                    "observation_id": state.source_observation_id,
+                    "social_state_id": state.state_id,
+                    # Use the state's clock-domain timestamp so replayed experiments
+                    # are deterministic and freshness can be checked in one domain.
+                    "created_at_us": state.timestamp_us,
+                    "action": selection.action,
+                    "target_human_id": target_id,
+                    "preferences": preferences.model_dump(mode="json"),
+                    "valid_for_ms": selection.valid_for_ms,
+                    "reason_codes": selection.reason_codes,
+                    "decision_confidence": selection.decision_confidence,
+                }
+            )
+        except ValidationError as error:
+            details = error.errors(include_url=False, include_input=False)
+            self._reject(
+                "Normalised LLM response is not a valid BehaviorIntent: "
+                f"{details}",
+                raw_response=raw_response,
+                selected_action=selected_action,
+                validation_errors=details,
+                normalisations=normalisations,
+            )
+
+        logger.info(
+            "LLM policy response accepted validation_mode=tolerant model=%r "
+            "raw_response=%r selected_action=%r validation_errors=[] "
+            "applied_normalisations=%r final_decision_id=%r",
+            self._model_name,
+            raw_response[:RAW_RESPONSE_LOG_LIMIT],
+            selected_action,
+            normalisations,
+            intent.decision_id,
         )
+        return intent

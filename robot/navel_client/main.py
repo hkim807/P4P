@@ -9,6 +9,7 @@ from __future__ import annotations
 import argparse
 import asyncio
 import json
+import logging
 import os
 import time
 from dataclasses import dataclass
@@ -17,6 +18,7 @@ from typing import Any
 import navel
 
 from robot.navel_client.adapter import NavelAdapterConfig, NavelObservationAdapter
+from robot.navel_client.behavior import BehaviorController
 from robot.navel_client.transport import ObservationTransport, TransportError
 
 
@@ -64,6 +66,7 @@ async def _collect_perception(
 async def _send_observations(
     queue: asyncio.Queue[dict[str, Any]],
     transport: ObservationTransport,
+    behavior_controller: BehaviorController,
     *,
     minimum_send_interval_s: float,
     force_decision: bool,
@@ -112,11 +115,7 @@ async def _send_observations(
             f"accepted={str(accepted).lower()} decision_triggered={str(triggered).lower()} "
             f"triggers={','.join(str(item) for item in triggers) or '-'}"
         )
-        if payload.get("behavior_intent") is not None:
-            print(
-                "behavior_intent: "
-                f"{json.dumps(payload['behavior_intent'], sort_keys=True)}"
-            )
+        behavior_controller.handle_response(payload)
         if payload.get("error") is not None:
             print(f"server_error: {payload['error']}")
         last_sent_at = time.monotonic()
@@ -140,6 +139,7 @@ async def run(args: argparse.Namespace) -> None:
     latest = LatestLocomotion()
 
     async with navel.Robot() as robot:
+        behavior_controller = BehaviorController(robot)
         tasks = [
             asyncio.create_task(_collect_locomotion(robot, latest)),
             asyncio.create_task(_collect_perception(robot, adapter, latest, queue)),
@@ -147,6 +147,7 @@ async def run(args: argparse.Namespace) -> None:
                 _send_observations(
                     queue,
                     transport,
+                    behavior_controller,
                     minimum_send_interval_s=args.minimum_send_interval,
                     force_decision=args.force_decision,
                     print_only=args.print_only,
@@ -211,6 +212,7 @@ def parse_args() -> argparse.Namespace:
 
 
 def main() -> int:
+    logging.basicConfig(level=logging.INFO, format="%(message)s")
     try:
         asyncio.run(run(parse_args()))
     except KeyboardInterrupt:

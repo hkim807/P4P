@@ -30,6 +30,23 @@ def social_state(*, humans: bool = True):
     return TemporalSocialStateEstimator().update(observation)
 
 
+def state_with_humans(count: int, *, observed: bool = True):
+    state = social_state()
+    original = state.humans[0]
+    humans = [
+        original.model_copy(
+            update={
+                "track_id": f"visitor-{index + 1}",
+                "observed": observed,
+                "predicted_only": not observed,
+                "time_since_seen_s": 0.0 if observed else 0.5,
+            }
+        )
+        for index in range(count)
+    ]
+    return state.model_copy(update={"humans": humans})
+
+
 def selection_json(**updates):
     payload = {
         "action": "MONITOR",
@@ -77,6 +94,8 @@ VALID_PREFERENCE_VALUES = {
 
 
 class RecordingLLM:
+    model = "test-model"
+
     def __init__(self, response: str):
         self.response = response
         self.calls = []
@@ -138,7 +157,7 @@ class LLMPolicyTests(unittest.TestCase):
                 intent = self.assert_selection_valid(action)
                 self.assertEqual(intent.action, action)
 
-    def test_every_required_target_rejects_omission_and_null(self):
+    def test_every_required_target_fills_omission_and_null_for_one_human(self):
         required_actions = {
             action
             for action, contract in ACTION_CONTRACTS.items()
@@ -149,12 +168,30 @@ class LLMPolicyTests(unittest.TestCase):
             with self.subTest(action=action, value="omitted"):
                 payload = json.loads(selection_json(**base))
                 del payload["target_human_id"]
-                with self.assertRaises(LLMPolicyError):
-                    LLMPolicyBridge(
-                        RecordingLLM(json.dumps(payload))
-                    ).decide(social_state(), ["HUMAN_DETECTED"])
+                intent = LLMPolicyBridge(
+                    RecordingLLM(json.dumps(payload))
+                ).decide(social_state(), ["HUMAN_DETECTED"])
+                self.assertEqual(intent.target_human_id, "visitor-1")
             with self.subTest(action=action, value="null"):
-                self.assert_selection_invalid(action, target_human_id=None)
+                intent = self.assert_selection_valid(action, target_human_id=None)
+                self.assertEqual(intent.target_human_id, "visitor-1")
+
+    def test_required_target_without_unique_current_human_fails_safely(self):
+        for count in (0, 2):
+            with self.subTest(eligible_humans=count):
+                policy = LLMPolicyBridge(
+                    RecordingLLM(
+                        selection_json(
+                            action="GREET",
+                            target_human_id=None,
+                            preferences={},
+                        )
+                    )
+                )
+                with self.assertRaisesRegex(
+                    LLMPolicyError, rf"{count} currently observed humans"
+                ):
+                    policy.decide(state_with_humans(count), ["HUMAN_DETECTED"])
 
     def test_every_forbidden_target_rejects_a_supplied_target(self):
         for action, contract in ACTION_CONTRACTS.items():
@@ -176,20 +213,7 @@ class LLMPolicyTests(unittest.TestCase):
                     action, target_human_id="visitor-1"
                 )
 
-    def test_required_preferences_reject_omission_and_explicit_null(self):
-        for action, contract in ACTION_CONTRACTS.items():
-            for field_name in contract.required_preferences:
-                omitted = dict(VALID_SELECTIONS[action]["preferences"])
-                omitted.pop(field_name)
-                with self.subTest(action=action, field=field_name, value="omitted"):
-                    self.assert_selection_invalid(action, preferences=omitted)
-
-                explicit_null = dict(VALID_SELECTIONS[action]["preferences"])
-                explicit_null[field_name] = None
-                with self.subTest(action=action, field=field_name, value="null"):
-                    self.assert_selection_invalid(action, preferences=explicit_null)
-
-    def test_every_action_rejects_a_representative_forbidden_preference(self):
+    def test_every_action_removes_forbidden_preferences(self):
         for action, contract in ACTION_CONTRACTS.items():
             field_name = next(
                 name
@@ -199,7 +223,11 @@ class LLMPolicyTests(unittest.TestCase):
             preferences = dict(VALID_SELECTIONS[action]["preferences"])
             preferences[field_name] = VALID_PREFERENCE_VALUES[field_name]
             with self.subTest(action=action, field=field_name):
-                self.assert_selection_invalid(action, preferences=preferences)
+                intent = self.assert_selection_valid(
+                    action, preferences=preferences
+                )
+                self.assertIsNone(getattr(intent.preferences, field_name))
+                self.assertEqual(intent.action, action)
 
     def test_optional_preferences_accept_omission_null_and_valid_values(self):
         for action, contract in ACTION_CONTRACTS.items():
@@ -214,7 +242,13 @@ class LLMPolicyTests(unittest.TestCase):
 
                 preferences[field_name] = VALID_PREFERENCE_VALUES[field_name]
                 with self.subTest(action=action, field=field_name, value="valid"):
-                    self.assert_selection_valid(action, preferences=preferences)
+                    intent = self.assert_selection_valid(
+                        action, preferences=preferences
+                    )
+                    self.assertEqual(
+                        getattr(intent.preferences, field_name),
+                        VALID_PREFERENCE_VALUES[field_name],
+                    )
 
     def test_contradictory_wait_preferences_and_target_are_rejected(self):
         self.assert_selection_invalid(
@@ -227,8 +261,54 @@ class LLMPolicyTests(unittest.TestCase):
             },
         )
 
-    def test_slow_without_target_speed_is_rejected(self):
-        self.assert_selection_invalid("SLOW", preferences={})
+    def test_safe_required_preference_defaults_are_applied(self):
+        cases = (
+            ("SLOW", "target_speed_mps", 0.2),
+            ("APPROACH", "preferred_social_distance_m", 1.2),
+            ("WAIT", "hold_duration_s", 1.0),
+        )
+        for action, field_name, expected in cases:
+            for supplied in ({}, {field_name: None}):
+                with self.subTest(action=action, preferences=supplied):
+                    intent = self.assert_selection_valid(
+                        action, preferences=supplied
+                    )
+                    self.assertEqual(intent.action, action)
+                    self.assertEqual(
+                        getattr(intent.preferences, field_name), expected
+                    )
+
+    def test_normalised_result_revalidates_as_public_behavior_intent(self):
+        intent = self.assert_selection_valid(
+            "APPROACH",
+            target_human_id=None,
+            preferences={"hold_duration_s": 3.0},
+        )
+        revalidated = BehaviorIntent.model_validate(intent.model_dump(mode="json"))
+        self.assertEqual(revalidated, intent)
+        self.assertEqual(intent.action, "APPROACH")
+        self.assertEqual(intent.target_human_id, "visitor-1")
+        self.assertEqual(intent.preferences.preferred_social_distance_m, 1.2)
+        self.assertIsNone(intent.preferences.hold_duration_s)
+
+    def test_normalisation_diagnostics_include_model_action_and_decision_id(self):
+        policy = LLMPolicyBridge(
+            RecordingLLM(
+                selection_json(
+                    action="SLOW",
+                    preferences={"hold_duration_s": 2.0},
+                )
+            )
+        )
+        with self.assertLogs("app.decision.llm_policy", "INFO") as logs:
+            intent = policy.decide(social_state(), ["HUMAN_DETECTED"])
+        diagnostic = logs.output[-1]
+        self.assertIn("validation_mode=tolerant", diagnostic)
+        self.assertIn("model='test-model'", diagnostic)
+        self.assertIn("selected_action='SLOW'", diagnostic)
+        self.assertIn("removed preferences.hold_duration_s", diagnostic)
+        self.assertIn("preferences.target_speed_mps=0.2", diagnostic)
+        self.assertIn(intent.decision_id, diagnostic)
 
     def test_existing_numeric_and_enum_constraints_remain_authoritative(self):
         invalid_selections = (
@@ -265,6 +345,28 @@ class LLMPolicyTests(unittest.TestCase):
                 )
                 with self.assertRaises(LLMPolicyError):
                     policy.decide(social_state(), ["HUMAN_DETECTED"])
+
+    def test_invalid_types_and_non_finite_numbers_are_rejected(self):
+        invalid_selections = (
+            {"valid_for_ms": "1000"},
+            {"decision_confidence": "0.55"},
+            {"target_human_id": 1},
+            {"preferences": {"target_speed_mps": "0.2"}},
+            {"preferences": {"target_speed_mps": float("nan")}},
+            {"preferences": {"target_speed_mps": float("inf")}},
+        )
+        for updates in invalid_selections:
+            with self.subTest(updates=updates):
+                with self.assertRaises(LLMPolicyError):
+                    LLMPolicyBridge(
+                        RecordingLLM(selection_json(**updates))
+                    ).decide(social_state(), ["HUMAN_DETECTED"])
+
+    def test_unsupported_reason_codes_are_rejected(self):
+        with self.assertRaisesRegex(LLMPolicyError, "unsupported reason codes"):
+            LLMPolicyBridge(
+                RecordingLLM(selection_json(reason_codes=["MADE_UP_REASON"]))
+            ).decide(social_state(), ["HUMAN_DETECTED"])
 
     def test_prompt_action_contract_is_generated_from_authoritative_contract(self):
         prompt = render_decision_prompt(social_state(), ["HUMAN_DETECTED"])
@@ -336,6 +438,12 @@ class LLMPolicyTests(unittest.TestCase):
             empty_schema["properties"]["target_human_id"], {"type": "null"}
         )
 
+        predicted_state = state_with_humans(1, observed=False)
+        predicted_schema = behavior_selection_schema(predicted_state, [])
+        self.assertEqual(
+            predicted_schema["properties"]["target_human_id"], {"type": "null"}
+        )
+
     def test_policy_accepts_a_grounded_targeted_action(self):
         state = social_state()
         llm = RecordingLLM(
@@ -372,6 +480,31 @@ class LLMPolicyTests(unittest.TestCase):
         )
         with self.assertRaisesRegex(LLMPolicyError, "unknown target"):
             LLMPolicyBridge(llm).decide(social_state(), ["HUMAN_DETECTED"])
+
+    def test_policy_rejects_predicted_only_target(self):
+        llm = RecordingLLM(
+            selection_json(
+                action="ORIENT",
+                target_human_id="visitor-1",
+                reason_codes=["HUMAN_DETECTED"],
+            )
+        )
+        with self.assertRaisesRegex(LLMPolicyError, "not currently observed"):
+            LLMPolicyBridge(llm).decide(
+                state_with_humans(1, observed=False), ["HUMAN_DETECTED"]
+            )
+
+    def test_policy_rejects_stale_target(self):
+        state = state_with_humans(1)
+        stale_human = state.humans[0].model_copy(
+            update={"time_since_seen_s": 0.5}
+        )
+        state = state.model_copy(update={"humans": [stale_human]})
+        llm = RecordingLLM(
+            selection_json(action="ORIENT", target_human_id="visitor-1")
+        )
+        with self.assertRaisesRegex(LLMPolicyError, "not currently observed"):
+            LLMPolicyBridge(llm).decide(state, ["HUMAN_DETECTED"])
 
     def test_policy_rejects_out_of_bounds_preferences(self):
         llm = RecordingLLM(
