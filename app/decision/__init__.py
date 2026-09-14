@@ -1,4 +1,12 @@
-"""Decision scheduling, policy orchestration, and intent validation."""
+"""Decision scheduling and schema-constrained policy orchestration."""
+
+from app.decision.llm_policy import (
+    LLMPolicyBridge,
+    LLMPolicyError,
+    POLICY_PROMPT_VERSION,
+    behavior_selection_schema,
+    render_decision_prompt,
+)
 
 from app.decision.scheduler import (
     DecisionRequest,
@@ -14,4 +22,9 @@ __all__ = [
     "DecisionSchedulerError",
     "DecisionTrigger",
     "SchedulerConfig",
+    "LLMPolicyBridge",
+    "LLMPolicyError",
+    "POLICY_PROMPT_VERSION",
+    "behavior_selection_schema",
+    "render_decision_prompt",
 ]

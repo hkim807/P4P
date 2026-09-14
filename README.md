@@ -1,29 +1,40 @@
 # LLM/VLM Social Navigation Pipeline
 
-This repository contains the first runnable component of the planned social-navigation architecture: a minimal HTTP gateway that accepts an input, sends it to a locally hosted Ollama model, and returns the model output.
+This repository contains a read-only social-navigation proof of concept: canonical
+observation contracts, synthetic/replay sources, temporal state estimation,
+event-driven decision scheduling, and an HTTP gateway to a locally hosted Ollama
+model. It also includes a Navel-side collector that reads SDK data and sends
+canonical observations without commanding the robot.
 
 ![LLM/VLM social-navigation architecture](docs/architecture.jpg)
 
 ## Current scope
 
-Implemented now:
+Implemented Navel-to-LLM runtime path:
 
 ```text
-Navel or test client
-        |
-        | HTTP POST /chat
-        v
-Python gateway (port 6000)
-        |
-        | OpenAI-compatible API
-        v
-Ollama (127.0.0.1:11434)
-        |
-        v
-Qwen 2.5 model
+Navel next_frame + next_locomotion
+  -> NavelObservationAdapter
+  -> ObservationFrame
+  -> HTTP POST /api/v1/observations
+  -> TemporalSocialStateEstimator
+  -> SocialState
+  -> DecisionScheduler
+  -> LLMPolicyBridge
+  -> Ollama structured response
+  -> validated BehaviorIntent in the HTTP response
+  -> typed Navel behavior command and dry-run handler
 ```
 
-This milestone only verifies LLM input and output. Perception, temporal social-state estimation, structured action selection, validation, VLM input, and physical robot control are intentionally not implemented yet.
+The simpler `POST /chat` route remains available only as an Ollama connectivity
+diagnostic. The robot pipeline uses `POST /api/v1/observations`.
+
+This path is covered offline with Navel SDK-shaped perception and locomotion
+objects, a real local HTTP request, and a fake structured LLM. A live test still
+requires the Navel SDK and sockets on the robot, a network route to the gateway,
+and the configured Ollama model on the lab computer. VLM input, final validation
+for execution, and physical robot control are not implemented. See
+`docs/behavior-intent-output-mapping.md` for the dry-run output architecture.
 
 Ollama is the local model runtime. It performs inference on the computer where it is installed; requests are not sent to an Ollama cloud model. The Python gateway and Ollama are expected to run on the same server computer by default. Navel calls the gateway using that computer's LAN IP address.
 
@@ -33,16 +44,22 @@ Ollama is the local model runtime. It performs inference on the computer where i
 app/
   adapters/       Synthetic and future robot/replay observation sources
   config.py       Environment configuration
+  decision/       Event scheduler and schema-constrained LLM policy bridge
   domain/         Versioned pipeline contracts and schema generator
   llm.py          Ollama client
   server.py       Flask API
+  state/          Temporal social-state estimation
+robot/
+  navel_client/   Read-only collection, transport, and dry-run behavior mapping
 client.py         Minimal client for Navel or another computer
 docs/
   architecture.jpg
 schemas/v1/       Generated JSON Schemas for public contracts
 tests/
-  test_server.py  Offline API tests
-.env.example
+  test_server.py  Offline chat API tests
+  test_navel_adapter.py
+  test_navel_server_e2e.py
+  test_observation_pipeline.py
 requirements.txt
 ```
 
@@ -51,6 +68,10 @@ requirements.txt
 - Python 3.10 or newer
 - Ollama installed on the server computer
 - Enough CPU/GPU memory for the selected model
+
+These are server prerequisites. The server dependencies, including Pydantic,
+are listed in `requirements.txt`. The robot-side dependency boundary is
+documented separately in `requirements-navel.txt`.
 
 Install and start Ollama according to the installation instructions for the server's operating system, then download the default model:
 
@@ -73,17 +94,17 @@ From the repository root:
 python3 -m venv .venv
 source .venv/bin/activate
 python3 -m pip install -r requirements.txt
-cp .env.example .env
 ```
 
-The defaults in `.env.example` use the same local Ollama arrangement as the previous codebase:
+The application defaults use a local Ollama arrangement. Override them through
+the environment or a local `.env` file when needed:
 
 ```env
 OLLAMA_HOST=127.0.0.1
 OLLAMA_PORT=11434
 OLLAMA_MODEL=qwen2.5:7b
 API_HOST=0.0.0.0
-API_PORT=6000
+API_PORT=6060
 ```
 
 Start the gateway:
@@ -92,18 +113,48 @@ Start the gateway:
 python3 -m app.server
 ```
 
+## Pipeline Lens monitor
+
+Pipeline Lens is the local shadow-mode recorder and replayer included with the
+gateway. It visualizes each observation as it moves through validation, social
+state estimation, scheduling, policy selection, and intent validation. Replays
+use fresh estimator/scheduler state and never call a robot actuation API.
+
+Build the web client once:
+
+```bash
+cd web
+npm install
+npm run build
+cd ..
+```
+
+Then start the gateway and open `http://127.0.0.1:6060`. The monitor discovers
+the checked-in synthetic JSONL recordings automatically. Select a recording to
+create an isolated replay, then use restart, play/pause, single-step, speed, the
+timeline, stage cards, transition diff, payload inspector, and latency view.
+
+For frontend development, leave the gateway running and use `npm run dev` from
+`web/`; Vite serves the UI at `http://127.0.0.1:5173` and proxies monitor API
+requests to port 6060.
+
+Live Navel observations continue to use `POST /api/v1/observations`. Connected
+sources appear automatically, and the record control stores canonical
+observations plus `trace.jsonl` under the ignored `var/recordings` directory.
+The monitor is deliberately read-only with respect to connected robots.
+
 ## Test input and output
 
 Check both the Ollama connection and selected model:
 
 ```bash
-curl http://127.0.0.1:6000/health
+curl http://127.0.0.1:6060/health
 ```
 
 Send an input to the model:
 
 ```bash
-curl -X POST http://127.0.0.1:6000/chat \
+curl -X POST http://127.0.0.1:6060/chat \
   -H 'Content-Type: application/json' \
   -d '{"message":"Reply with exactly: LLM connection successful"}'
 ```
@@ -137,21 +188,27 @@ An optional system prompt and temperature can also be supplied:
 
 ## Connect from Navel or another network computer
 
-Find the LAN IP of the computer running this gateway. If it is `192.168.1.100`, send requests from Navel to:
+Find the LAN IP of the computer running this gateway. If it is `192.168.1.100`,
+the Navel observation client should use this gateway base URL:
 
 ```text
-http://192.168.1.100:6000/chat
+http://192.168.1.100:6060
 ```
 
-Port `6000` must be permitted by the server firewall. Ollama can remain bound to `127.0.0.1`; only this gateway needs to be exposed to the robot network.
+`ObservationTransport` appends `/api/v1/observations`. Do not point the Navel
+pipeline at `/chat`; that endpoint accepts free-form text, not an
+`ObservationFrame`.
+
+Port `6060` must be permitted by the server firewall. Ollama can remain bound to `127.0.0.1`; only this gateway needs to be exposed to the robot network.
 
 Do not configure the Navel robot to use `127.0.0.1`, because that address would refer to Navel itself. It must use the gateway computer's actual LAN IP.
 
-The included dependency-free client can be copied to or run on Navel:
+The separate dependency-free `client.py` checks only the optional `/chat`
+diagnostic and does not exercise the observation pipeline:
 
 ```bash
 python3 client.py \
-  --server http://192.168.1.100:6000 \
+  --server http://192.168.1.100:6060 \
   "Reply with a short connection confirmation"
 ```
 
@@ -174,6 +231,49 @@ Request body:
 ```
 
 Successful responses contain `provider`, `model`, `input`, and `output`. Upstream Ollama failures return HTTP `502`.
+
+### `POST /api/v1/observations`
+
+Accepts one canonical `ObservationFrame`. It always performs contract validation
+and temporal estimation. The scheduler calls the LLM only for a social event or
+active-scene refresh, unless `?force_decision=1` is supplied for a short
+diagnostic.
+
+When a decision is triggered successfully, the response contains a complete
+`BehaviorIntent`:
+
+```json
+{
+  "accepted": true,
+  "observation_id": "navel-5010005:123456789:000001",
+  "social_state_id": "state-...",
+  "decision_triggered": true,
+  "forced_decision": false,
+  "triggers": ["HUMAN_DETECTED"],
+  "behavior_intent": {
+    "schema_version": "1.0",
+    "decision_id": "decision-...",
+    "observation_id": "navel-5010005:123456789:000001",
+    "social_state_id": "state-...",
+    "created_at_us": 123456789,
+    "action": "ORIENT",
+    "target_human_id": "17",
+    "preferences": {
+      "target_speed_mps": null,
+      "preferred_social_distance_m": null,
+      "passing_side": null,
+      "orientation_target_rad": 0.0,
+      "hold_duration_s": null
+    },
+    "valid_for_ms": 1000,
+    "reason_codes": ["HUMAN_DETECTED"],
+    "decision_confidence": 0.75
+  }
+}
+```
+
+An accepted frame can legitimately return `"behavior_intent": null` when the
+scheduler finds no reason to call the model.
 
 ## Run tests
 
@@ -330,6 +430,179 @@ no discrete event occurs. Empty unchanged scenes do not invoke the model.
 Use a fresh scheduler per experiment or call `reset()`. Timing and departure
 behaviour are configurable through `SchedulerConfig`.
 
+## Navel observation-to-policy pipeline
+
+The Navel integration reads perception and locomotion only. It does not call any
+motion, navigation, head, gaze, speech, or actuator API. The server validates the
+LLM selection as `BehaviorIntent`, but the robot client only prints it.
+
+The implemented flow is:
+
+```text
+Navel next_frame/next_locomotion
+  -> robot-side canonical ObservationFrame dictionary
+  -> POST /api/v1/observations
+  -> server-side Pydantic validation
+  -> TemporalSocialStateEstimator
+  -> DecisionScheduler
+  -> Ollama only when scheduled
+  -> schema validation and canonical BehaviorIntent
+  -> intent returned for inspection, never execution
+```
+
+The prompt and its research rationale are documented in
+[`docs/llm-policy-prompt-design.md`](docs/llm-policy-prompt-design.md).
+
+Server state is isolated by `capabilities.adapter_id`. Give each robot or replay
+source a stable unique adapter ID. A non-increasing timestamp for the same ID is
+rejected with HTTP 409 instead of resetting temporal history silently.
+
+### Laptop/server setup
+
+From the repository root:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+python3 -m pip install -r requirements.txt
+ollama pull qwen2.5:7b
+```
+
+Start Ollama in one terminal:
+
+```bash
+ollama serve
+```
+
+Start the gateway in another:
+
+```bash
+source .venv/bin/activate
+API_HOST=0.0.0.0 python3 -m app.server
+```
+
+Confirm the selected model is reachable:
+
+```bash
+curl http://127.0.0.1:6060/health
+```
+
+Only the Flask port needs to be reachable from the robot. Keep Ollama local when
+possible. The Navel command must use the laptop's LAN address, not `127.0.0.1`.
+
+### Navel setup and run command
+
+The Navel SDK is expected to already be installed on the robot. From a directory
+where the repository may be stored:
+
+```bash
+git clone https://github.com/hkim807/P4P.git
+cd P4P
+git fetch origin
+git switch feature/behavior-intent-output-mapper
+git pull --ff-only
+python3 --version
+python3 -m robot.navel_client.main \
+  --server http://<LAPTOP_IP>:6060 \
+  --adapter-id navel-<ROBOT_ID>
+```
+
+Until this feature is merged into `main`, both computers must check out
+`feature/behavior-intent-output-mapper`. The robot must use Python 3.10 or newer.
+The Navel SDK is provided on the robot. The client uses only that SDK and the
+Python standard library: no virtual environment, internet connection, or
+installation from the server's `requirements.txt` is required. The
+`requirements-navel.txt` file records that there are currently no additional
+PyPI dependencies.
+
+The client collects locomotion concurrently, keeps only the newest unsent frame,
+and performs blocking standard-library HTTP in a worker thread. Temporary SDK
+and HTTP timeouts are reported without immediately terminating collection.
+
+Before running the full pipeline on the robot, verify the dependency boundary:
+
+```bash
+python3 -c "import robot.navel_client.main; print('Navel client imports OK')"
+```
+
+Useful diagnostics:
+
+```bash
+# Print canonical observations locally without HTTP or Ollama calls.
+python3 -m robot.navel_client.main --print-only
+
+# Make this diagnostic run bypass normal scheduling.
+python3 -m robot.navel_client.main \
+  --server http://<LAPTOP_IP>:6060 \
+  --force-decision
+```
+
+`--force-decision` defaults off; leaving it enabled can request an LLM decision
+for every transmitted frame. Stop that diagnostic immediately after confirming
+one round trip.
+
+If locomotion velocity is temporarily unavailable, the client skips perception
+frames by default. `--stationary-velocity-fallback` explicitly substitutes zero
+velocity, but it is valid only when the physical robot is confirmed stationary.
+
+The SDK documentation does not identify any `g_head_position` coordinate as a
+robot-base origin. Consequently, 3-D human position is omitted by default. After
+physically verifying a coordinate label and transform as equivalent to the
+contract's `ROBOT_BASE`, opt in explicitly:
+
+```bash
+python3 -m robot.navel_client.main \
+  --server http://<LAPTOP_IP>:6060 \
+  --robot-base-coordinate-system <VERIFIED_SDK_LABEL>
+```
+
+Images are not transported. `id_score` is not mapped because its meaning is not
+documented, and SST activity is not associated with people. Body orientation,
+speech activity, and groups remain absent.
+
+### Observation API
+
+`POST /api/v1/observations` accepts exactly one canonical `ObservationFrame`.
+Invalid contracts return HTTP 400. Out-of-order frames return HTTP 409. An LLM
+provider failure or invalid structured selection returns HTTP 502 while retaining
+`"accepted": true`, because estimation and scheduling have already succeeded
+and their temporal state is preserved.
+
+For a single manual end-to-end check, use:
+
+```text
+POST /api/v1/observations?force_decision=1
+```
+
+The `triggers` array contains only actual `DecisionTrigger` enum values. A forced
+decision with no scheduler event therefore returns an empty trigger array and
+`"forced_decision": true`.
+
+### Safe staged verification
+
+1. On the gateway computer, run `python3 -m unittest discover -s tests -v`.
+2. Start Ollama and the gateway, then confirm `GET /health` returns HTTP 200 and
+   `model_available=true`.
+3. On Navel, run the client with `--print-only`. Confirm frames contain plausible
+   person IDs, distances, gaze values, and measured locomotion velocity.
+4. Run normally against `http://<LAPTOP_IP>:6060`. A visible person should cause
+   `accepted=true`, a `social_state_id`, `HUMAN_DETECTED`, and eventually a
+   a structured `[NAVEL BEHAVIOR] ... dry_run=true` log.
+5. If no person is present, use one brief `--force-decision` run to exercise the
+   structured Ollama response, then stop it immediately.
+6. Confirm malformed model output is reported as
+   `invalid_llm_behavior_selection`, rather than being returned as an intent.
+
+The live test is successful only after a response contains a non-null
+`behavior_intent` that matches `schemas/v1/behavior-intent.schema.json`.
+
+This proof of concept remains read-only throughout these stages. A structured
+LLM selection is parsed and validated into `BehaviorIntent`, mapped to an
+action-specific command, and dispatched to a dry-run handler; it is never
+executed as a robot behavior.
+
 ## Next milestone
 
-The next step is to replace free-form `/chat` output with a strict social-navigation decision schema. The decision layer should select only approved high-level actions and parameters. A deterministic safety controller must validate those decisions before any physical behaviour is executed.
+Add deterministic state-freshness, action-precondition, capability, and motion
+safety validation plus a conservative fallback policy. Only after those gates
+and shadow-mode trials should a robot-specific executor consume an intent.
