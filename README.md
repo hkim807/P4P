@@ -218,6 +218,9 @@ status, planar distance, and robot-relative `(x,y,z)`. Aligned depth appears
 beside it. Runtime text shows capture/perception FPS, latest inference latency,
 human count, most recently returned server action, and transport errors.
 Press `q`, Escape, or Ctrl+C to stop and release camera/model/window resources.
+The complete OpenCV GUI lifecycle runs on the main OS thread; capture and
+perception workers only publish the latest data. Finite camera-test mode closes
+the display automatically after the requested capture count.
 Shutdown waits for current camera/inference work; a pending HTTP worker can take
 until its timeout to finish. No returned action is parsed into robot behavior or
 executed.

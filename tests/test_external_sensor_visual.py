@@ -1,5 +1,6 @@
 """Synthetic rendering with mocked HighGUI; no real windows are opened."""
 
+import asyncio
 import io
 import os
 import unittest
@@ -10,7 +11,8 @@ from unittest.mock import Mock, patch
 import numpy as np
 
 from robot.external_sensor_client.depth import DepthResult
-from robot.external_sensor_client.main import Counters, LiveStatus, camera_test, display_worker
+from robot.external_sensor_client.config import parse_args
+from robot.external_sensor_client.main import Counters, LiveStatus, camera_test, display_loop, run
 from robot.external_sensor_client.perception import PerceivedFrame, TrackedPerson
 from robot.external_sensor_client.visual import DisplayError, VisualDisplay, overlay_rgb, person_label, quit_key
 from test_external_sensor_runtime import FakeCapture, frame
@@ -81,7 +83,7 @@ class VisualTests(unittest.TestCase):
         display.__enter__ = Mock(return_value=display)
         display.__exit__ = Mock(return_value=False)
         display.show.return_value = True
-        display_worker(status, stats, stop, lambda: display)
+        asyncio.run(display_loop(status, stats, stop, lambda: display))
         self.assertTrue(stop.is_set())
         text = display.show.call_args.args[1]
         self.assertIn("action=MONITOR", text)
@@ -93,9 +95,14 @@ class VisualTests(unittest.TestCase):
         capture.frames.put(frame(100))
         display = Mock()
         display.__enter__ = Mock(return_value=display)
+        display.__exit__ = Mock(return_value=False)
         display.show.return_value = True
+        display.poll_quit.return_value = False
         with redirect_stdout(io.StringIO()):
-            camera_test(capture, 30, stop, lambda: display)
+            # Supply enough frames to finish any read already pending on quit.
+            for timestamp in range(101, 130):
+                capture.frames.put(frame(timestamp))
+            asyncio.run(run(parse_args(["--camera-test", "--display"]),
+                            capture_factory=lambda serial: capture, display_factory=lambda: display))
         self.assertTrue(capture.closed)
-        self.assertTrue(stop.is_set())
-        display.close.assert_called_once()
+        display.__exit__.assert_called_once()

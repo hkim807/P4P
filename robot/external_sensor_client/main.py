@@ -15,7 +15,7 @@ from robot.external_sensor_client.capture import CaptureError, CapturedFrame, De
 from robot.external_sensor_client.config import parse_args
 from robot.external_sensor_client.display import display_response
 from robot.external_sensor_client.perception import PerceivedFrame, PerceptionError, PersonPerception
-from robot.external_sensor_client.visual import DisplayError, VisualDisplay
+from robot.external_sensor_client.visual import DisplayError, VisualDisplay, require_gui_thread
 from robot.navel_client.transport import ObservationTransport, TransportError
 
 
@@ -197,35 +197,32 @@ async def send_observations(queue, adapter: ExternalObservationAdapter,
         print("counters=" + str(counters.snapshot()))
 
 
-def camera_test(capture, count: int, stop: threading.Event, display_factory=None) -> None:
-    display = None
-    try:
-        if display_factory is not None:
-            display = display_factory().__enter__()
-        with capture:
-            print_device(capture.device_info)
-            for index in range(count):
+def camera_test(capture, count: int, stop: threading.Event, status: LiveStatus | None = None) -> None:
+    """Finite capture worker; publish only the latest frame, never touch GUI."""
+    with capture:
+        print_device(capture.device_info)
+        for index in range(count):
+            if stop.is_set():
+                break
+            try:
+                frame = capture.read()
+            except CaptureError:
                 if stop.is_set():
                     break
-                try:
-                    frame = capture.read()
-                except CaptureError:
-                    if stop.is_set():
-                        break
-                    raise
-                print(f"frames_captured={index + 1} frame_number={frame.frame_number} "
-                      f"timestamp_us={frame.timestamp_us} depth_valid_sample_ratio={frame.depth_valid_sample_ratio:.3f}")
-                if display is not None and display.show(frame):
-                    stop.set()
-                    break
-    finally:
-        if display is not None:
-            display.close()
+                raise
+            print(f"frames_captured={index + 1} frame_number={frame.frame_number} "
+                  f"timestamp_us={frame.timestamp_us} depth_valid_sample_ratio={frame.depth_valid_sample_ratio:.3f}")
+            if status is not None:
+                status.update(frame=frame)
 
 
-def display_worker(status: LiveStatus, counters: Counters, stop: threading.Event, factory):
+async def display_loop(status: LiveStatus, counters: Counters, stop: threading.Event,
+                       factory, capture_done: Callable[[], bool] | None = None):
+    """Pump the complete GUI lifecycle on the main OS/event-loop thread."""
+    require_gui_thread()
     with factory() as display:
         while not stop.is_set():
+            finished = capture_done is not None and capture_done()
             frame, action, error = status.snapshot()
             stats = counters.snapshot()
             text = (f"capture={stats['capture_fps']:.1f}FPS perception={stats['perception_fps']:.1f}FPS "
@@ -235,24 +232,34 @@ def display_worker(status: LiveStatus, counters: Counters, stop: threading.Event
             if quit_requested:
                 stop.set()
                 return
-            stop.wait(0.03)
+            # Finite camera tests terminate without waiting for a GUI key. Read
+            # completion before the frame snapshot so the final published frame
+            # is displayed even when the worker finishes between GUI ticks.
+            if finished:
+                return
+            await asyncio.sleep(0.03)
 
 
 async def run(args: argparse.Namespace, *, capture_factory=RealSenseCapture,
               transport_factory=ObservationTransport, perception_factory=PersonPerception,
               display_factory=VisualDisplay) -> None:
     stop = threading.Event()
+    if args.display:
+        require_gui_thread()
     capture = capture_factory(args.realsense_serial)
     if args.camera_test:
+        status = LiveStatus()
         worker = asyncio.create_task(asyncio.to_thread(
-            camera_test, capture, args.camera_test_frames, stop,
-            display_factory if args.display else None,
+            camera_test, capture, args.camera_test_frames, stop, status if args.display else None,
         ))
         try:
+            if args.display:
+                await display_loop(status, Counters(), stop, display_factory, worker.done)
             await asyncio.shield(worker)
         finally:
             stop.set()
             await worker
+            status.update(frame=None)
         return
     adapter = ExternalObservationAdapter(
         args.adapter_id, stationary_rig=args.stationary_rig, camera_height_m=args.camera_height_m,
@@ -266,19 +273,22 @@ async def run(args: argparse.Namespace, *, capture_factory=RealSenseCapture,
         asyncio.create_task(asyncio.to_thread(capture_worker, capture, captured, counters, stop)),
         asyncio.create_task(asyncio.to_thread(perception_worker, captured, perceived, counters, status, stop, perception_factory, args)),
     ]
-    if args.display:
-        workers.append(asyncio.create_task(asyncio.to_thread(display_worker, status, counters, stop, display_factory)))
+    gui = asyncio.create_task(display_loop(status, counters, stop, display_factory)) if args.display else None
     sender = asyncio.create_task(send_observations(
         perceived, adapter, transport, counters, minimum_send_interval=args.minimum_send_interval,
         force_decision=args.force_decision, print_raw_json=args.print_raw_json, stop=stop, status=status,
     ))
     try:
-        done, _ = await asyncio.wait((*workers, sender), return_when=asyncio.FIRST_COMPLETED)
+        tasks = (*workers, sender, gui) if gui is not None else (*workers, sender)
+        done, _ = await asyncio.wait(tasks, return_when=asyncio.FIRST_COMPLETED)
         for task in done:
             task.result()
     finally:
         unwinding = sys.exc_info()[0] is not None
         stop.set()
+        if gui is not None:
+            gui.cancel()
+            gui_result = (await asyncio.gather(gui, return_exceptions=True))[0]
         sender.cancel()
         await asyncio.gather(sender, return_exceptions=True)
         # Never cancel a to_thread worker: wait for SDK/inference to finish and
@@ -289,6 +299,8 @@ async def run(args: argparse.Namespace, *, capture_factory=RealSenseCapture,
         status.update(frame=None)
         print("final_counters=" + str(counters.snapshot()))
         if not unwinding:
+            if gui is not None and isinstance(gui_result, Exception):
+                raise gui_result
             for result in results:
                 if isinstance(result, BaseException):
                     raise result

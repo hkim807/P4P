@@ -5,6 +5,7 @@ from __future__ import annotations
 import os
 import subprocess
 import sys
+import threading
 from importlib import import_module
 from typing import Any
 
@@ -14,6 +15,11 @@ from robot.external_sensor_client.perception import PerceivedFrame, TrackedPerso
 
 class DisplayError(RuntimeError):
     """GUI dependency or graphical session is unavailable."""
+
+
+def require_gui_thread() -> None:
+    if threading.current_thread() is not threading.main_thread():
+        raise DisplayError("OpenCV display lifecycle must run on the main OS thread")
 
 
 def quit_key(key: int) -> bool:
@@ -47,13 +53,14 @@ def overlay_rgb(rgb_bgr: Any, humans: tuple[TrackedPerson, ...], cv: Any,
 
 
 class VisualDisplay:
-    """Create/render/destroy windows on the single display owner thread."""
+    """Create/render/pump/destroy windows exclusively on the main OS thread."""
 
     def __init__(self):
         self.cv = None
         self.np = None
 
     def __enter__(self):
+        require_gui_thread()
         if sys.platform.startswith("linux") and not (os.getenv("DISPLAY") or os.getenv("WAYLAND_DISPLAY")):
             raise DisplayError("--display requires a graphical session (DISPLAY/WAYLAND_DISPLAY); omit it for headless operation")
         try:
@@ -79,13 +86,14 @@ class VisualDisplay:
                                        + probe.stderr.strip()[-400:])
             self.cv.namedWindow("External D435", self.cv.WINDOW_NORMAL)
             return self
-        except Exception as error:
+        except BaseException as error:
             self.close()
-            if isinstance(error, DisplayError):
+            if not isinstance(error, Exception) or isinstance(error, DisplayError):
                 raise
             raise DisplayError(f"cannot open D435 display; check OpenCV GUI support and graphical session: {error}") from error
 
     def show(self, frame: CapturedFrame | PerceivedFrame, runtime_text: str = "") -> bool:
+        require_gui_thread()
         cv, np = self.cv, self.np
         try:
             if isinstance(frame, PerceivedFrame):
@@ -104,6 +112,7 @@ class VisualDisplay:
             raise DisplayError(f"D435 display failed: {error}") from error
 
     def poll_quit(self) -> bool:
+        require_gui_thread()
         try:
             return quit_key(self.cv.waitKey(1))
         except Exception as error:
@@ -111,11 +120,16 @@ class VisualDisplay:
 
     def close(self):
         if self.cv is not None:
+            require_gui_thread()
             try:
                 self.cv.destroyAllWindows()
+                # Let the backend finish pending GUI destruction on this same
+                # thread before asyncio/executor and process teardown.
+                self.cv.waitKey(1)
             except Exception:
                 pass
             self.cv = None
+            self.np = None
 
     def __exit__(self, *_):
         self.close()
