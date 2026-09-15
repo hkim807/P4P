@@ -2,7 +2,9 @@
 
 from __future__ import annotations
 
+import tempfile
 import unittest
+from pathlib import Path
 
 from app.config import Settings
 from app.server import create_app
@@ -45,8 +47,13 @@ class FailingLLM(FakeLLM):
 
 class ServerTests(unittest.TestCase):
     def setUp(self):
+        self.temporary_directory = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temporary_directory.cleanup)
+        self.monitor_project_root = Path(self.temporary_directory.name)
         self.client = create_app(
-            llm=FakeLLM(), settings=Settings(max_input_characters=100)
+            llm=FakeLLM(),
+            settings=Settings(max_input_characters=100),
+            monitor_project_root=self.monitor_project_root,
         ).test_client()
 
     def test_health(self):
@@ -78,7 +85,10 @@ class ServerTests(unittest.TestCase):
         self.assertEqual(response.status_code, 400)
 
     def test_chat_reports_provider_failure(self):
-        client = create_app(llm=FailingLLM()).test_client()
+        client = create_app(
+            llm=FailingLLM(),
+            monitor_project_root=self.monitor_project_root,
+        ).test_client()
         response = client.post("/chat", json={"message": "Hello"})
         self.assertEqual(response.status_code, 502)
 

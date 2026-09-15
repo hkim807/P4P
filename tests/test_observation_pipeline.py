@@ -3,7 +3,9 @@
 from __future__ import annotations
 
 import json
+import tempfile
 import unittest
+from pathlib import Path
 
 from app.adapters.synthetic import SyntheticObservationAdapter, museum_guide_scenarios
 from app.config import DecisionMode, Settings
@@ -187,8 +189,13 @@ def observation_payload(*, adapter_id="source-a", timestamp_us=1_000_000, humans
 
 class ObservationEndpointTests(unittest.TestCase):
     def setUp(self):
+        self.temporary_directory = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temporary_directory.cleanup)
         self.llm = FakeLLM()
-        self.client = create_app(llm=self.llm).test_client()
+        self.client = create_app(
+            llm=self.llm,
+            monitor_project_root=Path(self.temporary_directory.name),
+        ).test_client()
 
     def test_valid_frame_is_accepted_and_estimated(self):
         response = self.client.post(
@@ -320,9 +327,15 @@ class ObservationEndpointTests(unittest.TestCase):
 
 class DebugObservationEndpointTests(unittest.TestCase):
     def setUp(self):
+        self.temporary_directory = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temporary_directory.cleanup)
         self.llm = TraceableFakeLLM()
         settings = Settings(decision_mode=DecisionMode.DEBUG)
-        self.client = create_app(llm=self.llm, settings=settings).test_client()
+        self.client = create_app(
+            llm=self.llm,
+            settings=settings,
+            monitor_project_root=Path(self.temporary_directory.name),
+        ).test_client()
 
     def test_debug_decision_returns_one_atomic_request_snapshot(self):
         response = self.client.post(
@@ -463,16 +476,21 @@ class DebugObservationEndpointTests(unittest.TestCase):
 
 class DecisionModeAcceptanceTests(unittest.TestCase):
     def test_normal_and_debug_modes_share_state_but_keep_contracts_separate(self):
+        temporary_directory = tempfile.TemporaryDirectory()
+        self.addCleanup(temporary_directory.cleanup)
+        monitor_root = Path(temporary_directory.name)
         payload = observation_payload(humans=True)
         normal_llm = FakeLLM()
         debug_llm = TraceableFakeLLM()
         normal_client = create_app(
             llm=normal_llm,
             settings=Settings(decision_mode=DecisionMode.NORMAL),
+            monitor_project_root=monitor_root / "normal",
         ).test_client()
         debug_client = create_app(
             llm=debug_llm,
             settings=Settings(decision_mode=DecisionMode.DEBUG),
+            monitor_project_root=monitor_root / "debug",
         ).test_client()
 
         normal_response = normal_client.post("/api/v1/observations", json=payload)

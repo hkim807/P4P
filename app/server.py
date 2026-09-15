@@ -18,7 +18,7 @@ from app.decision.llm_policy import LLMPolicyBridge, LLMPolicyError
 from app.decision.scheduler import DecisionScheduler, DecisionSchedulerError
 from app.domain.models import BehaviorIntent, ObservationFrame, SocialState
 from app.llm import OllamaLLM
-from app.monitor import DeterministicReplayLLM, MonitorService
+from app.monitor import DebugHistoryError, DeterministicReplayLLM, MonitorService
 from app.state.estimator import TemporalSocialStateError, TemporalSocialStateEstimator
 
 
@@ -274,6 +274,7 @@ def create_app(
     settings: Settings | None = None,
     observation_pipeline: ObservationPipeline | None = None,
     monitor_service: MonitorService | None = None,
+    monitor_project_root: Path | None = None,
 ) -> Flask:
     """Create the Flask application; injectable arguments keep tests offline."""
     active_settings = settings or Settings()
@@ -284,7 +285,7 @@ def create_app(
     project_root = Path(__file__).resolve().parents[1]
     web_dist = project_root / "web" / "dist"
     active_monitor = monitor_service or MonitorService(
-        project_root=project_root,
+        project_root=monitor_project_root or project_root,
         pipeline_factory=lambda mode: ObservationPipeline(
             active_llm if mode == "current" else DeterministicReplayLLM(),
             decision_mode=(
@@ -563,6 +564,80 @@ def create_app(
         response = jsonify(payload)
         response.headers["Cache-Control"] = "no-store"
         response.headers["X-Debug-Snapshot-Revision"] = str(payload["revision"])
+        return response
+
+    @flask_app.get(
+        "/api/v1/monitor/sources/<path:source_id>/debug-decisions"
+    )
+    def monitor_debug_decisions(source_id: str):
+        limit_value = request.args.get("limit", "50")
+        before_value = request.args.get("before")
+        try:
+            limit = int(limit_value)
+            before = int(before_value) if before_value is not None else None
+            payload = active_monitor.list_debug_decisions(
+                source_id,
+                limit=limit,
+                before_sequence=before,
+            )
+        except (TypeError, ValueError) as error:
+            return (
+                jsonify(
+                    {
+                        "error": {
+                            "code": "invalid_debug_history_query",
+                            "message": str(error),
+                        }
+                    }
+                ),
+                400,
+            )
+        except DebugHistoryError as error:
+            return (
+                jsonify(
+                    {
+                        "error": {
+                            "code": "debug_history_unavailable",
+                            "message": str(error),
+                        }
+                    }
+                ),
+                503,
+            )
+        response = jsonify(payload)
+        response.headers["Cache-Control"] = "no-store"
+        return response
+
+    @flask_app.get("/api/v1/monitor/debug-decisions/<request_id>")
+    def monitor_debug_decision(request_id: str):
+        try:
+            payload = active_monitor.get_debug_decision(request_id)
+        except KeyError:
+            return (
+                jsonify(
+                    {
+                        "error": {
+                            "code": "unknown_debug_decision",
+                            "message": f"Unknown Debug decision {request_id!r}.",
+                        }
+                    }
+                ),
+                404,
+            )
+        except (ValueError, DebugHistoryError) as error:
+            return (
+                jsonify(
+                    {
+                        "error": {
+                            "code": "debug_history_unavailable",
+                            "message": str(error),
+                        }
+                    }
+                ),
+                503,
+            )
+        response = jsonify(payload)
+        response.headers["Cache-Control"] = "no-store"
         return response
 
     @flask_app.get("/api/v1/monitor/recordings")

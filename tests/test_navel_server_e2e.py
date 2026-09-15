@@ -3,8 +3,10 @@
 from __future__ import annotations
 
 import json
+import tempfile
 import threading
 import unittest
+from pathlib import Path
 from types import SimpleNamespace as NS
 from unittest.mock import Mock
 
@@ -90,7 +92,17 @@ def navel_locomotion():
 class NavelServerEndToEndTests(unittest.TestCase):
     def test_navel_shaped_input_returns_behavior_intent_over_http(self):
         llm = StructuredFakeLLM()
-        server = make_server("127.0.0.1", 0, create_app(llm=llm), threaded=True)
+        temporary_directory = tempfile.TemporaryDirectory()
+        self.addCleanup(temporary_directory.cleanup)
+        server = make_server(
+            "127.0.0.1",
+            0,
+            create_app(
+                llm=llm,
+                monitor_project_root=Path(temporary_directory.name),
+            ),
+            threaded=True,
+        )
         thread = threading.Thread(target=server.serve_forever, daemon=True)
         thread.start()
         self.addCleanup(thread.join, 2.0)

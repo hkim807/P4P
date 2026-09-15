@@ -8,6 +8,7 @@ observation recordings, but it cannot send a command to a robot.
 from __future__ import annotations
 
 import json
+import logging
 import re
 import threading
 import time
@@ -21,6 +22,10 @@ from typing import Any, Callable
 
 from app.adapters.jsonl import JsonlObservationIterator, JsonlObservationRecord
 from app.domain.models import ObservationFrame, SocialState
+from app.monitor.debug_history import DebugDecisionHistory, DebugHistoryError
+
+
+logger = logging.getLogger(__name__)
 
 
 def _utc_now() -> str:
@@ -99,10 +104,14 @@ class MonitorService:
         *,
         project_root: Path,
         pipeline_factory: Callable[[str], Any],
+        debug_history: DebugDecisionHistory | None = None,
     ) -> None:
         self.project_root = project_root.resolve()
         self.recordings_root = self.project_root / "recordings"
         self.runtime_root = self.project_root / "var" / "recordings"
+        self.debug_history = debug_history or DebugDecisionHistory(
+            self.project_root / "var" / "debug-decisions.sqlite3"
+        )
         self.pipeline_factory = pipeline_factory
         self._lock = threading.RLock()
         self._condition = threading.Condition(self._lock)
@@ -249,19 +258,38 @@ class MonitorService:
             retained_snapshot = (previous or {}).get("latest_debug_snapshot")
             retained_revision = (previous or {}).get("debug_snapshot_revision", 0)
             snapshot_updated = False
+            history_item = None
             candidate = getattr(result, "debug_snapshot", None)
             if candidate is not None:
                 candidate_payload = deepcopy(candidate.model_dump(mode="json"))
-                if (
-                    candidate_payload.get("source_id") == source_id
-                    and self._is_newer_debug_snapshot(
+                if candidate_payload.get("source_id") == source_id:
+                    try:
+                        history_item = self.debug_history.record(candidate_payload)
+                    except DebugHistoryError:
+                        logger.exception(
+                            "Could not persist Debug decision %r",
+                            candidate_payload.get("request_id"),
+                        )
+                    if self._is_newer_debug_snapshot(
                         candidate_payload, retained_snapshot
+                    ):
+                        self._debug_snapshot_revision += 1
+                        retained_snapshot = candidate_payload
+                        retained_revision = self._debug_snapshot_revision
+                        snapshot_updated = True
+            previous_history_count = (previous or {}).get("debug_decision_count")
+            if previous_history_count is None:
+                try:
+                    history_count = self.debug_history.count(source_id)
+                except DebugHistoryError:
+                    logger.exception(
+                        "Could not count Debug decisions for source %r", source_id
                     )
-                ):
-                    self._debug_snapshot_revision += 1
-                    retained_snapshot = candidate_payload
-                    retained_revision = self._debug_snapshot_revision
-                    snapshot_updated = True
+                    history_count = 1 if history_item is not None else 0
+            else:
+                history_count = previous_history_count + (
+                    1 if history_item is not None else 0
+                )
             self._sources[source_id] = {
                 "id": source_id,
                 "name": _human_title(source_id),
@@ -278,6 +306,7 @@ class MonitorService:
                 "recording_run_id": self._active_recordings.get(source_id),
                 "latest_debug_snapshot": retained_snapshot,
                 "debug_snapshot_revision": retained_revision,
+                "debug_decision_count": history_count,
             }
             recording_id = self._active_recordings.get(source_id)
             if recording_id is not None:
@@ -308,6 +337,18 @@ class MonitorService:
                         ],
                         "status": retained_snapshot["status"],
                         "revision": retained_revision,
+                    },
+                )
+            if history_item is not None:
+                self._publish(
+                    "debug.decision.recorded",
+                    {
+                        "source_id": source_id,
+                        "request_id": history_item["request_id"],
+                        "history_id": history_item["history_id"],
+                        "state_timestamp_us": history_item["state_timestamp_us"],
+                        "status": history_item["status"],
+                        "recommended_action": history_item["recommended_action"],
                     },
                 )
             self._publish(
@@ -356,6 +397,24 @@ class MonitorService:
                 "revision": source["debug_snapshot_revision"],
                 "snapshot": deepcopy(source["latest_debug_snapshot"]),
             }
+
+    def list_debug_decisions(
+        self,
+        source_id: str,
+        *,
+        limit: int = 50,
+        before_sequence: int | None = None,
+    ) -> dict[str, Any]:
+        """Return durable Debug decision summaries for one source."""
+        return self.debug_history.list(
+            source_id,
+            limit=limit,
+            before_sequence=before_sequence,
+        )
+
+    def get_debug_decision(self, request_id: str) -> dict[str, Any]:
+        """Return one complete durable Debug decision snapshot."""
+        return self.debug_history.get(request_id)
 
     def start_recording(self, source_id: str) -> dict[str, Any]:
         with self._lock:

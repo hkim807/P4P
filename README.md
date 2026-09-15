@@ -148,8 +148,9 @@ The monitor is deliberately read-only with respect to connected robots.
 
 Debug mode keeps the normal Navel ingestion, `SocialState` estimator,
 scheduler, Ollama client, action set and `BehaviorIntent` validation. It changes
-the prompt and structured response for each scheduled decision, then retains one
-complete request-local snapshot for inspection:
+the prompt and structured response for each scheduled decision, retains the
+latest request-local snapshot for the live page, and saves every completed or
+failed Debug decision to a local SQLite history:
 
 ```text
 Navel sensors
@@ -161,7 +162,8 @@ Navel sensors
   -> Ollama
   -> validated debug response and BehaviorIntent
   -> atomic DebugDecisionSnapshot
-  -> monitor API and SSE event
+  -> latest snapshot plus durable SQLite history
+  -> monitor API and SSE events
   -> /debug
 ```
 
@@ -194,11 +196,30 @@ requests inference for every transmitted frame.
 A failed Ollama request or invalid structured response returns HTTP 502 for that
 observation but remains visible on `/debug`. Expand the prompt, raw state and raw
 response panels to identify whether the problem occurred before or after model
-generation. The latest snapshot is also available directly:
+generation. Read the latest snapshot directly:
 
 ```bash
 curl http://127.0.0.1:6060/api/v1/monitor/sources/navel-robot-1/debug-snapshot
 ```
+
+The gateway stores every Debug decision automatically from the first inference
+observed for a connected source. This does not require the Observatory
+**Record** button. The database is `var/debug-decisions.sqlite3`, persists
+across gateway restarts and is excluded from Git. Existing Observatory
+recordings remain manually started JSONL files.
+
+List saved decisions newest first, then fetch one complete snapshot by its
+request ID:
+
+```bash
+curl 'http://127.0.0.1:6060/api/v1/monitor/sources/navel-robot-1/debug-decisions?limit=50'
+curl http://127.0.0.1:6060/api/v1/monitor/debug-decisions/REQUEST_ID
+```
+
+Use the returned `next_cursor` as the list endpoint's `before` value to load an
+older page. The current web page still opens the latest snapshot; the next UI
+stage will add the selectable history list. The history has no automatic
+deletion limit.
 
 Restart with `DECISION_MODE=NORMAL`, or omit the setting, to use the original
 compact policy prompt and response. Normal mode remains the default and does not

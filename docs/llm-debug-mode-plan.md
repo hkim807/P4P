@@ -2,7 +2,8 @@
 
 ## Stage 1 — repository inspection
 
-Status: the inspection, distance-only prerequisite, and Stages 2–6 are complete.
+Status: the inspection, distance-only prerequisite, Stages 2–6, and the Stage 7
+decision-history backend are complete. The Stage 8 history UI is pending review.
 The initial inspection used commit `af211ba`. Each implementation stage below
 ends with a review checkpoint; wait for the user to review, commit, and request
 the next stage. Do not commit on the user's behalf.
@@ -230,6 +231,8 @@ may be refined when their stage begins.
 | 4 | **Complete:** atomic per-source snapshot retention and retrieval using the existing monitor/SSE flow, with skipped-cycle and out-of-order protection | `app/monitor/service.py`, `app/server.py`, `tests/test_monitor.py`, `tests/test_observation_pipeline.py` |
 | 5 | **Complete:** separate `/debug` page, all evidence/score sections, prompt copy/viewer, raw state and response viewers, metadata and missing/stale states | `web/src/App.tsx`, new `web/src/DebugPage.tsx` and debug types, `web/src/styles.css`, `app/server.py` for direct page loading |
 | 6 | **Complete:** acceptance validation, offline scenarios, normal-mode regression and run instructions | `tests/test_observation_pipeline.py`, `README.md`, this document |
+| 7 | **Complete:** automatic durable SQLite history, paginated list/detail APIs and per-source history counts/events | `app/monitor/debug_history.py`, `app/monitor/service.py`, `app/server.py`, focused tests and documentation |
+| 8 | **Pending:** selectable decision history and click-through details on `/debug` | `web/src/DebugPage.tsx`, debug types and styles |
 
 Stage 2 implements the related prompt/schema requirements together (task-list
 sections 2–7 and 17). Stages 3–4 cover capture, consistency, metadata and streaming
@@ -421,6 +424,40 @@ the limits imposed by current state data. A real robot plus real Ollama trial is
 still required to validate network, SDK, model availability, latency and model
 response quality in the lab; offline acceptance does not claim those external
 systems were exercised.
+
+### Stage 7 decision-history backend
+
+The gateway now automatically stores every completed or failed Debug inference
+in `var/debug-decisions.sqlite3`. Collection starts with the first Debug
+decision observed for a source and does not depend on starting an Observatory
+recording. The SQLite file persists across gateway restarts; `var/` remains a
+runtime directory excluded from Git.
+
+Each row has searchable list metadata and a zlib-compressed copy of the complete
+immutable `DebugDecisionSnapshot`. The unique request ID prevents duplicate
+inserts. Insert order is retained independently of the latest-snapshot rule, so
+an older request that completes late remains in history without replacing the
+newer live snapshot. No automatic deletion or retention limit is applied.
+
+The source catalogue exposes `debug_decision_count`. Each new row publishes a
+`debug.decision.recorded` SSE event, including failed decisions. History can be
+read newest first through:
+
+```text
+GET /api/v1/monitor/sources/<source_id>/debug-decisions?limit=50&before=<history_id>
+GET /api/v1/monitor/debug-decisions/<request_id>
+```
+
+The list endpoint returns compact action, rationale, status, error, model and
+timing fields plus an exclusive `next_cursor`. The detail endpoint returns the
+full snapshot needed by the existing evidence viewer. The current Stage 5 page
+still selects the latest snapshot; Stage 8 will connect these APIs to a history
+list and click-through detail view.
+
+Stage 7 validation covers database reopen, duplicate request IDs, newest-first
+pagination, failed decisions, out-of-order completions, source-count recovery
+and list/detail HTTP errors. The complete suite passes all 202 tests, including
+the localhost Navel HTTP transport test.
 
 ### Implementation invariants
 

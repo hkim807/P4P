@@ -171,6 +171,14 @@ class MonitorServiceTests(unittest.TestCase):
         ]
         self.assertEqual(len(debug_events), 1)
         self.assertEqual(debug_events[0]["data"]["revision"], 1)
+        self.assertEqual(source["debug_decision_count"], 1)
+        recorded_events = [
+            event
+            for event in self.monitor.events_after(0, timeout_s=0)
+            if event["type"] == "debug.decision.recorded"
+        ]
+        self.assertEqual(len(recorded_events), 1)
+        self.assertEqual(recorded_events[0]["data"]["request_id"], "request-1")
 
     def test_older_completion_cannot_replace_newer_debug_snapshot(self):
         adapter = SyntheticObservationAdapter(
@@ -207,6 +215,14 @@ class MonitorServiceTests(unittest.TestCase):
             if event["type"] == "debug.snapshot.updated"
         ]
         self.assertEqual(len(debug_events), 1)
+        history = self.monitor.list_debug_decisions(
+            newer.capabilities.adapter_id
+        )
+        self.assertEqual(
+            [item["request_id"] for item in history["items"]],
+            ["request-older", "request-newer"],
+        )
+        self.assertEqual(self.monitor.list_sources()[0]["debug_decision_count"], 2)
 
     def test_newer_failed_snapshot_is_retained_atomically(self):
         adapter = SyntheticObservationAdapter(
@@ -278,6 +294,37 @@ class MonitorServiceTests(unittest.TestCase):
         self.assertEqual(
             self.monitor.get_debug_snapshot("source-b")["snapshot"]["request_id"],
             "request-b",
+        )
+
+    def test_source_history_count_is_restored_after_monitor_restart(self):
+        adapter = SyntheticObservationAdapter(
+            museum_guide_scenarios()["newcomer_requests_guidance"]
+        )
+        observation = next(iter(adapter.iter_samples())).observation
+        result_without_snapshot = ObservationPipeline(
+            DeterministicReplayLLM()
+        ).process(observation)
+        result_with_snapshot = with_debug_snapshot(
+            result_without_snapshot,
+            source_id=observation.capabilities.adapter_id,
+            request_id="request-before-restart",
+            requested_at="2026-09-15T00:00:00.000+00:00",
+        )
+        self.monitor.observe_live(observation, result_with_snapshot, [])
+
+        reopened = MonitorService(
+            project_root=self.root,
+            pipeline_factory=lambda mode: ObservationPipeline(
+                DeterministicReplayLLM()
+            ),
+        )
+        reopened.observe_live(observation, result_without_snapshot, [])
+
+        source = reopened.list_sources()[0]
+        self.assertEqual(source["debug_decision_count"], 1)
+        self.assertEqual(
+            reopened.list_debug_decisions(source["id"])["items"][0]["request_id"],
+            "request-before-restart",
         )
 
 
@@ -353,6 +400,73 @@ class MonitorEndpointTests(unittest.TestCase):
             self.assertEqual(missing.headers["X-Debug-Snapshot-Revision"], "0")
             self.assertEqual(unknown.status_code, 404)
             self.assertEqual(unknown.get_json()["error"]["code"], "unknown_source")
+
+    def test_debug_decision_history_endpoints_paginate_and_return_detail(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            monitor = MonitorService(
+                project_root=root,
+                pipeline_factory=lambda mode: ObservationPipeline(
+                    DeterministicReplayLLM()
+                ),
+            )
+            client = create_app(
+                llm=DeterministicReplayLLM(), monitor_service=monitor
+            ).test_client()
+            adapter = SyntheticObservationAdapter(
+                museum_guide_scenarios()["newcomer_requests_guidance"]
+            )
+            samples = iter(adapter.iter_samples())
+            pipeline = ObservationPipeline(DeterministicReplayLLM())
+            source_id = None
+            for index in range(1, 4):
+                observation = next(samples).observation
+                source_id = observation.capabilities.adapter_id
+                result = with_debug_snapshot(
+                    pipeline.process(observation),
+                    source_id=source_id,
+                    request_id=f"request-{index}",
+                    requested_at=f"2026-09-15T00:00:0{index}.000+00:00",
+                    status="FAILED" if index == 2 else "COMPLETED",
+                )
+                monitor.observe_live(observation, result, [])
+            assert source_id is not None
+
+            first = client.get(
+                f"/api/v1/monitor/sources/{source_id}/debug-decisions?limit=2"
+            )
+            first_payload = first.get_json()
+            second = client.get(
+                f"/api/v1/monitor/sources/{source_id}/debug-decisions"
+                f"?before={first_payload['next_cursor']}"
+            )
+            detail = client.get("/api/v1/monitor/debug-decisions/request-2")
+
+            self.assertEqual(first.status_code, 200)
+            self.assertEqual(first.headers["Cache-Control"], "no-store")
+            self.assertEqual(
+                [item["request_id"] for item in first_payload["items"]],
+                ["request-3", "request-2"],
+            )
+            self.assertEqual(
+                [item["request_id"] for item in second.get_json()["items"]],
+                ["request-1"],
+            )
+            self.assertEqual(detail.status_code, 200)
+            self.assertEqual(detail.headers["Cache-Control"], "no-store")
+            self.assertEqual(detail.get_json()["snapshot"]["status"], "FAILED")
+            self.assertEqual(
+                client.get(
+                    f"/api/v1/monitor/sources/{source_id}/debug-decisions?limit=0"
+                ).get_json()["error"]["code"],
+                "invalid_debug_history_query",
+            )
+            self.assertEqual(
+                client.get(
+                    "/api/v1/monitor/debug-decisions/unknown"
+                ).get_json()["error"]["code"],
+                "unknown_debug_decision",
+            )
 
 
 if __name__ == "__main__":
