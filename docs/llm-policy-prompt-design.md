@@ -96,7 +96,7 @@ feasibility-then-social-norms-then-efficiency procedure is more reliable.
 
 Implementation consequences:
 
-- The prompt has a version constant (`llm-social-navigation-v1`) and will be
+- The prompt has a version constant (`llm-social-navigation-v2`) and will be
   logged with every experiment input.
 - It specifies a decision priority and observable evidence rules, but asks only
   for the final structured selection rather than a narrative reasoning chain.
@@ -173,11 +173,15 @@ preserved. No invalid selection may be sent to a robot executor.
 
 ## Missing information and conservative behavior
 
-The Navel adapter currently provides human motion, distance when available,
-head/gaze information, and facial-expression scores. It does not provide
-per-person speech meaning, a confirmed guidance request, body pose, groups, or
-images. Absent and `UNKNOWN` fields therefore remain unknown; the prompt forbids
-turning absence into negative evidence.
+The Navel adapter currently provides scalar camera-derived distance,
+head/gaze information, and facial-expression scores. It does not provide a
+person's bearing or relative position. The temporal estimator can derive only
+whether robot-human separation is decreasing, stable, or increasing from the
+distance history; it cannot attribute that change to the human rather than the
+robot or infer crossing, side, or trajectory. Those limitations are explicit in
+the prompt. The adapter also does not provide per-person speech meaning, a
+confirmed guidance request, body pose, groups, or images. Absent and `UNKNOWN`
+fields remain unknown; the prompt forbids turning absence into negative evidence.
 
 In particular, gaze or speech activity may justify `ORIENT`, `GREET`, or further
 monitoring, but cannot establish what a visitor said. A future dialogue or

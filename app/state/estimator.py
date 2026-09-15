@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import hashlib
 import math
+import statistics
 from collections import deque
 from dataclasses import dataclass, field
 from typing import Iterable, Iterator, Sequence
@@ -49,6 +50,8 @@ class EstimatorConfig:
 
     history_window_s: float = 5.0
     motion_window_s: float = 0.5
+    minimum_distance_samples: int = 3
+    minimum_distance_span_s: float = 0.2
     gaze_short_window_s: float = 0.5
     gaze_long_window_s: float = 2.0
     occlusion_retention_s: float = 2.0
@@ -69,6 +72,7 @@ class EstimatorConfig:
         positive = (
             "history_window_s",
             "motion_window_s",
+            "minimum_distance_span_s",
             "gaze_short_window_s",
             "gaze_long_window_s",
             "occlusion_retention_s",
@@ -84,6 +88,12 @@ class EstimatorConfig:
             value = float(getattr(self, name))
             if not math.isfinite(value) or value <= 0:
                 raise ValueError(f"{name} must be finite and positive")
+        if (
+            isinstance(self.minimum_distance_samples, bool)
+            or not isinstance(self.minimum_distance_samples, int)
+            or self.minimum_distance_samples < 2
+        ):
+            raise ValueError("minimum_distance_samples must be an integer of at least 2")
         probabilities = (
             "gaze_threshold",
             "sustained_gaze_mean",
@@ -97,6 +107,10 @@ class EstimatorConfig:
                 raise ValueError(f"{name} must be between 0 and 1")
         if self.motion_window_s > self.history_window_s:
             raise ValueError("motion_window_s must not exceed history_window_s")
+        if self.minimum_distance_span_s > self.motion_window_s:
+            raise ValueError(
+                "minimum_distance_span_s must not exceed motion_window_s"
+            )
         if self.gaze_short_window_s > self.gaze_long_window_s:
             raise ValueError(
                 "gaze_short_window_s must not exceed gaze_long_window_s"
@@ -339,6 +353,10 @@ class TemporalSocialStateEstimator:
         relative_velocity = track.relative_velocity_mps
         human_velocity = track.human_velocity_mps
         closing_speed = self._closing_speed(position, relative_velocity)
+        distance_only_trend = False
+        if position is None and currently_observed:
+            closing_speed = self._distance_only_closing_speed(track.samples, now_us)
+            distance_only_trend = closing_speed is not None
         distance_trend = self._distance_trend(closing_speed)
         motion_relation = self._motion_relation(
             position=position,
@@ -375,6 +393,7 @@ class TemporalSocialStateEstimator:
             position=position,
             motion_relation=motion_relation,
             distance_trend=distance_trend,
+            distance_only_trend=distance_only_trend,
             attention=attention,
             engagement=engagement,
         )
@@ -460,6 +479,45 @@ class TemporalSocialStateEstimator:
         if closing_speed < -self.config.radial_motion_threshold_mps:
             return DistanceTrend.INCREASING.value
         return DistanceTrend.STABLE.value
+
+    def _distance_only_closing_speed(
+        self,
+        samples: Sequence[_TrackSample],
+        now_us: int,
+    ) -> float | None:
+        """Estimate scalar separation rate when no relative position is available.
+
+        A positive result means the camera-derived distance is decreasing. This
+        does not identify whether the human, robot, or both caused that change.
+        The median of all pairwise slopes limits the effect of one noisy depth
+        sample while keeping the calculation deterministic and inspectable.
+        """
+        if not samples or samples[-1].distance_m is None:
+            return None
+        cutoff_us = now_us - round(
+            self.config.motion_window_s * MICROSECONDS_PER_SECOND
+        )
+        distances = [
+            (sample.timestamp_us, sample.distance_m)
+            for sample in samples
+            if sample.timestamp_us >= cutoff_us and sample.distance_m is not None
+        ]
+        if len(distances) < self.config.minimum_distance_samples:
+            return None
+        span_s = (distances[-1][0] - distances[0][0]) / MICROSECONDS_PER_SECOND
+        if span_s < self.config.minimum_distance_span_s:
+            return None
+
+        slopes = [
+            (right_distance - left_distance)
+            / ((right_timestamp - left_timestamp) / MICROSECONDS_PER_SECOND)
+            for index, (left_timestamp, left_distance) in enumerate(distances)
+            for right_timestamp, right_distance in distances[index + 1 :]
+            if right_timestamp > left_timestamp
+        ]
+        if not slopes:
+            return None
+        return -statistics.median(slopes)
 
     def _motion_relation(
         self,
@@ -738,6 +796,7 @@ class TemporalSocialStateEstimator:
         position: tuple[float, float, float] | None,
         motion_relation: str,
         distance_trend: str,
+        distance_only_trend: bool,
         attention: AttentionEvidence,
         engagement: EngagementEvidence,
     ) -> list[str]:
@@ -747,6 +806,8 @@ class TemporalSocialStateEstimator:
             evidence.append(f"MOTION_{motion_relation}")
         if distance_trend != DistanceTrend.UNKNOWN.value:
             evidence.append(f"DISTANCE_{distance_trend}")
+        if distance_only_trend:
+            evidence.append("DISTANCE_ONLY_TREND")
         if attention.state == AttentionState.UNKNOWN.value:
             evidence.append("ATTENTION_UNKNOWN")
         else:

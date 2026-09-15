@@ -191,7 +191,7 @@ class ObservationEndpointTests(unittest.TestCase):
         compact_json = first.split("Input JSON: ", 1)[1]
         self.assertNotIn(": ", compact_json)
         self.assertIn('"scheduler_triggers":["HUMAN_DETECTED"]', first)
-        self.assertIn('"policy_prompt_version":"llm-social-navigation-v1"', first)
+        self.assertIn('"policy_prompt_version":"llm-social-navigation-v2"', first)
         self.assertIn('"response_json_schema"', first)
 
 

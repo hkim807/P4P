@@ -19,6 +19,35 @@ class TemporalSocialStateEstimatorTests(unittest.TestCase):
         observations = SyntheticObservationAdapter(self.scenarios[scenario_id])
         return list(TemporalSocialStateEstimator().process(observations))
 
+    def distance_only_states(
+        self, distances: list[float | None], interval_s: float = 0.1
+    ):
+        original = SyntheticObservationAdapter(
+            self.scenarios["newcomer_requests_guidance"]
+        ).sample_at(0.0).observation
+        observations = []
+        for index, distance_m in enumerate(distances):
+            timestamp_us = original.timestamp_us + round(
+                index * interval_s * 1_000_000
+            )
+            human = original.humans[0].model_copy(
+                update={
+                    "source_timestamp_us": timestamp_us,
+                    "position_robot_m": None,
+                    "distance_m": distance_m,
+                }
+            )
+            observations.append(
+                original.model_copy(
+                    update={
+                        "observation_id": f"distance-only-{index}",
+                        "timestamp_us": timestamp_us,
+                        "humans": [human],
+                    }
+                )
+            )
+        return list(TemporalSocialStateEstimator().process(observations))
+
     def test_all_scenarios_produce_contract_valid_state_for_every_frame(self):
         for scenario_id, scenario in self.scenarios.items():
             with self.subTest(scenario=scenario_id):
@@ -73,6 +102,45 @@ class TemporalSocialStateEstimatorTests(unittest.TestCase):
         relations = {state.humans[0].motion_relation for state in states[10:50]}
 
         self.assertTrue(relations & {"CROSSING", "APPROACHING_CROSSING"})
+
+    def test_decreasing_distance_produces_distance_only_closing_rate(self):
+        human = self.distance_only_states([2.0, 1.95, 1.9, 1.85])[-1].humans[0]
+
+        self.assertAlmostEqual(human.closing_speed_mps, 0.5, places=6)
+        self.assertEqual(human.distance_trend, "DECREASING")
+        self.assertEqual(human.motion_relation, "UNKNOWN")
+        self.assertIsNone(human.velocity_robot_mps)
+        self.assertIn("DISTANCE_ONLY_TREND", human.evidence_codes)
+        self.assertIn("DISTANCE_DECREASING", human.evidence_codes)
+
+    def test_increasing_distance_produces_negative_closing_rate(self):
+        human = self.distance_only_states([1.5, 1.55, 1.6, 1.65])[-1].humans[0]
+
+        self.assertAlmostEqual(human.closing_speed_mps, -0.5, places=6)
+        self.assertEqual(human.distance_trend, "INCREASING")
+        self.assertEqual(human.motion_relation, "UNKNOWN")
+
+    def test_small_distance_noise_is_classified_as_stable_separation(self):
+        human = self.distance_only_states([2.0, 2.005, 1.997, 2.003])[-1].humans[0]
+
+        self.assertLess(abs(human.closing_speed_mps), 0.08)
+        self.assertEqual(human.distance_trend, "STABLE")
+        self.assertEqual(human.motion_relation, "UNKNOWN")
+
+    def test_distance_only_trend_requires_enough_history(self):
+        human = self.distance_only_states([2.0, 1.8])[-1].humans[0]
+
+        self.assertIsNone(human.closing_speed_mps)
+        self.assertEqual(human.distance_trend, "UNKNOWN")
+        self.assertNotIn("DISTANCE_ONLY_TREND", human.evidence_codes)
+
+    def test_missing_latest_distance_does_not_reuse_an_old_trend(self):
+        human = self.distance_only_states([2.0, 1.9, 1.8, None])[-1].humans[0]
+
+        self.assertIsNone(human.distance_m)
+        self.assertIsNone(human.closing_speed_mps)
+        self.assertEqual(human.distance_trend, "UNKNOWN")
+        self.assertNotIn("DISTANCE_ONLY_TREND", human.evidence_codes)
 
     def test_occluded_track_is_predicted_then_reacquired(self):
         states = self.states_for("newcomer_occluded_by_exhibit")

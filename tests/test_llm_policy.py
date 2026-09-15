@@ -13,6 +13,8 @@ from app.decision.llm_policy import (
     PREFERENCE_FIELD_NAMES,
     LLMPolicyBridge,
     LLMPolicyError,
+    POLICY_PROMPT_VERSION,
+    SYSTEM_PROMPT,
     TargetRequirement,
     action_contract_payload,
     behavior_selection_schema,
@@ -371,6 +373,8 @@ class LLMPolicyTests(unittest.TestCase):
     def test_prompt_action_contract_is_generated_from_authoritative_contract(self):
         prompt = render_decision_prompt(social_state(), ["HUMAN_DETECTED"])
         payload = json.loads(prompt.split("Input JSON: ", 1)[1])
+        self.assertEqual(POLICY_PROMPT_VERSION, "llm-social-navigation-v2")
+        self.assertEqual(payload["policy_prompt_version"], POLICY_PROMPT_VERSION)
         self.assertEqual(payload["action_contract"], action_contract_payload())
         self.assertEqual(
             set(payload["action_contract"]), {item.value for item in Action}
@@ -378,6 +382,20 @@ class LLMPolicyTests(unittest.TestCase):
         for action, rules in payload["action_contract"].items():
             contract = ACTION_CONTRACTS[action]
             self.assertEqual(rules["target_human_id"], contract.target.value)
+
+    def test_system_prompt_bounds_distance_only_interpretation(self):
+        self.assertIn(
+            "positive closing speed means separation is decreasing",
+            SYSTEM_PROMPT,
+        )
+        self.assertIn(
+            "This does not establish whether the human, robot, or both moved",
+            SYSTEM_PROMPT,
+        )
+        self.assertIn(
+            "Describe only the observed change in separation",
+            SYSTEM_PROMPT,
+        )
 
     def test_documented_action_contract_matches_authoritative_contract(self):
         document = (

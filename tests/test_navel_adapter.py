@@ -7,6 +7,7 @@ import unittest
 from types import SimpleNamespace as NS
 
 from app.domain.models import ObservationFrame
+from app.state import TemporalSocialStateEstimator
 from robot.navel_client.adapter import NavelAdapterConfig, NavelObservationAdapter
 
 
@@ -100,6 +101,34 @@ class NavelObservationAdapterTests(unittest.TestCase):
             NS(persons=[person(dist_mm=2345.0)]), locomotion()
         )["humans"][0]
         self.assertAlmostEqual(human["distance_m"], 2.345)
+
+    def test_distance_only_navel_stream_produces_separation_trend(self):
+        adapter = self.adapter(
+            times=(
+                1_000_000_000,
+                1_100_000_000,
+                1_200_000_000,
+                1_300_000_000,
+            )
+        )
+        estimator = TemporalSocialStateEstimator()
+        state = None
+        for distance_mm in (2_000.0, 1_950.0, 1_900.0, 1_850.0):
+            observation = ObservationFrame.model_validate(
+                adapter.convert(
+                    NS(persons=[person(dist_mm=distance_mm)]),
+                    locomotion(linear_x=0.2),
+                )
+            )
+            state = estimator.update(observation)
+
+        assert state is not None
+        human = state.humans[0]
+        self.assertIsNone(human.position_robot_m)
+        self.assertAlmostEqual(human.closing_speed_mps, 0.5, places=6)
+        self.assertEqual(human.distance_trend, "DECREASING")
+        self.assertEqual(human.motion_relation, "UNKNOWN")
+        self.assertIn("DISTANCE_ONLY_TREND", human.evidence_codes)
 
     def test_face_box_preserves_pixel_coordinates(self):
         human = self.adapter().convert(NS(persons=[person()]), locomotion())["humans"][0]
