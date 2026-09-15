@@ -315,6 +315,11 @@ class _PolicyPreferences(BaseModel):
     ] | None = None
 
 
+# Public alias for other policy modes that must use the identical preference
+# constraints without changing the normal mode's established JSON Schema name.
+PolicyPreferences = _PolicyPreferences
+
+
 class _PolicySelection(BaseModel):
     """The small, dynamic portion of BehaviorIntent selected by the model."""
 

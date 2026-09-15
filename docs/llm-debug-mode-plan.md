@@ -2,10 +2,10 @@
 
 ## Stage 1 — repository inspection
 
-Status: inspection complete; implementation has not started. Inspected against
-commit `af211ba`. Each implementation stage below ends with a review checkpoint;
-wait for the user to review, commit, and request the next stage. Do not commit on
-the user's behalf.
+Status: inspection, the distance-only prerequisite, and Stage 2 are complete.
+The initial inspection used commit `af211ba`. Each implementation stage below
+ends with a review checkpoint; wait for the user to review, commit, and request
+the next stage. Do not commit on the user's behalf.
 
 The numbered sections of the task list describe interdependent requirements.
 The checkpoints below group them into independently reviewable changes.
@@ -225,7 +225,7 @@ may be refined when their stage begins.
 | --- | --- | --- |
 | 1 | Inspection and review plan | `docs/llm-debug-mode-plan.md` |
 | 1A | Distance-only separation trend for Navel and bounded policy wording | `app/state/estimator.py`, `app/decision/llm_policy.py`, focused tests and documentation |
-| 2 | Explicit NORMAL/DEBUG configuration, typed debug contracts, separate evidence prompt and response validation; normal defaults preserved | `app/config.py`, new `app/domain/debug.py`, new `app/decision/debug_policy.py`, `app/decision/llm_policy.py` only where sharing validated intent conversion is needed; focused debug and policy tests |
+| 2 | **Complete:** explicit NORMAL/DEBUG configuration, typed debug contracts, separate evidence prompt and response validation; normal defaults preserved | `app/config.py`, `app/decision/debug_policy.py`, `app/decision/llm_policy.py`, `app/decision/__init__.py`, `tests/test_debug_policy.py` |
 | 3 | Request-boundary capture, raw response and metadata, request-local snapshot, shared pipeline integration and error snapshots | `app/llm.py`, `app/server.py`, debug modules from Stage 2; `tests/test_llm.py`, `tests/test_observation_pipeline.py`, new debug integration tests |
 | 4 | Atomic snapshot retention and retrieval using existing monitor/SSE flow, latest inference retained through skipped cycles | `app/monitor/service.py`, `app/server.py`; `tests/test_monitor.py`, `tests/test_server.py` |
 | 5 | Separate `/debug` page, all evidence/score sections, prompt copy/viewer, raw state and response viewers, metadata and missing/stale states | `web/src/App.tsx`, new `web/src/DebugPage.tsx` and debug types, `web/src/styles.css`, `app/server.py` for direct page loading |
@@ -236,6 +236,37 @@ sections 2–7 and 17). Stages 3–4 cover capture, consistency, metadata and st
 (8 and 12–13). Stage 5 covers the page and viewers (9–11 and 14). Temporal
 grounding and robustness (15–16) apply throughout; Stage 6 checks the full
 acceptance criteria (18–19). Review and pause after each stage.
+
+### Stage 2 implementation contract
+
+`Settings.decision_mode` reads `DECISION_MODE`, accepts `NORMAL` or `DEBUG`
+case-insensitively, rejects other values, and defaults to `NORMAL`. Stage 2 does
+not yet route pipeline requests through the debug policy; that request-boundary
+integration is Stage 3.
+
+The debug request uses `llm-social-navigation-debug-v1`, includes the complete
+SocialState with nulls intact, every action and its existing action contract,
+scheduler triggers, exact RFC 6901 JSON Pointer paths for available scalar state
+fields, and its response schema. A representative one-person prompt is about
+12,200 characters with the current schema.
+
+The typed response contains the social summary, important robot inputs,
+OBSERVATION/INTERPRETATION evidence, recommendation and existing behavior-intent
+fields, rationale, one score and reason for every action, and uncertainties.
+Validation requires:
+
+- every action exactly once, scores within `[0, 1]`, a total within 0.02 of one,
+  and a top-scoring recommended action;
+- request-valid target IDs and reason codes plus the existing action contract;
+- real SocialState JSON Pointer references and exact copied scalar input values;
+- bounded, finite, schema-valid values with unknown fields rejected.
+
+Natural-language interpretations cannot be proven true by structural validation.
+The prompt bounds them to cited fields, while the debug UI will show the exact
+state and response together so a reviewer can assess those interpretations.
+
+Stage 2 validation added 13 focused configuration/debug-contract tests. The
+complete suite passes all 181 tests, including the localhost Navel HTTP test.
 
 ### Implementation invariants
 
