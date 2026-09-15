@@ -111,6 +111,7 @@ class MonitorService:
         self._active_recordings: dict[str, str] = {}
         self._events: deque[dict[str, Any]] = deque(maxlen=1_000)
         self._event_id = 0
+        self._debug_snapshot_revision = 0
 
     def list_recordings(self) -> list[dict[str, Any]]:
         recordings: list[dict[str, Any]] = []
@@ -245,6 +246,22 @@ class MonitorService:
         with self._lock:
             previous = self._sources.get(source_id)
             cycle["sequence"] = (previous or {}).get("frame_count", 0) + 1
+            retained_snapshot = (previous or {}).get("latest_debug_snapshot")
+            retained_revision = (previous or {}).get("debug_snapshot_revision", 0)
+            snapshot_updated = False
+            candidate = getattr(result, "debug_snapshot", None)
+            if candidate is not None:
+                candidate_payload = deepcopy(candidate.model_dump(mode="json"))
+                if (
+                    candidate_payload.get("source_id") == source_id
+                    and self._is_newer_debug_snapshot(
+                        candidate_payload, retained_snapshot
+                    )
+                ):
+                    self._debug_snapshot_revision += 1
+                    retained_snapshot = candidate_payload
+                    retained_revision = self._debug_snapshot_revision
+                    snapshot_updated = True
             self._sources[source_id] = {
                 "id": source_id,
                 "name": _human_title(source_id),
@@ -259,6 +276,8 @@ class MonitorService:
                 "clock_domain": observation.clock_domain,
                 "latest_cycle": cycle,
                 "recording_run_id": self._active_recordings.get(source_id),
+                "latest_debug_snapshot": retained_snapshot,
+                "debug_snapshot_revision": retained_revision,
             }
             recording_id = self._active_recordings.get(source_id)
             if recording_id is not None:
@@ -277,6 +296,20 @@ class MonitorService:
                 recording.cycles.append(recorded_cycle)
                 self._append_observation(recording.path, observation)
                 self._append_trace(recording.path.parent / "trace.jsonl", recorded_cycle)
+            if snapshot_updated:
+                assert retained_snapshot is not None
+                self._publish(
+                    "debug.snapshot.updated",
+                    {
+                        "source_id": source_id,
+                        "request_id": retained_snapshot["request_id"],
+                        "state_timestamp_us": retained_snapshot[
+                            "state_timestamp_us"
+                        ],
+                        "status": retained_snapshot["status"],
+                        "revision": retained_revision,
+                    },
+                )
             self._publish(
                 "source.observed",
                 {"source_id": source_id, "sequence": cycle["sequence"]},
@@ -287,12 +320,42 @@ class MonitorService:
             now = time.monotonic()
             sources = []
             for source in self._sources.values():
-                item = dict(source)
+                snapshot = source.get("latest_debug_snapshot")
+                item = deepcopy(
+                    {
+                        key: value
+                        for key, value in source.items()
+                        if key != "latest_debug_snapshot"
+                    }
+                )
+                item["latest_debug_request_id"] = (
+                    snapshot.get("request_id") if snapshot is not None else None
+                )
+                item["latest_debug_snapshot_status"] = (
+                    snapshot.get("status") if snapshot is not None else None
+                )
+                item["latest_debug_state_timestamp_us"] = (
+                    snapshot.get("state_timestamp_us")
+                    if snapshot is not None
+                    else None
+                )
                 age_s = now - item.pop("last_seen_monotonic")
                 item["age_s"] = round(age_s, 2)
                 item["status"] = "online" if age_s <= 2.5 else "stale" if age_s <= 10 else "offline"
                 sources.append(item)
             return sorted(sources, key=lambda item: item["name"])
+
+    def get_debug_snapshot(self, source_id: str) -> dict[str, Any]:
+        """Return one source's retained inference snapshot and monotonic revision."""
+        with self._lock:
+            source = self._sources.get(source_id)
+            if source is None:
+                raise KeyError(f"unknown source {source_id!r}")
+            return {
+                "source_id": source_id,
+                "revision": source["debug_snapshot_revision"],
+                "snapshot": deepcopy(source["latest_debug_snapshot"]),
+            }
 
     def start_recording(self, source_id: str) -> dict[str, Any]:
         with self._lock:
@@ -547,6 +610,31 @@ class MonitorService:
             stream.write(
                 json.dumps(cycle, sort_keys=True, separators=(",", ":")) + "\n"
             )
+
+    @staticmethod
+    def _is_newer_debug_snapshot(
+        candidate: dict[str, Any], current: dict[str, Any] | None
+    ) -> bool:
+        if current is None:
+            return True
+        candidate_clock = candidate.get("clock_domain")
+        current_clock = current.get("clock_domain")
+        if candidate_clock != current_clock:
+            return False
+        candidate_state_time = candidate.get("state_timestamp_us")
+        current_state_time = current.get("state_timestamp_us")
+        if isinstance(candidate_state_time, int) and isinstance(
+            current_state_time, int
+        ):
+            if candidate_state_time != current_state_time:
+                return candidate_state_time > current_state_time
+        candidate_request_time = candidate.get("metadata", {}).get("requested_at")
+        current_request_time = current.get("metadata", {}).get("requested_at")
+        if isinstance(candidate_request_time, str) and isinstance(
+            current_request_time, str
+        ):
+            return candidate_request_time > current_request_time
+        return False
 
     def _publish(self, event_type: str, data: dict[str, Any]) -> None:
         self._event_id += 1

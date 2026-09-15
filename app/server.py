@@ -532,6 +532,29 @@ def create_app(
     def monitor_sources():
         return jsonify({"sources": active_monitor.list_sources()})
 
+    @flask_app.get(
+        "/api/v1/monitor/sources/<path:source_id>/debug-snapshot"
+    )
+    def monitor_debug_snapshot(source_id: str):
+        try:
+            payload = active_monitor.get_debug_snapshot(source_id)
+        except KeyError:
+            return (
+                jsonify(
+                    {
+                        "error": {
+                            "code": "unknown_source",
+                            "message": f"Unknown source {source_id!r}.",
+                        }
+                    }
+                ),
+                404,
+            )
+        response = jsonify(payload)
+        response.headers["Cache-Control"] = "no-store"
+        response.headers["X-Debug-Snapshot-Revision"] = str(payload["revision"])
+        return response
+
     @flask_app.get("/api/v1/monitor/recordings")
     def monitor_recordings():
         return jsonify({"recordings": active_monitor.list_recordings()})

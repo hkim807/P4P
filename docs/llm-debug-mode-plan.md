@@ -227,7 +227,7 @@ may be refined when their stage begins.
 | 1A | Distance-only separation trend for Navel and bounded policy wording | `app/state/estimator.py`, `app/decision/llm_policy.py`, focused tests and documentation |
 | 2 | **Complete:** explicit NORMAL/DEBUG configuration, typed debug contracts, separate evidence prompt and response validation; normal defaults preserved | `app/config.py`, `app/decision/debug_policy.py`, `app/decision/llm_policy.py`, `app/decision/__init__.py`, `tests/test_debug_policy.py` |
 | 3 | **Complete:** request-boundary capture, raw response and metadata, request-local snapshot, shared pipeline integration and error snapshots | `app/llm.py`, `app/server.py`, `app/decision/debug_policy.py`, `app/decision/llm_policy.py`, `tests/test_llm.py`, `tests/test_observation_pipeline.py` |
-| 4 | Atomic snapshot retention and retrieval using existing monitor/SSE flow, latest inference retained through skipped cycles | `app/monitor/service.py`, `app/server.py`; `tests/test_monitor.py`, `tests/test_server.py` |
+| 4 | **Complete:** atomic per-source snapshot retention and retrieval using the existing monitor/SSE flow, with skipped-cycle and out-of-order protection | `app/monitor/service.py`, `app/server.py`, `tests/test_monitor.py`, `tests/test_observation_pipeline.py` |
 | 5 | Separate `/debug` page, all evidence/score sections, prompt copy/viewer, raw state and response viewers, metadata and missing/stale states | `web/src/App.tsx`, new `web/src/DebugPage.tsx` and debug types, `web/src/styles.css`, `app/server.py` for direct page loading |
 | 6 | Acceptance validation, offline scenarios, normal-mode regression and run instructions | Relevant integration tests, `README.md`, this document; implementation fixes only when verification identifies a problem |
 
@@ -294,10 +294,45 @@ Normal responses do not gain the debug snapshot field and still use the normal
 prompt, schema and request path.
 
 Stage 3 adds request-capture and endpoint integration coverage for successful,
-no-person, malformed-output, transport-failure and empty-response cases. Stage 4
-will retain and publish the latest completed snapshot independently of newer
-non-inference cycles. The complete suite passes all 189 tests, including the
-localhost Navel HTTP test.
+no-person, malformed-output, transport-failure and empty-response cases. The
+complete suite at that checkpoint passed all 189 tests, including the localhost
+Navel HTTP test.
+
+### Stage 4 implementation contract
+
+`MonitorService.observe_live()` now retains each source's latest finished Debug
+inference separately from `latest_cycle`. A later observation with no decision
+therefore updates live source information without clearing the Debug snapshot.
+Successful and failed inference snapshots are both retained so validation or
+transport errors remain inspectable.
+
+Retention occurs under the monitor's existing lock. A candidate from the same
+clock domain advances the retained snapshot only when its SocialState timestamp
+is newer, using request time to order repeated inference requests for the same
+state. This prevents a slower older completion from replacing a newer result.
+Each accepted snapshot receives a monotonic revision. Snapshot values returned
+by the monitor are deep copies, so a consumer cannot mutate retained state.
+
+The source catalogue exposes the latest request ID, state timestamp, status and
+revision without embedding the large snapshot in every bootstrap response. The
+complete atomic value is available from:
+
+```text
+GET /api/v1/monitor/sources/<source_id>/debug-snapshot
+```
+
+Known sources without an inference return revision `0` and a null snapshot;
+unknown sources return a structured `404`. Responses use
+`Cache-Control: no-store` and expose the revision in
+`X-Debug-Snapshot-Revision`. Each retained update also publishes
+`debug.snapshot.updated` through the existing SSE stream with its source,
+request, state timestamp, status and revision. The frontend can use the revision
+to discard a stale fetch that finishes after a newer one.
+
+Stage 4 coverage verifies skipped cycles, out-of-order completions, failed
+snapshots, defensive copies, source isolation, missing/unknown retrieval and an
+end-to-end observation-to-monitor snapshot match. The complete suite passes all
+195 tests, including the localhost Navel HTTP test.
 
 ### Implementation invariants
 

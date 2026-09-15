@@ -434,6 +434,31 @@ class DebugObservationEndpointTests(unittest.TestCase):
         self.assertNotEqual(first["request_id"], second["request_id"])
         self.assertNotEqual(first["social_state_id"], second["social_state_id"])
 
+    def test_monitor_retrieves_the_same_snapshot_after_a_skipped_cycle(self):
+        first_response = self.client.post(
+            "/api/v1/observations",
+            json=observation_payload(humans=True),
+        )
+        first = first_response.get_json()["debug_snapshot"]
+
+        skipped_response = self.client.post(
+            "/api/v1/observations",
+            json=observation_payload(timestamp_us=1_100_000, humans=True),
+        )
+        skipped = skipped_response.get_json()
+        retained_response = self.client.get(
+            "/api/v1/monitor/sources/source-a/debug-snapshot"
+        )
+        retained = retained_response.get_json()
+
+        self.assertEqual(first_response.status_code, 200)
+        self.assertEqual(skipped_response.status_code, 200)
+        self.assertFalse(skipped["decision_triggered"])
+        self.assertNotIn("debug_snapshot", skipped)
+        self.assertEqual(retained_response.status_code, 200)
+        self.assertEqual(retained["revision"], 1)
+        self.assertEqual(retained["snapshot"], first)
+
 
 if __name__ == "__main__":
     unittest.main()
