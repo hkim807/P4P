@@ -144,14 +144,13 @@ class TraceableFakeLLM(FakeLLM):
                     "reason_codes": reason_codes,
                     "decision_confidence": 0.55,
                     "decision_rationale": "Monitor while evidence remains limited.",
-                    "action_scores": [
-                        {
-                            "action": action.value,
+                    "action_scores": {
+                        action.value: {
                             "score": 0.23 if action == Action.MONITOR else 0.07,
                             "reason": "Best supported." if action == Action.MONITOR else "Less supported.",
                         }
                         for action in Action
-                    ],
+                    },
                     "uncertainties": uncertainties,
                 },
                 separators=(",", ":"),
@@ -361,7 +360,7 @@ class DebugObservationEndpointTests(unittest.TestCase):
             ]
         )
         self.assertEqual(snapshot["metadata"]["decision_mode"], "DEBUG")
-        self.assertEqual(snapshot["metadata"]["prompt_version"], "llm-social-navigation-debug-v1")
+        self.assertEqual(snapshot["metadata"]["prompt_version"], "llm-social-navigation-debug-v2")
         self.assertEqual(snapshot["metadata"]["latency_ms"], 25.0)
         self.assertEqual(snapshot["metadata"]["usage"]["total_tokens"], 150)
         self.assertIsNone(snapshot["error"])
@@ -377,6 +376,7 @@ class DebugObservationEndpointTests(unittest.TestCase):
 
         self.assertEqual(response.status_code, 502)
         self.assertEqual(body["error"]["code"], "invalid_llm_debug_response")
+        self.assertIn("debug schema", body["error"]["detail"])
         self.assertIsNone(body["behavior_intent"])
         snapshot = body["debug_snapshot"]
         self.assertEqual(snapshot["status"], "FAILED")
@@ -396,6 +396,7 @@ class DebugObservationEndpointTests(unittest.TestCase):
 
         self.assertEqual(response.status_code, 502)
         self.assertEqual(body["error"]["code"], "llm_request_failed")
+        self.assertEqual(body["error"]["detail"], "simulated failure")
         snapshot = body["debug_snapshot"]
         self.assertEqual(snapshot["status"], "FAILED")
         self.assertIsNone(snapshot["raw_response"])

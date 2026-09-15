@@ -59,16 +59,15 @@ def valid_debug_payload(state=None):
         "reason_codes": ["INSUFFICIENT_EVIDENCE"],
         "decision_confidence": 0.45,
         "decision_rationale": "More evidence is needed before changing behavior.",
-        "action_scores": [
-            {
-                "action": action.value,
+        "action_scores": {
+            action.value: {
                 "score": 0.45 if action == Action.MONITOR else 0.05,
                 "reason": "Preferred while evidence is limited."
                 if action == Action.MONITOR
                 else "Less supported by the current evidence.",
             }
             for action in Action
-        ],
+        },
         "uncertainties": ["Human intent is unavailable."],
     }
 
@@ -130,6 +129,37 @@ class DebugPolicyContractTests(unittest.TestCase):
             "HUMAN_DETECTED",
             schema["properties"]["reason_codes"]["items"]["enum"],
         )
+        robot_input = schema["$defs"]["DebugRobotInput"]
+        source_schema = robot_input["properties"]["source"]
+        self.assertIn("/humans/0/distance_m", source_schema["enum"])
+        self.assertNotIn("latest_value", robot_input["properties"])
+        self.assertNotIn("latest_value", robot_input["required"])
+        self.assertEqual(
+            schema["$defs"]["DebugEvidence"]["properties"]["source_fields"][
+                "items"
+            ],
+            source_schema,
+        )
+
+    def test_schema_has_no_unanchored_regex_patterns_for_ollama(self):
+        schema = debug_response_schema(social_state(), ["HUMAN_DETECTED"])
+        patterns = []
+
+        def collect_patterns(value):
+            if isinstance(value, dict):
+                if "pattern" in value:
+                    patterns.append(value["pattern"])
+                for child in value.values():
+                    collect_patterns(child)
+            elif isinstance(value, list):
+                for child in value:
+                    collect_patterns(child)
+
+        collect_patterns(schema)
+
+        self.assertTrue(
+            all(pattern.startswith("^") and pattern.endswith("$") for pattern in patterns)
+        )
 
     def test_valid_response_preserves_selection_for_existing_intent_path(self):
         state = social_state()
@@ -140,7 +170,7 @@ class DebugPolicyContractTests(unittest.TestCase):
         )
 
         self.assertEqual(response.recommended_action, "MONITOR")
-        self.assertEqual(len(response.action_scores), len(Action))
+        self.assertEqual(len(response.action_scores.model_dump()), len(Action))
         self.assertEqual(
             response.behavior_selection_payload(),
             {
@@ -168,34 +198,61 @@ class DebugPolicyContractTests(unittest.TestCase):
         self.assertEqual(response.recommended_action, "MONITOR")
         self.assertEqual(response.robot_inputs[0].source, "/robot/task")
 
-    def test_missing_or_duplicate_action_scores_are_rejected(self):
+    def test_missing_or_unknown_action_score_keys_are_rejected(self):
         state = social_state()
         missing = valid_debug_payload(state)
-        missing["action_scores"] = missing["action_scores"][:-1]
+        missing["action_scores"].pop("DISENGAGE")
         with self.assertRaisesRegex(DebugPolicyError, "debug schema"):
             validate_debug_response(json.dumps(missing), state)
 
-        duplicate = valid_debug_payload(state)
-        duplicate["action_scores"][-1]["action"] = "CONTINUE"
-        with self.assertRaisesRegex(DebugPolicyError, "every action exactly once"):
-            validate_debug_response(json.dumps(duplicate), state)
+        unknown_score = valid_debug_payload(state)
+        unknown_score["action_scores"]["FLY"] = {
+            "score": 0.0,
+            "reason": "Unsupported action.",
+        }
+        with self.assertRaisesRegex(DebugPolicyError, "debug schema"):
+            validate_debug_response(json.dumps(unknown_score), state)
 
         unknown = valid_debug_payload(state)
         unknown["recommended_action"] = "FLY"
         with self.assertRaisesRegex(DebugPolicyError, "debug schema"):
             validate_debug_response(json.dumps(unknown), state)
 
-    def test_scores_must_be_normalized_and_recommendation_must_rank_first(self):
+    def test_recommendation_must_rank_first(self):
         state = social_state()
-        unnormalized = valid_debug_payload(state)
-        unnormalized["action_scores"][0]["score"] = 0.2
-        with self.assertRaisesRegex(DebugPolicyError, "sum approximately"):
-            validate_debug_response(json.dumps(unnormalized), state)
-
         wrong_winner = valid_debug_payload(state)
         wrong_winner["recommended_action"] = "CONTINUE"
         with self.assertRaisesRegex(DebugPolicyError, "highest model-reported score"):
             validate_debug_response(json.dumps(wrong_winner), state)
+
+    def test_negative_relative_scores_are_normalized_without_changing_rank(self):
+        state = social_state()
+        payload = valid_debug_payload(state)
+        for index, action in enumerate(Action):
+            payload["action_scores"][action.value]["score"] = -float(index + 2)
+        payload["action_scores"]["MONITOR"]["score"] = -1.0
+
+        response = validate_debug_response(json.dumps(payload), state)
+        scores = {
+            action.value: getattr(response.action_scores, action.value).score
+            for action in Action
+        }
+
+        self.assertAlmostEqual(sum(scores.values()), 1.0)
+        self.assertTrue(all(0.0 <= score <= 1.0 for score in scores.values()))
+        self.assertEqual(max(scores, key=scores.get), "MONITOR")
+
+    def test_server_attaches_exact_value_when_model_selects_source(self):
+        state = social_state()
+        payload = valid_debug_payload(state)
+        payload["robot_inputs"][0].pop("latest_value")
+
+        response = validate_debug_response(json.dumps(payload), state)
+
+        self.assertEqual(
+            response.robot_inputs[0].latest_value,
+            social_state_leaf_values(state)[response.robot_inputs[0].source],
+        )
 
     def test_sources_must_exist_and_report_the_exact_state_value(self):
         state = social_state()
@@ -231,11 +288,8 @@ class DebugPolicyContractTests(unittest.TestCase):
         approach = valid_debug_payload(state)
         approach["recommended_action"] = "APPROACH"
         approach["target_human_id"] = "visitor-1"
-        for item in approach["action_scores"]:
-            if item["action"] == "MONITOR":
-                item["score"] = 0.05
-            elif item["action"] == "APPROACH":
-                item["score"] = 0.45
+        approach["action_scores"]["MONITOR"]["score"] = 0.05
+        approach["action_scores"]["APPROACH"]["score"] = 0.45
 
         with self.assertRaisesRegex(
             DebugPolicyError, "requires preferences.preferred_social_distance_m"

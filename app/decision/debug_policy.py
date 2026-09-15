@@ -34,11 +34,15 @@ from app.domain.models import Action, BehaviorIntent, SocialState
 from app.llm import CapturedLLMRequest, LLMGenerationResult, LLMRequestError
 
 
-DEBUG_PROMPT_VERSION = "llm-social-navigation-debug-v1"
-ACTION_SCORE_TOTAL_TOLERANCE = 0.02
+DEBUG_PROMPT_VERSION = "llm-social-navigation-debug-v2"
 
 DebugText = Annotated[str, Field(min_length=1, max_length=1_000)]
-SourceField = Annotated[str, Field(min_length=2, max_length=512, pattern=r"^/")]
+# Ollama's JSON Schema converter requires regex patterns to be fully anchored.
+# ``min_length=2`` still prevents the root pointer while this pattern preserves
+# the original requirement that every source is an absolute JSON Pointer.
+SourceField = Annotated[
+    str, Field(min_length=2, max_length=512, pattern=r"^/.*$")
+]
 JsonScalar = str | bool | int | float | None
 
 
@@ -62,7 +66,7 @@ class EvidenceType(str, Enum):
 
 class DebugRobotInput(DebugModel):
     source: SourceField
-    latest_value: JsonScalar
+    latest_value: JsonScalar = None
     interpretation: DebugText
 
     @model_validator(mode="after")
@@ -87,9 +91,25 @@ class DebugEvidence(DebugModel):
 
 
 class DebugActionScore(DebugModel):
-    action: Action
-    score: Annotated[float, Field(ge=0.0, le=1.0, allow_inf_nan=False)]
+    score: Annotated[float, Field(allow_inf_nan=False)]
     reason: DebugText
+
+
+class DebugActionScores(DebugModel):
+    """One score per action, represented as fixed keys for constrained decoding."""
+
+    CONTINUE: DebugActionScore
+    MONITOR: DebugActionScore
+    ORIENT: DebugActionScore
+    SLOW: DebugActionScore
+    YIELD: DebugActionScore
+    AVOID: DebugActionScore
+    APPROACH: DebugActionScore
+    GREET: DebugActionScore
+    GUIDE: DebugActionScore
+    WAIT: DebugActionScore
+    RESUME: DebugActionScore
+    DISENGAGE: DebugActionScore
 
 
 class DebugPolicyResponse(DebugModel):
@@ -111,45 +131,40 @@ class DebugPolicyResponse(DebugModel):
         float, Field(ge=0.0, le=1.0, allow_inf_nan=False)
     ]
     decision_rationale: DebugText
-    action_scores: list[DebugActionScore] = Field(
-        min_length=len(Action), max_length=len(Action)
-    )
+    action_scores: DebugActionScores
     uncertainties: list[DebugText] = Field(max_length=16)
 
     @model_validator(mode="after")
     def validate_complete_action_ranking(self) -> "DebugPolicyResponse":
-        expected = {action.value for action in Action}
-        scored = [item.action for item in self.action_scores]
-        if len(scored) != len(set(scored)) or set(scored) != expected:
-            missing = sorted(expected - set(scored))
-            duplicates = sorted(
-                action for action in set(scored) if scored.count(action) > 1
-            )
-            raise ValueError(
-                "action_scores must contain every action exactly once; "
-                f"missing={missing}, duplicates={duplicates}"
-            )
-        total = sum(item.score for item in self.action_scores)
-        if not math.isclose(
-            total,
-            1.0,
-            rel_tol=0.0,
-            abs_tol=ACTION_SCORE_TOTAL_TOLERANCE,
-        ):
-            raise ValueError(
-                "action_scores must sum approximately to 1.0; "
-                f"received {total:.6f}"
-            )
-        scores = {item.action: item.score for item in self.action_scores}
-        highest = max(scores.values())
-        if scores[self.recommended_action] < highest - 1e-12:
+        raw_scores = {
+            action.value: getattr(self.action_scores, action.value).score
+            for action in Action
+        }
+        highest = max(raw_scores.values())
+        if raw_scores[self.recommended_action] < highest - 1e-12:
             raise ValueError(
                 "recommended_action must have a highest model-reported score"
             )
+        # Ollama's grammar converter does not enforce numeric bounds reliably.
+        # Treat model scores as relative utilities and normalize them without
+        # changing their order so diagnostics cannot invalidate a safe intent.
+        weights = {
+            action: math.exp(score - highest)
+            for action, score in raw_scores.items()
+        }
+        weight_total = sum(weights.values())
+        normalized_scores = self.action_scores.model_copy(
+            update={
+                action.value: getattr(self.action_scores, action.value).model_copy(
+                    update={"score": weights[action.value] / weight_total}
+                )
+                for action in Action
+            }
+        )
         sources = [item.source for item in self.robot_inputs]
         if len(sources) != len(set(sources)):
             raise ValueError("robot_inputs sources must be unique")
-        return self
+        return self.model_copy(update={"action_scores": normalized_scores})
 
     def behavior_selection_payload(self) -> dict[str, Any]:
         """Return fields consumed by the existing BehaviorIntent validation path."""
@@ -261,11 +276,11 @@ DEBUG_SYSTEM_PROMPT = SYSTEM_PROMPT + """
 
 Debug-mode evidence rules:
 - Analyse only the supplied SocialState. Unknown, absent, or null information remains unknown. Never invent observations, intentions, emotions, trajectories, or environmental facts.
-- `robot_inputs` identifies important available values. Use an exact JSON Pointer from `available_source_fields` as `source`, copy its scalar value exactly into `latest_value`, and add only a brief interpretation.
+- `robot_inputs` identifies important available values. Select an exact JSON Pointer as `source` and add only a brief interpretation. The server attaches the source's exact scalar value after validation.
 - Label direct state facts as OBSERVATION and derived social conclusions as INTERPRETATION. Every evidence item must cite one or more exact source fields.
 - Use temporal conclusions only when SocialState contains a derived temporal field that supports them. SocialState does not contain the estimator's raw sample sequence, so never invent individual historical readings or sample counts.
 - Select `recommended_action` only from `available_actions` and connect `decision_rationale` to cited state evidence.
-- Include every available action exactly once in `action_scores`. Scores are model-reported preference/confidence scores, not calibrated probabilities; keep each in 0.0-1.0, make them sum approximately to 1.0, and give the recommended action a highest score.
+- `action_scores` is an object keyed by every available action. Fill every fixed action key exactly once. Scores are finite relative utilities and the recommended action must have a highest score. The server normalizes them for display; they are not calibrated probabilities.
 - State important missing or ambiguous information in `uncertainties`.
 - Return concise conclusions and supporting evidence rather than private or unrestricted chain-of-thought.
 - Return only one JSON object matching `response_json_schema`, with no Markdown or prose outside it."""
@@ -306,6 +321,20 @@ def debug_response_schema(
     schema["properties"]["reason_codes"]["items"] = selection_schema[
         "properties"
     ]["reason_codes"]["items"]
+    source_schema = {
+        "type": "string",
+        "enum": sorted(social_state_leaf_values(state)),
+    }
+    robot_input_schema = schema["$defs"]["DebugRobotInput"]
+    robot_input_schema["properties"]["source"] = deepcopy(source_schema)
+    # The model chooses a grounded pointer; the server supplies its exact value.
+    robot_input_schema["properties"].pop("latest_value", None)
+    robot_input_schema["required"] = [
+        field for field in robot_input_schema["required"] if field != "latest_value"
+    ]
+    schema["$defs"]["DebugEvidence"]["properties"]["source_fields"][
+        "items"
+    ] = deepcopy(source_schema)
     return schema
 
 
@@ -410,21 +439,29 @@ def validate_debug_response(
                 f"{response.recommended_action} forbids preferences.{field_name}"
             )
 
+    normalized_robot_inputs: list[DebugRobotInput] = []
     for item in response.robot_inputs:
         if item.source not in leaves:
             errors.append(f"unknown robot input source {item.source!r}")
+            normalized_robot_inputs.append(item)
             continue
-        if not _values_match(leaves[item.source], item.latest_value):
+        if (
+            "latest_value" in item.model_fields_set
+            and not _values_match(leaves[item.source], item.latest_value)
+        ):
             errors.append(
                 f"robot input {item.source!r} does not match the supplied SocialState"
             )
+        normalized_robot_inputs.append(
+            item.model_copy(update={"latest_value": leaves[item.source]})
+        )
     for item in response.evidence:
         for source in item.source_fields:
             if source not in leaves:
                 errors.append(f"unknown evidence source {source!r}")
     if errors:
         raise DebugPolicyError("; ".join(errors))
-    return response
+    return response.model_copy(update={"robot_inputs": normalized_robot_inputs})
 
 
 class DebugPolicyBridge:
@@ -603,10 +640,10 @@ class DebugPolicyBridge:
 
 
 __all__ = [
-    "ACTION_SCORE_TOTAL_TOLERANCE",
     "DEBUG_PROMPT_VERSION",
     "DEBUG_SYSTEM_PROMPT",
     "DebugActionScore",
+    "DebugActionScores",
     "DebugDecisionSnapshot",
     "DebugEvidence",
     "DebugInferenceMetadata",

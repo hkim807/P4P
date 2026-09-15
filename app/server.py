@@ -526,6 +526,11 @@ def create_app(
                 "code": result.error_code,
                 "message": message,
             }
+            if (
+                result.debug_snapshot is not None
+                and result.debug_snapshot.error is not None
+            ):
+                response["error"]["detail"] = result.debug_snapshot.error.message
             return jsonify(response), 502
         return jsonify(response)
 

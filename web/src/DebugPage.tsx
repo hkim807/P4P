@@ -177,7 +177,9 @@ export function DebugPage() {
   const snapshot = envelope?.source_id === selectedSourceId ? envelope.snapshot : null;
   const output = snapshot?.validated_response ?? null;
   const rankedActions = useMemo(
-    () => [...(output?.action_scores ?? [])].sort((a, b) => b.score - a.score),
+    () => Object.entries(output?.action_scores ?? {})
+      .map(([action, details]) => ({ action, ...details }))
+      .sort((a, b) => b.score - a.score),
     [output],
   );
 
@@ -367,7 +369,7 @@ export function DebugPage() {
               <PanelHeading
                 icon={<Gauge size={15} />}
                 title="Action ranking"
-                detail="Every available action, ordered by model-reported score"
+                detail="Every available action, ordered by normalized model score"
               />
               <div className="action-ranking">
                 {rankedActions.length ? rankedActions.map((item, index) => (

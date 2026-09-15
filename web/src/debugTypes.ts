@@ -31,7 +31,6 @@ export type DebugEvidence = {
 };
 
 export type DebugActionScore = {
-  action: string;
   score: number;
   reason: string;
 };
@@ -47,7 +46,7 @@ export type DebugPolicyResponse = {
   reason_codes: string[];
   decision_confidence: number;
   decision_rationale: string;
-  action_scores: DebugActionScore[];
+  action_scores: Record<string, DebugActionScore>;
   uncertainties: string[];
 };
 
