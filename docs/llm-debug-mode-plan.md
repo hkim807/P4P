@@ -2,7 +2,7 @@
 
 ## Stage 1 — repository inspection
 
-Status: inspection, the distance-only prerequisite, and Stage 2 are complete.
+Status: inspection, the distance-only prerequisite, and Stages 2–5 are complete.
 The initial inspection used commit `af211ba`. Each implementation stage below
 ends with a review checkpoint; wait for the user to review, commit, and request
 the next stage. Do not commit on the user's behalf.
@@ -228,7 +228,7 @@ may be refined when their stage begins.
 | 2 | **Complete:** explicit NORMAL/DEBUG configuration, typed debug contracts, separate evidence prompt and response validation; normal defaults preserved | `app/config.py`, `app/decision/debug_policy.py`, `app/decision/llm_policy.py`, `app/decision/__init__.py`, `tests/test_debug_policy.py` |
 | 3 | **Complete:** request-boundary capture, raw response and metadata, request-local snapshot, shared pipeline integration and error snapshots | `app/llm.py`, `app/server.py`, `app/decision/debug_policy.py`, `app/decision/llm_policy.py`, `tests/test_llm.py`, `tests/test_observation_pipeline.py` |
 | 4 | **Complete:** atomic per-source snapshot retention and retrieval using the existing monitor/SSE flow, with skipped-cycle and out-of-order protection | `app/monitor/service.py`, `app/server.py`, `tests/test_monitor.py`, `tests/test_observation_pipeline.py` |
-| 5 | Separate `/debug` page, all evidence/score sections, prompt copy/viewer, raw state and response viewers, metadata and missing/stale states | `web/src/App.tsx`, new `web/src/DebugPage.tsx` and debug types, `web/src/styles.css`, `app/server.py` for direct page loading |
+| 5 | **Complete:** separate `/debug` page, all evidence/score sections, prompt copy/viewer, raw state and response viewers, metadata and missing/stale states | `web/src/App.tsx`, new `web/src/DebugPage.tsx` and debug types, `web/src/styles.css`, `app/server.py` for direct page loading |
 | 6 | Acceptance validation, offline scenarios, normal-mode regression and run instructions | Relevant integration tests, `README.md`, this document; implementation fixes only when verification identifies a problem |
 
 Stage 2 implements the related prompt/schema requirements together (task-list
@@ -333,6 +333,45 @@ Stage 4 coverage verifies skipped cycles, out-of-order completions, failed
 snapshots, defensive copies, source isolation, missing/unknown retrieval and an
 end-to-end observation-to-monitor snapshot match. The complete suite passes all
 195 tests, including the localhost Navel HTTP test.
+
+### Stage 5 implementation contract
+
+Flask now serves the built React application directly at `/debug` and
+`/debug/`. The existing Observatory sidebar links to this page, and the Debug
+page links back without adding a routing dependency or changing the existing
+root view.
+
+The page selects a connected source and fetches only that source's retained
+atomic snapshot. It refreshes the source catalogue through the existing SSE
+stream and fetches a new snapshot on `debug.snapshot.updated`. Request sequence
+and snapshot revision checks prevent an older HTTP response from replacing a
+newer completed inference. The last complete snapshot remains visible during a
+quiet live refresh.
+
+The live view presents the social summary, important robot inputs copied from
+the validated output, cited JSON Pointer paths, track-level age where the state
+actually supplies it, OBSERVATION and INTERPRETATION evidence, the selected
+action and rationale, all action scores in ranked order, reason codes and
+uncertainties. Scores are explicitly labelled as model-reported preferences,
+not calibrated probabilities. Source age advances locally between catalogue
+updates; no field-level measurement time is inferred where one is unavailable.
+
+Expandable read-only panels keep the exact ordered system/user messages, the
+raw SocialState, original Ollama completion and validated model output separate.
+Each panel supports copying its retained request-local value. Request ID and
+snapshot revision, SocialState clock/timestamp, request and response wall-clock
+times, latency, finish reason, model/provider and decision mode remain visible
+with the decision.
+
+The page has explicit states for no connected source, loading, a connected
+source with no completed Debug inference, API errors and retained failed
+inferences. A failed inference still exposes its captured prompt, state, raw
+response when present, metadata and validation/transport error.
+
+Stage 5 validation includes the TypeScript and Vite production build, direct
+route registration, and visual inspection of a populated retained snapshot at
+`/debug`, including the expanded exact-prompt viewer. The complete Python suite
+passes all 196 tests, including the localhost Navel HTTP test.
 
 ### Implementation invariants
 

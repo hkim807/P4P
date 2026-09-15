@@ -54,6 +54,20 @@ class ServerTests(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTrue(response.get_json()["model_available"])
 
+    def test_debug_page_supports_direct_navigation(self):
+        rules = {str(rule) for rule in self.client.application.url_map.iter_rules()}
+        self.assertIn("/debug", rules)
+        self.assertIn("/debug/", rules)
+        root = self.client.get("/")
+        root_status = root.status_code
+        root_data = root.get_data()
+        root.close()
+        for path in ("/debug", "/debug/"):
+            response = self.client.get(path)
+            self.assertEqual(response.status_code, root_status)
+            self.assertEqual(response.get_data(), root_data)
+            response.close()
+
     def test_chat_passes_input_and_returns_output(self):
         response = self.client.post("/chat", json={"message": "Hello model"})
         self.assertEqual(response.status_code, 200)

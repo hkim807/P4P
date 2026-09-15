@@ -313,6 +313,11 @@ def create_app(
             }
         )
 
+    @flask_app.get("/debug")
+    @flask_app.get("/debug/")
+    def debug_page():
+        return index()
+
     @flask_app.get("/assets/<path:filename>")
     def web_assets(filename: str):
         return send_from_directory(web_dist / "assets", filename)

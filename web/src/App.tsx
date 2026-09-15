@@ -1,5 +1,5 @@
 import {
-  Activity, AlertTriangle, Bot, Check, ChevronDown, CircleDot, Clock3,
+  Activity, AlertTriangle, Bot, Bug, Check, ChevronDown, CircleDot, Clock3,
   Database, Gauge, LoaderCircle, Network, Pause, Play, Radio, RotateCcw,
   Search, SkipForward, Sparkles, Square, UserRound, X,
 } from "lucide-react";
@@ -212,6 +212,7 @@ export function App() {
         <nav>
           <p className="nav-label">Workspace</p>
           <button className="nav-item active"><Activity size={16} /> Observatory <span>{run ? 1 : 0}</span></button>
+          <a className="nav-item" href="/debug"><Bug size={16} /> LLM Debug</a>
           <button className="nav-item"><Database size={16} /> Recordings <span>{bootstrap?.recordings.length ?? 0}</span></button>
           <button className="nav-item"><Bot size={16} /> Sources {bootstrap?.sources.some((item) => item.status === "online") && <i className="online-dot" />}</button>
         </nav>
