@@ -1,7 +1,7 @@
 """Executable read-only Navel perception client.
 
-This is the only module in the repository that imports the Navel SDK.  It only
-calls receive methods and contains no actuator command path.
+This production entry point only calls receive methods and contains no actuator
+command path.
 """
 
 from __future__ import annotations
@@ -12,19 +12,21 @@ import json
 import logging
 import os
 import time
+from collections.abc import Mapping
 from dataclasses import dataclass
-from typing import Any
-
-import navel
+from typing import Any, Protocol
 
 from robot.navel_client.adapter import NavelAdapterConfig, NavelObservationAdapter
-from robot.navel_client.behavior import BehaviorController
 from robot.navel_client.transport import ObservationTransport, TransportError
 
 
 @dataclass
 class LatestLocomotion:
     value: Any | None = None
+
+
+class ResponseSink(Protocol):
+    def handle_response(self, payload: Mapping[str, Any]) -> object: ...
 
 
 def _replace_queued(queue: asyncio.Queue[dict[str, Any]], observation: dict[str, Any]) -> None:
@@ -66,11 +68,12 @@ async def _collect_perception(
 async def _send_observations(
     queue: asyncio.Queue[dict[str, Any]],
     transport: ObservationTransport,
-    behavior_controller: BehaviorController,
+    response_sink: ResponseSink,
     *,
     minimum_send_interval_s: float,
     force_decision: bool,
     print_only: bool,
+    handle_non_success_responses: bool = True,
 ) -> None:
     last_sent_at = 0.0
     while True:
@@ -115,13 +118,23 @@ async def _send_observations(
             f"accepted={str(accepted).lower()} decision_triggered={str(triggered).lower()} "
             f"triggers={','.join(str(item) for item in triggers) or '-'}"
         )
-        behavior_controller.handle_response(payload)
+        if 200 <= response.status_code < 300 or handle_non_success_responses:
+            response_sink.handle_response(payload)
+        else:
+            print(
+                f"observation={observation_id} response_ignored=true "
+                f"status={response.status_code}"
+            )
         if payload.get("error") is not None:
             print(f"server_error: {payload['error']}")
         last_sent_at = time.monotonic()
 
 
 async def run(args: argparse.Namespace) -> None:
+    import navel
+
+    from robot.navel_client.behavior import BehaviorController
+
     adapter = NavelObservationAdapter(
         NavelAdapterConfig(
             adapter_id=args.adapter_id,
