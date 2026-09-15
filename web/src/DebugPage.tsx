@@ -5,11 +5,13 @@ import {
   Bug,
   Check,
   ChevronDown,
+  ChevronRight,
   Clock3,
   Code2,
   Copy,
   FileJson,
   Gauge,
+  History,
   Network,
   Radio,
   RefreshCw,
@@ -20,7 +22,10 @@ import {
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import type {
+  DebugDecisionDetail,
+  DebugDecisionHistoryPage,
   DebugDecisionSnapshot,
+  DebugDecisionSummary,
   DebugRobotInput,
   DebugSnapshotEnvelope,
   DebugSource,
@@ -45,6 +50,13 @@ export function DebugPage() {
   const [sources, setSources] = useState<DebugSource[]>([]);
   const [selectedSourceId, setSelectedSourceId] = useState<string | null>(null);
   const [envelope, setEnvelope] = useState<DebugSnapshotEnvelope | null>(null);
+  const [history, setHistory] = useState<DebugDecisionSummary[]>([]);
+  const [historyLoading, setHistoryLoading] = useState(false);
+  const [historyLoadingOlder, setHistoryLoadingOlder] = useState(false);
+  const [historyNextCursor, setHistoryNextCursor] = useState<number | null>(null);
+  const [selectedRequestId, setSelectedRequestId] = useState<string | null>(null);
+  const [decisionDetail, setDecisionDetail] = useState<DebugDecisionDetail | null>(null);
+  const [detailLoading, setDetailLoading] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [connection, setConnection] = useState<ConnectionState>("connecting");
@@ -52,11 +64,25 @@ export function DebugPage() {
   const [sourcesSampledAtMs, setSourcesSampledAtMs] = useState(Date.now());
   const [nowMs, setNowMs] = useState(Date.now());
   const selectedSourceRef = useRef<string | null>(null);
+  const selectedRequestRef = useRef<string | null>(null);
+  const latestHistoryRequestRef = useRef<string | null>(null);
   const fetchSequence = useRef(0);
+  const historyFetchSequence = useRef(0);
+  const detailFetchSequence = useRef(0);
+  const historyNextCursorRef = useRef<number | null>(null);
+  const historyHasLoadedRef = useRef(false);
 
   useEffect(() => {
     selectedSourceRef.current = selectedSourceId;
   }, [selectedSourceId]);
+
+  useEffect(() => {
+    selectedRequestRef.current = selectedRequestId;
+  }, [selectedRequestId]);
+
+  useEffect(() => {
+    latestHistoryRequestRef.current = history[0]?.request_id ?? null;
+  }, [history]);
 
   const loadSources = useCallback(async () => {
     try {
@@ -119,6 +145,78 @@ export function DebugPage() {
     [],
   );
 
+  const loadHistory = useCallback(
+    async (
+      sourceId: string,
+      options: {
+        append?: boolean;
+        quiet?: boolean;
+        selectRequestId?: string;
+      } = {},
+    ) => {
+      const { append = false, quiet = false, selectRequestId } = options;
+      const cursor = append ? historyNextCursorRef.current : null;
+      if (append && cursor === null) return;
+      const sequence = ++historyFetchSequence.current;
+      if (!quiet) {
+        if (append) setHistoryLoadingOlder(true);
+        else setHistoryLoading(true);
+      }
+      try {
+        const query = new URLSearchParams({ limit: "50" });
+        if (cursor !== null) query.set("before", String(cursor));
+        const data = await getJson<DebugDecisionHistoryPage>(
+          `/api/v1/monitor/sources/${encodeURIComponent(sourceId)}/debug-decisions?${query}`,
+        );
+        if (
+          sequence !== historyFetchSequence.current ||
+          selectedSourceRef.current !== sourceId
+        ) {
+          return;
+        }
+        const preserveLoaded = quiet && historyHasLoadedRef.current && !append;
+        setHistory((current) => {
+          if (!append && !preserveLoaded) return data.items;
+          const known = new Set(current.map((item) => item.request_id));
+          if (preserveLoaded) {
+            return [
+              ...data.items,
+              ...current.filter(
+                (item) => !data.items.some((fresh) => fresh.request_id === item.request_id),
+              ),
+            ];
+          }
+          return [
+            ...current,
+            ...data.items.filter((item) => !known.has(item.request_id)),
+          ];
+        });
+        historyHasLoadedRef.current = true;
+        if (!preserveLoaded) {
+          historyNextCursorRef.current = data.next_cursor;
+          setHistoryNextCursor(data.next_cursor);
+        }
+        setSelectedRequestId((current) =>
+          selectRequestId ?? (append ? current : current ?? data.items[0]?.request_id ?? null),
+        );
+        setError(null);
+      } catch (requestError) {
+        if (sequence !== historyFetchSequence.current) return;
+        setError(
+          requestError instanceof Error
+            ? requestError.message
+            : "Debug decision history unavailable",
+        );
+      } finally {
+        if (sequence === historyFetchSequence.current) {
+          setHistoryLoading(false);
+          setHistoryLoadingOlder(false);
+        }
+      }
+    },
+    [],
+  );
+
   useEffect(() => {
     void loadSources();
   }, [loadSources]);
@@ -131,24 +229,112 @@ export function DebugPage() {
   useEffect(() => {
     if (!selectedSourceId) {
       setEnvelope(null);
+      setHistory([]);
+      historyNextCursorRef.current = null;
+      historyHasLoadedRef.current = false;
+      setHistoryNextCursor(null);
+      setSelectedRequestId(null);
+      setDecisionDetail(null);
       setLoading(false);
+      setHistoryLoading(false);
       return;
     }
     setEnvelope((current) =>
       current?.source_id === selectedSourceId ? current : null,
     );
+    setHistory([]);
+    historyNextCursorRef.current = null;
+    historyHasLoadedRef.current = false;
+    setHistoryNextCursor(null);
+    setSelectedRequestId(null);
+    setDecisionDetail(null);
+    detailFetchSequence.current += 1;
     void loadSnapshot(selectedSourceId);
-  }, [loadSnapshot, selectedSourceId]);
+    void loadHistory(selectedSourceId);
+  }, [loadHistory, loadSnapshot, selectedSourceId]);
+
+  useEffect(() => {
+    if (!selectedRequestId || !selectedSourceId) {
+      setDecisionDetail(null);
+      setDetailLoading(false);
+      return;
+    }
+    const sequence = ++detailFetchSequence.current;
+    setDetailLoading(true);
+    void getJson<DebugDecisionDetail>(
+      `/api/v1/monitor/debug-decisions/${encodeURIComponent(selectedRequestId)}`,
+    )
+      .then((data) => {
+        if (
+          sequence !== detailFetchSequence.current ||
+          data.snapshot.source_id !== selectedSourceId ||
+          data.snapshot.request_id !== selectedRequestId
+        ) {
+          return;
+        }
+        setDecisionDetail(data);
+        setError(null);
+      })
+      .catch((requestError: unknown) => {
+        if (sequence !== detailFetchSequence.current) return;
+        setError(
+          requestError instanceof Error
+            ? requestError.message
+            : "Debug decision detail unavailable",
+        );
+      })
+      .finally(() => {
+        if (sequence === detailFetchSequence.current) setDetailLoading(false);
+      });
+  }, [selectedRequestId, selectedSourceId]);
 
   useEffect(() => {
     const events = new EventSource("/api/v1/monitor/events");
     let refreshTimer: number | null = null;
+    let snapshotTimer: number | null = null;
+    let historyTimer: number | null = null;
+    let pendingSnapshot: { source_id: string; revision: number } | null = null;
+    let pendingHistory: { source_id: string; request_id: string } | null = null;
     const scheduleSourceRefresh = () => {
       if (refreshTimer !== null) return;
       refreshTimer = window.setTimeout(() => {
         refreshTimer = null;
         void loadSources();
       }, 500);
+    };
+    const scheduleSnapshotRefresh = (update: { source_id: string; revision: number }) => {
+      if (
+        pendingSnapshot?.source_id !== update.source_id ||
+        update.revision > pendingSnapshot.revision
+      ) {
+        pendingSnapshot = update;
+      }
+      if (snapshotTimer !== null) return;
+      snapshotTimer = window.setTimeout(() => {
+        snapshotTimer = null;
+        const pending = pendingSnapshot;
+        pendingSnapshot = null;
+        if (pending && selectedSourceRef.current === pending.source_id) {
+          void loadSnapshot(pending.source_id, pending.revision, true);
+        }
+      }, 100);
+    };
+    const scheduleHistoryRefresh = (update: { source_id: string; request_id: string }) => {
+      pendingHistory = update;
+      if (historyTimer !== null) return;
+      historyTimer = window.setTimeout(() => {
+        historyTimer = null;
+        const pending = pendingHistory;
+        pendingHistory = null;
+        if (!pending || selectedSourceRef.current !== pending.source_id) return;
+        const followsLatest =
+          selectedRequestRef.current === null ||
+          selectedRequestRef.current === latestHistoryRequestRef.current;
+        void loadHistory(pending.source_id, {
+          quiet: true,
+          selectRequestId: followsLatest ? pending.request_id : undefined,
+        });
+      }, 100);
     };
     events.onopen = () => setConnection("live");
     events.onerror = () => setConnection("retrying");
@@ -161,7 +347,21 @@ export function DebugPage() {
           revision: number;
         };
         if (selectedSourceRef.current === update.source_id) {
-          void loadSnapshot(update.source_id, update.revision, true);
+          scheduleSnapshotRefresh(update);
+        }
+      } catch {
+        scheduleSourceRefresh();
+      }
+    });
+    events.addEventListener("debug.decision.recorded", (event) => {
+      scheduleSourceRefresh();
+      try {
+        const update = JSON.parse((event as MessageEvent<string>).data) as {
+          source_id: string;
+          request_id: string;
+        };
+        if (selectedSourceRef.current === update.source_id) {
+          scheduleHistoryRefresh(update);
         }
       } catch {
         scheduleSourceRefresh();
@@ -170,11 +370,22 @@ export function DebugPage() {
     return () => {
       events.close();
       if (refreshTimer !== null) window.clearTimeout(refreshTimer);
+      if (snapshotTimer !== null) window.clearTimeout(snapshotTimer);
+      if (historyTimer !== null) window.clearTimeout(historyTimer);
     };
-  }, [loadSnapshot, loadSources]);
+  }, [loadHistory, loadSnapshot, loadSources]);
 
   const selectedSource = sources.find((source) => source.id === selectedSourceId);
-  const snapshot = envelope?.source_id === selectedSourceId ? envelope.snapshot : null;
+  const latestSnapshot =
+    envelope?.source_id === selectedSourceId ? envelope.snapshot : null;
+  const detailedSnapshot =
+    decisionDetail?.snapshot.request_id === selectedRequestId
+      ? decisionDetail.snapshot
+      : null;
+  const snapshot = selectedRequestId
+    ? detailedSnapshot ??
+      (latestSnapshot?.request_id === selectedRequestId ? latestSnapshot : null)
+    : latestSnapshot;
   const output = snapshot?.validated_response ?? null;
   const rankedActions = useMemo(
     () => Object.entries(output?.action_scores ?? {})
@@ -225,7 +436,7 @@ export function DebugPage() {
                   <strong>{source.name}</strong>
                   <small>
                     {source.latest_debug_snapshot_status
-                      ? `${source.latest_debug_snapshot_status.toLowerCase()} · r${source.debug_snapshot_revision}`
+                      ? `${source.latest_debug_snapshot_status.toLowerCase()} · ${source.debug_decision_count} decisions`
                       : "awaiting debug inference"}
                   </small>
                 </span>
@@ -250,7 +461,7 @@ export function DebugPage() {
           <div>
             <div className="eyebrow"><span>DEBUG MODE</span> / EVIDENCE TRACE</div>
             <h1>LLM decision debug</h1>
-            <p>One complete inference at a time, from SocialState to selected action.</p>
+            <p>Review every saved inference from SocialState to selected action.</p>
           </div>
           <div className={`debug-live-state ${connection}`}>
             <i /> {connection === "live" ? "Live" : "Reconnecting"}
@@ -270,23 +481,57 @@ export function DebugPage() {
             title="Waiting for a connected source"
             detail="Start the gateway and send a Navel observation to populate this page."
           />
-        ) : loading && !snapshot ? (
-          <EmptyDebugState
-            icon={<RefreshCw className="spin" size={24} />}
-            title="Loading the latest inference"
-            detail={`Reading the retained snapshot for ${selectedSource?.name ?? selectedSourceId}.`}
-          />
-        ) : !snapshot ? (
-          <EmptyDebugState
-            icon={<Bug size={24} />}
-            title="No Debug inference yet"
-            detail="This source is connected, but no Debug decision has completed. Run the gateway with DECISION_MODE=DEBUG and wait for a decision trigger."
-          />
         ) : (
+          <div className="debug-workspace">
+            <DecisionHistoryPanel
+              items={history}
+              selectedRequestId={selectedRequestId}
+              latestRequestId={history[0]?.request_id ?? latestSnapshot?.request_id ?? null}
+              total={selectedSource?.debug_decision_count ?? history.length}
+              loading={historyLoading}
+              loadingOlder={historyLoadingOlder}
+              hasOlder={historyNextCursor !== null}
+              onSelect={setSelectedRequestId}
+              onLoadOlder={() => void loadHistory(selectedSourceId, { append: true })}
+            />
+            <div className="debug-detail">
+          {(loading || historyLoading || detailLoading) && !snapshot ? (
+            <EmptyDebugState
+              icon={<RefreshCw className="spin" size={24} />}
+              title="Loading decision details"
+              detail={`Reading saved inferences for ${selectedSource?.name ?? selectedSourceId}.`}
+            />
+          ) : selectedRequestId && !snapshot ? (
+            <EmptyDebugState
+              icon={<AlertTriangle size={24} />}
+              title="Decision detail unavailable"
+              detail="Select another saved decision or refresh the connected source."
+            />
+          ) : !snapshot ? (
+            <EmptyDebugState
+              icon={<Bug size={24} />}
+              title="No saved Debug decisions yet"
+              detail="This source is connected, but no Debug decision has completed. Run the gateway with DECISION_MODE=DEBUG and wait for a decision trigger."
+            />
+          ) : (
           <div className="debug-content" aria-live="polite">
             <SnapshotHeader
               snapshot={snapshot}
-              revision={envelope?.revision ?? 0}
+              revision={
+                latestSnapshot?.request_id === snapshot.request_id
+                  ? envelope?.revision ?? null
+                  : null
+              }
+              historyId={
+                decisionDetail?.snapshot.request_id === snapshot.request_id
+                  ? decisionDetail.history_id
+                  : null
+              }
+              recordedAt={
+                decisionDetail?.snapshot.request_id === snapshot.request_id
+                  ? decisionDetail.recorded_at
+                  : null
+              }
               source={selectedSource}
               sourcesSampledAtMs={sourcesSampledAtMs}
               nowMs={nowMs}
@@ -445,21 +690,120 @@ export function DebugPage() {
               </DebugViewer>
             </section>
           </div>
+          )}
+            </div>
+          </div>
         )}
       </main>
     </div>
   );
 }
 
+function DecisionHistoryPanel({
+  items,
+  selectedRequestId,
+  latestRequestId,
+  total,
+  loading,
+  loadingOlder,
+  hasOlder,
+  onSelect,
+  onLoadOlder,
+}: {
+  items: DebugDecisionSummary[];
+  selectedRequestId: string | null;
+  latestRequestId: string | null;
+  total: number;
+  loading: boolean;
+  loadingOlder: boolean;
+  hasOlder: boolean;
+  onSelect: (requestId: string) => void;
+  onLoadOlder: () => void;
+}) {
+  return (
+    <aside className="decision-history" aria-label="LLM decision history">
+      <header>
+        <span><History size={15} /></span>
+        <div>
+          <strong>Decision history</strong>
+          <small>{total.toLocaleString()} saved for this source</small>
+        </div>
+      </header>
+      <div className="decision-history-list">
+        {loading && !items.length ? (
+          <div className="decision-history-empty">
+            <RefreshCw className="spin" size={16} />
+            Loading saved decisions
+          </div>
+        ) : items.length ? items.map((item) => {
+          const isLatest = item.request_id === latestRequestId;
+          const isSelected = item.request_id === selectedRequestId;
+          const description = item.status === "FAILED"
+            ? item.error_message ?? item.error_code ?? "Inference failed"
+            : item.decision_rationale ?? "No decision rationale was returned.";
+          return (
+            <button
+              type="button"
+              className={`decision-history-item ${isSelected ? "selected" : ""} ${item.status.toLowerCase()}`}
+              key={item.request_id}
+              aria-pressed={isSelected}
+              onClick={() => onSelect(item.request_id)}
+            >
+              <div className="decision-history-status">
+                {item.status === "COMPLETED" ? <Check size={12} /> : <AlertTriangle size={12} />}
+              </div>
+              <div className="decision-history-copy">
+                <div>
+                  <strong>{item.recommended_action ?? "FAILED"}</strong>
+                  {isLatest && <span>Latest</span>}
+                  <time dateTime={item.requested_at ?? item.recorded_at}>
+                    <Clock3 size={10} /> {formatTimestamp(item.requested_at ?? item.recorded_at)}
+                  </time>
+                </div>
+                <p>{description}</p>
+                <small>
+                  #{item.history_id} · {item.returned_model ?? item.requested_model ?? "unknown model"}
+                  {item.latency_ms !== null ? ` · ${item.latency_ms.toFixed(0)} ms` : ""}
+                </small>
+              </div>
+              <ChevronRight size={14} />
+            </button>
+          );
+        }) : (
+          <div className="decision-history-empty">
+            <History size={17} />
+            Decisions will appear here automatically
+          </div>
+        )}
+      </div>
+      {hasOlder && (
+        <button
+          type="button"
+          className="load-older-decisions"
+          disabled={loadingOlder}
+          onClick={onLoadOlder}
+        >
+          {loadingOlder && <RefreshCw className="spin" size={12} />}
+          {loadingOlder ? "Loading…" : "Load older decisions"}
+        </button>
+      )}
+    </aside>
+  );
+}
+
 function SnapshotHeader({
   snapshot,
   revision,
+  historyId,
+  recordedAt,
   source,
   sourcesSampledAtMs,
   nowMs,
 }: {
   snapshot: DebugDecisionSnapshot;
-  revision: number;
+  revision: number | null;
+  historyId: number | null;
+  recordedAt: string | null;
   source: DebugSource | undefined;
   sourcesSampledAtMs: number;
   nowMs: number;
@@ -467,12 +811,12 @@ function SnapshotHeader({
   const sourceAge = source ? currentSourceAge(source, sourcesSampledAtMs, nowMs) : null;
   return (
     <section className="snapshot-meta">
-      <div><span>Request</span><code title={snapshot.request_id}>{shortId(snapshot.request_id)}</code><small>revision {revision}</small></div>
+      <div><span>Request</span><code title={snapshot.request_id}>{shortId(snapshot.request_id)}</code><small>{revision !== null ? `latest · revision ${revision}` : historyId !== null ? `saved decision #${historyId}` : "saved decision"}</small></div>
       <div><span>SocialState time</span><strong>{snapshot.state_timestamp_us.toLocaleString()} µs</strong><small>{snapshot.clock_domain}</small></div>
       <div><span>LLM request</span><strong>{formatTimestamp(snapshot.metadata.requested_at)}</strong><small>{formatTimestamp(snapshot.metadata.responded_at)} response</small></div>
       <div><span>LLM latency</span><strong>{snapshot.metadata.latency_ms.toFixed(1)} ms</strong><small>{snapshot.metadata.finish_reason ?? snapshot.status.toLowerCase()}</small></div>
       <div><span>Model</span><strong>{snapshot.metadata.returned_model ?? snapshot.metadata.requested_model}</strong><small>{snapshot.metadata.provider} · {snapshot.metadata.decision_mode}</small></div>
-      <div><span>Source freshness</span><strong>{sourceAge === null ? "Unknown" : `${sourceAge.toFixed(1)} s ago`}</strong><small>{source ? currentSourceStatus(source, sourcesSampledAtMs, nowMs) : snapshot.source_id}</small></div>
+      <div><span>{recordedAt ? "Saved" : "Source freshness"}</span><strong>{recordedAt ? formatTimestamp(recordedAt) : sourceAge === null ? "Unknown" : `${sourceAge.toFixed(1)} s ago`}</strong><small>{recordedAt ? `source ${snapshot.source_id}` : source ? currentSourceStatus(source, sourcesSampledAtMs, nowMs) : snapshot.source_id}</small></div>
     </section>
   );
 }

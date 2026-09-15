@@ -8,6 +8,7 @@ export type DebugSource = {
   age_s: number;
   clock_domain: string;
   debug_snapshot_revision: number;
+  debug_decision_count: number;
   latest_debug_request_id: string | null;
   latest_debug_snapshot_status: "COMPLETED" | "FAILED" | null;
   latest_debug_state_timestamp_us: number | null;
@@ -88,6 +89,42 @@ export type DebugSnapshotEnvelope = {
   source_id: string;
   revision: number;
   snapshot: DebugDecisionSnapshot | null;
+};
+
+export type DebugDecisionSummary = {
+  history_id: number;
+  request_id: string;
+  source_id: string;
+  status: "COMPLETED" | "FAILED";
+  observation_id: string | null;
+  social_state_id: string | null;
+  state_timestamp_us: number | null;
+  clock_domain: string | null;
+  requested_at: string | null;
+  responded_at: string | null;
+  latency_ms: number | null;
+  provider: string | null;
+  requested_model: string | null;
+  returned_model: string | null;
+  recommended_action: string | null;
+  decision_rationale: string | null;
+  decision_confidence: number | null;
+  error_code: string | null;
+  error_message: string | null;
+  snapshot_bytes: number;
+  recorded_at: string;
+};
+
+export type DebugDecisionHistoryPage = {
+  source_id: string;
+  items: DebugDecisionSummary[];
+  next_cursor: number | null;
+};
+
+export type DebugDecisionDetail = {
+  history_id: number;
+  recorded_at: string;
+  snapshot: DebugDecisionSnapshot;
 };
 
 export type MonitorBootstrap = {

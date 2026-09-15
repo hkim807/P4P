@@ -2,8 +2,7 @@
 
 ## Stage 1 — repository inspection
 
-Status: the inspection, distance-only prerequisite, Stages 2–6, and the Stage 7
-decision-history backend are complete. The Stage 8 history UI is pending review.
+Status: the inspection, distance-only prerequisite, and Stages 2–8 are complete.
 The initial inspection used commit `af211ba`. Each implementation stage below
 ends with a review checkpoint; wait for the user to review, commit, and request
 the next stage. Do not commit on the user's behalf.
@@ -232,7 +231,7 @@ may be refined when their stage begins.
 | 5 | **Complete:** separate `/debug` page, all evidence/score sections, prompt copy/viewer, raw state and response viewers, metadata and missing/stale states | `web/src/App.tsx`, new `web/src/DebugPage.tsx` and debug types, `web/src/styles.css`, `app/server.py` for direct page loading |
 | 6 | **Complete:** acceptance validation, offline scenarios, normal-mode regression and run instructions | `tests/test_observation_pipeline.py`, `README.md`, this document |
 | 7 | **Complete:** automatic durable SQLite history, paginated list/detail APIs and per-source history counts/events | `app/monitor/debug_history.py`, `app/monitor/service.py`, `app/server.py`, focused tests and documentation |
-| 8 | **Pending:** selectable decision history and click-through details on `/debug` | `web/src/DebugPage.tsx`, debug types and styles |
+| 8 | **Complete:** selectable decision history, pagination, live updates and click-through details on `/debug` | `web/src/DebugPage.tsx`, `web/src/debugTypes.ts`, `web/src/styles.css`, documentation |
 
 Stage 2 implements the related prompt/schema requirements together (task-list
 sections 2–7 and 17). Stages 3–4 cover capture, consistency, metadata and streaming
@@ -450,14 +449,42 @@ GET /api/v1/monitor/debug-decisions/<request_id>
 
 The list endpoint returns compact action, rationale, status, error, model and
 timing fields plus an exclusive `next_cursor`. The detail endpoint returns the
-full snapshot needed by the existing evidence viewer. The current Stage 5 page
-still selects the latest snapshot; Stage 8 will connect these APIs to a history
-list and click-through detail view.
+full snapshot used by the evidence viewer. Stage 8 connects both APIs to the
+web page.
 
 Stage 7 validation covers database reopen, duplicate request IDs, newest-first
 pagination, failed decisions, out-of-order completions, source-count recovery
 and list/detail HTTP errors. The complete suite passes all 202 tests, including
 the localhost Navel HTTP transport test.
+
+### Stage 8 decision-history UI
+
+The `/debug` page now places a newest-first decision history beside the existing
+evidence viewer. Each row shows success or failure, selected action, request
+time, concise rationale or error, model, latency and durable history ID. The
+source card and panel show the persisted decision count. **Load older
+decisions** follows the Stage 7 cursor until all older entries are available.
+
+Selecting a row fetches its complete immutable snapshot and reuses every
+existing detail section: cited `SocialState` values, evidence, rationale, action
+ranking, uncertainty, exact prompts, raw state, raw response and validated
+output. Failed inferences remain selectable and expose their retained context.
+The header distinguishes the in-memory latest revision from a durable history
+ID and shows when the selected snapshot was saved.
+
+The page listens for `debug.decision.recorded`. It follows new decisions while
+the newest row is selected and preserves the user's selection while an older
+decision is under review. Replayed SSE events are coalesced into one snapshot
+and history refresh. Source switches and overlapping requests use sequence and
+source checks so a stale response cannot replace the selected source or request.
+
+Stage 8 validation includes the TypeScript/Vite production build and a live
+browser exercise with successful and failed decisions. The exercise verified
+newest-first display, click-through from a failed latest item to an older
+successful decision, complete SocialState justification, automatic following
+of a new latest decision, and preservation of an older selection during live
+updates. The complete Python suite passes all 205 tests, including the localhost
+Navel HTTP transport test.
 
 ### Implementation invariants
 

@@ -176,8 +176,9 @@ DECISION_MODE=DEBUG API_HOST=0.0.0.0 python3 -m app.server
 
 Open `http://127.0.0.1:6060/debug` on the gateway computer. From another
 computer, replace `127.0.0.1` with the gateway computer's LAN address. Select a
-connected source in the left sidebar. The page updates after each completed
-Debug inference and shows:
+connected source in the left sidebar. The decision-history panel lists saved
+inferences newest first. Select any successful or failed item to inspect its
+request-local details. The page shows:
 
 - the social summary and important available `SocialState` inputs;
 - cited observations and interpretations as separate evidence types;
@@ -217,9 +218,10 @@ curl http://127.0.0.1:6060/api/v1/monitor/debug-decisions/REQUEST_ID
 ```
 
 Use the returned `next_cursor` as the list endpoint's `before` value to load an
-older page. The current web page still opens the latest snapshot; the next UI
-stage will add the selectable history list. The history has no automatic
-deletion limit.
+older page. The web page provides the same pagination with **Load older
+decisions**. While the latest decision is selected, new decisions are selected
+automatically. An older selection remains fixed while live updates continue.
+The history has no automatic deletion limit.
 
 Restart with `DECISION_MODE=NORMAL`, or omit the setting, to use the original
 compact policy prompt and response. Normal mode remains the default and does not

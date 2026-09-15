@@ -112,7 +112,34 @@ button:disabled { cursor: not-allowed; opacity: .45; }
 .debug-live-state i { width: 6px; height: 6px; border-radius: 50%; background: var(--amber); }
 .debug-live-state.live { color: var(--teal); border-color: #234239; }
 .debug-live-state.live i { background: var(--teal); box-shadow: 0 0 8px rgba(85,214,177,.65); }
+.debug-workspace { display: grid; grid-template-columns: 294px minmax(0, 1fr); gap: 14px; align-items: start; }
+.debug-detail { min-width: 0; }
+.decision-history { position: sticky; top: 18px; max-height: calc(100vh - 36px); display: flex; flex-direction: column; overflow: hidden; border: 1px solid var(--line); background: var(--panel); border-radius: 10px; }
+.decision-history > header { flex: 0 0 auto; min-height: 61px; display: grid; grid-template-columns: 30px 1fr; gap: 10px; align-items: center; padding: 0 13px; border-bottom: 1px solid var(--line); }
+.decision-history > header > span { width: 30px; height: 30px; display: grid; place-items: center; color: var(--teal); background: #182723; border-radius: 7px; }
+.decision-history > header strong, .decision-history > header small { display: block; }
+.decision-history > header strong { font-size: 11px; }
+.decision-history > header small { margin-top: 3px; color: #65706b; font-size: 8px; }
+.decision-history-list { min-height: 0; overflow-y: auto; padding: 7px; }
+.decision-history-item { width: 100%; display: grid; grid-template-columns: 23px minmax(0, 1fr) 14px; gap: 7px; align-items: start; padding: 10px 8px; color: inherit; background: transparent; border: 1px solid transparent; border-radius: 7px; cursor: pointer; text-align: left; }
+.decision-history-item:hover { background: #171d1b; border-color: #28322f; }
+.decision-history-item.selected { background: #18201b; border-color: #3b493b; box-shadow: inset 2px 0 var(--accent); }
+.decision-history-status { width: 22px; height: 22px; display: grid; place-items: center; color: var(--teal); background: #182723; border-radius: 50%; }
+.decision-history-item.failed .decision-history-status { color: var(--red); background: #2a1919; }
+.decision-history-copy { min-width: 0; }
+.decision-history-copy > div { display: flex; align-items: center; gap: 5px; }
+.decision-history-copy strong { color: #d8e0dc; font: 9px var(--mono); }
+.decision-history-copy > div > span { padding: 2px 4px; color: var(--accent); background: #253022; border-radius: 3px; font: 6px var(--mono); text-transform: uppercase; letter-spacing: .06em; }
+.decision-history-copy time { display: flex; align-items: center; gap: 3px; margin-left: auto; color: #66716c; font: 7px var(--mono); white-space: nowrap; }
+.decision-history-copy p { display: -webkit-box; margin: 7px 0 6px; overflow: hidden; color: #89948f; font-size: 8px; line-height: 1.4; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+.decision-history-copy small { display: block; overflow: hidden; color: #56615c; font: 7px var(--mono); text-overflow: ellipsis; white-space: nowrap; }
+.decision-history-item > svg { align-self: center; color: #4e5954; }
+.decision-history-empty { min-height: 130px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 18px; color: #626e68; font-size: 8px; text-align: center; }
+.load-older-decisions { min-height: 37px; display: flex; align-items: center; justify-content: center; gap: 6px; margin: 0 7px 7px; color: #86918c; background: #171d1b; border: 1px solid #2a3430; border-radius: 6px; cursor: pointer; font-size: 8px; }
+.load-older-decisions:hover { color: var(--text); border-color: #46534d; }
+.load-older-decisions:disabled { cursor: wait; opacity: .65; }
 .debug-content { display: grid; gap: 12px; }
+.debug-workspace .debug-primary-grid { grid-template-columns: 1fr; }
 .snapshot-meta { display: grid; grid-template-columns: 1.25fr 1fr 1.05fr .8fr 1fr .8fr; border: 1px solid var(--line); background: var(--panel); border-radius: 10px; overflow: hidden; }
 .snapshot-meta > div { min-width: 0; min-height: 76px; padding: 13px 14px; border-right: 1px solid var(--line); }
 .snapshot-meta > div:last-child { border-right: 0; }
@@ -207,6 +234,8 @@ button:disabled { cursor: not-allowed; opacity: .45; }
 @keyframes debug-spin { to { transform: rotate(360deg); } }
 
 @media (max-width: 1220px) {
+  .debug-workspace { grid-template-columns: 1fr; }
+  .decision-history { position: static; max-height: 400px; }
   .snapshot-meta { grid-template-columns: repeat(3, 1fr); }
   .snapshot-meta > div:nth-child(3) { border-right: 0; }
   .snapshot-meta > div:nth-child(-n+3) { border-bottom: 1px solid var(--line); }
