@@ -113,6 +113,122 @@ Start the gateway:
 python3 -m app.server
 ```
 
+## External D435 observation client
+
+Stage 1 provides a display-only client for a fixed stationary D435-family rig
+on the same Linux desktop as the server. It captures RGB and depth, aligns depth
+to colour, validates the canonical `ObservationFrame`, and reuses the existing
+HTTP transport. `humans` and `images` are always empty. There is no human
+detection or tracking, distance/face/gaze estimation, Hokuyo support, or action
+execution. Raw camera data stays local; nothing is recorded in this stage.
+
+### Install
+
+From the repository root, using Python 3.10 or newer:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+python3 -m pip install -r requirements.txt -r requirements-external-sensors.txt
+```
+
+The external requirements add only `pyrealsense2`. Hardware access also requires
+working RealSense device permissions/drivers on the lab Linux desktop; installing
+the Python package alone does not verify USB access. Hardware is opened only at
+capture startup, so module imports and mock tests do not require RealSense.
+
+### Terminal 1: Ollama and server
+
+Ensure the model is installed and Ollama is running in its own terminal/service:
+
+```bash
+ollama pull qwen2.5:7b
+ollama serve
+```
+
+With Ollama running, activate the environment and start the server:
+
+```bash
+source .venv/bin/activate
+python3 -m app.server
+```
+
+From another shell, check readiness:
+
+```bash
+curl http://127.0.0.1:6060/health
+```
+
+`/health` returns 200 only when the configured model is available; it returns
+503 when degraded or unreachable. Port 6060 is the default. No registration,
+WebSocket, or SSH tunnel is needed for this local observation path.
+
+### Terminal 2: Camera test
+
+```bash
+source .venv/bin/activate
+python3 -m robot.external_sensor_client.main --camera-test
+```
+
+This captures 30 frames by default and closes without creating observations or
+contacting the server. Change the count with `--camera-test-frames 60`, or select
+a device with `--realsense-serial SERIAL`. Both streams request 640x480 at 30 FPS,
+using RGB8 colour and Z16 depth. Device/active stream details, host monotonic
+receive timestamps, frame numbers, and a sparse depth-validity sample ratio are
+printed. Unsupported streams, timeouts, and invalid frames report an error and
+stop; alignment uses the [official RealSense alignment API](https://github.com/realsenseai/librealsense/blob/master/wrappers/python/examples/align-depth2color.py).
+
+### Terminal 2: End-to-end observation mode
+
+```bash
+python3 -m robot.external_sensor_client.main \
+  --server http://127.0.0.1:6060 \
+  --adapter-id external-d435-01 \
+  --minimum-send-interval 0.2 \
+  --stationary-rig \
+  --print-raw-json
+```
+
+Normal mode requires `--stationary-rig`: zero linear/angular velocities are known
+from this explicit configuration, with task `IDLE` and controller `STOPPED`.
+`ROBOT_BASE` declares the rig frame; Stage 1 sends no positions and applies no
+camera coordinate transform. Unsupported perception fields are marked unavailable.
+Each observation uses its capture receive timestamp, except microsecond ties
+are advanced to preserve strict ordering. Adapter IDs must be nonempty and at
+most 128 characters; choose a distinct ID for each rig and a new ID after a host
+reboot if the server retains that source's previous monotonic timestamps.
+
+`--server` is a base URL, not the complete endpoint. The default request timeout
+is 35 seconds. Capture runs on a worker thread while HTTP waits, keeping only the
+latest queued frame (capacity one). One POST is in flight at a time. The minimum
+interval is measured after request completion, so 0.2 seconds does not guarantee
+5 Hz when LLM generation is slow. Transport failures discard the observation and
+continue without retries/backoff. Counters report captured frames, generated
+observations, attempted sends (including transport failures), queue replacements,
+and transport failures. Ctrl+C stops capture and closes the pipeline; a pending
+HTTP worker may take until its timeout to finish.
+
+Responses display HTTP status, acceptance, observation/state IDs, scheduling and
+forced-decision flags, triggers, errors, and the returned intent directly.
+`--print-raw-json` also prints the complete response. Accepted empty scenes
+normally produce no decision. HTTP 502 can still have `accepted: true`, because
+state estimation succeeded before an LLM failure.
+
+### Optional forced decision
+
+Add `--force-decision` to request a decision even for the empty Stage 1 scene:
+
+```bash
+python3 -m robot.external_sensor_client.main \
+  --server http://127.0.0.1:6060 \
+  --stationary-rig --force-decision --print-raw-json
+```
+
+This flag forces every sent observation; use it for a short manual check, then
+Ctrl+C. Returned behavior is displayed only. Physical device discovery, stream
+support, alignment, USB permissions, and sustained capture still require a lab
+Linux hardware check; mock tests do not establish those properties.
+
 ## Pipeline Lens monitor
 
 Pipeline Lens is the local shadow-mode recorder and replayer included with the

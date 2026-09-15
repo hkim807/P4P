@@ -1,0 +1,2 @@
+# Install alongside requirements.txt for the same-desktop client/server setup.
+pyrealsense2>=2.55,<3
