@@ -13,6 +13,7 @@ from app.server import create_app
 from robot.external_sensor_client.adapter import ExternalObservationAdapter
 from robot.external_sensor_client.capture import CaptureError, CapturedFrame, DeviceInfo, StreamInfo
 from robot.external_sensor_client.config import parse_args
+from robot.external_sensor_client.perception import PerceivedFrame
 from robot.external_sensor_client.main import Counters, replace_queued, run, send_observations
 from robot.navel_client.transport import ObservationResponse, ObservationTransport, TransportError
 
@@ -45,6 +46,17 @@ class FakeCapture:
     def __exit__(self, *_):
         assert threading.get_ident() == self.thread
         self.closed = True
+
+
+class EmptyPerception:
+    def __init__(self, *args):
+        pass
+
+    def process(self, frame):
+        return PerceivedFrame(frame)
+
+    def close(self):
+        pass
 
 
 class RuntimeTests(unittest.IsolatedAsyncioTestCase):
@@ -99,10 +111,10 @@ class RuntimeTests(unittest.IsolatedAsyncioTestCase):
             return ObservationResponse(200, {"accepted": True, "decision_triggered": False, "behavior_intent": None})
 
         transport = Mock(send=send)
-        args = parse_args(["--stationary-rig", "--force-decision", "--minimum-send-interval", "0"])
+        args = parse_args(["--stationary-rig", "--camera-height-m", "1.2", "--force-decision", "--minimum-send-interval", "0"])
         capture.frames.put(frame(100))
         with redirect_stdout(io.StringIO()), patch("robot.external_sensor_client.main.Counters", return_value=counters):
-            task = asyncio.create_task(run(args, capture_factory=lambda serial: capture, transport_factory=lambda *a, **kw: transport))
+            task = asyncio.create_task(run(args, capture_factory=lambda serial: capture, transport_factory=lambda *a, **kw: transport, perception_factory=EmptyPerception))
             try:
                 self.assertTrue(await asyncio.to_thread(started.wait, 2))
                 for timestamp in (200, 300, 400):
@@ -111,7 +123,7 @@ class RuntimeTests(unittest.IsolatedAsyncioTestCase):
                 await asyncio.sleep(0)  # Deliver the worker's queued callbacks.
                 self.assertEqual(len(calls), 1)
                 self.assertEqual(counters.frames_captured, 4)
-                self.assertEqual(counters.queued_frames_replaced, 2)
+                self.assertEqual(counters.queued_frames_replaced + counters.perception_frames_replaced, 2)
                 release.set()
                 self.assertTrue(await asyncio.to_thread(second.wait, 2))
                 self.assertEqual(calls[1][0]["timestamp_us"], 400)
@@ -205,7 +217,7 @@ class RuntimeTests(unittest.IsolatedAsyncioTestCase):
         capture = FakeCapture()
         capture.frames.put(CaptureError("invalid frames"))
         with redirect_stdout(io.StringIO()), self.assertRaisesRegex(CaptureError, "invalid frames"):
-            await run(parse_args(["--stationary-rig"]), capture_factory=lambda serial: capture, transport_factory=Mock())
+            await run(parse_args(["--stationary-rig", "--camera-height-m", "1.2"]), capture_factory=lambda serial: capture, transport_factory=Mock(), perception_factory=EmptyPerception)
         self.assertTrue(capture.closed)
 
     async def test_camera_mode_cancellation_closes_after_pending_read(self):

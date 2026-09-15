@@ -28,6 +28,7 @@ def fake_sdk():
     frames.get_color_frame.return_value = color
     frames.get_depth_frame.return_value = depth
     device = sdk_device()
+    device.first_depth_sensor.return_value.get_depth_scale.return_value = 0.001
     video = Mock()
     video.width.return_value = 640
     video.height.return_value = 480
@@ -59,6 +60,10 @@ sys.meta_path.insert(0, RejectSDK())
 import robot.external_sensor_client.main
 assert "pyrealsense2" not in sys.modules
 assert "navel" not in sys.modules
+assert not any(name.startswith("robot.navel_client.behavior") for name in sys.modules)
+assert "ultralytics" not in sys.modules
+assert "cv2" not in sys.modules
+assert "numpy" not in sys.modules
 '''
         result = subprocess.run([sys.executable, "-B", "-c", code], capture_output=True, text=True, timeout=10)
         self.assertEqual(result.returncode, 0, result.stderr)
@@ -81,6 +86,8 @@ assert "navel" not in sys.modules
                 self.assertEqual((first.timestamp_us, second.timestamp_us), (100, 101))
                 self.assertEqual(first.frame_number, 42)
                 self.assertEqual(first.depth_valid_sample_ratio, 0.5)
+                self.assertEqual(first.depth_scale_m, 0.001)
+                self.assertIs(first.color_intrinsics, first.color.get_profile().as_video_stream_profile().get_intrinsics())
                 self.assertIs(first.color, frames.get_color_frame.return_value)
                 sdk.config.return_value.enable_device.assert_called_once_with("123")
                 self.assertEqual(sdk.config.return_value.enable_stream.call_args_list[0].args, ("color", 640, 480, "rgb8", 30))
@@ -88,6 +95,28 @@ assert "navel" not in sys.modules
                 sdk.align.assert_called_once_with("color")
                 pipeline.wait_for_frames.assert_called_with(timeout_ms=1000)
             capture.close()
+            pipeline.stop.assert_called_once()
+
+    def test_timestamp_is_assigned_immediately_after_alignment(self):
+        sdk, pipeline, frames = fake_sdk()
+        events = []
+        sdk.align.return_value.process.side_effect = lambda value: (events.append("align"), frames)[1]
+        frames.get_color_frame.side_effect = lambda: (events.append("color"), Mock())[1]
+        with patch("robot.external_sensor_client.capture.import_module", return_value=sdk), patch("robot.external_sensor_client.capture.time.monotonic_ns", side_effect=lambda: (events.append("time"), 100_000)[1]):
+            with RealSenseCapture() as capture:
+                # Stop after getting colour; the event sequence alone verifies
+                # timestamp placement before validation/numerical work.
+                frames.get_depth_frame.side_effect = CaptureError("end of test")
+                with self.assertRaises(CaptureError):
+                    capture.read()
+        self.assertEqual(events, ["align", "time", "color"])
+
+    def test_invalid_device_depth_scale_closes_pipeline(self):
+        for scale in (0, -1, float("nan"), float("inf")):
+            sdk, pipeline, _ = fake_sdk()
+            pipeline.start.return_value.get_device.return_value.first_depth_sensor.return_value.get_depth_scale.return_value = scale
+            with self.subTest(scale=scale), patch("robot.external_sensor_client.capture.import_module", return_value=sdk), self.assertRaisesRegex(CaptureError, "depth scale"):
+                RealSenseCapture().start()
             pipeline.stop.assert_called_once()
 
     def test_no_compatible_device_or_serial(self):

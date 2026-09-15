@@ -65,6 +65,27 @@ class DisplayTests(unittest.TestCase):
 
 
 class CLITests(unittest.TestCase):
+    def test_normal_requires_measured_height_camera_test_does_not(self):
+        with redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
+            parse_args(["--stationary-rig"])
+        args = parse_args(["--camera-test", "--display"])
+        self.assertIsNone(args.camera_height_m)
+        self.assertTrue(args.display)
+        self.assertEqual(args.person_model, "yolo11n.pt")
+        self.assertEqual(args.person_confidence, 0.25)
+
+    def test_invalid_perception_options_and_valid_overrides(self):
+        for flag, value in (("--camera-height-m", "0"), ("--camera-height-m", "-1"),
+                            ("--camera-height-m", "nan"), ("--camera-height-m", "inf"),
+                            ("--person-confidence", "0"), ("--person-confidence", "1.1"),
+                            ("--person-confidence", "nan"), ("--person-model", " ")):
+            with self.subTest(flag=flag, value=value), redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
+                parse_args(["--stationary-rig", "--camera-height-m", "1.2", flag, value])
+        args = parse_args(["--stationary-rig", "--camera-height-m", "1.5", "--person-model", "/tmp/person.pt", "--person-confidence", "0.6", "--display"])
+        self.assertEqual(args.person_model, "/tmp/person.pt")
+        self.assertEqual(args.person_confidence, 0.6)
+        self.assertTrue(args.display)
+
     def test_normal_requires_explicit_stationary_rig(self):
         output = io.StringIO()
         with redirect_stderr(output), self.assertRaises(SystemExit) as error:
@@ -76,13 +97,13 @@ class CLITests(unittest.TestCase):
         camera = parse_args(["--camera-test", "--server", "unused"])
         self.assertFalse(camera.stationary_rig)
         self.assertEqual(camera.camera_test_frames, 30)
-        normal = parse_args(["--stationary-rig"])
+        normal = parse_args(["--stationary-rig", "--camera-height-m", "1.2"])
         self.assertEqual(normal.server, "http://127.0.0.1:6060")
         self.assertEqual(normal.minimum_send_interval, 0.2)
         self.assertEqual(normal.request_timeout, 35.0)
 
     def test_options_are_forwarded(self):
-        args = parse_args(["--stationary-rig", "--force-decision", "--print-raw-json", "--realsense-serial", "123", "--adapter-id", " rig "])
+        args = parse_args(["--stationary-rig", "--camera-height-m", "1.2", "--force-decision", "--print-raw-json", "--realsense-serial", "123", "--adapter-id", " rig "])
         self.assertEqual(args.adapter_id, "rig")
         self.assertEqual(args.realsense_serial, "123")
         self.assertTrue(args.force_decision)
@@ -95,4 +116,4 @@ class CLITests(unittest.TestCase):
                    ("--server", "file:///tmp/server"), ("--server", "http://localhost:bad"), ("--realsense-serial", " "))
         for options in invalid:
             with self.subTest(options=options), redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
-                parse_args(["--stationary-rig", *options])
+                parse_args(["--stationary-rig", "--camera-height-m", "1.2", *options])

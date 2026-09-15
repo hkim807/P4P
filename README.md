@@ -115,12 +115,12 @@ python3 -m app.server
 
 ## External D435 observation client
 
-Stage 1 provides a display-only client for a fixed stationary D435-family rig
-on the same Linux desktop as the server. It captures RGB and depth, aligns depth
-to colour, validates the canonical `ObservationFrame`, and reuses the existing
-HTTP transport. `humans` and `images` are always empty. There is no human
-detection or tracking, distance/face/gaze estimation, Hokuyo support, or action
-execution. Raw camera data stays local; nothing is recorded in this stage.
+Stage 2 observes people from a fixed D435-family rig on the same Linux desktop
+as the server. RGB and aligned depth feed person-only YOLO detection with
+persistent ByteTrack tracking, torso depth estimation, and canonical
+`HumanObservation`/`ObservationFrame` validation before the existing HTTP
+transport. Responses and optional live views are displayed locally. Images are
+never sent (`images` stays empty), recorded, or used to execute robot actions.
 
 ### Install
 
@@ -132,10 +132,23 @@ source .venv/bin/activate
 python3 -m pip install -r requirements.txt -r requirements-external-sensors.txt
 ```
 
-The external requirements add only `pyrealsense2`. Hardware access also requires
-working RealSense device permissions/drivers on the lab Linux desktop; installing
-the Python package alone does not verify USB access. Hardware is opened only at
-capture startup, so module imports and mock tests do not require RealSense.
+External requirements include `pyrealsense2`, NumPy, OpenCV with GUI support,
+Ultralytics YOLO, and `lap` (ByteTrack's assignment solver). Dependencies are
+loaded lazily: imports and camera-test do not load YOLO or acquire weights;
+headless operation does not load the display implementation's OpenCV dependency.
+Normal detection loads the configured `--person-model` (default `yolo11n.pt`),
+and its first run may need network access to acquire official pretrained weights.
+Weights are not committed; only root `/yolo11n.pt` is specifically ignored.
+Store other configured weight files outside the repository or in ignored `var/`.
+Ultralytics dependency auto-installation is disabled by the perception worker;
+install the requirements explicitly. The model must be a detection model with
+class 0 named `person`; the API follows [Ultralytics tracking documentation](https://docs.ultralytics.com/modes/track/).
+
+RealSense hardware access also requires working device permissions/drivers on
+the lab Linux desktop. Package installation and mock tests do not verify USB
+access. Optional display requires OpenCV GUI support and a working graphical
+session; missing GUI support/session reports a clear error only with `--display`.
+No `realsense-viewer` installation is required.
 
 ### Terminal 1: Ollama and server
 
@@ -146,7 +159,7 @@ ollama pull qwen2.5:7b
 ollama serve
 ```
 
-With Ollama running, activate the environment and start the server:
+With Ollama running, activate the environment and start the unchanged server:
 
 ```bash
 source .venv/bin/activate
@@ -159,26 +172,32 @@ From another shell, check readiness:
 curl http://127.0.0.1:6060/health
 ```
 
-`/health` returns 200 only when the configured model is available; it returns
-503 when degraded or unreachable. Port 6060 is the default. No registration,
-WebSocket, or SSH tunnel is needed for this local observation path.
+`/health` returns 200 only when the configured model is available, and 503 when
+degraded or unreachable. Port 6060 is the default. No registration, WebSocket,
+or SSH tunnel is needed for this local observation path.
 
-### Terminal 2: Camera test
+### Terminal 2: Raw camera display
 
 ```bash
 source .venv/bin/activate
-python3 -m robot.external_sensor_client.main --camera-test
+python3 -m robot.external_sensor_client.main --camera-test --display
 ```
 
-This captures 30 frames by default and closes without creating observations or
-contacting the server. Change the count with `--camera-test-frames 60`, or select
-a device with `--realsense-serial SERIAL`. Both streams request 640x480 at 30 FPS,
-using RGB8 colour and Z16 depth. Device/active stream details, host monotonic
-receive timestamps, frame numbers, and a sparse depth-validity sample ratio are
-printed. Unsupported streams, timeouts, and invalid frames report an error and
-stop; alignment uses the [official RealSense alignment API](https://github.com/realsenseai/librealsense/blob/master/wrappers/python/examples/align-depth2color.py).
+This shows RGB beside colour-mapped aligned depth and stops after 30 frames by
+default without loading YOLO, creating observations, or contacting the server.
+Omit `--display` for the original terminal-only camera test. Change the count
+with `--camera-test-frames 60`, or select a device with
+`--realsense-serial SERIAL`. Neither stationary-rig nor camera-height arguments
+are required in camera-test mode. Streams request RGB8/Z16, 640x480 at 30 FPS.
+Device/stream details, host monotonic timestamps, frame numbers, and sparse
+valid-depth ratios are printed. Unsupported streams, timeouts, and invalid
+frames stop with an error. Depth uses the [official RealSense alignment API](https://github.com/realsenseai/librealsense/blob/master/wrappers/python/examples/align-depth2color.py).
 
-### Terminal 2: End-to-end observation mode
+### Terminal 2: Normal detection mode
+
+**Replace `1.20` below with the physically measured height in metres from the
+floor to the camera optical centre.** Normal mode requires a positive finite
+height and `--stationary-rig`; no camera height is silently assumed.
 
 ```bash
 python3 -m robot.external_sensor_client.main \
@@ -186,48 +205,122 @@ python3 -m robot.external_sensor_client.main \
   --adapter-id external-d435-01 \
   --minimum-send-interval 0.2 \
   --stationary-rig \
+  --camera-height-m 1.20 \
+  --person-model yolo11n.pt \
+  --display \
   --print-raw-json
 ```
 
-Normal mode requires `--stationary-rig`: zero linear/angular velocities are known
-from this explicit configuration, with task `IDLE` and controller `STOPPED`.
-`ROBOT_BASE` declares the rig frame; Stage 1 sends no positions and applies no
-camera coordinate transform. Unsupported perception fields are marked unavailable.
-Each observation uses its capture receive timestamp, except microsecond ties
-are advanced to preserve strict ordering. Adapter IDs must be nonempty and at
-most 128 characters; choose a distinct ID for each rig and a new ID after a host
-reboot if the server retains that source's previous monotonic timestamps.
+For headless detection use the same command with `--display` omitted. Detection
+confidence is configurable with `--person-confidence` (default 0.25). The RGB
+view overlays body boxes, namespaced track IDs, detector confidence, depth
+status, planar distance, and robot-relative `(x,y,z)`. Aligned depth appears
+beside it. Runtime text shows capture/perception FPS, latest inference latency,
+human count, most recently returned server action, and transport errors.
+Press `q`, Escape, or Ctrl+C to stop and release camera/model/window resources.
+Shutdown waits for current camera/inference work; a pending HTTP worker can take
+until its timeout to finish. No returned action is parsed into robot behavior or
+executed.
 
-`--server` is a base URL, not the complete endpoint. The default request timeout
-is 35 seconds. Capture runs on a worker thread while HTTP waits, keeping only the
-latest queued frame (capacity one). One POST is in flight at a time. The minimum
-interval is measured after request completion, so 0.2 seconds does not guarantee
-5 Hz when LLM generation is slow. Transport failures discard the observation and
-continue without retries/backoff. Counters report captured frames, generated
-observations, attempted sends (including transport failures), queue replacements,
-and transport failures. Ctrl+C stops capture and closes the pipeline; a pending
-HTTP worker may take until its timeout to finish.
+### Coordinates, depth, and observation semantics
 
-Responses display HTTP status, acceptance, observation/state IDs, scheduling and
-forced-decision flags, triggers, errors, and the returned intent directly.
-`--print-raw-json` also prints the complete response. Accepted empty scenes
-normally produce no decision. HTTP 502 can still have `accepted: true`, because
+Startup prints mounting assumptions: the camera is level, forward-facing, has
+no relevant lateral offset from the chosen base, and has no roll/pitch/yaw
+correction. `ROBOT_BASE` has its origin on the floor directly below the camera:
+X forward, Y left, Z up. RealSense camera X is right, Y down, Z forward. The
+isolated transform is `(camera_z, -camera_x, camera_height_m - camera_y)`.
+A calibrated rigid transform can replace this function in a later stage.
+
+Each clipped body box contributes an inner torso ROI: horizontal 30–70% and
+vertical 25–55%. Raw aligned depth is scaled using the device's depth scale;
+zero, non-finite, and values outside the conservative application range
+0.30–6.0 m are rejected. Pixels covered by another detected person's body box
+are excluded. At least 20 samples and 50% of the full torso ROI must remain
+valid. Their median is deprojected using the aligned colour-camera intrinsics
+and a valid ROI pixel nearest the median depth, with proximity to the ROI centre
+breaking ties. There is no full-box/background or other-person fallback.
+This estimates a visible torso surface proxy, not an anatomical body centre;
+without segmentation, bounding-box depth cannot guarantee silhouette accuracy.
+Occlusion, overlap, background contamination, or depth holes can reduce accuracy
+or make the estimate unavailable.
+
+Position and distance use the same depth estimate. `distance_m` is planar
+`hypot(robot_x, robot_y)`; vertical position does not affect it. A tracked person
+with insufficient depth is still emitted with null position/distance and
+`sensor_sources = ["EXTERNAL"]`. Valid position adds `"DEPTH"`. Per-person
+failure details remain internal for diagnostics/display, with missing-depth
+counts reported. Body boxes remain internal and are never written to `face_bbox`.
+
+Canonical IDs combine a new client-run UUID with ByteTrack's ID. They stay
+stable within the same tracker track in one run, represent tracking rather than
+identity, and have no cross-restart continuity. Tracker occlusion or reacquisition
+can change IDs. Detections lacking tracker IDs are skipped and counted; humans
+are sorted deterministically. Detector confidence is preserved. Identity, face,
+head/body orientation, gaze, gaze-to-robot score, expression, speech, group, and
+uncertainty fields remain null. Capability metadata advertises supported
+tracking/confidence/position/distance even when a frame temporarily lacks depth;
+per-human sensor sources describe actual contributions.
+
+Stationary velocity is explicitly known to be zero, task is `IDLE`, and
+controller status is `STOPPED`. Robot free-space interpretation, odometry, and
+moving-rig velocity remain unavailable. Source timestamps are host monotonic
+microseconds assigned immediately after alignment; state age includes inference
+and waiting until observation creation. Frame timestamps preserve strict
+ordering, advancing microsecond ties. Adapter IDs must be nonempty and at most
+128 characters; use a distinct ID for each rig and a new ID after a host reboot
+if the server retains that source's previous monotonic timestamps.
+
+### Runtime and responses
+
+Camera capture, one perception worker owning the model/tracker, and serial HTTP
+work run outside the asyncio event loop. Two independent capacity-one queues
+retain the newest unprocessed captured frame and newest unsent perceived frame.
+Inference cannot block capture, and HTTP/LLM waiting cannot block either worker.
+Requested capture is 30 FPS; actual capture and inference rates depend on hardware
+and model cost. ByteTrack advances on processed frames, so dropped frames and
+long inference intervals can affect tracking continuity.
+
+Only one POST is in flight. `--server` is a base URL, not an endpoint; the default
+request timeout is 35 seconds. The minimum send interval is measured after
+request completion, so 0.2 seconds does not guarantee 5 Hz with slow LLM work.
+Transport failures discard observations and continue without retries/backoff.
+Existing counters remain: captured frames, generated observations, attempted
+sends (including failures), `queued_frames_replaced` (capture boundary), and
+transport failures. New counters report processed frames,
+`perception_frames_replaced` (send boundary), current tracked humans, cumulative
+missing tracker IDs/depth, inference latency, and average capture/perception FPS
+since startup.
+
+Terminal responses show HTTP status, acceptance, observation/state IDs,
+scheduling/forced flags, triggers, errors, and returned intents directly.
+`--print-raw-json` also prints the complete response. Empty scenes remain valid
+and normally produce no decision. HTTP 502 may still have `accepted: true` when
 state estimation succeeded before an LLM failure.
 
-### Optional forced decision
+### Forced-decision mode
 
-Add `--force-decision` to request a decision even for the empty Stage 1 scene:
+Replace the example height with the measured optical-centre height:
 
 ```bash
 python3 -m robot.external_sensor_client.main \
   --server http://127.0.0.1:6060 \
-  --stationary-rig --force-decision --print-raw-json
+  --adapter-id external-d435-01 \
+  --minimum-send-interval 0.2 \
+  --stationary-rig \
+  --camera-height-m 1.20 \
+  --person-model yolo11n.pt \
+  --display \
+  --force-decision \
+  --print-raw-json
 ```
 
-This flag forces every sent observation; use it for a short manual check, then
-Ctrl+C. Returned behavior is displayed only. Physical device discovery, stream
-support, alignment, USB permissions, and sustained capture still require a lab
-Linux hardware check; mock tests do not establish those properties.
+This forces every sent observation; use it for a short manual check. Returned
+behavior remains display-only. Stage 1 capture/server operation was validated
+on the lab desktop; Stage 2 detection, depth accuracy, tracking performance, and
+GUI display still need physical lab verification. Mock tests neither open a
+D435/window nor acquire weights. Gaze, faces/landmarks, expressions, body
+orientation, speech, groups, Hokuyo, fusion, moving-rig support, and robot action
+execution remain outside Stage 2.
 
 ## Pipeline Lens monitor
 

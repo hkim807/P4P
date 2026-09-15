@@ -35,6 +35,8 @@ class CapturedFrame:
     depth: Any
     frame_number: int | None
     depth_valid_sample_ratio: float
+    depth_scale_m: float | None = None
+    color_intrinsics: Any = None
 
 
 class RealSenseCapture:
@@ -51,6 +53,7 @@ class RealSenseCapture:
         self._pipeline: Any = None
         self._align: Any = None
         self._last_timestamp_us = -1
+        self._depth_scale_m: float | None = None
 
     def start(self) -> DeviceInfo:
         if self._pipeline is not None:
@@ -84,6 +87,9 @@ class RealSenseCapture:
             profile = self._pipeline.start(config)
             self._align = rs.align(rs.stream.color)
             active_device = profile.get_device()
+            self._depth_scale_m = active_device.first_depth_sensor().get_depth_scale()
+            if not math.isfinite(self._depth_scale_m) or self._depth_scale_m <= 0:
+                raise CaptureError("device depth scale must be positive and finite")
 
             def stream_info(stream: Any) -> StreamInfo:
                 video = profile.get_stream(stream).as_video_stream_profile()
@@ -111,9 +117,9 @@ class RealSenseCapture:
                 raise CaptureError(
                     f"RealSense frame timeout or receive failure (1000 ms): {error}"
                 ) from error
+            aligned = self._align.process(frames)
             timestamp_us = max(time.monotonic_ns() // 1000, self._last_timestamp_us + 1)
             self._last_timestamp_us = timestamp_us
-            aligned = self._align.process(frames)
             color, depth = aligned.get_color_frame(), aligned.get_depth_frame()
             if (
                 not color or not depth
@@ -132,7 +138,11 @@ class RealSenseCapture:
                     valid += math.isfinite(distance) and distance > 0
                     total += 1
             number = color.get_frame_number() if hasattr(color, "get_frame_number") else None
-            return CapturedFrame(timestamp_us, color, depth, number, valid / total)
+            intrinsics = color.get_profile().as_video_stream_profile().get_intrinsics()
+            return CapturedFrame(
+                timestamp_us, color, depth, number, valid / total,
+                self._depth_scale_m, intrinsics,
+            )
         except BaseException as error:
             self.close()
             if isinstance(error, (CaptureError, KeyboardInterrupt, SystemExit)):
@@ -142,6 +152,7 @@ class RealSenseCapture:
     def close(self) -> None:
         pipeline, self._pipeline = self._pipeline, None
         self._align = None
+        self._depth_scale_m = None
         if pipeline is not None:
             try:
                 pipeline.stop()

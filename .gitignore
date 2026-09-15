@@ -33,3 +33,6 @@ web/node_modules/
 web/*.tsbuildinfo
 web/vite.config.js
 web/vite.config.d.ts
+
+# Default external person detector weights (acquired on first model run)
+/yolo11n.pt
