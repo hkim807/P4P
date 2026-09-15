@@ -12,7 +12,8 @@ from typing import Any, Callable, Protocol
 from flask import Flask, Response, jsonify, request, send_from_directory, stream_with_context
 from pydantic import ValidationError
 
-from app.config import Settings
+from app.config import DecisionMode, Settings
+from app.decision.debug_policy import DebugDecisionSnapshot, DebugPolicyBridge
 from app.decision.llm_policy import LLMPolicyBridge, LLMPolicyError
 from app.decision.scheduler import DecisionScheduler, DecisionSchedulerError
 from app.domain.models import BehaviorIntent, ObservationFrame, SocialState
@@ -51,13 +52,25 @@ class ObservationPipelineResult:
     triggers: tuple[str, ...]
     behavior_intent: BehaviorIntent | None
     error_code: str | None = None
+    decision_mode: DecisionMode = DecisionMode.NORMAL
+    debug_snapshot: DebugDecisionSnapshot | None = None
 
 
 class ObservationPipeline:
     """Keep isolated temporal state for each canonical observation source."""
 
-    def __init__(self, llm: LLMClient) -> None:
+    def __init__(
+        self,
+        llm: LLMClient,
+        decision_mode: DecisionMode = DecisionMode.NORMAL,
+    ) -> None:
+        self.decision_mode = DecisionMode(decision_mode)
         self._policy = LLMPolicyBridge(llm)
+        self._debug_policy = (
+            DebugPolicyBridge(llm)
+            if self.decision_mode == DecisionMode.DEBUG
+            else None
+        )
         self._sources: dict[str, _SourcePipeline] = {}
         self._lock = RLock()
 
@@ -148,11 +161,54 @@ class ObservationPipeline:
                 decision_triggered=False,
                 triggers=(),
                 behavior_intent=None,
+                decision_mode=self.decision_mode,
             )
 
         policy_started = perf_counter()
+        debug_snapshot: DebugDecisionSnapshot | None = None
         try:
-            intent = self._policy.decide(state, triggers)
+            if self.decision_mode == DecisionMode.DEBUG:
+                if self._debug_policy is None:
+                    raise RuntimeError("Debug policy is not configured")
+                debug_decision = self._debug_policy.decide(
+                    state,
+                    triggers,
+                    source_id=source_id,
+                )
+                intent = debug_decision.behavior_intent
+                debug_snapshot = debug_decision.snapshot
+                if debug_decision.error_code is not None:
+                    error = debug_snapshot.error
+                    message = (
+                        error.message
+                        if error is not None
+                        else "Debug decision failed"
+                    )
+                    emit(
+                        "policy",
+                        "failed",
+                        started_at=policy_started,
+                        payload={
+                            "request_id": debug_snapshot.request_id,
+                            "decision_mode": self.decision_mode.value,
+                        },
+                        error=message,
+                    )
+                    now = perf_counter()
+                    emit("intent", "rejected", started_at=now, error=message)
+                    return ObservationPipelineResult(
+                        state=state,
+                        decision_triggered=True,
+                        triggers=triggers,
+                        behavior_intent=None,
+                        error_code=debug_decision.error_code,
+                        decision_mode=self.decision_mode,
+                        debug_snapshot=debug_snapshot,
+                    )
+                if intent is None:  # Defensive guard for the bridge contract.
+                    raise RuntimeError("Debug policy completed without an intent")
+            else:
+                intent = self._policy.decide(state, triggers)
         except LLMPolicyError as error:
             emit("policy", "failed", started_at=policy_started, error=str(error))
             now = perf_counter()
@@ -163,6 +219,8 @@ class ObservationPipeline:
                 triggers=triggers,
                 behavior_intent=None,
                 error_code="invalid_llm_behavior_selection",
+                decision_mode=self.decision_mode,
+                debug_snapshot=debug_snapshot,
             )
         except Exception as error:
             emit("policy", "failed", started_at=policy_started, error=str(error))
@@ -174,12 +232,25 @@ class ObservationPipeline:
                 triggers=triggers,
                 behavior_intent=None,
                 error_code="llm_request_failed",
+                decision_mode=self.decision_mode,
+                debug_snapshot=debug_snapshot,
             )
         emit(
             "policy",
             "completed",
             started_at=policy_started,
-            payload={"action": intent.action, "decision_id": intent.decision_id},
+            payload={
+                "action": intent.action,
+                "decision_id": intent.decision_id,
+                **(
+                    {
+                        "request_id": debug_snapshot.request_id,
+                        "decision_mode": self.decision_mode.value,
+                    }
+                    if debug_snapshot is not None
+                    else {}
+                ),
+            },
         )
         intent_started = perf_counter()
         emit(
@@ -193,6 +264,8 @@ class ObservationPipeline:
             decision_triggered=True,
             triggers=triggers,
             behavior_intent=intent,
+            decision_mode=self.decision_mode,
+            debug_snapshot=debug_snapshot,
         )
 
 
@@ -205,13 +278,20 @@ def create_app(
     """Create the Flask application; injectable arguments keep tests offline."""
     active_settings = settings or Settings()
     active_llm = llm or OllamaLLM(active_settings)
-    active_pipeline = observation_pipeline or ObservationPipeline(active_llm)
+    active_pipeline = observation_pipeline or ObservationPipeline(
+        active_llm, decision_mode=active_settings.decision_mode
+    )
     project_root = Path(__file__).resolve().parents[1]
     web_dist = project_root / "web" / "dist"
     active_monitor = monitor_service or MonitorService(
         project_root=project_root,
         pipeline_factory=lambda mode: ObservationPipeline(
-            active_llm if mode == "current" else DeterministicReplayLLM()
+            active_llm if mode == "current" else DeterministicReplayLLM(),
+            decision_mode=(
+                active_settings.decision_mode
+                if mode == "current"
+                else DecisionMode.NORMAL
+            ),
         ),
     )
     flask_app = Flask(__name__, static_folder=None)
@@ -422,11 +502,18 @@ def create_app(
                 else None
             ),
         }
+        if result.debug_snapshot is not None:
+            response["debug_snapshot"] = result.debug_snapshot.model_dump(mode="json")
         if result.error_code is not None:
             if result.error_code == "invalid_llm_behavior_selection":
                 message = (
                     "The observation was accepted, but the LLM response was not "
                     "a valid behavior selection."
+                )
+            elif result.error_code == "invalid_llm_debug_response":
+                message = (
+                    "The observation was accepted, but the LLM response was not "
+                    "a valid grounded debug decision."
                 )
             else:
                 message = "The observation was accepted, but the LLM request failed."

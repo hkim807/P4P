@@ -9,8 +9,11 @@ from __future__ import annotations
 
 import json
 import math
+from copy import deepcopy
+from dataclasses import dataclass
 from enum import Enum
-from typing import Annotated, Any, Sequence
+from typing import Annotated, Any, Protocol, Sequence
+from uuid import uuid4
 
 from pydantic import BaseModel, ConfigDict, Field, ValidationError, model_validator
 
@@ -24,8 +27,11 @@ from app.decision.llm_policy import (
     TargetRequirement,
     action_contract_payload,
     behavior_selection_schema,
+    LLMPolicyBridge,
+    LLMPolicyError,
 )
-from app.domain.models import Action, SocialState
+from app.domain.models import Action, BehaviorIntent, SocialState
+from app.llm import CapturedLLMRequest, LLMGenerationResult, LLMRequestError
 
 
 DEBUG_PROMPT_VERSION = "llm-social-navigation-debug-v1"
@@ -155,6 +161,100 @@ class DebugPolicyResponse(DebugModel):
             "reason_codes": list(self.reason_codes),
             "decision_confidence": self.decision_confidence,
         }
+
+
+class DebugSnapshotStatus(str, Enum):
+    COMPLETED = "COMPLETED"
+    FAILED = "FAILED"
+
+
+class DebugPromptMessage(DebugModel):
+    role: Annotated[str, Field(min_length=1, max_length=32)]
+    content: str
+
+
+class DebugRequestParameters(DebugModel):
+    temperature: Annotated[float, Field(allow_inf_nan=False)]
+    response_schema_name: str | None
+    response_schema: dict[str, Any] | None
+    response_format: dict[str, Any] | None
+
+
+class DebugInferenceMetadata(DebugModel):
+    provider: str
+    requested_model: str
+    returned_model: str | None
+    endpoint: str
+    decision_mode: Annotated[str, Field(pattern="^DEBUG$")] = "DEBUG"
+    prompt_version: str
+    requested_at: str
+    responded_at: str
+    latency_ms: Annotated[float, Field(ge=0.0, allow_inf_nan=False)]
+    response_id: str | None = None
+    created: int | None = None
+    finish_reason: str | None = None
+    usage: dict[str, int | None] | None = None
+
+
+class DebugSnapshotError(DebugModel):
+    code: Annotated[str, Field(min_length=1, max_length=128)]
+    message: Annotated[str, Field(min_length=1, max_length=4_000)]
+
+
+class DebugDecisionSnapshot(DebugModel):
+    """All inputs and outputs for one atomic Debug-mode decision request."""
+
+    request_id: Annotated[str, Field(min_length=1, max_length=128)]
+    status: DebugSnapshotStatus
+    source_id: str
+    observation_id: str
+    social_state_id: str
+    state_timestamp_us: int
+    clock_domain: str
+    raw_social_state: dict[str, Any]
+    rendered_messages: list[DebugPromptMessage] = Field(min_length=2)
+    request_parameters: DebugRequestParameters
+    raw_response: str | None
+    validated_response: DebugPolicyResponse | None
+    behavior_intent: BehaviorIntent | None
+    metadata: DebugInferenceMetadata
+    error: DebugSnapshotError | None
+
+    @model_validator(mode="after")
+    def validate_status_payload(self) -> "DebugDecisionSnapshot":
+        if self.status == DebugSnapshotStatus.COMPLETED:
+            if self.validated_response is None or self.behavior_intent is None:
+                raise ValueError(
+                    "completed snapshot requires validated output and intent"
+                )
+            if self.error is not None:
+                raise ValueError("completed snapshot cannot contain an error")
+        elif self.error is None:
+            raise ValueError("failed snapshot requires an error")
+        return self
+
+
+@dataclass(frozen=True)
+class DebugPolicyDecision:
+    behavior_intent: BehaviorIntent | None
+    snapshot: DebugDecisionSnapshot
+    error_code: str | None = None
+
+
+class TraceableLLM(Protocol):
+    provider: str
+    model: str
+    endpoint: str
+
+    def generate_with_capture(
+        self,
+        message: str,
+        *,
+        system_prompt: str | None = None,
+        temperature: float = 0.2,
+        response_schema: dict[str, Any] | None = None,
+        response_schema_name: str = "social_navigation_behavior_selection",
+    ) -> LLMGenerationResult: ...
 
 
 DEBUG_SYSTEM_PROMPT = SYSTEM_PROMPT + """
@@ -327,15 +427,198 @@ def validate_debug_response(
     return response
 
 
+class DebugPolicyBridge:
+    """Run and capture one grounded Debug-mode policy request."""
+
+    def __init__(self, llm: TraceableLLM) -> None:
+        self.llm = llm
+        self._intent_bridge = LLMPolicyBridge(llm)
+
+    @staticmethod
+    def _snapshot(
+        *,
+        request_id: str,
+        source_id: str,
+        state: SocialState,
+        raw_social_state: dict[str, Any],
+        request: CapturedLLMRequest,
+        responded_at: str,
+        latency_ms: float,
+        raw_response: str | None,
+        validated_response: DebugPolicyResponse | None,
+        behavior_intent: BehaviorIntent | None,
+        error: DebugSnapshotError | None,
+        response: LLMGenerationResult | None = None,
+    ) -> DebugDecisionSnapshot:
+        return DebugDecisionSnapshot(
+            request_id=request_id,
+            status=(
+                DebugSnapshotStatus.COMPLETED
+                if error is None
+                else DebugSnapshotStatus.FAILED
+            ),
+            source_id=source_id,
+            observation_id=state.source_observation_id,
+            social_state_id=state.state_id,
+            state_timestamp_us=state.timestamp_us,
+            clock_domain=raw_social_state["clock_domain"],
+            raw_social_state=raw_social_state,
+            rendered_messages=[
+                DebugPromptMessage(role=item["role"], content=item["content"])
+                for item in request.messages
+            ],
+            request_parameters=DebugRequestParameters(
+                temperature=request.temperature,
+                response_schema_name=request.response_schema_name,
+                response_schema=request.response_schema,
+                response_format=request.response_format,
+            ),
+            raw_response=raw_response,
+            validated_response=validated_response,
+            behavior_intent=behavior_intent,
+            metadata=DebugInferenceMetadata(
+                provider=request.provider,
+                requested_model=request.model,
+                returned_model=response.returned_model if response else None,
+                endpoint=request.endpoint,
+                prompt_version=DEBUG_PROMPT_VERSION,
+                requested_at=request.requested_at,
+                responded_at=responded_at,
+                latency_ms=latency_ms,
+                response_id=response.response_id if response else None,
+                created=response.created if response else None,
+                finish_reason=response.finish_reason if response else None,
+                usage=response.usage if response else None,
+            ),
+            error=error,
+        )
+
+    def decide(
+        self,
+        state: SocialState,
+        triggers: Sequence[Any],
+        *,
+        source_id: str,
+    ) -> DebugPolicyDecision:
+        request_id = f"debug-request-{uuid4().hex}"
+        raw_social_state = deepcopy(state.model_dump(mode="json"))
+        prompt = render_debug_prompt(state, triggers)
+        response_schema = debug_response_schema(state, triggers)
+        try:
+            generation = self.llm.generate_with_capture(
+                prompt,
+                system_prompt=DEBUG_SYSTEM_PROMPT,
+                temperature=0.0,
+                response_schema=response_schema,
+                response_schema_name="social_navigation_debug_decision",
+            )
+        except LLMRequestError as error:
+            snapshot_error = DebugSnapshotError(
+                code="llm_request_failed",
+                message=str(error)[:4_000] or "LLM request failed",
+            )
+            snapshot = self._snapshot(
+                request_id=request_id,
+                source_id=source_id,
+                state=state,
+                raw_social_state=raw_social_state,
+                request=error.request,
+                responded_at=error.failed_at,
+                latency_ms=error.latency_ms,
+                raw_response=None,
+                validated_response=None,
+                behavior_intent=None,
+                error=snapshot_error,
+            )
+            return DebugPolicyDecision(None, snapshot, snapshot_error.code)
+
+        raw_response = generation.raw_content
+        try:
+            validated = validate_debug_response(raw_response, state, triggers)
+        except DebugPolicyError as error:
+            snapshot_error = DebugSnapshotError(
+                code="invalid_llm_debug_response",
+                message=str(error)[:4_000],
+            )
+            snapshot = self._snapshot(
+                request_id=request_id,
+                source_id=source_id,
+                state=state,
+                raw_social_state=raw_social_state,
+                request=generation.request,
+                responded_at=generation.responded_at,
+                latency_ms=generation.latency_ms,
+                raw_response=raw_response,
+                validated_response=None,
+                behavior_intent=None,
+                error=snapshot_error,
+                response=generation,
+            )
+            return DebugPolicyDecision(None, snapshot, snapshot_error.code)
+
+        try:
+            intent = self._intent_bridge.build_intent_from_payload(
+                state,
+                triggers,
+                validated.behavior_selection_payload(),
+                raw_response=raw_response,
+                policy_prompt_version=DEBUG_PROMPT_VERSION,
+            )
+        except LLMPolicyError as error:
+            snapshot_error = DebugSnapshotError(
+                code="invalid_llm_behavior_selection",
+                message=str(error)[:4_000],
+            )
+            snapshot = self._snapshot(
+                request_id=request_id,
+                source_id=source_id,
+                state=state,
+                raw_social_state=raw_social_state,
+                request=generation.request,
+                responded_at=generation.responded_at,
+                latency_ms=generation.latency_ms,
+                raw_response=raw_response,
+                validated_response=validated,
+                behavior_intent=None,
+                error=snapshot_error,
+                response=generation,
+            )
+            return DebugPolicyDecision(None, snapshot, snapshot_error.code)
+
+        snapshot = self._snapshot(
+            request_id=request_id,
+            source_id=source_id,
+            state=state,
+            raw_social_state=raw_social_state,
+            request=generation.request,
+            responded_at=generation.responded_at,
+            latency_ms=generation.latency_ms,
+            raw_response=raw_response,
+            validated_response=validated,
+            behavior_intent=intent,
+            error=None,
+            response=generation,
+        )
+        return DebugPolicyDecision(intent, snapshot)
+
+
 __all__ = [
     "ACTION_SCORE_TOTAL_TOLERANCE",
     "DEBUG_PROMPT_VERSION",
     "DEBUG_SYSTEM_PROMPT",
     "DebugActionScore",
+    "DebugDecisionSnapshot",
     "DebugEvidence",
+    "DebugInferenceMetadata",
     "DebugPolicyError",
+    "DebugPolicyBridge",
+    "DebugPolicyDecision",
     "DebugPolicyResponse",
+    "DebugPromptMessage",
+    "DebugRequestParameters",
     "DebugRobotInput",
+    "DebugSnapshotError",
+    "DebugSnapshotStatus",
     "EvidenceType",
     "debug_response_schema",
     "render_debug_prompt",

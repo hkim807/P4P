@@ -454,11 +454,15 @@ def render_decision_prompt(state: SocialState, triggers: Sequence[Any]) -> str:
 
 
 def _decision_id(
-    state: SocialState, trigger_codes: Sequence[str], selection: _PolicySelection
+    state: SocialState,
+    trigger_codes: Sequence[str],
+    selection: _PolicySelection,
+    *,
+    policy_prompt_version: str = POLICY_PROMPT_VERSION,
 ) -> str:
     material = json.dumps(
         {
-            "policy_prompt_version": POLICY_PROMPT_VERSION,
+            "policy_prompt_version": policy_prompt_version,
             "observation_id": state.source_observation_id,
             "social_state_id": state.state_id,
             "triggers": list(trigger_codes),
@@ -532,6 +536,58 @@ class LLMPolicyBridge:
                 selected_action=selected_action,
                 validation_errors=details,
             )
+
+        return self._build_intent(
+            state,
+            trigger_codes,
+            selection,
+            raw_response=raw_response,
+        )
+
+    def build_intent_from_payload(
+        self,
+        state: SocialState,
+        triggers: Sequence[Any],
+        payload: dict[str, Any],
+        *,
+        raw_response: str,
+        policy_prompt_version: str = POLICY_PROMPT_VERSION,
+    ) -> BehaviorIntent:
+        """Validate a policy selection supplied by another prompt contract."""
+        selected_action = payload.get("action")
+        try:
+            selection = _PolicySelection.model_validate_json(json.dumps(payload))
+        except (TypeError, ValueError, ValidationError) as error:
+            details = (
+                error.errors(include_url=False, include_input=False)
+                if isinstance(error, ValidationError)
+                else [str(error)]
+            )
+            self._reject(
+                "Policy payload does not match the behavior-selection schema: "
+                f"{details}",
+                raw_response=raw_response,
+                selected_action=selected_action,
+                validation_errors=details,
+            )
+        return self._build_intent(
+            state,
+            _trigger_codes(triggers),
+            selection,
+            raw_response=raw_response,
+            policy_prompt_version=policy_prompt_version,
+        )
+
+    def _build_intent(
+        self,
+        state: SocialState,
+        trigger_codes: Sequence[str],
+        selection: _PolicySelection,
+        *,
+        raw_response: str,
+        policy_prompt_version: str = POLICY_PROMPT_VERSION,
+    ) -> BehaviorIntent:
+        """Apply the existing target, reason, preference, and intent checks."""
 
         selected_action = selection.action
         normalisations: list[str] = []
@@ -607,7 +663,12 @@ class LLMPolicyBridge:
         selection = selection.model_copy(
             update={"target_human_id": target_id, "preferences": preferences}
         )
-        decision_id = _decision_id(state, trigger_codes, selection)
+        decision_id = _decision_id(
+            state,
+            trigger_codes,
+            selection,
+            policy_prompt_version=policy_prompt_version,
+        )
 
         try:
             intent = BehaviorIntent.model_validate(

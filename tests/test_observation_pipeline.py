@@ -6,8 +6,10 @@ import json
 import unittest
 
 from app.adapters.synthetic import SyntheticObservationAdapter, museum_guide_scenarios
+from app.config import DecisionMode, Settings
 from app.decision.llm_policy import render_decision_prompt
-from app.domain.models import ObservationFrame
+from app.domain.models import Action, ObservationFrame
+from app.llm import CapturedLLMRequest, LLMGenerationResult, LLMRequestError
 from app.server import create_app
 from app.state import TemporalSocialStateEstimator
 
@@ -47,6 +49,127 @@ class FakeLLM:
                 "reason_codes": ["INSUFFICIENT_EVIDENCE"],
                 "decision_confidence": 0.55,
             }
+        )
+
+
+class TraceableFakeLLM(FakeLLM):
+    def generate_with_capture(
+        self,
+        message,
+        *,
+        system_prompt=None,
+        temperature=0.2,
+        response_schema=None,
+        response_schema_name="social_navigation_behavior_selection",
+    ):
+        request = CapturedLLMRequest(
+            provider=self.provider,
+            model=self.model,
+            endpoint=self.endpoint,
+            requested_at="2026-09-15T00:00:00.000+00:00",
+            messages=(
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": message},
+            ),
+            temperature=temperature,
+            response_schema_name=response_schema_name,
+            response_schema=response_schema,
+            response_format={
+                "type": "json_schema",
+                "json_schema": {
+                    "name": response_schema_name,
+                    "strict": True,
+                    "schema": response_schema,
+                },
+            },
+        )
+        self.calls.append(request)
+        if self.fail:
+            raise LLMRequestError(
+                "simulated failure",
+                request=request,
+                failed_at="2026-09-15T00:00:00.025+00:00",
+                latency_ms=25.0,
+            )
+        if self.response_override is not None:
+            raw_response = self.response_override
+        else:
+            prompt_payload = json.loads(message.split("Input JSON: ", 1)[1])
+            state = prompt_payload["social_state"]
+            if state["humans"]:
+                robot_inputs = [
+                    {
+                        "source": "/humans/0/distance_m",
+                        "latest_value": state["humans"][0]["distance_m"],
+                        "interpretation": "Current measured separation.",
+                    }
+                ]
+                evidence = [
+                    {
+                        "type": "OBSERVATION",
+                        "description": "The visitor is observed.",
+                        "source_fields": ["/humans/0/observed"],
+                    }
+                ]
+                social_summary = "One observed visitor is available."
+                reason_codes = ["HUMAN_DETECTED"]
+                uncertainties = ["The visitor's intent is unknown."]
+            else:
+                robot_inputs = [
+                    {
+                        "source": "/crowd/people_within_3m",
+                        "latest_value": 0,
+                        "interpretation": "No people are counted nearby.",
+                    }
+                ]
+                evidence = [
+                    {
+                        "type": "OBSERVATION",
+                        "description": "The nearby people count is zero.",
+                        "source_fields": ["/crowd/people_within_3m"],
+                    }
+                ]
+                social_summary = "No human is currently observed."
+                reason_codes = ["INSUFFICIENT_EVIDENCE"]
+                uncertainties = ["No human observation is available."]
+            raw_response = "  " + json.dumps(
+                {
+                    "social_summary": social_summary,
+                    "robot_inputs": robot_inputs,
+                    "evidence": evidence,
+                    "recommended_action": "MONITOR",
+                    "target_human_id": None,
+                    "preferences": {},
+                    "valid_for_ms": 1_000,
+                    "reason_codes": reason_codes,
+                    "decision_confidence": 0.55,
+                    "decision_rationale": "Monitor while evidence remains limited.",
+                    "action_scores": [
+                        {
+                            "action": action.value,
+                            "score": 0.23 if action == Action.MONITOR else 0.07,
+                            "reason": "Best supported." if action == Action.MONITOR else "Less supported.",
+                        }
+                        for action in Action
+                    ],
+                    "uncertainties": uncertainties,
+                },
+                separators=(",", ":"),
+            ) + "\n"
+        return LLMGenerationResult(
+            request=request,
+            raw_content=raw_response,
+            responded_at="2026-09-15T00:00:00.025+00:00",
+            latency_ms=25.0,
+            response_id="debug-response-1",
+            returned_model="test-model",
+            created=123,
+            finish_reason="stop",
+            usage={
+                "prompt_tokens": 100,
+                "completion_tokens": 50,
+                "total_tokens": 150,
+            },
         )
 
 
@@ -118,6 +241,7 @@ class ObservationEndpointTests(unittest.TestCase):
             response_schema["properties"]["target_human_id"]["anyOf"][0]["enum"],
             ["visitor-1"],
         )
+        self.assertNotIn("debug_snapshot", body)
 
     def test_force_decision_calls_llm_once_without_inventing_scheduler_trigger(self):
         response = self.client.post(
@@ -193,6 +317,122 @@ class ObservationEndpointTests(unittest.TestCase):
         self.assertIn('"scheduler_triggers":["HUMAN_DETECTED"]', first)
         self.assertIn('"policy_prompt_version":"llm-social-navigation-v2"', first)
         self.assertIn('"response_json_schema"', first)
+
+
+class DebugObservationEndpointTests(unittest.TestCase):
+    def setUp(self):
+        self.llm = TraceableFakeLLM()
+        settings = Settings(decision_mode=DecisionMode.DEBUG)
+        self.client = create_app(llm=self.llm, settings=settings).test_client()
+
+    def test_debug_decision_returns_one_atomic_request_snapshot(self):
+        response = self.client.post(
+            "/api/v1/observations",
+            json=observation_payload(humans=True),
+        )
+        body = response.get_json()
+
+        self.assertEqual(response.status_code, 200)
+        snapshot = body["debug_snapshot"]
+        self.assertEqual(snapshot["status"], "COMPLETED")
+        self.assertTrue(snapshot["request_id"].startswith("debug-request-"))
+        self.assertEqual(snapshot["source_id"], "source-a")
+        self.assertEqual(snapshot["observation_id"], body["observation_id"])
+        self.assertEqual(snapshot["social_state_id"], body["social_state_id"])
+        self.assertEqual(snapshot["behavior_intent"], body["behavior_intent"])
+        self.assertEqual(snapshot["validated_response"]["recommended_action"], "MONITOR")
+        self.assertEqual(len(snapshot["validated_response"]["action_scores"]), len(Action))
+        self.assertTrue(snapshot["raw_response"].startswith("  {"))
+        self.assertTrue(snapshot["raw_response"].endswith("\n"))
+
+        captured = self.llm.calls[0]
+        self.assertEqual(snapshot["rendered_messages"], list(captured.messages))
+        prompt_payload = json.loads(
+            snapshot["rendered_messages"][1]["content"].split("Input JSON: ", 1)[1]
+        )
+        self.assertEqual(prompt_payload["social_state"], snapshot["raw_social_state"])
+        self.assertEqual(
+            snapshot["request_parameters"]["response_schema_name"],
+            "social_navigation_debug_decision",
+        )
+        self.assertTrue(
+            snapshot["request_parameters"]["response_format"]["json_schema"][
+                "strict"
+            ]
+        )
+        self.assertEqual(snapshot["metadata"]["decision_mode"], "DEBUG")
+        self.assertEqual(snapshot["metadata"]["prompt_version"], "llm-social-navigation-debug-v1")
+        self.assertEqual(snapshot["metadata"]["latency_ms"], 25.0)
+        self.assertEqual(snapshot["metadata"]["usage"]["total_tokens"], 150)
+        self.assertIsNone(snapshot["error"])
+
+    def test_invalid_debug_response_retains_raw_response_and_error(self):
+        self.llm.response_override = "not JSON"
+
+        response = self.client.post(
+            "/api/v1/observations",
+            json=observation_payload(humans=True),
+        )
+        body = response.get_json()
+
+        self.assertEqual(response.status_code, 502)
+        self.assertEqual(body["error"]["code"], "invalid_llm_debug_response")
+        self.assertIsNone(body["behavior_intent"])
+        snapshot = body["debug_snapshot"]
+        self.assertEqual(snapshot["status"], "FAILED")
+        self.assertEqual(snapshot["raw_response"], "not JSON")
+        self.assertIsNone(snapshot["validated_response"])
+        self.assertEqual(snapshot["error"]["code"], "invalid_llm_debug_response")
+        self.assertEqual(len(snapshot["rendered_messages"]), 2)
+
+    def test_debug_transport_failure_retains_request_and_timing(self):
+        self.llm.fail = True
+
+        response = self.client.post(
+            "/api/v1/observations",
+            json=observation_payload(humans=True),
+        )
+        body = response.get_json()
+
+        self.assertEqual(response.status_code, 502)
+        self.assertEqual(body["error"]["code"], "llm_request_failed")
+        snapshot = body["debug_snapshot"]
+        self.assertEqual(snapshot["status"], "FAILED")
+        self.assertIsNone(snapshot["raw_response"])
+        self.assertEqual(snapshot["error"]["message"], "simulated failure")
+        self.assertEqual(snapshot["metadata"]["latency_ms"], 25.0)
+        self.assertIn("Input JSON: ", snapshot["rendered_messages"][1]["content"])
+
+    def test_forced_no_person_debug_decision_preserves_unknown_state(self):
+        response = self.client.post(
+            "/api/v1/observations?force_decision=1",
+            json=observation_payload(humans=False),
+        )
+        body = response.get_json()
+
+        self.assertEqual(response.status_code, 200)
+        snapshot = body["debug_snapshot"]
+        self.assertEqual(snapshot["raw_social_state"]["humans"], [])
+        self.assertEqual(
+            snapshot["validated_response"]["uncertainties"],
+            ["No human observation is available."],
+        )
+        self.assertEqual(body["behavior_intent"]["action"], "MONITOR")
+
+    def test_debug_requests_are_isolated_between_sources(self):
+        first = self.client.post(
+            "/api/v1/observations",
+            json=observation_payload(adapter_id="source-a", humans=True),
+        ).get_json()["debug_snapshot"]
+        second = self.client.post(
+            "/api/v1/observations",
+            json=observation_payload(adapter_id="source-b", humans=True),
+        ).get_json()["debug_snapshot"]
+
+        self.assertEqual(first["source_id"], "source-a")
+        self.assertEqual(second["source_id"], "source-b")
+        self.assertNotEqual(first["request_id"], second["request_id"])
+        self.assertNotEqual(first["social_state_id"], second["social_state_id"])
 
 
 if __name__ == "__main__":

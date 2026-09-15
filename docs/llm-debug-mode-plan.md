@@ -226,7 +226,7 @@ may be refined when their stage begins.
 | 1 | Inspection and review plan | `docs/llm-debug-mode-plan.md` |
 | 1A | Distance-only separation trend for Navel and bounded policy wording | `app/state/estimator.py`, `app/decision/llm_policy.py`, focused tests and documentation |
 | 2 | **Complete:** explicit NORMAL/DEBUG configuration, typed debug contracts, separate evidence prompt and response validation; normal defaults preserved | `app/config.py`, `app/decision/debug_policy.py`, `app/decision/llm_policy.py`, `app/decision/__init__.py`, `tests/test_debug_policy.py` |
-| 3 | Request-boundary capture, raw response and metadata, request-local snapshot, shared pipeline integration and error snapshots | `app/llm.py`, `app/server.py`, debug modules from Stage 2; `tests/test_llm.py`, `tests/test_observation_pipeline.py`, new debug integration tests |
+| 3 | **Complete:** request-boundary capture, raw response and metadata, request-local snapshot, shared pipeline integration and error snapshots | `app/llm.py`, `app/server.py`, `app/decision/debug_policy.py`, `app/decision/llm_policy.py`, `tests/test_llm.py`, `tests/test_observation_pipeline.py` |
 | 4 | Atomic snapshot retention and retrieval using existing monitor/SSE flow, latest inference retained through skipped cycles | `app/monitor/service.py`, `app/server.py`; `tests/test_monitor.py`, `tests/test_server.py` |
 | 5 | Separate `/debug` page, all evidence/score sections, prompt copy/viewer, raw state and response viewers, metadata and missing/stale states | `web/src/App.tsx`, new `web/src/DebugPage.tsx` and debug types, `web/src/styles.css`, `app/server.py` for direct page loading |
 | 6 | Acceptance validation, offline scenarios, normal-mode regression and run instructions | Relevant integration tests, `README.md`, this document; implementation fixes only when verification identifies a problem |
@@ -267,6 +267,37 @@ state and response together so a reviewer can assess those interpretations.
 
 Stage 2 validation added 13 focused configuration/debug-contract tests. The
 complete suite passes all 181 tests, including the localhost Navel HTTP test.
+
+### Stage 3 implementation contract
+
+`OllamaLLM.generate_with_capture()` records the actual ordered system and user
+messages immediately before the SDK call. It also records the model,
+temperature, complete JSON response format, request/response timestamps,
+latency, response identity, returned model, finish reason and token usage when
+Ollama supplies them. The unmodified completion text is retained before parsing;
+the existing `generate()` method still returns stripped text to Normal mode.
+
+Debug decisions now pass through `DebugPolicyBridge`. Each request gets one
+request ID and an immutable `DebugDecisionSnapshot` containing a deep copy of
+the inference-time `SocialState`, its source identifiers and clock, the captured
+messages and request parameters, raw response, validated debug response,
+validated `BehaviorIntent`, metadata and any error. The selected debug action
+reuses the existing target, reason-code, preference and `BehaviorIntent`
+validation path. Its deterministic decision ID includes the debug prompt
+version; Normal decision IDs are unchanged.
+
+In Debug mode, `POST /api/v1/observations` includes the request-local snapshot
+when a decision is triggered. Invalid JSON/schema/evidence output retains the
+raw completion in a failed snapshot. Transport and empty-response failures
+retain the exact request and timing. Subsequent observations remain processable.
+Normal responses do not gain the debug snapshot field and still use the normal
+prompt, schema and request path.
+
+Stage 3 adds request-capture and endpoint integration coverage for successful,
+no-person, malformed-output, transport-failure and empty-response cases. Stage 4
+will retain and publish the latest completed snapshot independently of newer
+non-inference cycles. The complete suite passes all 189 tests, including the
+localhost Navel HTTP test.
 
 ### Implementation invariants
 
