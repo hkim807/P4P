@@ -105,6 +105,7 @@ OLLAMA_PORT=11434
 OLLAMA_MODEL=qwen2.5:7b
 API_HOST=0.0.0.0
 API_PORT=6060
+DECISION_MODE=NORMAL
 ```
 
 Start the gateway:
@@ -142,6 +143,89 @@ Live Navel observations continue to use `POST /api/v1/observations`. Connected
 sources appear automatically, and the record control stores canonical
 observations plus `trace.jsonl` under the ignored `var/recordings` directory.
 The monitor is deliberately read-only with respect to connected robots.
+
+## LLM Debug mode
+
+Debug mode keeps the normal Navel ingestion, `SocialState` estimator,
+scheduler, Ollama client, action set and `BehaviorIntent` validation. It changes
+the prompt and structured response for each scheduled decision, then retains one
+complete request-local snapshot for inspection:
+
+```text
+Navel sensors
+  -> NavelObservationAdapter
+  -> ObservationFrame
+  -> SocialState
+  -> Debug prompt builder
+  -> exact ordered messages captured at the Ollama request boundary
+  -> Ollama
+  -> validated debug response and BehaviorIntent
+  -> atomic DebugDecisionSnapshot
+  -> monitor API and SSE event
+  -> /debug
+```
+
+Build the web client as described above, then start a Debug gateway:
+
+```bash
+source .venv/bin/activate
+DECISION_MODE=DEBUG API_HOST=0.0.0.0 python3 -m app.server
+```
+
+Open `http://127.0.0.1:6060/debug` on the gateway computer. From another
+computer, replace `127.0.0.1` with the gateway computer's LAN address. Select a
+connected source in the left sidebar. The page updates after each completed
+Debug inference and shows:
+
+- the social summary and important available `SocialState` inputs;
+- cited observations and interpretations as separate evidence types;
+- the recommended action, rationale and every action's model-reported score;
+- uncertainty and missing information;
+- the exact ordered system and rendered user messages;
+- the raw `SocialState`, original Ollama completion and validated output;
+- request, model, timing, source-freshness and snapshot-revision metadata.
+
+The page remains empty until that source completes a scheduled decision. A
+newly detected person normally supplies the first trigger. For a brief
+diagnostic without waiting for a scheduler event, start the Navel client with
+`--force-decision`, confirm one snapshot, then stop that diagnostic because it
+requests inference for every transmitted frame.
+
+A failed Ollama request or invalid structured response returns HTTP 502 for that
+observation but remains visible on `/debug`. Expand the prompt, raw state and raw
+response panels to identify whether the problem occurred before or after model
+generation. The latest snapshot is also available directly:
+
+```bash
+curl http://127.0.0.1:6060/api/v1/monitor/sources/navel-robot-1/debug-snapshot
+```
+
+Restart with `DECISION_MODE=NORMAL`, or omit the setting, to use the original
+compact policy prompt and response. Normal mode remains the default and does not
+create Debug snapshots.
+
+### Available evidence and limits
+
+The Debug page reports only information preserved in the request's
+`SocialState`. The original Navel SDK packets are not retained in a Debug
+snapshot; use the Observatory/live recording path to inspect the canonical
+`ObservationFrame` before state estimation.
+
+Human `state_age_ms` provides track-level age. The current state contract does
+not contain a timestamp for each sensor field, so the page does not claim that a
+distance, gaze or expression value has its own measured age. It also does not
+contain the estimator's individual historical samples. Temporal claims can cite
+derived fields such as `distance_trend`, `closing_speed_mps` and gaze-window
+summaries, but cannot display or reconstruct the private sample sequence.
+
+With distance-only Navel input, decreasing separation supports a closing trend;
+it does not establish whether the human, robot or both moved. Human position and
+trajectory remain unknown unless a verified robot-base coordinate mapping is
+configured. Images, body orientation, speech activity and group observations
+are also absent from the current Navel adapter. The response validator checks
+types, action contracts, scores, exact source paths and copied scalar values. A
+reviewer must still assess whether the model's concise natural-language
+interpretations are warranted by those cited values.
 
 ## Test input and output
 
@@ -585,13 +669,23 @@ decision with no scheduler event therefore returns an empty trigger array and
    `model_available=true`.
 3. On Navel, run the client with `--print-only`. Confirm frames contain plausible
    person IDs, distances, gaze values, and measured locomotion velocity.
-4. Run normally against `http://<LAPTOP_IP>:6060`. A visible person should cause
+4. Start the gateway with `DECISION_MODE=DEBUG`, open
+   `http://<LAPTOP_IP>:6060/debug`, then run Navel normally against the same
+   gateway. A visible person should cause
    `accepted=true`, a `social_state_id`, `HUMAN_DETECTED`, and eventually a
-   a structured `[NAVEL BEHAVIOR] ... dry_run=true` log.
+   structured `[NAVEL BEHAVIOR] ... dry_run=true` log. Confirm the selected
+   source advances to a complete snapshot on the Debug page.
 5. If no person is present, use one brief `--force-decision` run to exercise the
-   structured Ollama response, then stop it immediately.
-6. Confirm malformed model output is reported as
-   `invalid_llm_behavior_selection`, rather than being returned as an intent.
+   structured Ollama response, then stop it immediately. Confirm the page shows
+   zero observed humans and preserves uncertainty instead of inventing a person.
+6. For one snapshot, compare the raw `SocialState`, exact system/user prompts,
+   original response, validated output and recommended action. Confirm their
+   request ID and state ID remain together when newer observations arrive.
+7. Confirm malformed Debug output is retained as
+   `invalid_llm_debug_response`, rather than being returned as an intent, and
+   that the next valid inference can replace the failed snapshot.
+8. Restart with `DECISION_MODE=NORMAL` and confirm the response contains a valid
+   `behavior_intent` without a `debug_snapshot` field.
 
 The live test is successful only after a response contains a non-null
 `behavior_intent` that matches `schemas/v1/behavior-intent.schema.json`.

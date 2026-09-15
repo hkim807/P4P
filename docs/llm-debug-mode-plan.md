@@ -2,7 +2,7 @@
 
 ## Stage 1 — repository inspection
 
-Status: inspection, the distance-only prerequisite, and Stages 2–5 are complete.
+Status: the inspection, distance-only prerequisite, and Stages 2–6 are complete.
 The initial inspection used commit `af211ba`. Each implementation stage below
 ends with a review checkpoint; wait for the user to review, commit, and request
 the next stage. Do not commit on the user's behalf.
@@ -229,7 +229,7 @@ may be refined when their stage begins.
 | 3 | **Complete:** request-boundary capture, raw response and metadata, request-local snapshot, shared pipeline integration and error snapshots | `app/llm.py`, `app/server.py`, `app/decision/debug_policy.py`, `app/decision/llm_policy.py`, `tests/test_llm.py`, `tests/test_observation_pipeline.py` |
 | 4 | **Complete:** atomic per-source snapshot retention and retrieval using the existing monitor/SSE flow, with skipped-cycle and out-of-order protection | `app/monitor/service.py`, `app/server.py`, `tests/test_monitor.py`, `tests/test_observation_pipeline.py` |
 | 5 | **Complete:** separate `/debug` page, all evidence/score sections, prompt copy/viewer, raw state and response viewers, metadata and missing/stale states | `web/src/App.tsx`, new `web/src/DebugPage.tsx` and debug types, `web/src/styles.css`, `app/server.py` for direct page loading |
-| 6 | Acceptance validation, offline scenarios, normal-mode regression and run instructions | Relevant integration tests, `README.md`, this document; implementation fixes only when verification identifies a problem |
+| 6 | **Complete:** acceptance validation, offline scenarios, normal-mode regression and run instructions | `tests/test_observation_pipeline.py`, `README.md`, this document |
 
 Stage 2 implements the related prompt/schema requirements together (task-list
 sections 2–7 and 17). Stages 3–4 cover capture, consistency, metadata and streaming
@@ -372,6 +372,55 @@ Stage 5 validation includes the TypeScript and Vite production build, direct
 route registration, and visual inspection of a populated retained snapshot at
 `/debug`, including the expanded exact-prompt viewer. The complete Python suite
 passes all 196 tests, including the localhost Navel HTTP test.
+
+### Stage 6 acceptance result
+
+The final implemented flow is:
+
+```text
+Navel sensors
+  -> NavelObservationAdapter
+  -> canonical ObservationFrame
+  -> TemporalSocialStateEstimator
+  -> request-local SocialState
+  -> Debug prompt builder
+  -> exact ordered messages captured at the Ollama request boundary
+  -> Ollama raw response
+  -> validated DebugPolicyResponse and BehaviorIntent
+  -> atomic DebugDecisionSnapshot retained per source
+  -> monitor HTTP API plus debug.snapshot.updated SSE event
+  -> /debug evidence, decision and request viewers
+```
+
+An explicit cross-mode regression test sends the same observation through
+NORMAL and DEBUG pipelines. Both produce the same observation and SocialState
+identity and a valid action, while only DEBUG uses the evidence prompt and
+returns a snapshot. NORMAL retains its compact prompt/response contract.
+
+The offline acceptance exercise used the production frontend build and an
+in-process traceable LLM double. It verified:
+
+| Scenario | Result |
+| --- | --- |
+| Completed inference | Summary, inputs, cited evidence, recommendation, all 12 scores, uncertainty and metadata displayed together |
+| Exact request inspection | Ordered system/user prompts, raw SocialState, original response and validated output remained expandable and copyable |
+| Connected source without an inference | Page showed the explicit awaiting-inference state |
+| Live update | A selected awaiting source changed to revision 2 and displayed its complete snapshot through SSE without a reload |
+| No person observed | Forced decision displayed zero humans, the zero nearby-person count and explicit missing-human uncertainty |
+| Invalid model JSON | Failed snapshot retained its exact prompt, state, raw `not JSON` response, metadata and validation error |
+| Normal-mode regression | No debug snapshot or Debug prompt entered the NORMAL response path |
+
+The final TypeScript/Vite production build passes. The complete Python suite
+passes all 197 tests, including the real localhost HTTP transport test with a
+Navel-shaped input and an offline structured LLM. `git diff --check` also
+passes.
+
+The README now documents mode selection, the `/debug` URL, the per-source
+snapshot endpoint, a live verification sequence, returning to NORMAL mode and
+the limits imposed by current state data. A real robot plus real Ollama trial is
+still required to validate network, SDK, model availability, latency and model
+response quality in the lab; offline acceptance does not claim those external
+systems were exercised.
 
 ### Implementation invariants
 

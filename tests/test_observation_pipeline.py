@@ -460,5 +460,45 @@ class DebugObservationEndpointTests(unittest.TestCase):
         self.assertEqual(retained["snapshot"], first)
 
 
+class DecisionModeAcceptanceTests(unittest.TestCase):
+    def test_normal_and_debug_modes_share_state_but_keep_contracts_separate(self):
+        payload = observation_payload(humans=True)
+        normal_llm = FakeLLM()
+        debug_llm = TraceableFakeLLM()
+        normal_client = create_app(
+            llm=normal_llm,
+            settings=Settings(decision_mode=DecisionMode.NORMAL),
+        ).test_client()
+        debug_client = create_app(
+            llm=debug_llm,
+            settings=Settings(decision_mode=DecisionMode.DEBUG),
+        ).test_client()
+
+        normal_response = normal_client.post("/api/v1/observations", json=payload)
+        debug_response = debug_client.post("/api/v1/observations", json=payload)
+        normal = normal_response.get_json()
+        debug = debug_response.get_json()
+
+        self.assertEqual(normal_response.status_code, 200)
+        self.assertEqual(debug_response.status_code, 200)
+        self.assertEqual(normal["observation_id"], debug["observation_id"])
+        self.assertEqual(normal["social_state_id"], debug["social_state_id"])
+        self.assertEqual(
+            normal["behavior_intent"]["action"],
+            debug["behavior_intent"]["action"],
+        )
+        self.assertNotIn("debug_snapshot", normal)
+        self.assertEqual(debug["debug_snapshot"]["status"], "COMPLETED")
+        self.assertEqual(
+            debug["debug_snapshot"]["raw_social_state"]["state_id"],
+            debug["social_state_id"],
+        )
+        self.assertNotIn("Debug-mode evidence rules", normal_llm.calls[0][1])
+        self.assertIn(
+            "Debug-mode evidence rules",
+            debug_llm.calls[0].messages[0]["content"],
+        )
+
+
 if __name__ == "__main__":
     unittest.main()
