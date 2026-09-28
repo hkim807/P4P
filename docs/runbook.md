@@ -36,6 +36,50 @@ submitted frame. This checks HTTP/storage only, not robot sensor access.
 
 ## Navel
 
+### Connection through a reverse SSH tunnel
+
+If Navel cannot reach the computer's HTTP port directly, but the computer can
+SSH into Navel, start the receiver on the computer's loopback interface:
+
+```bash
+python3 -m app.server --host 127.0.0.1 --port 6060 --output var/observations.jsonl
+```
+
+In a second terminal on the computer, verify the receiver first:
+
+```bash
+curl --noproxy '*' --connect-timeout 5 http://127.0.0.1:6060/health
+```
+
+If that fails, fix the receiver before setting up the tunnel. Then, still on the
+computer, run the following, replacing NAVEL_USER and NAVEL_IP with the same
+login details used for an ordinary SSH connection to the robot:
+
+```bash
+ssh -N -T -o ExitOnForwardFailure=yes -o ServerAliveInterval=30 -o ServerAliveCountMax=3 -R 127.0.0.1:16060:127.0.0.1:6060 NAVEL_USER@NAVEL_IP
+```
+
+Leave this terminal running. In another robot shell, test and start the client:
+
+```bash
+curl --noproxy '*' --connect-timeout 5 http://127.0.0.1:16060/health
+python3 -m robot.navel_client.main --server http://127.0.0.1:16060
+```
+
+The path is `Navel localhost:16060 -> SSH -> computer localhost:6060`.
+With this tunnel, the client deliberately uses Navel's localhost address.
+An ordinary SSH login alone does not create this forward. The `-R` option
+creates a listener on the robot; `-N` keeps the session open without a shell.
+See the [OpenSSH forwarding reference](https://man.openbsd.org/ssh#R).
+
+The tunnel depends on SSH connectivity and remote forwarding being allowed
+for the robot account. `ExitOnForwardFailure` detects failure to establish the
+listener, but does not prove the computer's HTTP server is running. If the SSH
+session ends, reopen the tunnel. If port 16060 is already occupied, choose another
+unused robot port and change both the `-R` port and robot URL to match.
+
+### Direct LAN connection
+
 Use the same branch in the robot's SDK-enabled Python environment. The server's
 Flask/Pydantic packages are unnecessary on the robot.
 
@@ -74,7 +118,7 @@ arrive. Stop both processes with Ctrl-C when finished.
 
 | Control | Default | Purpose |
 | --- | --- | --- |
-| `--server` | `NAVEL_SENSOR_SERVER`, otherwise `http://127.0.0.1:6060` | Computer's HTTP(S) base URL; set its LAN IP on Navel |
+| `--server` | `NAVEL_SENSOR_SERVER`, otherwise `http://127.0.0.1:6060` | Computer's LAN URL, or `http://127.0.0.1:16060` with the reverse tunnel |
 | `--minimum-send-interval` | 0.1 seconds | Minimum interval between POST starts; zero removes rate limiting |
 | `--request-timeout` | 5 seconds | HTTP timeout |
 | `--max-locomotion-age` | 1 second | Maximum cache age before velocities/ranges become null |
@@ -89,6 +133,9 @@ and nonnegative. `--server` takes a base URL, without an API path or query.
 | --- | --- |
 | Navel SDK missing | Run the collector in the robot's SDK-enabled environment. `--help` and offline tests do not need the SDK. |
 | Connection refused / request timeout | Receiver running, correct computer LAN IP, network route, and TCP 6060 allowed on computer. |
+| Robot HTTP connection fails but PC-local health works | Use the reverse tunnel above if PC-to-Navel SSH works; shared router membership alone does not establish HTTP reachability. |
+| PC-local health fails | Start the receiver and inspect its terminal for startup errors; the tunnel needs a working receiver on computer port 6060. |
+| Remote port forwarding failed | Robot port 16060 already occupied, or SSH forwarding restricted; inspect `ssh -v` output and the robot account's forwarding configuration. |
 | Velocity and safety stay null | Locomotion receive packets, their odometry/distances fields, and cache age; do not interpret null as stationary or clear space. |
 | Position absent | A valid `g_head_position` entry labelled `CAM_HEAD`; head angles do not satisfy this field. |
 | HTTP 400 | New raw contract, required null keys, finite numeric values, unique integer UIDs, and gaze range. Old pipeline payloads are incompatible. |

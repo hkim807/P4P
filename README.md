@@ -123,6 +123,11 @@ Navel. Both machines need a network route to each other, and the computer must
 allow incoming TCP connections on port 6060. Stop the client with Ctrl-C.
 Detailed controls and troubleshooting are in [docs/runbook.md](docs/runbook.md).
 
+If direct HTTP access fails but the computer can SSH into Navel, use the
+[reverse SSH tunnel setup](docs/runbook.md#connection-through-a-reverse-ssh-tunnel).
+That setup forwards Navel's `127.0.0.1:16060` to the computer's
+`127.0.0.1:6060`; pass `--server http://127.0.0.1:16060` on the robot.
+
 ## HTTP API
 
 `GET /health` returns HTTP 200 when the receiver is running. It does not probe
