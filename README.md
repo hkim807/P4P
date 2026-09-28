@@ -161,6 +161,7 @@ robot/navel_client/
   adapter.py           SDK packet -> raw frame mapping
   main.py              Async sensor collectors and streaming loop
   transport.py         Standard-library HTTP POST transport
+robot/tests/           Standalone live SDK diagnostics to run on Navel
 schemas/v1/            Public raw-frame JSON Schema
 docs/                  Sensor mapping, architecture, and operating instructions
 tests/                 Offline mapping, validation, streaming, and real HTTP tests
@@ -170,6 +171,16 @@ var/                   Received JSONL files (ignored by Git)
 ```
 
 ## Verification
+
+To inspect angular velocity directly on Navel, run:
+
+```bash
+python3 robot/tests/stream_angular_velocity.py --duration 30
+```
+
+This prints raw SDK velocity fields and a sample summary without HTTP or the
+frame adapter. See [robot/tests/README.md](robot/tests/README.md) for interpreting
+results and capturing a log.
 
 With the computer dependencies installed:
 

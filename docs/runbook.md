@@ -134,6 +134,16 @@ and nonnegative. `--server` takes a base URL, without an API path or query.
 
 ## Troubleshooting
 
+For angular velocity that stays zero, inspect the SDK directly on Navel:
+
+```bash
+python3 robot/tests/stream_angular_velocity.py --duration 30
+```
+
+Watch the output while the base turns using your existing controls. The script
+prints the raw velocity object, components, and orientation without the adapter
+or HTTP. See [the diagnostic instructions](../robot/tests/README.md).
+
 | Symptom | Check |
 | --- | --- |
 | Navel SDK missing | Run the collector in the robot's SDK-enabled environment. `--help` and offline tests do not need the SDK. |
