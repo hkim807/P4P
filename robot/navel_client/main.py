@@ -89,6 +89,7 @@ async def _send_observations(
                 logger.warning("timestamp=%s transport_error=%s", observation["timestamp"], error)
                 continue
             if 200 <= response.status_code < 300 and response.payload.get("accepted") is True:
+                print(json.dumps(observation, allow_nan=False, indent=2), flush=True)
                 logger.info("timestamp=%s people=%s accepted=true",
                             observation["timestamp"], len(observation["people"]))
             else:

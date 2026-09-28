@@ -118,6 +118,10 @@ Then stream to the computer, replacing the example address with its actual LAN I
 python3 -m robot.navel_client.main --server http://192.168.1.100:6060
 ```
 
+After each accepted POST, the client prints the full `RawObservationFrame` as
+indented JSON to stdout. Request acknowledgements and errors go to stderr.
+`--print-only` continues to print one compact JSON frame per line without HTTP.
+
 The robot must use the computer's network address; `127.0.0.1` would point back to
 Navel. Both machines need a network route to each other, and the computer must
 allow incoming TCP connections on port 6060. Stop the client with Ctrl-C.

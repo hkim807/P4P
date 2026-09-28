@@ -104,7 +104,12 @@ python3 -m robot.navel_client.main \
   --max-locomotion-age 1
 ```
 
-The client logs `timestamp=... people=... accepted=true` for successful requests.
+After each accepted POST, the client prints the full `RawObservationFrame` as
+indented JSON to stdout, including `timestamp`, `people`, `robot`, and `safety`.
+Unavailable measurements remain `null`, and optional head position is included
+when available. Acknowledgements such as `timestamp=... people=... accepted=true`
+and request errors go to stderr. Failed requests do not print an accepted frame.
+This output also applies when streaming through the reverse SSH tunnel.
 On the computer, inspect the output with:
 
 ```bash
