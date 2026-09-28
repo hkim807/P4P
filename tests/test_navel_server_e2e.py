@@ -1,6 +1,8 @@
 """Real HTTP tests from SDK-shaped data through the receiver to JSONL."""
 
 import asyncio
+import contextlib
+import io
 import json
 import tempfile
 import threading
@@ -10,6 +12,7 @@ from pathlib import Path
 from werkzeug.serving import make_server
 
 from app.server import create_app
+from app.replay import main as replay_main
 from robot.navel_client.adapter import NavelObservationAdapter
 from robot.navel_client.main import collect_and_stream, parse_args
 from robot.navel_client.transport import ObservationTransport
@@ -53,6 +56,30 @@ class NavelServerEndToEndTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(response.status_code, 400)
         self.assertFalse(response.payload["accepted"])
         self.assertFalse(self.output.exists())
+
+    async def test_http_recording_can_be_replayed_to_a_fresh_receiver(self):
+        payloads = [frame(), {**frame(), "timestamp": 1_200_000}]
+        for payload in payloads:
+            response = await asyncio.to_thread(self.transport.send, payload)
+            self.assertEqual(response.status_code, 200)
+        destination = self.output.with_name("replayed.jsonl")
+        server = make_server("127.0.0.1", 0, create_app(destination))
+        thread = threading.Thread(target=server.serve_forever,
+                                  kwargs={"poll_interval": 0.05}, daemon=True)
+        thread.start()
+        try:
+            output = io.StringIO()
+            with contextlib.redirect_stdout(output), contextlib.redirect_stderr(io.StringIO()):
+                result = await asyncio.to_thread(replay_main, [
+                    str(self.output), "--speed", "0", "--server", f"http://127.0.0.1:{server.server_port}",
+                ])
+            self.assertEqual(result, 0)
+            self.assertEqual([json.loads(line) for line in destination.read_text().splitlines()], payloads)
+            self.assertEqual([json.loads(line) for line in output.getvalue().splitlines()], payloads)
+        finally:
+            server.shutdown()
+            server.server_close()
+            thread.join(timeout=1)
 
     async def test_concurrent_collectors_stream_to_computer_receiver(self):
         ready = asyncio.Event()

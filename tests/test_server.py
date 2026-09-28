@@ -43,6 +43,28 @@ class ServerTests(unittest.TestCase):
         self.assertEqual(self.client.post("/api/v1/observations", json=payload).status_code, 200)
         self.assertEqual(json.loads(self.output.read_text()), payload)
 
+    def test_duplicate_and_backward_timestamps_are_not_recorded(self):
+        payload = frame()
+        self.assertEqual(self.client.post("/api/v1/observations", json=payload).status_code, 200)
+        for timestamp in [payload["timestamp"], payload["timestamp"] - 1]:
+            response = self.client.post("/api/v1/observations", json={**payload, "timestamp": timestamp})
+            self.assertEqual(response.status_code, 409)
+            self.assertEqual(response.json["error"], "timestamp_out_of_order")
+            self.assertFalse(response.json["accepted"])
+        self.assertEqual(len(self.output.read_text().splitlines()), 1)
+
+    def test_existing_recording_is_not_modified_on_startup(self):
+        self.output.write_text("existing recording\n")
+        with self.assertRaises(FileExistsError):
+            create_app(self.output)
+        self.assertEqual(self.output.read_text(), "existing recording\n")
+
+    def test_failed_write_does_not_advance_timestamp(self):
+        with patch("app.recording.Path.open", side_effect=OSError("disk unavailable")):
+            with self.assertLogs("app.server", level="ERROR"):
+                self.assertEqual(self.client.post("/api/v1/observations", json=frame()).status_code, 503)
+        self.assertEqual(self.client.post("/api/v1/observations", json=frame()).status_code, 200)
+
     def test_rejects_missing_fields_and_old_contract(self):
         for payload in [{}, {"timestamp_us": 100, "humans": []}, {**frame(), "safety": {}}]:
             with self.subTest(payload=payload):

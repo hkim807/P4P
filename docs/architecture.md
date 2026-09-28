@@ -19,10 +19,13 @@ and the schema/tests/documentation needed to operate that path.
 5. `transport.py` sends JSON to `POST /api/v1/observations` with a timeout. It
    returns HTTP status and a JSON acknowledgement. Responses are logged and never
    dispatched to a robot behavior.
-6. `app/server.py` validates `RawObservationFrame`, serializes one JSON line, and
-   appends it under a thread lock. Acknowledgement follows a successful write/close.
+6. `app/server.py` validates `RawObservationFrame`; `app/recording.py` checks
+   timestamp order and writes one JSON line under a thread lock.
+   Acknowledgement follows a successful write/close.
    The lock supports threads in one process; use one receiver process per output
    file. Closing a write is not an explicit fsync guarantee against power loss.
+7. `app/replay.py` reads/validates JSONL lazily and replays using timestamp gaps.
+   It prints frames locally by default; optional `--server` sends them by HTTP.
 
 ## Delivery semantics
 
@@ -33,8 +36,9 @@ the next send uses the newest one available after waiting for the rate limit.
 
 SDK receive timeouts are retried. HTTP failures are reported; the failed frame
 is dropped and the next available frame is attempted. There is no retry backlog,
-retransmission, batching, or duplicate suppression. A lost acknowledgement can
-occur after the server has already written the frame.
+retransmission, or batching. The receiver rejects duplicate/backward timestamps
+within a recording. A lost acknowledgement can occur after the server has
+already written the frame.
 
 A non-timeout SDK error terminates collection and cancels the sibling tasks,
 with the exception visible to the operator. Ctrl-C cancels tasks and closes the
@@ -59,7 +63,10 @@ The receiver's `/health` endpoint reports service liveness only.
 
 The receiver is a simple Flask development service for the computer/robot LAN
 workflow. It has no authentication layer. Its output defaults to the ignored
-`var/observations.jsonl` file and grows while observations arrive.
+`var/recordings/<UTC-start-time>.jsonl` file and grows while observations arrive.
+Existing recordings cannot be reused as output. For this lightweight stage,
+one file/receiver run is one recording session for one robot. Explicit robot
+session headers and per-frame envelopes are deferred until stateful processing.
 
 ## Verification boundary
 

@@ -64,8 +64,9 @@ to that exact instant. The wire format has no separate locomotion timestamp.
 The receiver accepts required null measurements, empty people lists, and omitted
 optional head positions. It rejects extra fields, missing required keys, duplicate
 UIDs, invalid ranges, wrong scalar types, and nonfinite numeric values. Timestamp
-ordering is not enforced; frames from restarted clients can be appended to the
-same file. The JSON Schema describes structural constraints; unique people by
+ordering is enforced per receiver run: duplicate/backward timestamps are rejected
+with HTTP 409. A fresh receiver output file starts a new recording session.
+The JSON Schema describes structural constraints; unique people by
 UID is additionally enforced by the Python validator.
 
 The server stores the validated frame, preserving optional-position omission

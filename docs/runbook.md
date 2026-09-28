@@ -8,12 +8,13 @@ Check out `feature/navel-raw-http-stream` and use Python 3.10 or newer:
 python3 -m venv .venv
 source .venv/bin/activate
 python3 -m pip install -r requirements.txt
-python3 -m app.server --host 0.0.0.0 --port 6060 --output var/observations.jsonl
+python3 -m app.server --host 0.0.0.0 --port 6060
 ```
 
-The receiver appends to an existing file. Use a different `--output` path for a
-new recording or a different robot. `--output -` writes frames to stdout instead;
-Flask request logs go to stderr.
+The receiver prints a new timestamped output path under `var/recordings/`.
+To choose a name, add `--output var/recordings/pilot-01.jsonl`; the file must not
+already exist. Each receiver run is a separate recording for one robot.
+`--output -` writes frames to stdout instead; Flask request logs go to stderr.
 
 Confirm liveness locally and from Navel:
 
@@ -42,7 +43,7 @@ If Navel cannot reach the computer's HTTP port directly, but the computer can
 SSH into Navel, start the receiver on the computer's loopback interface:
 
 ```bash
-python3 -m app.server --host 127.0.0.1 --port 6060 --output var/observations.jsonl
+python3 -m app.server --host 127.0.0.1 --port 6060
 ```
 
 In a second terminal on the computer, verify the receiver first:
@@ -113,11 +114,16 @@ This output also applies when streaming through the reverse SSH tunnel.
 On the computer, inspect the output with:
 
 ```bash
-tail -f var/observations.jsonl
+# Substitute the recording path printed by the receiver:
+tail -f var/recordings/pilot-01.jsonl
 ```
 
 Confirm that people change as the live scene changes and new lines continue to
 arrive. Stop both processes with Ctrl-C when finished.
+
+For named recordings, viewing, and playback, see
+[recording-and-replay.md](recording-and-replay.md). Playback to stdout needs no
+robot or tunnel. The receiver and replay both validate the existing raw format.
 
 ## Client controls
 
@@ -154,6 +160,8 @@ or HTTP. See [the diagnostic instructions](../robot/tests/README.md).
 | Velocity and safety stay null | Locomotion receive packets, their odometry/distances fields, and cache age; do not interpret null as stationary or clear space. |
 | Position absent | A valid `g_head_position` entry labelled `CAM_HEAD`; head angles do not satisfy this field. |
 | HTTP 400 | New raw contract, required null keys, finite numeric values, unique integer UIDs, and gaze range. Old pipeline payloads are incompatible. |
+| HTTP 409 | Duplicate/backward robot timestamp; if the robot clock restarted, start a fresh receiver recording. |
+| Recording already exists | Choose a new `--output` path or omit the option for an automatic timestamped name. |
 | HTTP 503 | Output directory permissions or storage errors; the frame was not acknowledged. |
 | Missing intermediate frames | Expected for newest-frame streaming, rate limits, slow requests, or transient failures. |
 | Non-timeout SDK exception | Collector stops and closes its SDK context; inspect the exception and robot/socket connectivity, then restart. |

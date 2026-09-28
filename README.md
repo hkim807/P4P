@@ -86,7 +86,7 @@ git switch feature/navel-raw-http-stream
 python3 -m venv .venv
 source .venv/bin/activate
 python3 -m pip install -r requirements.txt
-python3 -m app.server --host 0.0.0.0 --port 6060 --output var/observations.jsonl
+python3 -m app.server --host 0.0.0.0 --port 6060
 ```
 
 In another terminal:
@@ -96,9 +96,42 @@ curl http://127.0.0.1:6060/health
 ```
 
 The receiver returns `{"status":"ok","service":"navel-raw-sensor-receiver"}`.
-Accepted frames are appended to `var/observations.jsonl`. To print them instead,
-start with `--output -`. The receiver requires Flask and Pydantic, and no model
-runtime or robot SDK.
+The receiver prints the recording path at startup and creates a timestamped
+JSONL file under `var/recordings/` when the first frame arrives. To choose a
+name, add `--output var/recordings/pilot-01.jsonl`. That path must be new;
+existing files are never overwritten or appended across receiver runs.
+To print frames instead, use `--output -`. The receiver requires Flask and
+Pydantic, and no model runtime or robot SDK.
+
+## View and replay recordings
+
+Each JSONL line contains one complete raw frame. Use `tail -f` while recording
+or `cat` after stopping the receiver:
+
+```bash
+tail -f var/recordings/pilot-01.jsonl
+cat var/recordings/pilot-01.jsonl
+```
+
+Replay on the PC without Navel or a tunnel:
+
+```bash
+python3 -m app.replay var/recordings/pilot-01.jsonl
+python3 -m app.replay var/recordings/pilot-01.jsonl --speed 2
+python3 -m app.replay var/recordings/pilot-01.jsonl --speed 0 --pretty
+```
+
+Default playback preserves recorded timestamp gaps and prints JSONL. `--speed 2`
+plays twice as fast; `--speed 0` prints immediately; `--pretty` uses indented JSON.
+Original robot timestamps are preserved. No network calls occur unless `--server`
+is supplied. See [the recording/replay guide](docs/recording-and-replay.md) for
+HTTP replay and pilot recording instructions.
+
+A three-frame synthetic example is included for a quick check:
+
+```bash
+python3 -m app.replay recordings/examples/sample.jsonl --speed 0 --pretty
+```
 
 ## Run the collector on Navel
 
@@ -146,6 +179,8 @@ and writes it before returning:
 
 Invalid frames or malformed JSON return HTTP 400. A non-JSON content type returns
 415, a body larger than 1 MiB returns 413, and a storage failure returns 503.
+Duplicate or backward timestamps within a recording return HTTP 409 and are not
+written. Start a new receiver/recording if the robot's monotonic clock restarts.
 Errors contain `accepted: false`. This endpoint accepts only the new raw format;
 it is incompatible with the full pipeline's previous `ObservationFrame` contract.
 It returns acknowledgements, without behavior commands.
@@ -156,12 +191,15 @@ It returns acknowledgements, without behavior commands.
 app/
   domain/models.py     Server-side RawObservationFrame validation
   domain/schema.py     JSON Schema generator
-  server.py            HTTP receiver and JSONL writer
+  server.py            HTTP receiver
+  recording.py         Ordered JSONL writer and validated streaming reader
+  replay.py            Local playback and optional HTTP replay CLI
 robot/navel_client/
   adapter.py           SDK packet -> raw frame mapping
   main.py              Async sensor collectors and streaming loop
   transport.py         Standard-library HTTP POST transport
 robot/tests/           Standalone live SDK diagnostics to run on Navel
+recordings/examples/   Small synthetic recording for trying replay
 schemas/v1/            Public raw-frame JSON Schema
 docs/                  Sensor mapping, architecture, and operating instructions
 tests/                 Offline mapping, validation, streaming, and real HTTP tests
@@ -171,6 +209,11 @@ var/                   Received JSONL files (ignored by Git)
 ```
 
 ## Verification
+
+The next-stage build is described in the
+[PC social-state and execution implementation plan](docs/pc-social-state-implementation-plan.md).
+It stages UID histories, temporal features, SocialState, a rule policy, command
+delivery, and robot execution as separate milestones.
 
 To inspect angular velocity directly on Navel, run:
 

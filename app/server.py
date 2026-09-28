@@ -3,29 +3,26 @@
 from __future__ import annotations
 
 import argparse
-import json
 import logging
+from datetime import datetime, timezone
 from pathlib import Path
-from threading import Lock
 
 from flask import Flask, jsonify, request
 from pydantic import ValidationError
 from werkzeug.exceptions import HTTPException
 
 from app.domain.models import RawObservationFrame
+from app.recording import RecordingWriter, TimestampOrderError
 
 
 logger = logging.getLogger(__name__)
 
 
 def create_app(output_path: str | Path | None = None) -> Flask:
-    """Use output_path for JSONL storage; None prints accepted frames to stdout."""
+    """Start a fresh JSONL recording; None prints accepted frames to stdout."""
     app = Flask(__name__)
     app.config["MAX_CONTENT_LENGTH"] = 1024 * 1024
-    path = Path(output_path) if output_path is not None else None
-    if path is not None:
-        path.parent.mkdir(parents=True, exist_ok=True)
-    write_lock = Lock()
+    recording = RecordingWriter(output_path)
 
     @app.errorhandler(HTTPException)
     def http_error(error: HTTPException):
@@ -47,15 +44,10 @@ def create_app(output_path: str | Path | None = None) -> Flask:
                 details=error.errors(include_url=False, include_input=False, include_context=False),
             ), 400
 
-        # exclude_unset preserves optional head-position omission and measured nulls.
-        line = json.dumps(frame.model_dump(exclude_unset=True), allow_nan=False, separators=(",", ":"))
         try:
-            with write_lock:
-                if path is None:
-                    print(line, flush=True)
-                else:
-                    with path.open("a", encoding="utf-8") as stream:
-                        stream.write(line + "\n")
+            recording.write(frame)
+        except TimestampOrderError as error:
+            return jsonify(accepted=False, error="timestamp_out_of_order", message=str(error)), 409
         except OSError:
             logger.exception("Could not store sensor observation")
             return jsonify(accepted=False, error="observation_storage_failed"), 503
@@ -68,13 +60,20 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Receive raw Navel observations over HTTP.")
     parser.add_argument("--host", default="0.0.0.0")
     parser.add_argument("--port", type=int, default=6060)
-    parser.add_argument("--output", default="var/observations.jsonl",
-                        help="JSONL append path, or '-' to print frames to stdout")
+    parser.add_argument("--output", help="New JSONL path, or '-' for stdout; default is a timestamped file in var/recordings")
     args = parser.parse_args()
     if not 1 <= args.port <= 65535:
         parser.error("port must be between 1 and 65535")
     logging.basicConfig(level=logging.INFO, format="%(message)s")
-    app = create_app(None if args.output == "-" else args.output)
+    output = args.output
+    if output is None:
+        stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S.%fZ")
+        output = f"var/recordings/{stamp}.jsonl"
+    try:
+        app = create_app(None if output == "-" else output)
+    except OSError as error:
+        parser.error(str(error))
+    logger.info("Recording raw sensor frames to %s", "stdout" if output == "-" else output)
     app.run(host=args.host, port=args.port, threaded=True)
 
 
