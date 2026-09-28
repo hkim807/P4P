@@ -3,9 +3,6 @@
 __pycache__/
 *.pyc
 
-# Received observations
-var/
-
 # Local frontend build/dependency artifacts left from main
 web/
 
