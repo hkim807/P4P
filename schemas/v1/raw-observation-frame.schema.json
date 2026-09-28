@@ -1,0 +1,211 @@
+{
+  "$defs": {
+    "RawPerson": {
+      "additionalProperties": false,
+      "properties": {
+        "distance_m": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Distance M"
+        },
+        "gaze_overlap": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Gaze Overlap"
+        },
+        "optional_relative_head_position": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/RelativeHeadPosition"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "uid": {
+          "minimum": 0,
+          "title": "Uid",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "uid",
+        "distance_m",
+        "gaze_overlap"
+      ],
+      "title": "RawPerson",
+      "type": "object"
+    },
+    "RawRobot": {
+      "additionalProperties": false,
+      "properties": {
+        "angular_velocity": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Yaw velocity in rad/s.",
+          "title": "Angular Velocity"
+        },
+        "linear_velocity": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Signed forward velocity in m/s.",
+          "title": "Linear Velocity"
+        }
+      },
+      "required": [
+        "linear_velocity",
+        "angular_velocity"
+      ],
+      "title": "RawRobot",
+      "type": "object"
+    },
+    "RawSafety": {
+      "additionalProperties": false,
+      "properties": {
+        "lidar": {
+          "anyOf": [
+            {
+              "items": {
+                "anyOf": [
+                  {
+                    "minimum": 0,
+                    "type": "number"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "SDK native range values, ordered front then back; null means unavailable.",
+          "title": "Lidar"
+        },
+        "sonar": {
+          "anyOf": [
+            {
+              "items": {
+                "anyOf": [
+                  {
+                    "minimum": 0,
+                    "type": "number"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "SDK native range values, ordered front-right, front-left, back.",
+          "title": "Sonar"
+        }
+      },
+      "required": [
+        "lidar",
+        "sonar"
+      ],
+      "title": "RawSafety",
+      "type": "object"
+    },
+    "RelativeHeadPosition": {
+      "additionalProperties": false,
+      "description": "Cartesian position in the head camera frame, in metres.",
+      "properties": {
+        "coordinate_frame": {
+          "const": "CAM_HEAD",
+          "title": "Coordinate Frame",
+          "type": "string"
+        },
+        "x": {
+          "title": "X",
+          "type": "number"
+        },
+        "y": {
+          "title": "Y",
+          "type": "number"
+        },
+        "z": {
+          "title": "Z",
+          "type": "number"
+        }
+      },
+      "required": [
+        "coordinate_frame",
+        "x",
+        "y",
+        "z"
+      ],
+      "title": "RelativeHeadPosition",
+      "type": "object"
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "people": {
+      "items": {
+        "$ref": "#/$defs/RawPerson"
+      },
+      "title": "People",
+      "type": "array"
+    },
+    "robot": {
+      "$ref": "#/$defs/RawRobot"
+    },
+    "safety": {
+      "$ref": "#/$defs/RawSafety"
+    },
+    "timestamp": {
+      "description": "Robot-host monotonic microseconds at perception collection; not UTC.",
+      "minimum": 0,
+      "title": "Timestamp",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "timestamp",
+    "people",
+    "robot",
+    "safety"
+  ],
+  "title": "RawObservationFrame",
+  "type": "object"
+}

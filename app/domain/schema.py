@@ -1,53 +1,28 @@
-"""Generate the committed JSON Schema artifacts from the Pydantic contracts."""
+"""Generate the public JSON Schema from the raw sensor contract."""
 
 from __future__ import annotations
 
 import json
 from pathlib import Path
 
-from pydantic import BaseModel
-
-from app.domain.models import BehaviorIntent, ObservationFrame, SocialState
+from app.domain.models import RawObservationFrame
 
 
-SCHEMA_VERSION = "v1"
-DEFAULT_OUTPUT_DIRECTORY = Path(__file__).resolve().parents[2] / "schemas" / SCHEMA_VERSION
-SCHEMA_MODELS: dict[str, type[BaseModel]] = {
-    "observation-frame.schema.json": ObservationFrame,
-    "social-state.schema.json": SocialState,
-    "behavior-intent.schema.json": BehaviorIntent,
-}
+SCHEMA_PATH = Path(__file__).resolve().parents[2] / "schemas/v1/raw-observation-frame.schema.json"
 
 
-def schema_document(filename: str, model: type[BaseModel]) -> dict:
-    """Return one deterministic JSON Schema document."""
-    schema = model.model_json_schema(mode="validation")
-    return {
+def render_schema() -> str:
+    schema = {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
-        "$id": f"https://p4p.local/schemas/{SCHEMA_VERSION}/{filename}",
-        **schema,
+        **RawObservationFrame.model_json_schema(mode="validation"),
     }
-
-
-def render_schema(filename: str, model: type[BaseModel]) -> str:
-    """Serialize a schema using the repository's canonical formatting."""
-    return json.dumps(schema_document(filename, model), indent=2, sort_keys=True) + "\n"
-
-
-def write_schemas(output_directory: Path = DEFAULT_OUTPUT_DIRECTORY) -> list[Path]:
-    """Write all public schemas and return their paths."""
-    output_directory.mkdir(parents=True, exist_ok=True)
-    written = []
-    for filename, model in SCHEMA_MODELS.items():
-        path = output_directory / filename
-        path.write_text(render_schema(filename, model), encoding="utf-8")
-        written.append(path)
-    return written
+    return json.dumps(schema, indent=2, sort_keys=True) + "\n"
 
 
 def main() -> None:
-    for path in write_schemas():
-        print(path)
+    SCHEMA_PATH.parent.mkdir(parents=True, exist_ok=True)
+    SCHEMA_PATH.write_text(render_schema(), encoding="utf-8")
+    print(SCHEMA_PATH)
 
 
 if __name__ == "__main__":

@@ -1,10 +1,5 @@
-"""Versioned domain contracts for the social-navigation pipeline."""
+"""Raw sensor contracts used only by the computer-side server."""
 
-from app.domain.models import (
-    Action,
-    BehaviorIntent,
-    ObservationFrame,
-    SocialState,
-)
+from app.domain.models import RawObservationFrame
 
-__all__ = ["Action", "BehaviorIntent", "ObservationFrame", "SocialState"]
+__all__ = ["RawObservationFrame"]

@@ -1,1 +1,1 @@
-"""Minimal Ollama-backed LLM gateway."""
+"""HTTP receiver for raw Navel sensor observations."""
