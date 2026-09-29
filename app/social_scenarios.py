@@ -1,0 +1,38 @@
+"""Explicit synthetic transformations of a recorded frame template for validation."""
+from copy import deepcopy
+
+from app.state.social_models import MotionContext
+
+
+def controlled_scenarios(template):
+    """Return raw-schema-compatible inputs, expected checkpoints, and provenance context.
+
+    These are synthetic stimuli, not labels for the recorded source scenario.
+    """
+    origin = template["timestamp"]
+    person = deepcopy(template["people"][0]) if template["people"] else {"uid": 101}
+    frames = []
+    for i in range(160):
+        t = i / 10
+        frame = deepcopy(template)
+        frame["timestamp"] = origin + i * 100_000
+        p = deepcopy(person)
+        p.pop("optional_relative_head_position", None)  # Old geometry would contradict injected distance.
+        p.update(uid=101, gaze_overlap=(0.1 if t < 4 or t >= 12 else 0.95 if t < 8
+                                      else 0.95 if i % 6 < 3 else 0.1),
+                 distance_m=(3.0 if t < 4 else 3.0 - 0.2*(t-4) if t < 8
+                             else 2.2 if t < 12 else 2.2 + 0.2*(t-12)))
+        frame["people"] = [p]
+        frame["robot"] = {"linear_velocity": 0.0, "angular_velocity": 0.0}
+        frame["safety"] = {"lidar": None, "sonar": None}
+        frames.append(frame)
+    context = MotionContext.model_validate({
+        "source": "synthetic stationary base; not confirmation of the original recording",
+        "stationary_intervals": [{"start_us": origin, "end_us": origin + 20_000_000}]})
+    expectations = {
+        35: {"gaze_state": "NONE", "relative_distance_trend": "STABLE", "human_radial_motion": "STATIONARY"},
+        75: {"gaze_state": "SUSTAINED", "relative_distance_trend": "DECREASING", "human_radial_motion": "TOWARD"},
+        115: {"gaze_state": "INTERMITTENT", "relative_distance_trend": "STABLE", "human_radial_motion": "STATIONARY"},
+        155: {"gaze_state": "NONE", "relative_distance_trend": "INCREASING", "human_radial_motion": "AWAY"},
+    }
+    return frames, expectations, context

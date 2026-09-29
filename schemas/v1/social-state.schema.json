@@ -1,0 +1,647 @@
+{
+  "$defs": {
+    "CueChange": {
+      "additionalProperties": false,
+      "properties": {
+        "uid": {
+          "title": "Uid",
+          "type": "integer"
+        },
+        "track_epoch": {
+          "title": "Track Epoch",
+          "type": "integer"
+        },
+        "field": {
+          "title": "Field",
+          "type": "string"
+        },
+        "previous": {
+          "title": "Previous",
+          "type": "string"
+        },
+        "current": {
+          "title": "Current",
+          "type": "string"
+        }
+      },
+      "required": [
+        "uid",
+        "track_epoch",
+        "field",
+        "previous",
+        "current"
+      ],
+      "title": "CueChange",
+      "type": "object"
+    },
+    "MotionContext": {
+      "additionalProperties": false,
+      "description": "Independent confirmation, not a label inferred from a recording filename.",
+      "properties": {
+        "source": {
+          "minLength": 1,
+          "title": "Source",
+          "type": "string"
+        },
+        "stationary_intervals": {
+          "items": {
+            "$ref": "#/$defs/StationaryInterval"
+          },
+          "title": "Stationary Intervals",
+          "type": "array"
+        }
+      },
+      "required": [
+        "source",
+        "stationary_intervals"
+      ],
+      "title": "MotionContext",
+      "type": "object"
+    },
+    "PersonSocialState": {
+      "additionalProperties": false,
+      "properties": {
+        "uid": {
+          "title": "Uid",
+          "type": "integer"
+        },
+        "track_epoch": {
+          "title": "Track Epoch",
+          "type": "integer"
+        },
+        "visibility": {
+          "enum": [
+            "OBSERVED",
+            "TEMPORARILY_MISSING"
+          ],
+          "title": "Visibility",
+          "type": "string"
+        },
+        "track_age_s": {
+          "title": "Track Age S",
+          "type": "number"
+        },
+        "time_since_seen_s": {
+          "title": "Time Since Seen S",
+          "type": "number"
+        },
+        "latest_distance_m": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Latest Distance M"
+        },
+        "gaze_state": {
+          "enum": [
+            "NONE",
+            "INTERMITTENT",
+            "SUSTAINED",
+            "UNKNOWN"
+          ],
+          "title": "Gaze State",
+          "type": "string"
+        },
+        "distance_zone": {
+          "enum": [
+            "TOO_CLOSE",
+            "INTERACTION_RANGE",
+            "APPROACHABLE",
+            "FAR",
+            "UNKNOWN"
+          ],
+          "title": "Distance Zone",
+          "type": "string"
+        },
+        "relative_distance_trend": {
+          "enum": [
+            "DECREASING",
+            "STABLE",
+            "INCREASING",
+            "UNKNOWN"
+          ],
+          "title": "Relative Distance Trend",
+          "type": "string"
+        },
+        "human_radial_motion": {
+          "enum": [
+            "TOWARD",
+            "STATIONARY",
+            "AWAY",
+            "UNKNOWN"
+          ],
+          "title": "Human Radial Motion",
+          "type": "string"
+        },
+        "evidence": {
+          "$ref": "#/$defs/TemporalEvidence"
+        },
+        "validity_flags": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Validity Flags",
+          "type": "array"
+        }
+      },
+      "required": [
+        "uid",
+        "track_epoch",
+        "visibility",
+        "track_age_s",
+        "time_since_seen_s",
+        "latest_distance_m",
+        "gaze_state",
+        "distance_zone",
+        "relative_distance_trend",
+        "human_radial_motion",
+        "evidence",
+        "validity_flags"
+      ],
+      "title": "PersonSocialState",
+      "type": "object"
+    },
+    "RobotState": {
+      "additionalProperties": false,
+      "properties": {
+        "linear_velocity": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Linear Velocity"
+        },
+        "angular_velocity": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Angular Velocity"
+        },
+        "motion_state": {
+          "enum": [
+            "STATIONARY",
+            "MOVING",
+            "UNKNOWN"
+          ],
+          "title": "Motion State",
+          "type": "string"
+        },
+        "measurement_validity": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Measurement Validity",
+          "type": "array"
+        }
+      },
+      "required": [
+        "linear_velocity",
+        "angular_velocity",
+        "motion_state",
+        "measurement_validity"
+      ],
+      "title": "RobotState",
+      "type": "object"
+    },
+    "StationaryInterval": {
+      "additionalProperties": false,
+      "properties": {
+        "start_us": {
+          "minimum": 0,
+          "title": "Start Us",
+          "type": "integer"
+        },
+        "end_us": {
+          "minimum": 0,
+          "title": "End Us",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "start_us",
+        "end_us"
+      ],
+      "title": "StationaryInterval",
+      "type": "object"
+    },
+    "TemporalConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "window_s": {
+          "default": 2.0,
+          "exclusiveMinimum": 0,
+          "title": "Window S",
+          "type": "number"
+        },
+        "max_gap_s": {
+          "default": 0.25,
+          "exclusiveMinimum": 0,
+          "title": "Max Gap S",
+          "type": "number"
+        },
+        "min_span_s": {
+          "default": 1.0,
+          "exclusiveMinimum": 0,
+          "title": "Min Span S",
+          "type": "number"
+        },
+        "min_samples": {
+          "default": 5,
+          "minimum": 3,
+          "title": "Min Samples",
+          "type": "integer"
+        },
+        "min_gaze_coverage_s": {
+          "default": 0.8,
+          "exclusiveMinimum": 0,
+          "title": "Min Gaze Coverage S",
+          "type": "number"
+        },
+        "min_gaze_coverage_fraction": {
+          "default": 0.6,
+          "exclusiveMinimum": 0,
+          "maximum": 1,
+          "title": "Min Gaze Coverage Fraction",
+          "type": "number"
+        },
+        "looking_enter": {
+          "default": 0.8,
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Looking Enter",
+          "type": "number"
+        },
+        "looking_exit": {
+          "default": 0.7,
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Looking Exit",
+          "type": "number"
+        },
+        "sustained_enter": {
+          "default": 0.8,
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Sustained Enter",
+          "type": "number"
+        },
+        "sustained_exit": {
+          "default": 0.65,
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Sustained Exit",
+          "type": "number"
+        },
+        "none_enter": {
+          "default": 0.2,
+          "maximum": 1,
+          "minimum": 0,
+          "title": "None Enter",
+          "type": "number"
+        },
+        "none_exit": {
+          "default": 0.35,
+          "maximum": 1,
+          "minimum": 0,
+          "title": "None Exit",
+          "type": "number"
+        },
+        "category_dwell_s": {
+          "default": 0.3,
+          "minimum": 0,
+          "title": "Category Dwell S",
+          "type": "number"
+        },
+        "min_sustained_run_s": {
+          "default": 0.4,
+          "minimum": 0,
+          "title": "Min Sustained Run S",
+          "type": "number"
+        },
+        "distance_deadband_mps": {
+          "default": 0.1,
+          "exclusiveMinimum": 0,
+          "title": "Distance Deadband Mps",
+          "type": "number"
+        },
+        "max_distance_speed_mps": {
+          "default": 3.0,
+          "exclusiveMinimum": 0,
+          "title": "Max Distance Speed Mps",
+          "type": "number"
+        },
+        "distance_jump_allowance_m": {
+          "default": 0.05,
+          "minimum": 0,
+          "title": "Distance Jump Allowance M",
+          "type": "number"
+        },
+        "max_fit_residual_m": {
+          "default": 0.1,
+          "exclusiveMinimum": 0,
+          "title": "Max Fit Residual M",
+          "type": "number"
+        },
+        "max_fit_samples": {
+          "default": 32,
+          "maximum": 128,
+          "minimum": 3,
+          "title": "Max Fit Samples",
+          "type": "integer"
+        },
+        "too_close_m": {
+          "default": 0.6,
+          "exclusiveMinimum": 0,
+          "title": "Too Close M",
+          "type": "number"
+        },
+        "interaction_max_m": {
+          "default": 1.5,
+          "exclusiveMinimum": 0,
+          "title": "Interaction Max M",
+          "type": "number"
+        },
+        "approachable_max_m": {
+          "default": 3.0,
+          "exclusiveMinimum": 0,
+          "title": "Approachable Max M",
+          "type": "number"
+        },
+        "zone_hysteresis_m": {
+          "default": 0.1,
+          "minimum": 0,
+          "title": "Zone Hysteresis M",
+          "type": "number"
+        },
+        "stationary_linear_tolerance_mps": {
+          "default": 0.02,
+          "minimum": 0,
+          "title": "Stationary Linear Tolerance Mps",
+          "type": "number"
+        },
+        "stationary_angular_tolerance_rps": {
+          "default": 0.03,
+          "minimum": 0,
+          "title": "Stationary Angular Tolerance Rps",
+          "type": "number"
+        }
+      },
+      "title": "TemporalConfig",
+      "type": "object"
+    },
+    "TemporalEvidence": {
+      "additionalProperties": false,
+      "properties": {
+        "window_span_s": {
+          "title": "Window Span S",
+          "type": "number"
+        },
+        "gaze_fraction": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Gaze Fraction"
+        },
+        "gaze_valid_coverage_s": {
+          "title": "Gaze Valid Coverage S",
+          "type": "number"
+        },
+        "gaze_coverage_fraction": {
+          "title": "Gaze Coverage Fraction",
+          "type": "number"
+        },
+        "gaze_valid_samples": {
+          "title": "Gaze Valid Samples",
+          "type": "integer"
+        },
+        "sustained_gaze_s": {
+          "title": "Sustained Gaze S",
+          "type": "number"
+        },
+        "distance_slope_mps": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Distance Slope Mps"
+        },
+        "distance_valid_span_s": {
+          "title": "Distance Valid Span S",
+          "type": "number"
+        },
+        "distance_fit_residual_m": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Distance Fit Residual M"
+        },
+        "distance_valid_samples": {
+          "title": "Distance Valid Samples",
+          "type": "integer"
+        },
+        "distance_fit_samples": {
+          "title": "Distance Fit Samples",
+          "type": "integer"
+        },
+        "distance_window_start_us": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Distance Window Start Us"
+        },
+        "distance_jump_count": {
+          "title": "Distance Jump Count",
+          "type": "integer"
+        },
+        "gaze_valid": {
+          "title": "Gaze Valid",
+          "type": "boolean"
+        },
+        "distance_trend_valid": {
+          "title": "Distance Trend Valid",
+          "type": "boolean"
+        },
+        "latest_distance_valid": {
+          "title": "Latest Distance Valid",
+          "type": "boolean"
+        },
+        "stationary_window_confirmed": {
+          "title": "Stationary Window Confirmed",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "window_span_s",
+        "gaze_fraction",
+        "gaze_valid_coverage_s",
+        "gaze_coverage_fraction",
+        "gaze_valid_samples",
+        "sustained_gaze_s",
+        "distance_slope_mps",
+        "distance_valid_span_s",
+        "distance_fit_residual_m",
+        "distance_valid_samples",
+        "distance_fit_samples",
+        "distance_window_start_us",
+        "distance_jump_count",
+        "gaze_valid",
+        "distance_trend_valid",
+        "latest_distance_valid",
+        "stationary_window_confirmed"
+      ],
+      "title": "TemporalEvidence",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": 1,
+      "default": 1,
+      "title": "Schema Version",
+      "type": "integer"
+    },
+    "estimator_version": {
+      "const": "temporal-social-v1",
+      "default": "temporal-social-v1",
+      "title": "Estimator Version",
+      "type": "string"
+    },
+    "state_id": {
+      "title": "State Id",
+      "type": "string"
+    },
+    "session_id": {
+      "title": "Session Id",
+      "type": "string"
+    },
+    "ingest_sequence": {
+      "title": "Ingest Sequence",
+      "type": "integer"
+    },
+    "robot_timestamp_us": {
+      "title": "Robot Timestamp Us",
+      "type": "integer"
+    },
+    "config_version": {
+      "title": "Config Version",
+      "type": "string"
+    },
+    "calibration_status": {
+      "const": "PROVISIONAL",
+      "default": "PROVISIONAL",
+      "title": "Calibration Status",
+      "type": "string"
+    },
+    "config": {
+      "$ref": "#/$defs/TemporalConfig"
+    },
+    "motion_context": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/MotionContext"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "robot": {
+      "$ref": "#/$defs/RobotState"
+    },
+    "people": {
+      "items": {
+        "$ref": "#/$defs/PersonSocialState"
+      },
+      "title": "People",
+      "type": "array"
+    },
+    "cue_changes": {
+      "items": {
+        "$ref": "#/$defs/CueChange"
+      },
+      "title": "Cue Changes",
+      "type": "array"
+    },
+    "track_events": {
+      "items": {
+        "additionalProperties": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "string"
+            }
+          ]
+        },
+        "type": "object"
+      },
+      "title": "Track Events",
+      "type": "array"
+    },
+    "active_target_uid": {
+      "default": null,
+      "title": "Active Target Uid",
+      "type": "null"
+    },
+    "active_target_track_epoch": {
+      "default": null,
+      "title": "Active Target Track Epoch",
+      "type": "null"
+    },
+    "range_data_status": {
+      "const": "UNKNOWN",
+      "default": "UNKNOWN",
+      "title": "Range Data Status",
+      "type": "string"
+    }
+  },
+  "required": [
+    "state_id",
+    "session_id",
+    "ingest_sequence",
+    "robot_timestamp_us",
+    "config_version",
+    "config",
+    "motion_context",
+    "robot",
+    "people",
+    "cue_changes",
+    "track_events"
+  ],
+  "title": "SocialState",
+  "type": "object"
+}

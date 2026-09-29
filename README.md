@@ -127,6 +127,44 @@ Original robot timestamps are preserved. No network calls occur unless `--server
 is supplied. See [the recording/replay guide](docs/recording-and-replay.md) for
 HTTP replay and pilot recording instructions.
 
+## Track people over time
+
+The next PC layer maintains bounded raw histories per session/UID/track epoch.
+Replay a recording into track snapshots without Navel:
+
+```bash
+python3 -m app.track var/recordings/03_stationary_gaze.jsonl --config config/person-tracking.json
+```
+
+Each stdout line is a snapshot with retained samples, visibility, and lifecycle
+events; stderr prints a completion summary. Add `--speed 1` for original pacing
+or `--output /tmp/navel-tracks.jsonl` to create a new trace. For live tracking,
+add `--tracking-output <new-trace.jsonl>` to the receiver. Raw recording and
+derived tracking stay in separate files; there are no social decisions or actions.
+
+See [person tracking: design, research rationale, and usage](docs/person-tracking.md)
+and [validation on recordings 01-07](docs/results/person-tracking/report.md).
+
+## Estimate temporal social cues
+
+Transform recordings into SocialState with gaze patterns, distance zones,
+relative-distance trends, and measured evidence:
+
+```bash
+python3 -m app.social var/recordings/03_stationary_gaze.jsonl --config config/temporal-state.json
+python3 -m app.validate_social var/recordings/0[1-7]_*.jsonl --output-dir var/temporal-validation/run-01
+```
+
+Outputs are separate from raw recordings. Thresholds are provisional; missing
+evidence is UNKNOWN, and human motion requires independent stationary-base
+confirmation. Add `--social-output <new-social.jsonl>` to the receiver to enable
+the same layer live. `--tracking-output` alone continues to produce UID histories.
+See [temporal design and commands](docs/temporal-social-state.md) and
+[validation results](docs/results/temporal-state/report.md), including controlled
+transformations of a recorded frame into changing cue patterns.
+
+## Synthetic replay example
+
 A three-frame synthetic example is included for a quick check:
 
 ```bash
@@ -194,6 +232,16 @@ app/
   server.py            HTTP receiver
   recording.py         Ordered JSONL writer and validated streaming reader
   replay.py            Local playback and optional HTTP replay CLI
+  state/tracks.py      Bounded UID histories and visibility lifecycle
+  pipeline.py          Shared offline/live tracking and serialized persistence
+  track.py             Track-snapshot replay CLI
+  validate_tracking.py Pilot-recording audit and reproducible reports
+  state/features.py    Gaze coverage and robust distance measurements
+  state/estimator.py   Categorical SocialState and cue changes
+  social_pipeline.py  Shared live/replay temporal processing
+  social.py           SocialState replay CLI
+  validate_social.py  Recorded/synthetic temporal validation reports
+config/                Person tracking development settings
 robot/navel_client/
   adapter.py           SDK packet -> raw frame mapping
   main.py              Async sensor collectors and streaming loop
@@ -205,7 +253,9 @@ docs/                  Sensor mapping, architecture, and operating instructions
 tests/                 Offline mapping, validation, streaming, and real HTTP tests
 requirements.txt       Computer-side dependencies
 requirements-navel.txt Robot-side dependency boundary
-var/                   Received JSONL files (ignored by Git)
+var/recordings/         Received JSONL files, including supplied pilot recordings
+var/tracking-validation/ Generated tracking traces (ignored by Git)
+var/temporal-validation/ Generated social states and synthetic validation inputs
 ```
 
 ## Verification

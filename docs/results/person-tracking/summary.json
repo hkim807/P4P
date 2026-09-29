@@ -1,0 +1,401 @@
+{
+  "tracker_version": "uid-tracking-v1",
+  "config": {
+    "history_window_s": 3.0,
+    "missing_grace_s": 0.75,
+    "max_samples_per_track": 64,
+    "max_tracks": 32
+  },
+  "recordings": [
+    {
+      "file": "01_approach_gaze.jsonl",
+      "source_sha256": "b22485be7101a5a479790ac7a80efaec550ea5210070873e755796a8550a5846",
+      "session_id": "01_approach_gaze-b22485be7101",
+      "frames": 127,
+      "duration_s": 12.689281,
+      "raw_uids": [
+        0,
+        1783940805,
+        1920266662
+      ],
+      "empty_frames": 48,
+      "person_observations": 79,
+      "events": {
+        "ACQUIRED": 4,
+        "LOST": 4,
+        "MISSING": 15,
+        "REACQUIRED": 11
+      },
+      "loss_reasons": {
+        "missing_grace_exceeded": 4
+      },
+      "peak_active_tracks": 3,
+      "peak_samples_per_track": 30,
+      "sample_copies_checked": 1749,
+      "final_tracks": [],
+      "trace_sha256_by_speed": {
+        "0": "72a22260881298be8ad41f0b3745625afff6f283e07942a06ca61b9def4a4d30",
+        "1": "72a22260881298be8ad41f0b3745625afff6f283e07942a06ca61b9def4a4d30",
+        "2": "72a22260881298be8ad41f0b3745625afff6f283e07942a06ca61b9def4a4d30"
+      },
+      "checks_passed": true
+    },
+    {
+      "file": "02_approach_no_gaze.jsonl",
+      "source_sha256": "f3a568dd531fea1ac6cad6064e6f368d0731a8748e24996bd472180b663e3849",
+      "session_id": "02_approach_no_gaze-f3a568dd531f",
+      "frames": 103,
+      "duration_s": 10.318373,
+      "raw_uids": [
+        0,
+        638087292,
+        1783940805,
+        1805298619,
+        1920266662
+      ],
+      "empty_frames": 31,
+      "person_observations": 72,
+      "events": {
+        "ACQUIRED": 8,
+        "LOST": 8,
+        "MISSING": 22,
+        "REACQUIRED": 14
+      },
+      "loss_reasons": {
+        "missing_grace_exceeded": 8
+      },
+      "peak_active_tracks": 4,
+      "peak_samples_per_track": 24,
+      "sample_copies_checked": 1283,
+      "final_tracks": [],
+      "trace_sha256_by_speed": {
+        "0": "b1b21684ac1a2bd60ac09039556cffe545ce1ddf39ba8c1a8642c048f8b4247c",
+        "1": "b1b21684ac1a2bd60ac09039556cffe545ce1ddf39ba8c1a8642c048f8b4247c",
+        "2": "b1b21684ac1a2bd60ac09039556cffe545ce1ddf39ba8c1a8642c048f8b4247c"
+      },
+      "checks_passed": true
+    },
+    {
+      "file": "03_stationary_gaze.jsonl",
+      "source_sha256": "1b97a071fd49a4953320cc72d0ad0ebcc79d7dfb30b7e3c3434c2b9ad93cd74e",
+      "session_id": "03_stationary_gaze-1b97a071fd49",
+      "frames": 83,
+      "duration_s": 8.287498,
+      "raw_uids": [
+        1920266662
+      ],
+      "empty_frames": 0,
+      "person_observations": 83,
+      "events": {
+        "ACQUIRED": 1
+      },
+      "loss_reasons": {},
+      "peak_active_tracks": 1,
+      "peak_samples_per_track": 31,
+      "sample_copies_checked": 2065,
+      "final_tracks": [
+        {
+          "uid": 1920266662,
+          "track_epoch": 1,
+          "visibility": "OBSERVED"
+        }
+      ],
+      "trace_sha256_by_speed": {
+        "0": "bb439ef31b25cef1fd9ed8e95a535f46ab6118a7fbd5ddd820d0721bf432b3ff",
+        "1": "bb439ef31b25cef1fd9ed8e95a535f46ab6118a7fbd5ddd820d0721bf432b3ff",
+        "2": "bb439ef31b25cef1fd9ed8e95a535f46ab6118a7fbd5ddd820d0721bf432b3ff"
+      },
+      "checks_passed": true
+    },
+    {
+      "file": "04_stationary_no_gaze.jsonl",
+      "source_sha256": "87ab8f65d99b9a8645a924e36763d0d872cae76d0f30354909a6afd13178d559",
+      "session_id": "04_stationary_no_gaze-87ab8f65d99b",
+      "frames": 114,
+      "duration_s": 11.37929,
+      "raw_uids": [
+        1507541344,
+        1783940805,
+        1920266662
+      ],
+      "empty_frames": 50,
+      "person_observations": 64,
+      "events": {
+        "ACQUIRED": 4,
+        "LOST": 3,
+        "MISSING": 11,
+        "REACQUIRED": 7
+      },
+      "loss_reasons": {
+        "missing_grace_exceeded": 3
+      },
+      "peak_active_tracks": 2,
+      "peak_samples_per_track": 31,
+      "sample_copies_checked": 1498,
+      "final_tracks": [
+        {
+          "uid": 1507541344,
+          "track_epoch": 4,
+          "visibility": "TEMPORARILY_MISSING"
+        }
+      ],
+      "trace_sha256_by_speed": {
+        "0": "d8a11dbfae0131da82569e3064308a20780b71bc9addb099acbaff7f95ca7f3b",
+        "1": "d8a11dbfae0131da82569e3064308a20780b71bc9addb099acbaff7f95ca7f3b",
+        "2": "d8a11dbfae0131da82569e3064308a20780b71bc9addb099acbaff7f95ca7f3b"
+      },
+      "checks_passed": true
+    },
+    {
+      "file": "05_stationary_intermittent_gaze_eyeball.jsonl",
+      "source_sha256": "e63d25cc80ed39de59bbf1e695428574e26d221568e6b93605b0366f06c2fc63",
+      "session_id": "05_stationary_intermittent_gaze_eyeball-e63d25cc80ed",
+      "frames": 90,
+      "duration_s": 9.026017,
+      "raw_uids": [
+        1783940805
+      ],
+      "empty_frames": 0,
+      "person_observations": 90,
+      "events": {
+        "ACQUIRED": 1
+      },
+      "loss_reasons": {},
+      "peak_active_tracks": 1,
+      "peak_samples_per_track": 31,
+      "sample_copies_checked": 2298,
+      "final_tracks": [
+        {
+          "uid": 1783940805,
+          "track_epoch": 1,
+          "visibility": "OBSERVED"
+        }
+      ],
+      "trace_sha256_by_speed": {
+        "0": "47e4c7280d2b7b8366b0a8f171439e8f40ee0ab72b043d182845cd826c71dd56",
+        "1": "47e4c7280d2b7b8366b0a8f171439e8f40ee0ab72b043d182845cd826c71dd56",
+        "2": "47e4c7280d2b7b8366b0a8f171439e8f40ee0ab72b043d182845cd826c71dd56"
+      },
+      "checks_passed": true
+    },
+    {
+      "file": "06_stationary_intermittent_gaze_heaead_motion.jsonl",
+      "source_sha256": "fcfd3328e586a32866d9c2f37d593af24181d522a77109bcea717463793c32b5",
+      "session_id": "06_stationary_intermittent_gaze_heaead_motion-fcfd3328e586",
+      "frames": 79,
+      "duration_s": 7.898025,
+      "raw_uids": [
+        1415969861,
+        1783940805
+      ],
+      "empty_frames": 8,
+      "person_observations": 71,
+      "events": {
+        "ACQUIRED": 2,
+        "LOST": 1,
+        "MISSING": 4,
+        "REACQUIRED": 3
+      },
+      "loss_reasons": {
+        "missing_grace_exceeded": 1
+      },
+      "peak_active_tracks": 2,
+      "peak_samples_per_track": 30,
+      "sample_copies_checked": 1729,
+      "final_tracks": [
+        {
+          "uid": 1783940805,
+          "track_epoch": 2,
+          "visibility": "OBSERVED"
+        }
+      ],
+      "trace_sha256_by_speed": {
+        "0": "fe0bb42d94e9f6077577987d81b3e769554a8f681fe1436c22813e2d0c161276",
+        "1": "fe0bb42d94e9f6077577987d81b3e769554a8f681fe1436c22813e2d0c161276",
+        "2": "fe0bb42d94e9f6077577987d81b3e769554a8f681fe1436c22813e2d0c161276"
+      },
+      "checks_passed": true
+    },
+    {
+      "file": "07_moving_away.jsonl",
+      "source_sha256": "c2f706097ac3273fd9c1d7d9350da24a78890068b1725ed5fc5e52025f5cd0fe",
+      "session_id": "07_moving_away-c2f706097ac3",
+      "frames": 86,
+      "duration_s": 8.586336,
+      "raw_uids": [
+        0,
+        837003327,
+        1732459285,
+        1783940805,
+        1920266662,
+        2028283029,
+        2070698707
+      ],
+      "empty_frames": 1,
+      "person_observations": 85,
+      "events": {
+        "ACQUIRED": 11,
+        "LOST": 7,
+        "MISSING": 21,
+        "REACQUIRED": 10
+      },
+      "loss_reasons": {
+        "missing_grace_exceeded": 7
+      },
+      "peak_active_tracks": 5,
+      "peak_samples_per_track": 29,
+      "sample_copies_checked": 1790,
+      "final_tracks": [
+        {
+          "uid": 837003327,
+          "track_epoch": 8,
+          "visibility": "TEMPORARILY_MISSING"
+        },
+        {
+          "uid": 1732459285,
+          "track_epoch": 11,
+          "visibility": "TEMPORARILY_MISSING"
+        },
+        {
+          "uid": 1920266662,
+          "track_epoch": 10,
+          "visibility": "TEMPORARILY_MISSING"
+        },
+        {
+          "uid": 2070698707,
+          "track_epoch": 9,
+          "visibility": "TEMPORARILY_MISSING"
+        }
+      ],
+      "trace_sha256_by_speed": {
+        "0": "25b68714532c6a3833e417877ec78b11312641c266155ef623491a9739ebeaf9",
+        "1": "25b68714532c6a3833e417877ec78b11312641c266155ef623491a9739ebeaf9",
+        "2": "25b68714532c6a3833e417877ec78b11312641c266155ef623491a9739ebeaf9"
+      },
+      "checks_passed": true
+    }
+  ],
+  "grace_sweep": {
+    "0.25": [
+      {
+        "file": "01_approach_gaze.jsonl",
+        "acquired_epochs": 10,
+        "checks_passed": true
+      },
+      {
+        "file": "02_approach_no_gaze.jsonl",
+        "acquired_epochs": 16,
+        "checks_passed": true
+      },
+      {
+        "file": "03_stationary_gaze.jsonl",
+        "acquired_epochs": 1,
+        "checks_passed": true
+      },
+      {
+        "file": "04_stationary_no_gaze.jsonl",
+        "acquired_epochs": 9,
+        "checks_passed": true
+      },
+      {
+        "file": "05_stationary_intermittent_gaze_eyeball.jsonl",
+        "acquired_epochs": 1,
+        "checks_passed": true
+      },
+      {
+        "file": "06_stationary_intermittent_gaze_heaead_motion.jsonl",
+        "acquired_epochs": 4,
+        "checks_passed": true
+      },
+      {
+        "file": "07_moving_away.jsonl",
+        "acquired_epochs": 15,
+        "checks_passed": true
+      }
+    ],
+    "0.75": [
+      {
+        "file": "01_approach_gaze.jsonl",
+        "acquired_epochs": 4,
+        "checks_passed": true
+      },
+      {
+        "file": "02_approach_no_gaze.jsonl",
+        "acquired_epochs": 8,
+        "checks_passed": true
+      },
+      {
+        "file": "03_stationary_gaze.jsonl",
+        "acquired_epochs": 1,
+        "checks_passed": true
+      },
+      {
+        "file": "04_stationary_no_gaze.jsonl",
+        "acquired_epochs": 4,
+        "checks_passed": true
+      },
+      {
+        "file": "05_stationary_intermittent_gaze_eyeball.jsonl",
+        "acquired_epochs": 1,
+        "checks_passed": true
+      },
+      {
+        "file": "06_stationary_intermittent_gaze_heaead_motion.jsonl",
+        "acquired_epochs": 2,
+        "checks_passed": true
+      },
+      {
+        "file": "07_moving_away.jsonl",
+        "acquired_epochs": 11,
+        "checks_passed": true
+      }
+    ],
+    "1.5": [
+      {
+        "file": "01_approach_gaze.jsonl",
+        "acquired_epochs": 3,
+        "checks_passed": true
+      },
+      {
+        "file": "02_approach_no_gaze.jsonl",
+        "acquired_epochs": 7,
+        "checks_passed": true
+      },
+      {
+        "file": "03_stationary_gaze.jsonl",
+        "acquired_epochs": 1,
+        "checks_passed": true
+      },
+      {
+        "file": "04_stationary_no_gaze.jsonl",
+        "acquired_epochs": 3,
+        "checks_passed": true
+      },
+      {
+        "file": "05_stationary_intermittent_gaze_eyeball.jsonl",
+        "acquired_epochs": 1,
+        "checks_passed": true
+      },
+      {
+        "file": "06_stationary_intermittent_gaze_heaead_motion.jsonl",
+        "acquired_epochs": 2,
+        "checks_passed": true
+      },
+      {
+        "file": "07_moving_away.jsonl",
+        "acquired_epochs": 9,
+        "checks_passed": true
+      }
+    ]
+  },
+  "implementation_sha256": {
+    "app/state/tracks.py": "dea5416790eb22b737c1ed7836aba753cb8763634ef9680b58a6dda6c122c933",
+    "app/pipeline.py": "e31082dfcca21b497d3975a4bab019d91ce204a94fab19eb886d9bc7d542c0cd",
+    "app/track.py": "3cec338027cc0f84db89302b4a702760f3c171414f0c19319c1857006ac52d93",
+    "app/replay.py": "3851cd1b0a68930a110e7fc1845fa57b91b41744b122e4a54d0ac007b554a0b2",
+    "app/recording.py": "be9a60d0a69d1cbad981ca6ea3d352be3f9e6a055b80f1442e50e795f758495c",
+    "app/domain/models.py": "62f108497029c44e6cf24d3a9429a0d5a2cd14eb84e14a0f9cf712fd04788d64",
+    "app/server.py": "eb7b5b54e957274db1ee2105b5dfc042494f566b6c683184b109c0669a58273e",
+    "app/validate_tracking.py": "a3a3e964d6c5014e36384184479355b55651b18db8b60818af705edb5b8d3e5a"
+  }
+}

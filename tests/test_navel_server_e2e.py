@@ -23,7 +23,10 @@ class NavelServerEndToEndTests(unittest.IsolatedAsyncioTestCase):
     def setUp(self):
         self.directory = tempfile.TemporaryDirectory()
         self.output = Path(self.directory.name) / "observations.jsonl"
-        self.app = create_app(self.output)
+        self.tracking_output = Path(self.directory.name) / "tracks.jsonl"
+        self.social_output = Path(self.directory.name) / "social.jsonl"
+        self.app = create_app(self.output, tracking_output=self.tracking_output, session_id="http-test",
+                              social_output=self.social_output)
         self.received = threading.Event()
 
         @self.app.after_request
@@ -49,7 +52,13 @@ class NavelServerEndToEndTests(unittest.IsolatedAsyncioTestCase):
         response = await asyncio.to_thread(self.transport.send, payload)
         self.assertEqual(response.status_code, 200)
         self.assertTrue(response.payload["accepted"])
+        self.assertEqual(response.payload["processing_status"], "complete")
         self.assertEqual(json.loads(self.output.read_text()), payload)
+        track = json.loads(self.tracking_output.read_text())["tracks"][0]
+        self.assertEqual(track["uid"], payload["people"][0]["uid"])
+        self.assertEqual(track["samples"][0]["timestamp_us"], payload["timestamp"])
+        self.assertEqual(response.payload["social_state"], json.loads(self.social_output.read_text()))
+        self.assertEqual(response.payload["social_state"]["people"][0]["gaze_state"], "UNKNOWN")
 
     async def test_http_validation_error_is_returned_to_client(self):
         response = await asyncio.to_thread(self.transport.send, {"timestamp": 1})

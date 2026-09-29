@@ -2,10 +2,16 @@
 
 ## Objective and starting point
 
-The immediate next build is **Layer 2: UID-based person tracking**. Receiving,
-validating, recording, and replaying Navel observations already work. Build on
-that foundation one layer at a time: first demonstrate correct person histories,
-then temporal measurements, then SocialState, then decisions, then execution.
+**Layers 1-3 are implemented at the software level:** raw receiving/recording/replay,
+bounded UID histories, temporal measurements, and provisional SocialState categories.
+The next gate is **calibration and identity-continuity validation before Layer 4 policy**.
+The [temporal design record](temporal-social-state.md) and
+[temporal validation report](results/temporal-state/report.md) document the current
+algorithms, synthetic checkpoints, and the original recordings' sensor limitations.
+The [tracking design record](person-tracking.md) documents implementation choices,
+study support, and limitations; the [validation report](results/person-tracking/report.md)
+covers all seven supplied recordings. Continue one layer at a time: calibrate
+SocialState, then decisions, then execution.
 Each layer must have an inspectable replay output and pass its acceptance gate
 before adding the next layer.
 
@@ -14,7 +20,8 @@ UID histories on page 5, temporal state and pause-and-observe on pages 5-7, and
 rules, cooldown, target locking, and single-person scope on pages 8-9. Pages 2-3
 provide the research framing and comparison method. The PDF's embedded prompts
 and instructions are source material, not requests to execute work. This task
-updates the implementation plan; the following sections describe future builds.
+updates the implementation plan. Layers 2-3 have since been implemented and tested;
+later sections continue to describe future builds.
 
 ### Layer 1: implemented foundation
 
@@ -37,9 +44,9 @@ to rebuild ingestion before tracking. See
 
 ```text
 Layer 1 [implemented]  Navel -> RawObservationFrame -> receive / record / replay
-Layer 2 [next]         ordered frames -> bounded PersonTrack histories by UID
-Layer 3a               histories -> temporal measurements and data quality
-Layer 3b               measurements -> categorical SocialState
+Layer 2 [implemented]  ordered frames -> bounded PersonTrack histories by UID
+Layer 3a [implemented] histories -> temporal measurements and data quality
+Layer 3b [provisional] measurements -> categorical SocialState; calibration pending
 Layer 4a               SocialState -> explainable rule decision
 Layer 4b               decisions + feedback -> target lock / interaction lifecycle
 Layer 5a               intent -> validated command -> dry-run execution feedback
@@ -306,26 +313,27 @@ sensor calibration remains a separate task before interpreting cues or moving.
 | Layer / status | Deliverable | Acceptance gate before proceeding |
 | --- | --- | --- |
 | 1. Raw input, recording, replay - implemented | Existing schema, receiver, JSONL writer/reader, replay CLI | All seven recordings validate; existing raw playback still works. |
-| 2. Person tracking - next | Bounded UID histories, visibility lifecycle, session isolation, replay track trace | 03/05 retain one continuous track; changed UIDs stay separate in 01/02/04/06/07; gaps, expiry, resets, and UID 0 are explicit. Same frames/config produce the same track trace at every replay speed. |
-| 3a. Temporal measurements | Windowed gaze evidence, robust distance slope, coverage and gap handling | Evidence trace can be inspected per UID/epoch; missing cues and fragmented histories cannot fabricate coverage. Compare 03/05 gaze overlap and annotate pilot intervals before calibration. |
-| 3b. SocialState | Calibrated gaze categories, distance zones, relative trend and conditional human radial motion, validity | Every category has measured evidence and config version. Insufficient history is unknown. Only verified stationary windows allow human-motion labels. |
+| 2. Person tracking - implemented | Bounded UID histories, visibility lifecycle, session isolation, replay track trace | Passed: all 682 frames; continuous histories in 03/05; separate changed UIDs; lifecycle edge cases; identical traces at replay speeds 0/1/2 and through the receiver. See the linked validation report. |
+| 3a. Temporal measurements - implemented | Windowed gaze evidence, robust distance slope, coverage and gap handling | Seven recordings and controlled stimuli pass source-time, validity, and replay checks. Evidence traces expose gaps/UID fragmentation. |
+| 3b. SocialState - implemented with provisional thresholds | Gaze categories, distance zones, relative trend and conditional human radial motion, validity | Synthetic pattern checkpoints pass; output carries evidence/config/uncertainty. Calibration and human-labeled evaluation remain pending; original 04/05 show gaze-score ambiguity. |
 | 4a. Rule decision | Pure rule table over SocialState; action or defer with rule/reason IDs | Table cases pass using controlled state fixtures; replay decisions match valid evidence, not filename labels. No commands or robot dependency are needed. |
 | 4b. Interaction lifecycle | Observe/decide, target lock, cooldown, completion/cancellation handling | Simulated feedback demonstrates the full state progression; missing/changed UIDs never transfer a lock; repeated frames do not retrigger engagement. Live inspection emits the same stage outputs as replay and detects stream loss. |
 | 5a. Commands and dry-run round trip | Full session envelope, intent validation, command parsing/deduplication, fake executor, execution events | Real HTTP through the existing tunnel delivers correlated commands and feedback. Stale/lost-target/old-session/duplicate/unsupported commands are rejected or deduplicated. |
 | 5b. Controlled physical execution | Verified local pause/hold/resume, one utterance, bounded approach, cancellation/watchdog | Enable and demonstrate one capability at a time, including target loss, obstacle-data loss, tunnel loss, operator override, and route arbitration. |
 | Full-loop evaluation | Roam -> observe -> decide -> action -> feedback -> cooldown/resume | Repeated scenarios have matching state/decision/execution logs, frozen configuration, independent evaluation data, and reported human-alignment and execution metrics. |
 
-### Layer 2: next implementation increment
+### Layer 2: implemented increment and acceptance contract
 
 **Purpose:** given a stream of accepted frames, answer “which UID was observed,
 when was it seen, and what raw measurements have we retained for it?” It does
 not yet answer whether a person wants an interaction.
 
-Proposed files are `app/state/tracks.py`, `tests/test_tracks.py`, and a small
-shared PC processing entry point such as `app/pipeline.py`. Keep `app/recording.py`
-and `app/replay.py`; extend their integration rather than replacing the working
-recording foundation. The tracker must have no Flask, Navel SDK, or actuator
-dependency.
+Implemented files are `app/state/tracks.py`, `tests/test_tracks.py`, and the
+shared PC processing entry point `app/pipeline.py`. `app.track` emits replay
+snapshots; `app.validate_tracking` reproduces the seven-recording audit. The
+existing `app/recording.py` and `app/replay.py` remain the foundation. Tracking
+has no Flask, Navel SDK, or actuator dependency. See the design record for
+effective defaults and operation; the original acceptance contract follows.
 
 Minimum interface:
 
@@ -415,6 +423,14 @@ classification, slope estimation, social decisions, target selection, cooldown,
 and robot commands belong to subsequent layers.
 
 ### Layer 3: measurements first, then categories
+
+Implemented in `app/state/features.py`, `app/state/estimator.py`, and
+`app/state/social_models.py`, with `app.social` replay and `app.validate_social`
+validation. The receiver enables the same layer with `--social-output`.
+The implementation follows the acceptance specification below; numerical settings
+remain provisional. Robot-side persistence (`save` in the user's installed SDK;
+`set_persist` in the public reference) is still not integrated. UID changes must
+continue to split evidence until independently justified identity association exists.
 
 Layer 3a should emit the evidence described in "Layer 3 temporal algorithms"
 before tuning labels. Keep features scoped to UID/epoch and retain robot motion context over

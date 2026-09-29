@@ -1,0 +1,403 @@
+{
+  "config_version": "temporal-v1-c430879f4618",
+  "config": {
+    "window_s": 2.0,
+    "max_gap_s": 0.25,
+    "min_span_s": 1.0,
+    "min_samples": 5,
+    "min_gaze_coverage_s": 0.8,
+    "min_gaze_coverage_fraction": 0.6,
+    "looking_enter": 0.8,
+    "looking_exit": 0.7,
+    "sustained_enter": 0.8,
+    "sustained_exit": 0.65,
+    "none_enter": 0.2,
+    "none_exit": 0.35,
+    "category_dwell_s": 0.3,
+    "min_sustained_run_s": 0.4,
+    "distance_deadband_mps": 0.1,
+    "max_distance_speed_mps": 3.0,
+    "distance_jump_allowance_m": 0.05,
+    "max_fit_residual_m": 0.1,
+    "max_fit_samples": 32,
+    "too_close_m": 0.6,
+    "interaction_max_m": 1.5,
+    "approachable_max_m": 3.0,
+    "zone_hysteresis_m": 0.1,
+    "stationary_linear_tolerance_mps": 0.02,
+    "stationary_angular_tolerance_rps": 0.03
+  },
+  "tracking_config": {
+    "history_window_s": 3.0,
+    "missing_grace_s": 0.75,
+    "max_samples_per_track": 64,
+    "max_tracks": 32
+  },
+  "recordings": [
+    {
+      "file": "01_approach_gaze.jsonl",
+      "source_sha256": "b22485be7101a5a479790ac7a80efaec550ea5210070873e755796a8550a5846",
+      "frames": 127,
+      "observed_person_states": 79,
+      "missing_person_states": 57,
+      "observed_gaze_states": {
+        "INTERMITTENT": 5,
+        "SUSTAINED": 18,
+        "UNKNOWN": 56
+      },
+      "observed_relative_trends": {
+        "INCREASING": 1,
+        "STABLE": 9,
+        "UNKNOWN": 69
+      },
+      "observed_distance_zones": {
+        "APPROACHABLE": 56,
+        "FAR": 1,
+        "INTERACTION_RANGE": 20,
+        "UNKNOWN": 2
+      },
+      "validity_flags": {
+        "DISTANCE_SEGMENT_BROKEN_BY_JUMP": 27,
+        "DISTANCE_UNAVAILABLE_OR_JUMP": 2,
+        "GAZE_CATEGORY_PENDING_DWELL": 16,
+        "GAZE_UNAVAILABLE": 1,
+        "INSUFFICIENT_DISTANCE_EVIDENCE": 69,
+        "INSUFFICIENT_GAZE_EVIDENCE": 40,
+        "STATIONARY_BASE_UNVERIFIED": 79,
+        "UID_ZERO_UNVERIFIED": 10
+      },
+      "cue_changes": 43,
+      "trace_sha256_by_speed": {
+        "0": "12c9e87ea3ee82a62ad98aa52b7c4e36de95955f15a9856cb827b89e8d4520eb",
+        "1": "12c9e87ea3ee82a62ad98aa52b7c4e36de95955f15a9856cb827b89e8d4520eb",
+        "2": "12c9e87ea3ee82a62ad98aa52b7c4e36de95955f15a9856cb827b89e8d4520eb"
+      },
+      "checks_passed": true
+    },
+    {
+      "file": "02_approach_no_gaze.jsonl",
+      "source_sha256": "f3a568dd531fea1ac6cad6064e6f368d0731a8748e24996bd472180b663e3849",
+      "frames": 103,
+      "observed_person_states": 72,
+      "missing_person_states": 94,
+      "observed_gaze_states": {
+        "INTERMITTENT": 3,
+        "UNKNOWN": 69
+      },
+      "observed_relative_trends": {
+        "DECREASING": 1,
+        "UNKNOWN": 71
+      },
+      "observed_distance_zones": {
+        "APPROACHABLE": 27,
+        "FAR": 37,
+        "INTERACTION_RANGE": 6,
+        "UNKNOWN": 2
+      },
+      "validity_flags": {
+        "DISTANCE_FIT_UNRELIABLE": 1,
+        "DISTANCE_SEGMENT_BROKEN_BY_JUMP": 11,
+        "DISTANCE_UNAVAILABLE_OR_JUMP": 2,
+        "GAZE_CATEGORY_PENDING_DWELL": 19,
+        "GAZE_UNAVAILABLE": 2,
+        "INSUFFICIENT_DISTANCE_EVIDENCE": 70,
+        "INSUFFICIENT_GAZE_EVIDENCE": 50,
+        "STATIONARY_BASE_UNVERIFIED": 72,
+        "UID_ZERO_UNVERIFIED": 8
+      },
+      "cue_changes": 51,
+      "trace_sha256_by_speed": {
+        "0": "3b0c3b1f08de471c4c95177f624189a11795169259e2addbcd14dfbd5dd37c93",
+        "1": "3b0c3b1f08de471c4c95177f624189a11795169259e2addbcd14dfbd5dd37c93",
+        "2": "3b0c3b1f08de471c4c95177f624189a11795169259e2addbcd14dfbd5dd37c93"
+      },
+      "checks_passed": true
+    },
+    {
+      "file": "03_stationary_gaze.jsonl",
+      "source_sha256": "1b97a071fd49a4953320cc72d0ad0ebcc79d7dfb30b7e3c3434c2b9ad93cd74e",
+      "frames": 83,
+      "observed_person_states": 83,
+      "missing_person_states": 0,
+      "observed_gaze_states": {
+        "SUSTAINED": 55,
+        "UNKNOWN": 28
+      },
+      "observed_relative_trends": {
+        "INCREASING": 5,
+        "STABLE": 43,
+        "UNKNOWN": 35
+      },
+      "observed_distance_zones": {
+        "APPROACHABLE": 81,
+        "UNKNOWN": 2
+      },
+      "validity_flags": {
+        "DISTANCE_FIT_UNRELIABLE": 12,
+        "DISTANCE_SEGMENT_BROKEN_BY_JUMP": 35,
+        "DISTANCE_UNAVAILABLE_OR_JUMP": 2,
+        "GAZE_CATEGORY_PENDING_DWELL": 16,
+        "GAZE_UNAVAILABLE": 2,
+        "INSUFFICIENT_DISTANCE_EVIDENCE": 23,
+        "INSUFFICIENT_GAZE_EVIDENCE": 12,
+        "STATIONARY_BASE_UNVERIFIED": 83
+      },
+      "cue_changes": 24,
+      "trace_sha256_by_speed": {
+        "0": "a17572c9d3d3c55f0d7274f3645bd9bc28847832c9fb8801128cf4e9e97fbf70",
+        "1": "a17572c9d3d3c55f0d7274f3645bd9bc28847832c9fb8801128cf4e9e97fbf70",
+        "2": "a17572c9d3d3c55f0d7274f3645bd9bc28847832c9fb8801128cf4e9e97fbf70"
+      },
+      "checks_passed": true
+    },
+    {
+      "file": "04_stationary_no_gaze.jsonl",
+      "source_sha256": "87ab8f65d99b9a8645a924e36763d0d872cae76d0f30354909a6afd13178d559",
+      "frames": 114,
+      "observed_person_states": 64,
+      "missing_person_states": 41,
+      "observed_gaze_states": {
+        "SUSTAINED": 22,
+        "UNKNOWN": 42
+      },
+      "observed_relative_trends": {
+        "STABLE": 3,
+        "UNKNOWN": 61
+      },
+      "observed_distance_zones": {
+        "APPROACHABLE": 59,
+        "FAR": 2,
+        "UNKNOWN": 3
+      },
+      "validity_flags": {
+        "DISTANCE_FIT_UNRELIABLE": 8,
+        "DISTANCE_SEGMENT_BROKEN_BY_JUMP": 40,
+        "DISTANCE_UNAVAILABLE_OR_JUMP": 3,
+        "GAZE_CATEGORY_PENDING_DWELL": 16,
+        "GAZE_UNAVAILABLE": 1,
+        "INSUFFICIENT_DISTANCE_EVIDENCE": 53,
+        "INSUFFICIENT_GAZE_EVIDENCE": 26,
+        "STATIONARY_BASE_UNVERIFIED": 64
+      },
+      "cue_changes": 33,
+      "trace_sha256_by_speed": {
+        "0": "f89736275a90656c00b4922f7d2374f8c0b7562c974530aa33c1d2fe4ee8fe42",
+        "1": "f89736275a90656c00b4922f7d2374f8c0b7562c974530aa33c1d2fe4ee8fe42",
+        "2": "f89736275a90656c00b4922f7d2374f8c0b7562c974530aa33c1d2fe4ee8fe42"
+      },
+      "checks_passed": true
+    },
+    {
+      "file": "05_stationary_intermittent_gaze_eyeball.jsonl",
+      "source_sha256": "e63d25cc80ed39de59bbf1e695428574e26d221568e6b93605b0366f06c2fc63",
+      "frames": 90,
+      "observed_person_states": 90,
+      "missing_person_states": 0,
+      "observed_gaze_states": {
+        "INTERMITTENT": 5,
+        "SUSTAINED": 65,
+        "UNKNOWN": 20
+      },
+      "observed_relative_trends": {
+        "STABLE": 80,
+        "UNKNOWN": 10
+      },
+      "observed_distance_zones": {
+        "INTERACTION_RANGE": 90
+      },
+      "validity_flags": {
+        "GAZE_CATEGORY_PENDING_DWELL": 8,
+        "GAZE_UNAVAILABLE": 2,
+        "INSUFFICIENT_DISTANCE_EVIDENCE": 10,
+        "INSUFFICIENT_GAZE_EVIDENCE": 12,
+        "STATIONARY_BASE_UNVERIFIED": 90
+      },
+      "cue_changes": 4,
+      "trace_sha256_by_speed": {
+        "0": "d8c4f6607a7ec8b876f59b5adbc3be3331530ce67ee9b8aab8af3651f6353dec",
+        "1": "d8c4f6607a7ec8b876f59b5adbc3be3331530ce67ee9b8aab8af3651f6353dec",
+        "2": "d8c4f6607a7ec8b876f59b5adbc3be3331530ce67ee9b8aab8af3651f6353dec"
+      },
+      "checks_passed": true
+    },
+    {
+      "file": "06_stationary_intermittent_gaze_heaead_motion.jsonl",
+      "source_sha256": "fcfd3328e586a32866d9c2f37d593af24181d522a77109bcea717463793c32b5",
+      "frames": 79,
+      "observed_person_states": 71,
+      "missing_person_states": 15,
+      "observed_gaze_states": {
+        "INTERMITTENT": 22,
+        "SUSTAINED": 4,
+        "UNKNOWN": 45
+      },
+      "observed_relative_trends": {
+        "DECREASING": 8,
+        "STABLE": 22,
+        "UNKNOWN": 41
+      },
+      "observed_distance_zones": {
+        "APPROACHABLE": 71
+      },
+      "validity_flags": {
+        "GAZE_CATEGORY_PENDING_DWELL": 18,
+        "GAZE_UNAVAILABLE": 1,
+        "INSUFFICIENT_DISTANCE_EVIDENCE": 41,
+        "INSUFFICIENT_GAZE_EVIDENCE": 27,
+        "STATIONARY_BASE_UNVERIFIED": 71
+      },
+      "cue_changes": 22,
+      "trace_sha256_by_speed": {
+        "0": "c935974521bca0eb74cd4157e018a1b4f3db4bf4f01f08a22a879b82b8bbd2f2",
+        "1": "c935974521bca0eb74cd4157e018a1b4f3db4bf4f01f08a22a879b82b8bbd2f2",
+        "2": "c935974521bca0eb74cd4157e018a1b4f3db4bf4f01f08a22a879b82b8bbd2f2"
+      },
+      "checks_passed": true
+    },
+    {
+      "file": "07_moving_away.jsonl",
+      "source_sha256": "c2f706097ac3273fd9c1d7d9350da24a78890068b1725ed5fc5e52025f5cd0fe",
+      "frames": 86,
+      "observed_person_states": 85,
+      "missing_person_states": 81,
+      "observed_gaze_states": {
+        "INTERMITTENT": 1,
+        "SUSTAINED": 14,
+        "UNKNOWN": 70
+      },
+      "observed_relative_trends": {
+        "INCREASING": 5,
+        "STABLE": 8,
+        "UNKNOWN": 72
+      },
+      "observed_distance_zones": {
+        "APPROACHABLE": 56,
+        "FAR": 3,
+        "INTERACTION_RANGE": 26
+      },
+      "validity_flags": {
+        "DISTANCE_FIT_UNRELIABLE": 1,
+        "GAZE_CATEGORY_PENDING_DWELL": 27,
+        "GAZE_UNAVAILABLE": 1,
+        "INSUFFICIENT_DISTANCE_EVIDENCE": 71,
+        "INSUFFICIENT_GAZE_EVIDENCE": 43,
+        "STATIONARY_BASE_UNVERIFIED": 85,
+        "UID_ZERO_UNVERIFIED": 4
+      },
+      "cue_changes": 53,
+      "trace_sha256_by_speed": {
+        "0": "9e72b13f4d0064eda61a76440f9a0563c7440983ac918e1821c7029d52d1824c",
+        "1": "9e72b13f4d0064eda61a76440f9a0563c7440983ac918e1821c7029d52d1824c",
+        "2": "9e72b13f4d0064eda61a76440f9a0563c7440983ac918e1821c7029d52d1824c"
+      },
+      "checks_passed": true
+    }
+  ],
+  "synthetic": {
+    "frames": 160,
+    "observed_person_states": 160,
+    "missing_person_states": 0,
+    "observed_gaze_states": {
+      "INTERMITTENT": 58,
+      "NONE": 65,
+      "SUSTAINED": 24,
+      "UNKNOWN": 13
+    },
+    "observed_relative_trends": {
+      "DECREASING": 40,
+      "INCREASING": 30,
+      "STABLE": 80,
+      "UNKNOWN": 10
+    },
+    "observed_distance_zones": {
+      "APPROACHABLE": 114,
+      "FAR": 46
+    },
+    "validity_flags": {
+      "GAZE_CATEGORY_PENDING_DWELL": 3,
+      "INSUFFICIENT_DISTANCE_EVIDENCE": 10,
+      "INSUFFICIENT_GAZE_EVIDENCE": 10
+    },
+    "cue_changes": 15,
+    "trace_sha256_by_speed": {
+      "0": "9d01d375154439ca740571d1d461207d467cf3fe32e7f4d0b1376acbdd0aed59",
+      "1": "9d01d375154439ca740571d1d461207d467cf3fe32e7f4d0b1376acbdd0aed59",
+      "2": "9d01d375154439ca740571d1d461207d467cf3fe32e7f4d0b1376acbdd0aed59"
+    },
+    "checks_passed": true
+  },
+  "controlled_checkpoints": [
+    {
+      "frame_index": 35,
+      "time_s": 3.5,
+      "expected": {
+        "gaze_state": "NONE",
+        "relative_distance_trend": "STABLE",
+        "human_radial_motion": "STATIONARY"
+      },
+      "actual": {
+        "gaze_state": "NONE",
+        "relative_distance_trend": "STABLE",
+        "human_radial_motion": "STATIONARY"
+      }
+    },
+    {
+      "frame_index": 75,
+      "time_s": 7.5,
+      "expected": {
+        "gaze_state": "SUSTAINED",
+        "relative_distance_trend": "DECREASING",
+        "human_radial_motion": "TOWARD"
+      },
+      "actual": {
+        "gaze_state": "SUSTAINED",
+        "relative_distance_trend": "DECREASING",
+        "human_radial_motion": "TOWARD"
+      }
+    },
+    {
+      "frame_index": 115,
+      "time_s": 11.5,
+      "expected": {
+        "gaze_state": "INTERMITTENT",
+        "relative_distance_trend": "STABLE",
+        "human_radial_motion": "STATIONARY"
+      },
+      "actual": {
+        "gaze_state": "INTERMITTENT",
+        "relative_distance_trend": "STABLE",
+        "human_radial_motion": "STATIONARY"
+      }
+    },
+    {
+      "frame_index": 155,
+      "time_s": 15.5,
+      "expected": {
+        "gaze_state": "NONE",
+        "relative_distance_trend": "INCREASING",
+        "human_radial_motion": "AWAY"
+      },
+      "actual": {
+        "gaze_state": "NONE",
+        "relative_distance_trend": "INCREASING",
+        "human_radial_motion": "AWAY"
+      }
+    }
+  ],
+  "synthetic_template_file": "01_approach_gaze.jsonl",
+  "synthetic_template_sha256": "b22485be7101a5a479790ac7a80efaec550ea5210070873e755796a8550a5846",
+  "implementation_sha256": {
+    "app/state/social_models.py": "ebccdf5170b1032cd9b049bbd47b2c46cde169846aab531ae4de80ada866e933",
+    "app/state/features.py": "0b9c44b697d9c2b5427f3cd191a25f9ea5698a34ac2bc2bf9ec2d42689240aaa",
+    "app/state/estimator.py": "789d3f3411df7ac7502086950cd7078b5716261b8c307993f4a17d005d7507b2",
+    "app/social_pipeline.py": "3a70d0f970a8e5c40b30578b3e977e541702d8bef9b5138cdf6a0f21e187a350",
+    "app/social.py": "9005b517339a6ff2bfacb6db6e777587f89e3ecab33d884e87cfbc5503bb6b1b",
+    "app/social_scenarios.py": "9202379c6fd1fc080bf4ff2c64b8ceb29d2595c3d7841834055917a32740ecab",
+    "app/validate_social.py": "787c78c6ff7b8e721849babe69a68ff42be64cdc92ef771c0787846ab70beaca",
+    "app/state/tracks.py": "dea5416790eb22b737c1ed7836aba753cb8763634ef9680b58a6dda6c122c933",
+    "app/pipeline.py": "e31082dfcca21b497d3975a4bab019d91ce204a94fab19eb886d9bc7d542c0cd",
+    "app/recording.py": "be9a60d0a69d1cbad981ca6ea3d352be3f9e6a055b80f1442e50e795f758495c",
+    "app/replay.py": "3851cd1b0a68930a110e7fc1845fa57b91b41744b122e4a54d0ac007b554a0b2",
+    "app/server.py": "f928e5e4e4895a0c2114bdae7188e34582399ba2c8e0d8597ba05790ed5778df"
+  }
+}

@@ -1,9 +1,18 @@
 # Lightweight recording and replay
 
-This implements the recording/replay foundation of plan steps 1-2. It uses the
+This implements Layer 1, the raw recording/replay foundation. It uses the
 existing raw sensor frame, Flask, Pydantic, and the standard library. There is no
 database, UI, social-state estimator, or policy. One file is one recording
 session from one robot; its lines contain only the raw frames.
+
+Layer 2 person tracking is now available separately through `python3 -m app.track`
+or receiver `--tracking-output`. See [person tracking](person-tracking.md) for
+its design rationale, commands, and validation. The raw-only workflow below is
+unchanged.
+
+Layer 3 adds `python3 -m app.social` for temporal SocialState replay and receiver
+`--social-output` for live estimates. See [temporal social state](temporal-social-state.md)
+for commands, threshold assumptions, and recorded/synthetic validation.
 
 ## Record through the working reverse tunnel
 
@@ -110,7 +119,7 @@ python3 -m app.replay recordings/examples/sample.jsonl
 
 This is demonstration data, not robot calibration data.
 
-## Pilot recordings for step 1
+## Additional pilot recordings for calibration
 
 Record separate files for a stationary person, a person walking toward/away from
 a stationary base, a brief gaze, sustained gaze, and a short disappearance.
