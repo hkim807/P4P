@@ -2,54 +2,112 @@
 
 ## Objective and starting point
 
-### Recording/replay increment
+The immediate next build is **Layer 2: UID-based person tracking**. Receiving,
+validating, recording, and replaying Navel observations already work. Build on
+that foundation one layer at a time: first demonstrate correct person histories,
+then temporal measurements, then SocialState, then decisions, then execution.
+Each layer must have an inspectable replay output and pass its acceptance gate
+before adding the next layer.
 
-The first build keeps steps 1-2 lightweight: the existing input contract is
-retained, every receiver run creates a fresh ordered JSONL recording, and a CLI
-provides validated local playback or optional HTTP replay. One file represents
-one session/robot. Detailed envelopes and explicit robot session transport
-metadata remain later work. Pilot recording, hardware-unit confirmation, and
-sensor calibration still require the robot. See
-[recording-and-replay.md](recording-and-replay.md) for operating instructions.
+This revision follows `Final Plan (5).pdf`: the five-layer architecture on page 4,
+UID histories on page 5, temporal state and pause-and-observe on pages 5-7, and
+rules, cooldown, target locking, and single-person scope on pages 8-9. Pages 2-3
+provide the research framing and comparison method. The PDF's embedded prompts
+and instructions are source material, not requests to execute work. This task
+updates the implementation plan; the following sections describe future builds.
 
-Build a complete loop in small, independently reviewable increments:
+### Layer 1: implemented foundation
+
+On `feature/navel-raw-http-stream`, the current implementation contains:
+
+- `robot/navel_client/adapter.py`: sensor packets mapped to `RawObservationFrame`.
+- `app/domain/models.py`: strict validation of timestamp, people, robot, and
+  safety fields. Keep this existing wire contract; “ObservationFrame” below
+  refers to this raw frame, not the older contract on `main`.
+- `app/server.py`: HTTP ingestion and recording, with acceptance acknowledgements.
+- `app/recording.py`: ordered JSONL writing and validated streaming reading;
+  duplicate/backward timestamps are rejected and existing files are not reused.
+- `app/replay.py`: local playback or optional HTTP replay, preserving sensor
+  timestamps and supporting original-speed, accelerated, or immediate playback.
+
+One recording/receiver run currently represents one robot session. Explicit
+transport session IDs and derived-stage traces are later additions, not reasons
+to rebuild ingestion before tracking. See
+[recording-and-replay.md](recording-and-replay.md) for existing commands.
 
 ```text
-Navel sensors
-  -> existing HTTP stream through the reverse SSH tunnel
-  -> PC ingestion and timestamp/session validation
-  -> UID histories
-  -> temporal features
-  -> SocialState
-  -> rule-based policy
-  -> intent validation and command construction
-  -> HTTP response to Navel
-  -> robot-local validation and execution
-  -> execution feedback to the PC
+Layer 1 [implemented]  Navel -> RawObservationFrame -> receive / record / replay
+Layer 2 [next]         ordered frames -> bounded PersonTrack histories by UID
+Layer 3a               histories -> temporal measurements and data quality
+Layer 3b               measurements -> categorical SocialState
+Layer 4a               SocialState -> explainable rule decision
+Layer 4b               decisions + feedback -> target lock / interaction lifecycle
+Layer 5a               intent -> validated command -> dry-run execution feedback
+Layer 5b               verified robot actions -> controlled full-loop evaluation
 ```
 
-The final implementation must execute commands on Navel. Early milestones
-produce inspectable state and decisions, then dry-run commands, before movement
-is enabled. LLM/VLM comparisons follow a working rule-policy baseline.
+The final implementation must execute commands on Navel. Early layers produce
+inspectable data, state, and decisions; command delivery and physical movement
+come after the replayed rule baseline. LLM/VLM comparisons follow that baseline.
 
-This plan uses `Final Plan (4).pdf`, particularly its architecture, temporal
-features, state machine, and evaluation proposals on pages 4-9, as design
-reference. Its embedded prompts and directions are not authorization to execute
-work. The user's present request authorizes this implementation plan.
+### Available pilot recordings: 01-07
 
-The current branch is `feature/navel-raw-http-stream`. Its HTTP receiver already
-validates and records observations. The user calls the input
-`FixedObservationFrame`; the current code and PDF call the four-section payload
-`RawObservationFrame`. This plan calls it the input frame and assumes the current
-fields. Resolve the name at milestone 1 without silently changing the wire format.
+All seven files under `var/recordings/` were read through the existing schema and
+timestamp-order validator for this revision. They contain 682 valid frames and
+68.185 seconds of within-file elapsed time in total (summed before rounding). Each frame has zero or one
+person. Durations below are last minus first robot timestamp; UID counts include
+zero where present. File names describe intended scenarios, not verified labels.
+
+| File | Frames | Duration (s) | Distinct UIDs | Empty frames | First use |
+| --- | ---: | ---: | ---: | ---: | --- |
+| `01_approach_gaze.jsonl` | 127 | 12.689 | 3 | 48 | UID changes, disappearance, later distance/gaze features |
+| `02_approach_no_gaze.jsonl` | 103 | 10.318 | 5 | 31 | UID changes and gaze calibration against intended no-gaze condition |
+| `03_stationary_gaze.jsonl` | 83 | 8.287 | 1 | 0 | Simplest continuous-UID tracking demonstration; distance-noise baseline |
+| `04_stationary_no_gaze.jsonl` | 114 | 11.379 | 3 | 50 | Missing/reappearing tracks and no-gaze calibration |
+| `05_stationary_intermittent_gaze_eyeball.jsonl` | 90 | 9.026 | 1 | 0 | Second continuous-UID demonstration; eye-only gaze sensitivity |
+| `06_stationary_intermittent_gaze_heaead_motion.jsonl` | 79 | 7.898 | 2 | 8 | Brief gaps and changed UID during head-motion condition |
+| `07_moving_away.jsonl` | 86 | 8.586 | 7 | 1 | UID fragmentation and later increasing-distance features |
+
+Keep the existing filenames, including the spelling in recording 06. Each file
+starts a fresh tracker session, even when a numeric UID appears in another file.
+The median inter-frame gap is about 85-86 ms, with maxima around 167-170 ms;
+use timestamps, not an assumed fixed frame rate.
+
+Observed limitations that shape the next layers:
+
+- Recordings 01, 02, 04, 06, and 07 contain multiple UIDs over time. This is not
+  evidence of multiple physical people or reliable identity continuity. A basic
+  UID tracker must show those as separate tracks; it must not silently stitch
+  them together because a filename suggests one participant.
+- UID `0` occurs in 01, 02, and 07. The current schema and adapter accept it.
+  Preserve it as a separate key and expose an identity-quality warning until
+  its SDK semantics are checked; do not treat it as missing via a truthiness test
+  or assume it is a stable person identity for later target locking.
+- Valid gaze scores in 03 span approximately 0.896-0.987, while eye-only
+  intermittent gaze in 05 spans 0.913-0.971. The no-gaze recordings also include
+  high scores. A guessed threshold such as 0.8 will not establish the intended
+  distinction. Compare annotated intervals before choosing gaze categories;
+  report sensor limitations if these conditions cannot be separated.
+- All seven have some null gaze measurements. No observed person has null
+  distance, so add synthetic null-distance cases to test that behavior.
+- Yaw is zero wherever available; recording 05 has null robot velocities, and
+  07 includes forward velocity 0.003 m/s. These readings alone do not verify
+  stationary-base conditions or yaw accuracy.
+
+Use these as development/pilot inputs. Add a small sidecar manifest with file
+hash, scenario, confirmed robot motion context, and manually annotated intervals
+when calibrating. Scenario names and human labels must never become policy
+inputs. Collect independent repetitions for held-out evaluation.
 
 ## Scope and constraints
 
 Initial research scope is interaction-initiation during a fixed roaming route,
 using gaze and relative distance history. Evaluate one intended interaction
 target at a time. The input can contain several people, so histories remain
-isolated by UID, but group reasoning and arbitration among multiple equally
-eligible people are deferred; an ambiguous target causes further observation.
+isolated by UID, but simultaneous multi-person tracking/selection and group
+reasoning remain out of scope for the first baseline, as in the PDF. Keeping
+different UID keys is necessary to avoid mixing samples when IDs change; it does not imply a
+multi-person policy. Unexpected multiple visible people cause deferral.
 
 The four social decisions are `CONTINUE`, `APPROACH`, `ENGAGE`, and `YIELD`.
 `OBSERVE`, `COOLDOWN`, and `DEFER` describe internal processing, not extra labels
@@ -84,14 +142,14 @@ later experiment requiring reliable yaw and geometry.
 
 | Layer | Responsibility | Input -> output | Proposed location |
 | --- | --- | --- | --- |
-| Ingestion | Validate the input, associate source/session, preserve raw frames, serialize state updates | Input frame -> observation envelope | `app/ingestion/service.py` |
-| Track manager | Maintain bounded, ordered histories and visibility lifecycle for each UID | Envelope -> track snapshots | `app/state/tracks.py` |
-| Feature extraction | Compute temporal gaze, robust distance trend, and data quality | Track snapshot -> temporal features | `app/state/features.py` |
-| State estimator | Publish categorical state with supporting evidence and robot/safety validity | Features + context -> `SocialState` | `app/state/estimator.py` |
-| Interaction policy | Apply rule table, observation state, target lock, and cooldown | `SocialState` + policy context -> `BehaviorIntent` or defer | `app/policy/rules.py`, `app/policy/session.py` |
-| Intent/command validation | Check target, age, action requirements, mode, and capability; construct bounded commands | Intent + newest state -> command or rejection | `app/commands/validator.py`, `app/commands/service.py` |
-| Robot executor | Own route pause/resume, local checks, SDK actions, cancellation, and watchdog | Command -> execution events | `robot/navel_client/execution/` |
-| Recording/replay | Record correlated stages and replay through identical PC logic | Envelopes/events -> reproducible traces | `app/recording/`, `app/replay.py` |
+| 1. Ingestion (implemented; extend minimally) | Validate and preserve raw frames; add serialized downstream processing | Input frame -> accepted frame with local session context | Existing `app/server.py`, `app/recording.py`; proposed `app/pipeline.py` |
+| 2. Track manager | Maintain bounded, ordered histories and visibility lifecycle for each UID | Envelope -> track snapshots | `app/state/tracks.py` |
+| 3a. Feature extraction | Compute temporal gaze, robust distance trend, and data quality | Track snapshot -> temporal features | `app/state/features.py` |
+| 3b. State estimator | Publish categorical state with supporting evidence and robot/safety validity | Features + context -> `SocialState` | `app/state/estimator.py` |
+| 4. Interaction policy | Apply rule table, observation state, target lock, and cooldown | `SocialState` + policy context -> `BehaviorIntent` or defer | `app/policy/rules.py`, `app/policy/session.py` |
+| 5a. Intent/command validation | Check target, age, action requirements, mode, and capability; construct bounded commands | Intent + newest state -> command or rejection | `app/commands/validator.py`, `app/commands/service.py` |
+| 5b. Robot executor | Own route pause/resume, local checks, SDK actions, cancellation, and watchdog | Command -> execution events | `robot/navel_client/execution/` |
+| Recording/replay | Record correlated stages and replay through identical PC logic | Envelopes/events -> reproducible traces | Existing `app/recording.py`, `app/replay.py`; separate derived-trace writer |
 
 Put thresholds and timing in a versioned PC configuration file such as
 `config/social-policy.json`. The sensor adapter should not gain gaze or engagement
@@ -100,7 +158,10 @@ standard-library dependency boundary where practical.
 
 ### Input/session envelope
 
-Keep the existing sensor JSON unchanged initially. Attach PC metadata:
+Keep the existing sensor JSON unchanged. Layer 2 needs only a local session key,
+frame sequence, and the original timestamp around the validated frame. Use a
+caller-supplied stable session key for replay and a fresh one per receiver run.
+Grow this into the following envelope when integrating live traces and commands:
 
 ```text
 ObservationEnvelope
@@ -116,10 +177,14 @@ ObservationEnvelope
 For one robot, source identity can be receiver configuration. Add an explicit
 stream-session handshake or transport header generated once per robot process
 when command delivery is introduced. A timestamp regression must not silently
-mix old histories with a new robot session. Duplicate/out-of-order frames can be
-recorded with a rejection reason but must not update histories or issue commands.
+mix old histories with a new robot session. Duplicate/out-of-order frames remain
+rejected from the accepted raw JSONL and must not update histories or issue
+commands; a separate diagnostic trace may record the rejection reason.
 
-Serialize processing for each session inside the threaded Flask server. Use
+When Layer 2 is connected live, serialize timestamp acceptance, raw persistence,
+and tracker updates together for each session inside the threaded Flask server.
+The existing writer lock serializes recording only; a callback outside that lock
+is not sufficient to guarantee tracker update order. Use
 bounded queues/history rather than starting an unconstrained worker per frame.
 Keep raw recording separate from processing success: an accepted/persisted frame
 may still have `processing_status: failed` and `command: null`.
@@ -155,7 +220,7 @@ SocialState
     range_data_status: VALID / UNKNOWN / STALE
     calibrated_range_summary
     local_execution_status
-  active_target_uid
+  active_target_uid, active_target_track_epoch
 ```
 
 `STATIONARY` for human radial motion means little radial movement; it does not
@@ -173,13 +238,13 @@ BehaviorIntent
   decision_id, source_state_id, session_id, policy_version
   decision_status: DECIDED / DEFERRED
   action: CONTINUE / APPROACH / ENGAGE / YIELD / null
-  target_uid, reason_codes
+  target_uid, target_track_epoch, reason_codes
   observation_directive: CONTINUE_OBSERVING / PAUSE_AND_OBSERVE / NONE
 
 RobotCommand
   command_id, session_id, sequence
   source_robot_timestamp_us, source_state_id
-  action, target_uid, bounded_parameters
+  action, target_uid, target_track_epoch, bounded_parameters
   max_source_age_ms, execution_lease_ms
 
 ExecutionEvent
@@ -193,7 +258,7 @@ completed. A successful SDK method call may likewise only mean that an action
 was submitted. Enter cooldown on an appropriate execution completion/interaction
 event, not every time an `ENGAGE` proposal is generated.
 
-## Temporal algorithms
+## Layer 3 temporal algorithms
 
 **History and tracking.** Start with a configurable rolling history of roughly
 three seconds. Store original samples, not fabricated interpolated observations.
@@ -223,7 +288,7 @@ confirmed stopped-base status in controlled recordings/robot execution feedback,
 or verified motion channels. Head/camera motion and face-distance noise remain
 limitations even during stationary-base observation.
 
-**Distance zones.** Calibrate four boundaries/regions with separate entry/exit
+**Distance zones.** Calibrate the boundaries of four regions with separate entry/exit
 limits. Do not adopt the PDF's mixed near/mid/far wording as several competing
 enums. Keep one vocabulary throughout schemas, rules, traces, and evaluation.
 
@@ -231,26 +296,151 @@ enums. Keep one vocabulary throughout schemas, rules, traces, and evaluation.
 collector stops, mark state stale and stop issuing executable movement. On Navel,
 a separate local watchdog expires active command leases even when HTTP is stuck.
 
-## Build milestones
+## Layer-by-layer build sequence
 
-Each milestone is a small feature branch/PR with its own demonstration. These
-are dependency-based steps, not calendar promises.
+Use one small branch/PR per increment, with a replay demonstration and a written
+acceptance result. The sequence below replaces the old “build ingestion/replay
+first” milestones. Layer 1 is complete at the software-contract level; physical
+sensor calibration remains a separate task before interpreting cues or moving.
 
-| Step | Deliverable | Demonstration / acceptance gate |
+| Layer / status | Deliverable | Acceptance gate before proceeding |
 | --- | --- | --- |
-| 1. Freeze input and gather pilot recordings | Confirm frame name/units/timing; source/session rules; stationary, toward, away, brief gaze, sustained gaze, dropout recordings; check yaw diagnostic | Existing stream still works. Raw recordings preserve nulls and timestamps. SDK/range uncertainties are explicitly marked, not silently accepted. |
-| 2. Build ingestion and replay | `ObservationEnvelope`, ordered per-session processing, session reset, deterministic JSONL replay, stage trace IDs | Replaying the same recording twice yields identical envelope/state sequences for the same config. Duplicate/time-regressing frames cannot change history. Separate runs never share state. |
-| 3. Build track manager | Per-UID bounded deques, acquisition/missing/reacquisition/expiry events | Seeing, briefly losing, and reacquiring a person preserves the intended history; prolonged absence/session restart clears it. UIDs never share samples. No unbounded memory growth. |
-| 4. Build temporal features and SocialState | Gaze windows/hysteresis, robust distance slope, distance zones, motion ambiguity and validity, public schema | Live and replay output show measured evidence beside categories. Stationary/toward/away pilot traces produce expected trends. Gaps/unknown cues do not create sustained gaze or human-motion claims. |
-| 5. Build rule policy and interaction state machine | Four social decisions, observation/defer handling, target lock, cooldown, versioned rules | Recorded single-person scenarios yield explainable decisions. A lingering face does not cause repeated engagement. Ambiguous/missing evidence defers; a locked target cannot jump to another UID. |
-| 6. Connect live PC processing in inspection mode | Existing POST now produces correlated SocialState/intent traces and optional inspectable response fields; console/JSONL view | Sensor ingestion continues at the observed input rate while decisions are displayed. Processing exceptions produce no command. Idle timer marks tunnel loss stale. No robot execution is enabled. |
-| 7. Build command round trip in dry-run mode | Validated command envelope in existing POST response; robot parser, deduplication, local checks, fake handlers; execution-events endpoint | Real HTTP through the reverse tunnel delivers each logical command. Repeated/late responses do not execute twice. Old session, stale source, lost target, unsupported action, and malformed command are rejected and reported. |
-| 8. Enable physical actions incrementally | Verify installed SDK capabilities and physical cancellation first; single robot-local execution owner; engage, pause/hold/resume, bounded approach, local protection/watchdog | Enable one action at a time. Test completion/cancellation, target loss, obstacle input loss, tunnel loss, and operator override. No route/approach command conflicts. Unsupported actions stay disabled until a tested implementation exists. |
-| 9. Integrate and evaluate the full loop | Roam -> observe -> decide -> approach/engage or continue/yield -> feedback -> cooldown/resume; fixed experiment config | Complete each scenario repeatedly with matching PC decisions and robot execution logs. Report action alignment, false/missed engagement, consistency, latency, and execution failures. |
+| 1. Raw input, recording, replay - implemented | Existing schema, receiver, JSONL writer/reader, replay CLI | All seven recordings validate; existing raw playback still works. |
+| 2. Person tracking - next | Bounded UID histories, visibility lifecycle, session isolation, replay track trace | 03/05 retain one continuous track; changed UIDs stay separate in 01/02/04/06/07; gaps, expiry, resets, and UID 0 are explicit. Same frames/config produce the same track trace at every replay speed. |
+| 3a. Temporal measurements | Windowed gaze evidence, robust distance slope, coverage and gap handling | Evidence trace can be inspected per UID/epoch; missing cues and fragmented histories cannot fabricate coverage. Compare 03/05 gaze overlap and annotate pilot intervals before calibration. |
+| 3b. SocialState | Calibrated gaze categories, distance zones, relative trend and conditional human radial motion, validity | Every category has measured evidence and config version. Insufficient history is unknown. Only verified stationary windows allow human-motion labels. |
+| 4a. Rule decision | Pure rule table over SocialState; action or defer with rule/reason IDs | Table cases pass using controlled state fixtures; replay decisions match valid evidence, not filename labels. No commands or robot dependency are needed. |
+| 4b. Interaction lifecycle | Observe/decide, target lock, cooldown, completion/cancellation handling | Simulated feedback demonstrates the full state progression; missing/changed UIDs never transfer a lock; repeated frames do not retrigger engagement. Live inspection emits the same stage outputs as replay and detects stream loss. |
+| 5a. Commands and dry-run round trip | Full session envelope, intent validation, command parsing/deduplication, fake executor, execution events | Real HTTP through the existing tunnel delivers correlated commands and feedback. Stale/lost-target/old-session/duplicate/unsupported commands are rejected or deduplicated. |
+| 5b. Controlled physical execution | Verified local pause/hold/resume, one utterance, bounded approach, cancellation/watchdog | Enable and demonstrate one capability at a time, including target loss, obstacle-data loss, tunnel loss, operator override, and route arbitration. |
+| Full-loop evaluation | Roam -> observe -> decide -> action -> feedback -> cooldown/resume | Repeated scenarios have matching state/decision/execution logs, frozen configuration, independent evaluation data, and reported human-alignment and execution metrics. |
 
-The first coding increment should cover steps 1-2 and stop at a reproducible
-replay demonstration. Do not combine estimator, policy, and robot movement in
-one initial change.
+### Layer 2: next implementation increment
+
+**Purpose:** given a stream of accepted frames, answer “which UID was observed,
+when was it seen, and what raw measurements have we retained for it?” It does
+not yet answer whether a person wants an interaction.
+
+Proposed files are `app/state/tracks.py`, `tests/test_tracks.py`, and a small
+shared PC processing entry point such as `app/pipeline.py`. Keep `app/recording.py`
+and `app/replay.py`; extend their integration rather than replacing the working
+recording foundation. The tracker must have no Flask, Navel SDK, or actuator
+dependency.
+
+Minimum interface:
+
+```text
+TrackManager(config, session_id)
+  update(validated_frame) -> TrackSnapshot
+  reset(new_session_id)   -> empty session
+
+TrackSnapshot
+  session_id, frame_sequence, robot_timestamp_us
+  tracks[]:
+    uid, track_epoch
+    first_seen_us, last_seen_us
+    visibility: OBSERVED / TEMPORARILY_MISSING
+    time_since_seen_s, observation_count, retained_sample_count
+    identity_quality_flags
+    samples[]: timestamp_us, distance_m, gaze_overlap, optional head position
+  events[]: type (ACQUIRED / MISSING / REACQUIRED / LOST), uid, track_epoch, reason
+```
+
+`LOST` is an emitted terminal event at expiry; the expired track is removed from
+the active map. Later state traces may carry that terminal state for the event,
+but must not retain an unbounded archive of lost people in memory.
+
+Processing rules:
+
+1. Scope the key by `(session_id, uid, track_epoch)`. UID is an opaque tracking
+   key, never a numeric feature in a social decision. Assign a fresh deterministic
+   session-local epoch on every acquisition after expiry; no cross-session identity.
+2. Process each accepted timestamp once in increasing order. A duplicate or
+   backward frame must leave the complete tracker unchanged. Validate/order-check
+   before mutation, including in direct offline use.
+3. Before associating the new observations, expire tracks whose last-seen age
+   exceeds the missing grace period. This prevents a same-UID return after a long
+   frame gap from accidentally reviving an expired history.
+4. For each currently observed UID, create or update its track and append the
+   actual sample. Preserve null measurements and the original robot timestamp.
+   A null gaze/distance still means the UID was observed.
+5. A UID omitted from an accepted frame becomes temporarily missing. Empty
+   `people` lists still advance time, prune histories, and drive loss events.
+   Do not append invented zero/null person samples or carry the last gaze through
+   the gap. A missing track is not a currently targetable person.
+6. Reappearance of the same UID within grace keeps its epoch and retained history,
+   with a gap/reacquisition event. Reappearance after expiry starts a new epoch.
+   A different UID always starts a separate track, even with similar distance.
+   Do not merge IDs or introduce person re-identification in this increment.
+7. Prune all active histories, including missing tracks, using source time.
+   Start with a configurable 3-second retention window (the PDF suggests 1-3
+   seconds), plus a maximum samples-per-track and maximum active-track count.
+   Keep first-seen metadata independent of the retained window. Define and trace
+   deterministic capacity eviction; do not allow silent, unbounded growth.
+8. Make missing grace and history/capacity limits explicit configuration. Grace
+   must accommodate ordinary observed frame gaps, but its initial value is a
+   development setting to validate, not a calibrated identity guarantee.
+
+**Demonstration order:** replay 03, then 05, then all seven files separately.
+Export a derived JSONL trace outside the raw input files, showing source file/
+session, sequence, UID/epoch, visibility, first/last seen, sample count, retained
+time span, and lifecycle events. Preserve the original recordings. Support a
+readable console summary without requiring a UI.
+
+Use the existing `read_frames` iterator and `replay(..., emit=...)` hook to feed
+the same processing function used by the receiver. First prove the pure tracker
+offline, then attach it after successful persistence in the receiver's serialized
+processing path. Include the received robot context in the pipeline for later
+features; the tracker need not interpret it.
+
+Event-time calculations use `(timestamp_us - reference_us) / 1_000_000` and never
+replay wall-clock speed. Replay EOF is a run boundary, not an invented later
+sensor observation: close/reset the run without manufacturing disappearance
+samples. A test may advance an explicit virtual clock to exercise expiry. Later
+live stream-loss handling uses a separate PC watchdog; a silent transport is
+not evidence that a visible person left.
+
+**Acceptance tests:** continuous UID; two alternating UIDs with no sample mixing;
+null gaze/distance; UID 0; empty frames; return just within grace and just beyond
+it; same UID after a long input gap; history/capacity bounds; duplicate/regressing
+timestamps with no mutation; new-session reset; identical outputs at replay
+speeds 0/1/2 after excluding runtime timing metadata. Synthetic fixtures cover
+edge cases missing from the seven real recordings. A minimal two-UID fixture
+checks isolation only, not multi-person policy behavior.
+
+**Done means:** the seven recordings can be replayed into independently scoped,
+bounded track traces; their ID changes and gaps are visible; live frames can use
+the same tracker entry point; existing raw recording/replay still works. Gaze
+classification, slope estimation, social decisions, target selection, cooldown,
+and robot commands belong to subsequent layers.
+
+### Layer 3: measurements first, then categories
+
+Layer 3a should emit the evidence described in "Layer 3 temporal algorithms"
+before tuning labels. Keep features scoped to UID/epoch and retain robot motion context over
+the same window. Start with the continuous histories in 03/05; treat fragmented
+clips as a test of coverage/unknown handling rather than fitting one slope across
+all detected IDs. A clip called `moving_away` need not yield a valid `AWAY` label
+at every frame.
+
+Layer 3b then turns that evidence into the SocialState contract. Calibrate gaze
+thresholds, category dwell, distance zones, slope deadband, and minimum coverage
+on annotated development intervals. Use a single versioned configuration and
+inspect the evidence beside every category. Insufficient sensor discrimination
+is an experimental result, not a reason to force the expected filename label.
+
+### Layer 4: rules first, then stateful interaction
+
+Implement the table as a deterministic function of SocialState before adding
+interaction memory. The policy consumes categorical cues and validity; raw gaze
+thresholds stay in Layer 3. UID is carried for target binding only. Then wrap the
+rule function with observation timing, lock management, cooldown, and simulated
+execution events. A lock binds `(session_id, uid, track_epoch)`, not UID alone;
+a re-acquired new epoch cannot inherit an old interaction automatically.
+
+Cooldown prevents repeated engagement for a known track, but UID churn can still
+make the same physical person look new. Report that limitation and quantify it
+in replay/robot trials; do not claim UID-only cooldown solves re-identification.
 
 ## Initial rules and state-machine behavior
 
@@ -332,12 +522,11 @@ action; PC validation alone is insufficient after network delay.
 ## Installed SDK verification and executor sequencing
 
 Before movement integration, record the installed SDK version and exercise
-capabilities individually on Navel. Public documentation lists person approach,
-approach cancellation, base movement, navigation, and speech, but availability,
-return types, completion semantics, and stopping behavior on the installed
-version must be verified. The source PDF reports an approach limitation on its
-tested version; do not assume either that report or today's documentation proves
-current robot behavior.
+capabilities individually on Navel. The source PDF lists version 0.15.3 and
+reports an approach limitation on its tested version. Treat this as recorded
+project context, not proof of the current
+installation. Verify availability, return types, completion semantics, and
+physical stopping behavior for each intended capability on the installed robot.
 
 Suggested executor increments:
 
@@ -355,10 +544,9 @@ primitive. A scalar distance and uncalibrated head-camera coordinates do not
 justify blindly commanding forward motion. Until that prerequisite is satisfied,
 emit a capability rejection rather than pretending `APPROACH` executed.
 
-Any direct velocity loop must run on Navel, outside PC HTTP timing. The SDK's
-public reference describes a 10 ms refresh requirement for sustained `base_vel`
-commands; this is incompatible with treating the roughly 10 Hz sensor POST loop
-as motor control. See the [Navel communication reference](https://doc.navelrobotics.com/api/communication.html).
+Any direct velocity loop must run on Navel, outside PC HTTP timing. Verify the
+installed SDK's refresh and timeout requirements before implementing one; the
+sensor POST loop is not a motor-control clock.
 
 ## Test, calibration, and evaluation plan
 
@@ -387,7 +575,8 @@ from pilot evidence. Version and freeze them before comparisons.
 distribution rather than treating ambiguity as a single unquestionable label.
 Report majority-action agreement, alignment with rating distributions, false and
 missed engagement, target switching/repeated engagement, decision consistency,
-abstention rate, decision latency, execution success, and safety overrides. Keep
+abstention rate, decision latency, execution success, and safety overrides.
+Report inter-rater agreement alongside the human reference distribution. Keep
 causal estimates separate from measured values and labels outside policy inputs.
 
 Raw recordings, derived features, states, decisions, commands, and feedback
@@ -404,8 +593,9 @@ task/controller metadata, and some features rely on inputs absent from this
 stream. The fixed-route speech demo is a useful execution integration reference,
 but its task cancellation must be checked against actual physical stop behavior.
 
-Once the rule loop passes step 9, add a common policy interface. Rule and LLM
-consume the same SocialState and produce the same BehaviorIntent. VLM gets the
+Once the rule loop passes full-loop evaluation, add model-policy adapters to
+the same policy interface. Rule and LLM consume the same SocialState and produce
+the same BehaviorIntent. VLM gets the
 same state plus separately aligned images, which require a new recording/input
 path. Use the same command validator/executor for all policies. Report comparison
 both on identical recorded inputs and in closed-loop trials, since different
