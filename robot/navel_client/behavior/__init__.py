@@ -1,4 +1,4 @@
-"""Architecture-only mapping and dispatch of server behavior intents."""
+"""Admission, mapping and asynchronous execution of server behavior intents."""
 
 from robot.navel_client.behavior.controller import BehaviorController
 from robot.navel_client.behavior.dispatcher import BehaviorDispatcher

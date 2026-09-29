@@ -128,9 +128,9 @@ class NavelServerEndToEndTests(unittest.TestCase):
         with self.assertLogs("robot.navel_client.behavior", "INFO") as logs:
             robot = Mock()
             handled = BehaviorController(robot).handle_response(response.payload)
-        self.assertEqual(handled.status, BehaviorHandlingStatus.HANDLED)
-        self.assertEqual(handled.execution.action.value, "ORIENT")
-        self.assertIn("action=ORIENT dry_run=true", logs.output[-1])
+        self.assertEqual(handled.status, BehaviorHandlingStatus.UNSUPPORTED_ACTION)
+        self.assertIsNone(handled.execution)
+        self.assertIn("UNSUPPORTED_ACTION", logs.output[-1])
         self.assertEqual(robot.mock_calls, [])
 
 

@@ -14,6 +14,7 @@ from app.domain.models import Action as ServerAction
 from app.domain.models import BehaviorIntent as ServerBehaviorIntent
 from robot.navel_client.behavior import BehaviorController, BehaviorHandlingStatus
 from robot.navel_client.behavior.commands import COMMAND_TYPES
+from robot.navel_client.behavior.mapper import BehaviorIntentMapper
 from robot.navel_client.behavior.intent import (
     NavelAction,
     NavelBehaviorIntent,
@@ -68,7 +69,7 @@ class NavelBehaviorIntentParserTests(unittest.TestCase):
         )
         self.assertEqual(len(NavelAction), 12)
 
-    def test_all_server_actions_complete_the_client_behavior_path(self):
+    def test_all_server_actions_still_parse_and_map_with_explicit_admission(self):
         robot = Mock()
         controller = BehaviorController(robot)
         command_types = set()
@@ -84,9 +85,12 @@ class NavelBehaviorIntentParserTests(unittest.TestCase):
                         "behavior_intent": server_intent.model_dump(mode="json")
                     }
                 )
-                self.assertEqual(result.status, BehaviorHandlingStatus.HANDLED)
-                self.assertEqual(result.execution.action.value, server_action.value)
-                command_types.add(result.execution.command_type)
+                expected = (BehaviorHandlingStatus.INVALID_INTENT if server_action.value == 'APPROACH'
+                            else BehaviorHandlingStatus.UNSUPPORTED_ACTION)
+                self.assertEqual(result.status, expected)
+                command = BehaviorIntentMapper().map(NavelBehaviorIntent.from_payload(
+                    server_intent.model_dump(mode='json')))
+                command_types.add(type(command).__name__)
         self.assertEqual(command_types, {kind.__name__ for kind in COMMAND_TYPES})
         self.assertEqual(robot.mock_calls, [])
 

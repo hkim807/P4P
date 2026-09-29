@@ -1,8 +1,4 @@
-"""Executable read-only Navel perception client.
-
-This is the only module in the repository that imports the Navel SDK.  It only
-calls receive methods and contains no actuator command path.
-"""
+"""Shared Navel observation client; motion requires explicit --execute."""
 
 from __future__ import annotations
 
@@ -11,20 +7,17 @@ import asyncio
 import json
 import logging
 import os
+import math
+import signal
 import time
-from dataclasses import dataclass
 from typing import Any
 
 import navel
 
 from robot.navel_client.adapter import NavelAdapterConfig, NavelObservationAdapter
 from robot.navel_client.behavior import BehaviorController
+from robot.navel_client.navel_runtime import Config, Runtime
 from robot.navel_client.transport import ObservationTransport, TransportError
-
-
-@dataclass
-class LatestLocomotion:
-    value: Any | None = None
 
 
 def _replace_queued(queue: asyncio.Queue[dict[str, Any]], observation: dict[str, Any]) -> None:
@@ -36,29 +29,32 @@ def _replace_queued(queue: asyncio.Queue[dict[str, Any]], observation: dict[str,
     queue.put_nowait(observation)
 
 
-async def _collect_locomotion(robot: Any, latest: LatestLocomotion) -> None:
+async def _collect_locomotion(robot: Any, runtime: Runtime) -> None:
     while True:
         try:
-            latest.value = await robot.next_locomotion(timeout=1.0)
+            packet = await robot.next_locomotion(timeout=.3)
+            runtime.ingest_odometry(packet)
         except TimeoutError:
             continue
+        except (ValueError, RuntimeError) as error:
+            runtime.errors['odometry'] = str(error)
 
 
-async def _collect_perception(
-    robot: Any,
-    adapter: NavelObservationAdapter,
-    latest: LatestLocomotion,
-    queue: asyncio.Queue[dict[str, Any]],
-) -> None:
+async def _collect_perception(robot, adapter, runtime, queue, behavior_controller) -> None:
     while True:
         try:
-            perception = await robot.next_frame(timeout=1.0)
+            frame = await robot.next_frame(timeout=.3)
         except TimeoutError:
             continue
         try:
-            observation = adapter.convert(perception, latest.value)
-        except ValueError as error:
-            print(f"observation skipped: {error}")
+            if not runtime.ingest_perception(frame):
+                continue
+            observation = adapter.convert(frame, runtime.raw_locomotion)
+            observation['robot'].update(behavior_controller.robot_context())
+            runtime.remember_observation(observation)
+        except (ValueError, RuntimeError) as error:
+            runtime.errors['perception'] = str(error)
+            logging.getLogger(__name__).debug('observation skipped: %s', error)
             continue
         _replace_queued(queue, observation)
 
@@ -122,49 +118,49 @@ async def _send_observations(
 
 
 async def run(args: argparse.Namespace) -> None:
-    adapter = NavelObservationAdapter(
-        NavelAdapterConfig(
-            adapter_id=args.adapter_id,
-            robot_task=args.robot_task,
-            controller_status=args.controller_status,
-            stationary_velocity_fallback=args.stationary_velocity_fallback,
-            robot_base_coordinate_systems=tuple(args.robot_base_coordinate_system),
-        )
-    )
-    transport = ObservationTransport(
-        args.server,
-        timeout_seconds=args.request_timeout,
-    )
-    queue: asyncio.Queue[dict[str, Any]] = asyncio.Queue(maxsize=1)
-    latest = LatestLocomotion()
+    transport = ObservationTransport(args.server, timeout_seconds=args.request_timeout)
+    queue = asyncio.Queue(maxsize=1)
+    shutdown_requested = asyncio.Event()
+    loop = asyncio.get_running_loop()
+    signals = (signal.SIGINT, signal.SIGTERM)
+    for sig in signals:
+        loop.add_signal_handler(sig, shutdown_requested.set)
+    try:
+        async with navel.Robot() as robot:
+            runtime = Runtime(robot, Config(execute=args.execute, head_x=args.head_x,
+                head_y=args.head_y, frame_yaw_deg=args.frame_yaw_deg))
+            adapter = NavelObservationAdapter(NavelAdapterConfig(adapter_id=args.adapter_id,
+                stationary_velocity_fallback=args.stationary_velocity_fallback), runtime=runtime)
+            controller = BehaviorController(runtime=runtime)
+            readers = [asyncio.create_task(_collect_locomotion(robot, runtime)),
+                       asyncio.create_task(_collect_perception(robot, adapter, runtime, queue, controller))]
+            sender = asyncio.create_task(_send_observations(queue, transport, controller,
+                minimum_send_interval_s=args.minimum_send_interval, force_decision=args.force_decision,
+                print_only=args.print_only))
+            stop_waiter = asyncio.create_task(shutdown_requested.wait())
+            try:
+                done, _ = await asyncio.wait([*readers, sender, stop_waiter],
+                                             return_when=asyncio.FIRST_COMPLETED)
+                for task in done:
+                    task.result()
+            finally:
+                # Stop admitting responses first. Readers stay alive through movement cleanup.
+                sender.cancel()
+                await asyncio.gather(sender, return_exceptions=True)
+                await controller.shutdown()
+                for task in [*readers, stop_waiter]:
+                    task.cancel()
+                await asyncio.gather(*readers, stop_waiter, return_exceptions=True)
+                if runtime.stop_failure:
+                    raise RuntimeError(runtime.stop_failure)
+    finally:
+        for sig in signals:
+            loop.remove_signal_handler(sig)
 
-    async with navel.Robot() as robot:
-        behavior_controller = BehaviorController(robot)
-        tasks = [
-            asyncio.create_task(_collect_locomotion(robot, latest)),
-            asyncio.create_task(_collect_perception(robot, adapter, latest, queue)),
-            asyncio.create_task(
-                _send_observations(
-                    queue,
-                    transport,
-                    behavior_controller,
-                    minimum_send_interval_s=args.minimum_send_interval,
-                    force_decision=args.force_decision,
-                    print_only=args.print_only,
-                )
-            ),
-        ]
-        try:
-            await asyncio.gather(*tasks)
-        finally:
-            for task in tasks:
-                task.cancel()
-            await asyncio.gather(*tasks, return_exceptions=True)
 
-
-def parse_args() -> argparse.Namespace:
+def parse_args(argv=None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Read Navel observations and send canonical frames without robot control."
+        description="Send Navel observations and execute bounded approach intents only with --execute."
     )
     parser.add_argument(
         "--server",
@@ -189,25 +185,20 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--stationary-velocity-fallback", action="store_true")
     parser.add_argument("--force-decision", action="store_true")
     parser.add_argument("--print-only", action="store_true")
-    parser.add_argument(
-        "--robot-task",
-        choices=("IDLE", "GUIDING", "APPROACHING", "INTERACTING", "PAUSED", "COMPLETE", "ERROR"),
-        default="IDLE",
-    )
-    parser.add_argument(
-        "--controller-status",
-        choices=("IDLE", "ACTIVE", "STOPPED", "FAULT", "EMERGENCY_STOP"),
-        default="STOPPED",
-    )
-    parser.add_argument(
-        "--robot-base-coordinate-system",
-        action="append",
-        default=[],
-        help="Verified SDK coordinate label equivalent to ROBOT_BASE; may be repeated",
-    )
-    args = parser.parse_args()
+    parser.add_argument('--execute', action='store_true', help='Enable bounded approach movement')
+    parser.add_argument('--head-x', type=float, default=0.)
+    parser.add_argument('--head-y', type=float, default=0.)
+    parser.add_argument('--frame-yaw-deg', type=float, default=0.)
+    args = parser.parse_args(argv)
+    values = (args.request_timeout, args.minimum_send_interval, args.head_x, args.head_y, args.frame_yaw_deg)
+    if not all(math.isfinite(v) for v in values):
+        parser.error('Numeric arguments must be finite')
     if args.request_timeout <= 0 or args.minimum_send_interval < 0:
-        parser.error("timeouts must be positive and send interval must be non-negative")
+        parser.error('Timeouts must be positive and send interval non-negative')
+    if max(abs(args.head_x), abs(args.head_y)) > .5 or abs(args.frame_yaw_deg) > 45:
+        parser.error('Head offsets must be within .5 m; frame yaw within 45 degrees')
+    if args.execute and (args.stationary_velocity_fallback or args.print_only):
+        parser.error('--execute cannot be combined with stationary fallback or --print-only')
     return args
 
 

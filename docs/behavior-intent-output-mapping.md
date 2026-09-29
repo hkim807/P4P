@@ -1,7 +1,7 @@
 # Navel BehaviorIntent output mapping
 
-The Navel client consumes the server's validated policy result through a
-dry-run-only behavior boundary:
+The Navel client consumes the server's validated policy result through an
+asynchronous behavior boundary (dry-run by default):
 
 ```text
 POST /api/v1/observations response
@@ -10,9 +10,9 @@ POST /api/v1/observations response
   -> BehaviorIntentMapper
   -> action-specific immutable RobotBehaviorCommand
   -> BehaviorDispatcher
-  -> action-specific handler with injected Navel robot instance
-  -> structured dry-run result and terminal log
-  -> future Navel SDK call (not implemented)
+  -> approach handler with shared Navel runtime
+  -> supplied bounded approach action (motion only with --execute)
+  -> explicit execution result and terminal log
 ```
 
 The server's `LLMPolicyBridge` and canonical Pydantic `BehaviorIntent` validate
@@ -25,10 +25,10 @@ into only the fields relevant to a concrete Navel command. Social distance
 remains a desired stand-off distance and is never interpreted as travel
 distance.
 
-The dispatcher uses exact command types, so handlers can be replaced one at a
-time when robot integration is implemented. Construction fails if its registry
-does not cover the complete command set. The mapper has a corresponding
-Action/command coverage check.
+The dispatcher uses exact command types and awaits handlers. Partial registration
+is intentional: only APPROACH is implemented. Unknown registrations fail at
+construction; recognized unimplemented actions return UNSUPPORTED_ACTION at
+admission. The mapper retains complete Action/command coverage.
 
 The implementation layout is:
 
@@ -43,60 +43,54 @@ robot/navel_client/behavior/
 ├── mapper.py
 ├── registry.py
 ├── results.py
+├── actions/
+│   ├── __init__.py
+│   └── approach_human.py
 └── handlers/
     ├── __init__.py
     ├── base.py
-    ├── continue_route.py
-    ├── monitor.py
-    ├── orient.py
-    ├── slow.py
-    ├── yield_behavior.py
-    ├── avoid.py
-    ├── approach.py
-    ├── greet.py
-    ├── guide.py
-    ├── wait.py
-    ├── resume.py
-    └── disengage.py
+    └── approach_human.py
 ```
 
 | Action | Command | Current handler |
 | --- | --- | --- |
-| `CONTINUE` | `ContinueCommand` | `ContinueHandler` |
-| `MONITOR` | `MonitorCommand` | `MonitorHandler` |
-| `ORIENT` | `OrientCommand` | `OrientHandler` |
-| `SLOW` | `SlowCommand` | `SlowHandler` |
-| `YIELD` | `YieldCommand` | `YieldHandler` |
-| `AVOID` | `AvoidCommand` | `AvoidHandler` |
+| `CONTINUE` | `ContinueCommand` | `UNSUPPORTED_ACTION` |
+| `MONITOR` | `MonitorCommand` | `UNSUPPORTED_ACTION` |
+| `ORIENT` | `OrientCommand` | `UNSUPPORTED_ACTION` |
+| `SLOW` | `SlowCommand` | `UNSUPPORTED_ACTION` |
+| `YIELD` | `YieldCommand` | `UNSUPPORTED_ACTION` |
+| `AVOID` | `AvoidCommand` | `UNSUPPORTED_ACTION` |
 | `APPROACH` | `ApproachCommand` | `ApproachHandler` |
-| `GREET` | `GreetCommand` | `GreetHandler` |
-| `GUIDE` | `GuideCommand` | `GuideHandler` |
-| `WAIT` | `WaitCommand` | `WaitHandler` |
-| `RESUME` | `ResumeCommand` | `ResumeHandler` |
-| `DISENGAGE` | `DisengageCommand` | `DisengageHandler` |
+| `GREET` | `GreetCommand` | `UNSUPPORTED_ACTION` |
+| `GUIDE` | `GuideCommand` | `UNSUPPORTED_ACTION` |
+| `WAIT` | `WaitCommand` | `UNSUPPORTED_ACTION` |
+| `RESUME` | `ResumeCommand` | `UNSUPPORTED_ACTION` |
+| `DISENGAGE` | `DisengageCommand` | `UNSUPPORTED_ACTION` |
 
-Every current handler only logs supplied parameters and returns a typed result
-with `dry_run=True`. The behavior package does not import the Navel SDK, sleep,
-move, rotate, speak, or change navigation state. Missing and schema-invalid
-intents are rejected before mapping; mapping, dispatch, and handler failures are
-logged without selecting a fallback action.
+`main.py` constructs one runtime/controller inside its single `navel.Robot()`
+context. Its sole perception and locomotion collectors feed the shared runtime
+and observation adapter. The handler adapts command parameters; the reusable
+action preserves the supplied approach curves, limited corrections and explicit
+arrival outcomes. The runtime owns shared sensor state, target association and
+exclusive movement cleanup. No SDK import or blocking sleep is added to the
+behavior package.
 
-`main.py` constructs the controller inside the existing `navel.Robot()` context.
-The registry passes that same raw robot instance to all 12 handlers. Handlers
-store it for later direct SDK calls, without a wrapper, facade, or additional
-service layer. They do not access it during the current dry run.
+The controller validates local observation provenance, intent expiry, target
+availability and supported parameters before submitting an owned execution task.
+The HTTP response loop does not await movement. Rejections do not overwrite the
+active execution. Duplicate decisions, same-target requests and busy-target
+requests are not queued. Unsupported actions leave an active approach unchanged.
 
-The controller also exposes an immutable `execution_state` snapshot containing
-the latest action, lifecycle status, decision ID, target human ID, update time,
-and error. Status progresses through `ACCEPTED`, `DISPATCHED`, and
-`DRY_RUN_COMPLETED`, or ends at `FAILED`. A later observation-layer change can
-read this snapshot for `RobotContext` feedback; observation and server schemas
-are deliberately unchanged here.
+Execution snapshots expose ACCEPTED, RUNNING, DRY_RUN_COMPLETED, COMPLETED,
+CANCELLED or FAILED, plus decision, requested/resolved target, parameters, error
+and approach outcome. Existing observation task/controller fields reflect the
+actual lifecycle; detailed arrival outcomes remain local because the observation
+schema has no result field. Completion alone does not mean verified arrival.
 
-Real execution remains future work. Each handler will eventually directly use
-the injected Navel SDK robot instance. Target freshness, controller-state and
-runtime safety validation, collision and free-space checking, and motion
-feasibility must be added before any physical handler is enabled.
+See [the README](../README.md#navel-observation-to-policy-pipeline) for exact
+commands, coordinate and clock assumptions, parameter limits, cancellation and
+stop-failure policy. The integration has hardware-free coverage; its physical
+validation remains outstanding. Obstacle avoidance is not implemented.
 
 ## Runtime dependencies
 

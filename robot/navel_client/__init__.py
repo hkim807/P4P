@@ -1,4 +1,4 @@
-"""Navel observation transport and dry-run behavior command architecture."""
+"""Navel observations and explicit asynchronous bounded approach execution."""
 
 from robot.navel_client.adapter import NavelAdapterConfig, NavelObservationAdapter
 from robot.navel_client.behavior import BehaviorController
