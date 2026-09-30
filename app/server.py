@@ -17,7 +17,7 @@ from app.recording import RecordingWriter, TimestampOrderError
 from app.pipeline import TrackTraceWriter, TrackingPipeline, TrackingProcessingError
 from app.state.tracks import TrackConfig
 from app.social_pipeline import SocialPipeline
-from app.state.social_models import TemporalConfig, MotionContext
+from app.state.social_models import TemporalConfig
 
 
 logger = logging.getLogger(__name__)
@@ -28,8 +28,7 @@ def create_app(output_path: str | Path | None = None, *,
                track_config: TrackConfig | None = None,
                session_id: str | None = None,
                social_output: str | Path | None = None,
-               temporal_config: TemporalConfig | None = None,
-               motion_context: MotionContext | None = None) -> Flask:
+               temporal_config: TemporalConfig | None = None) -> Flask:
     """Start a fresh JSONL recording; None prints accepted frames to stdout."""
     app = Flask(__name__)
     app.config["MAX_CONTENT_LENGTH"] = 1024 * 1024
@@ -40,7 +39,7 @@ def create_app(output_path: str | Path | None = None, *,
     pipeline = None
     if social_output is not None:
         pipeline = SocialPipeline(session_id or f"live-{uuid4().hex}", track_config,
-                                  temporal_config, motion_context, recording,
+                                  temporal_config, recording,
                                   TrackTraceWriter(tracking_output) if tracking_output else None,
                                   TrackTraceWriter(social_output))
         app.extensions["social_pipeline"] = pipeline
@@ -106,14 +105,13 @@ def main() -> None:
     parser.add_argument("--tracking-config", help="Tracking configuration JSON (requires tracking or social output)")
     parser.add_argument("--social-output", help="Enable temporal SocialState and write a new JSONL trace")
     parser.add_argument("--temporal-config", help="Temporal configuration JSON (requires --social-output)")
-    parser.add_argument("--motion-context", help="Independent stationary intervals JSON (requires --social-output)")
     args = parser.parse_args()
     if not 1 <= args.port <= 65535:
         parser.error("port must be between 1 and 65535")
     if args.tracking_config and not (args.tracking_output or args.social_output):
         parser.error("--tracking-config requires --tracking-output or --social-output")
-    if (args.temporal_config or args.motion_context) and not args.social_output:
-        parser.error("--temporal-config/--motion-context require --social-output")
+    if args.temporal_config and not args.social_output:
+        parser.error("--temporal-config requires --social-output")
     logging.basicConfig(level=logging.INFO, format="%(message)s")
     output = args.output
     if output is None:
@@ -123,8 +121,7 @@ def main() -> None:
         config = TrackConfig.from_file(args.tracking_config) if args.tracking_config else None
         app = create_app(None if output == "-" else output, tracking_output=args.tracking_output,
                          track_config=config, social_output=args.social_output,
-                         temporal_config=TemporalConfig.from_file(args.temporal_config) if args.temporal_config else None,
-                         motion_context=MotionContext.from_file(args.motion_context) if args.motion_context else None)
+                         temporal_config=TemporalConfig.from_file(args.temporal_config) if args.temporal_config else None)
     except (OSError, ValueError) as error:
         parser.error(str(error))
     logger.info("Recording raw sensor frames to %s", "stdout" if output == "-" else output)

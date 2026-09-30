@@ -8,7 +8,7 @@ from app.state.tracks import TrackConfig
 
 
 class SocialPipeline:
-    def __init__(self, session_id, track_config=None, temporal_config=None, context=None,
+    def __init__(self, session_id, track_config=None, temporal_config=None,
                  recording=None, tracking_trace=None, social_trace=None):
         track_config = track_config or TrackConfig()
         temporal_config = temporal_config or TemporalConfig()
@@ -17,7 +17,7 @@ class SocialPipeline:
         if track_config.max_samples_per_track < temporal_config.min_samples:
             raise ValueError("tracking sample cap must cover minimum temporal samples")
         self.tracking = TrackingPipeline(session_id, track_config, recording, tracking_trace)
-        self.estimator = SocialStateEstimator(temporal_config, context)
+        self.estimator = SocialStateEstimator(temporal_config)
         self.social_trace = social_trace
         self._lock = Lock()
 

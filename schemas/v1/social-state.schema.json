@@ -34,30 +34,6 @@
       "title": "CueChange",
       "type": "object"
     },
-    "MotionContext": {
-      "additionalProperties": false,
-      "description": "Independent confirmation, not a label inferred from a recording filename.",
-      "properties": {
-        "source": {
-          "minLength": 1,
-          "title": "Source",
-          "type": "string"
-        },
-        "stationary_intervals": {
-          "items": {
-            "$ref": "#/$defs/StationaryInterval"
-          },
-          "title": "Stationary Intervals",
-          "type": "array"
-        }
-      },
-      "required": [
-        "source",
-        "stationary_intervals"
-      ],
-      "title": "MotionContext",
-      "type": "object"
-    },
     "PersonSocialState": {
       "additionalProperties": false,
       "properties": {
@@ -214,27 +190,6 @@
         "measurement_validity"
       ],
       "title": "RobotState",
-      "type": "object"
-    },
-    "StationaryInterval": {
-      "additionalProperties": false,
-      "properties": {
-        "start_us": {
-          "minimum": 0,
-          "title": "Start Us",
-          "type": "integer"
-        },
-        "end_us": {
-          "minimum": 0,
-          "title": "End Us",
-          "type": "integer"
-        }
-      },
-      "required": [
-        "start_us",
-        "end_us"
-      ],
-      "title": "StationaryInterval",
       "type": "object"
     },
     "TemporalConfig": {
@@ -568,16 +523,6 @@
     "config": {
       "$ref": "#/$defs/TemporalConfig"
     },
-    "motion_context": {
-      "anyOf": [
-        {
-          "$ref": "#/$defs/MotionContext"
-        },
-        {
-          "type": "null"
-        }
-      ]
-    },
     "robot": {
       "$ref": "#/$defs/RobotState"
     },
@@ -636,7 +581,6 @@
     "robot_timestamp_us",
     "config_version",
     "config",
-    "motion_context",
     "robot",
     "people",
     "cue_changes",

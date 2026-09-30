@@ -70,30 +70,6 @@ class TemporalConfig(StrictModel):
         return f"temporal-v1-{digest}"
 
 
-class StationaryInterval(StrictModel):
-    start_us: int = Field(ge=0)
-    end_us: int = Field(ge=0)
-
-    @model_validator(mode="after")
-    def ordered(self):
-        if self.end_us < self.start_us:
-            raise ValueError("end_us must be >= start_us")
-        return self
-
-
-class MotionContext(StrictModel):
-    """Independent confirmation, not a label inferred from a recording filename."""
-    source: str = Field(min_length=1)
-    stationary_intervals: list[StationaryInterval]
-
-    def covers(self, start_us: int, end_us: int) -> bool:
-        return any(i.start_us <= start_us <= end_us <= i.end_us for i in self.stationary_intervals)
-
-    @classmethod
-    def from_file(cls, path: str | Path):
-        return cls.model_validate_json(Path(path).read_text())
-
-
 Gaze = Literal["NONE", "INTERMITTENT", "SUSTAINED", "UNKNOWN"]
 Zone = Literal["TOO_CLOSE", "INTERACTION_RANGE", "APPROACHABLE", "FAR", "UNKNOWN"]
 Trend = Literal["DECREASING", "STABLE", "INCREASING", "UNKNOWN"]
@@ -159,7 +135,6 @@ class SocialState(StrictModel):
     config_version: str
     calibration_status: Literal["PROVISIONAL"] = "PROVISIONAL"
     config: TemporalConfig
-    motion_context: MotionContext | None
     robot: RobotState
     people: list[PersonSocialState]
     cue_changes: list[CueChange]

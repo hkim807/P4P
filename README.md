@@ -156,9 +156,10 @@ python3 -m app.validate_social var/recordings/0[1-7]_*.jsonl --output-dir var/te
 ```
 
 Outputs are separate from raw recordings. Thresholds are provisional; missing
-evidence is UNKNOWN, and human motion requires independent stationary-base
-confirmation. Add `--social-output <new-social.jsonl>` to the receiver to enable
-the same layer live. `--tracking-output` alone continues to produce UID histories.
+evidence is UNKNOWN, and human motion requires valid near-zero robot velocities
+throughout the fitted distance interval. Add `--social-output <new-social.jsonl>`
+to the receiver to enable the same layer live. `--tracking-output` alone continues
+to produce UID histories.
 See [temporal design and commands](docs/temporal-social-state.md) and
 [validation results](docs/results/temporal-state/report.md), including controlled
 transformations of a recorded frame into changing cue patterns.

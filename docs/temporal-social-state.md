@@ -17,7 +17,7 @@ associations that the recorded input does not contain.
 | --- | --- |
 | `app/state/features.py` | Time-supported gaze evidence, gap detection, robust distance slope and fit quality |
 | `app/state/estimator.py` | Gaze/distance hysteresis, categories, motion validity, cue-change events |
-| `app/state/social_models.py` | Validated configuration, independent motion context, typed SocialState |
+| `app/state/social_models.py` | Validated configuration and typed SocialState |
 | `app/social_pipeline.py` | Same tracking-to-state computation for live and recorded frames |
 | `app/social.py` | Runnable recorded-input to SocialState replay |
 | `app/validate_social.py` | Seven-recording audit, synthetic transformations, reproducible reports |
@@ -32,7 +32,7 @@ Per observed or temporarily missing track, output includes:
 - `relative_distance_trend`: `DECREASING`, `STABLE`, `INCREASING`, or `UNKNOWN`.
 - `human_radial_motion`: `TOWARD`, `STATIONARY`, `AWAY`, or `UNKNOWN`.
 - `evidence`: coverage, gaze fraction/run duration, sample counts, slope, fit
-  residual, segment span, detected jumps, and stationarity confirmation.
+  residual, segment span, detected jumps, and stationarity from robot velocities.
 - `validity_flags`: why evidence is missing, insufficient, or unreliable.
 
 At scene level, `cue_changes` identifies category transitions by UID/epoch and
@@ -141,31 +141,12 @@ the relevant boundary plus/minus the margin. These are research-development
 settings, not proven social-distance preferences or robot stopping distances.
 
 Relative distance changes cannot distinguish human movement from robot movement.
-Zero robot velocity channels alone do not confirm stationarity. By default,
-`human_radial_motion` stays UNKNOWN even when a relative slope is valid.
-
-Optional independent metadata can confirm stationary intervals. An entire fitted
-distance segment must lie within a confirmed interval, and none of its recorded
-robot velocities may contradict stationarity (provisional tolerances: 0.02 m/s
-forward, 0.03 rad/s yaw). Null velocities are allowed only because the metadata
-is independent confirmation. Any measured motion prevents human-motion labeling.
+The estimator treats the robot base as stationary when both recorded velocities
+are present and within provisional tolerances (0.02 m/s forward, 0.03 rad/s yaw)
+at every sample in the fitted distance segment. A missing velocity or measured
+robot motion prevents a human-motion label. No separate context file is needed.
 `STATIONARY` for the human means stable radial separation, not absence of lateral
 movement. Head movement and face-distance noise remain limitations.
-
-The interval metadata is a declared external input, not inferred from the filename:
-
-```json
-{
-  "source": "operator log or verified stopped-base feedback for this recording",
-  "stationary_intervals": [
-    {"start_us": 1000000, "end_us": 6000000}
-  ]
-}
-```
-
-Use actual source-clock timestamps and only independently confirmed intervals.
-The example numbers are illustrative. The original seven-recording validation
-uses no such metadata, so all human-motion estimates remain UNKNOWN.
 
 ### 5. Identity, live integration, and failure behavior
 
@@ -202,8 +183,8 @@ localhost HTTP integration tests.
 A separate 160-frame stimulus copies the first recorded frame as a template,
 then explicitly replaces UID, timestamps, gaze, distance, and robot velocity.
 It removes optional head geometry and sensor ranges that would contradict the
-injected values. Original recordings are never overwritten. Its synthetic
-stationary context applies only to that generated sequence.
+injected values. Original recordings are never overwritten. Its robot velocities
+are set to zero throughout.
 
 | Checkpoint | Designed gaze | Designed separation | Expected state |
 | --- | --- | --- | --- |
@@ -226,7 +207,7 @@ thresholds. Treat this as a calibration/sensor-discrimination finding, not a
 validated engagement detector. Fragmented UIDs also leave many windows UNKNOWN.
 
 Before the rule policy, annotate actual behavior intervals, verify identity
-persistence and stationary context, compare parameter choices, and freeze a
+persistence and robot velocity quality, compare parameter choices, and freeze a
 configuration for independent evaluation. Do not tune by forcing filename labels
 or merge IDs merely to obtain a longer feature window.
 
@@ -242,8 +223,7 @@ mkdir -p var/temporal-validation
 ```
 
 Add `--speed 1` for recorded pacing, or omit `--output` to print JSONL. Completion
-counts go to stderr. Add `--context path/to/confirmed-context.json` only when that
-recording has independently confirmed stationary intervals.
+counts go to stderr. Robot velocities come from each recorded frame.
 
 Reproduce the report, synthetic transformed inputs, and all state traces:
 
@@ -254,8 +234,8 @@ Reproduce the report, synthetic transformed inputs, and all state traces:
 ```
 
 The output directory must be new. It contains seven `.social.jsonl` files,
-`synthetic-patterns.observations.jsonl`, `synthetic-patterns.context.json`,
-`synthetic-patterns.social.jsonl`, `summary.json`, and `report.md`. The summary
+`synthetic-patterns.observations.jsonl`, `synthetic-patterns.social.jsonl`,
+`summary.json`, and `report.md`. The summary
 records source/config/implementation hashes and full per-recording distributions.
 The verifier loads the short recordings to compare repeated runs; normal replay
 and state processing retain bounded histories.

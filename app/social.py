@@ -12,7 +12,7 @@ from app.pipeline import trace_line, TrackingProcessingError
 from app.recording import read_frames
 from app.replay import replay
 from app.social_pipeline import SocialPipeline
-from app.state.social_models import TemporalConfig, MotionContext
+from app.state.social_models import TemporalConfig
 from app.state.tracks import TrackConfig
 
 
@@ -29,7 +29,6 @@ def main(argv=None):
     parser.add_argument("recording")
     parser.add_argument("--config", help="Temporal configuration JSON")
     parser.add_argument("--tracking-config", help="Tracking configuration JSON")
-    parser.add_argument("--context", help="Independent stationary-interval metadata JSON; optional")
     parser.add_argument("--speed", type=float, default=0)
     parser.add_argument("--output", help="New SocialState JSONL; stdout by default")
     args = parser.parse_args(argv)
@@ -38,10 +37,9 @@ def main(argv=None):
     try:
         config = TemporalConfig.from_file(args.config) if args.config else TemporalConfig()
         tracks = TrackConfig.from_file(args.tracking_config) if args.tracking_config else TrackConfig()
-        context = MotionContext.from_file(args.context) if args.context else None
         for _ in read_frames(args.recording):
             pass
-        pipeline = SocialPipeline(recording_session(args.recording), tracks, config, context)
+        pipeline = SocialPipeline(recording_session(args.recording), tracks, config)
         counters = Counter()
         with (open(args.output, "x", encoding="utf-8") if args.output else nullcontext(sys.stdout)) as output:
             def emit(frame):

@@ -6,7 +6,7 @@ from itertools import combinations
 from math import sqrt
 from statistics import median
 
-from app.state.social_models import MotionContext, TemporalConfig, TemporalEvidence
+from app.state.social_models import TemporalConfig, TemporalEvidence
 
 
 def adjacent(a: dict, b: dict, config: TemporalConfig) -> bool:
@@ -21,6 +21,12 @@ def moving(robot: dict, config: TemporalConfig) -> bool:
                 and abs(robot["angular_velocity"]) > config.stationary_angular_tolerance_rps))
 
 
+def stationary(robot: dict, config: TemporalConfig) -> bool:
+    return (robot["linear_velocity"] is not None
+            and robot["angular_velocity"] is not None
+            and not moving(robot, config))
+
+
 @dataclass
 class GazeMemory:
     looking: bool | None = None
@@ -28,8 +34,8 @@ class GazeMemory:
     states: dict[int, bool | None] = field(default_factory=dict)
 
 
-def extract_features(track: dict, now: int, config: TemporalConfig, memory: GazeMemory,
-                     context: MotionContext | None = None) -> tuple[TemporalEvidence, list[str]]:
+def extract_features(track: dict, now: int, config: TemporalConfig,
+                     memory: GazeMemory) -> tuple[TemporalEvidence, list[str]]:
     samples = [s for s in track["samples"] if s["timestamp_us"] >= now - round(config.window_s * 1e6)]
     flags = list(track["identity_quality_flags"])
     observed = track["visibility"] == "OBSERVED"
@@ -117,9 +123,8 @@ def extract_features(track: dict, now: int, config: TemporalConfig, memory: Gaze
         flags.append("DISTANCE_FIT_UNRELIABLE")
     if jumps:
         flags.append("DISTANCE_SEGMENT_BROKEN_BY_JUMP")
-    stationary = bool(segment and context and context.covers(segment[0]["timestamp_us"], now)
-                      and not any(moving(s["robot"], config) for s in segment))
-    if not stationary:
+    stationary_segment = bool(segment and all(stationary(s["robot"], config) for s in segment))
+    if not stationary_segment:
         flags.append("STATIONARY_BASE_UNVERIFIED")
     return TemporalEvidence(
         window_span_s=span, gaze_fraction=fraction, gaze_valid_coverage_s=coverage,
@@ -129,5 +134,5 @@ def extract_features(track: dict, now: int, config: TemporalConfig, memory: Gaze
         distance_valid_samples=len(segment), distance_fit_samples=len(fit),
         distance_window_start_us=segment[0]["timestamp_us"] if segment else None,
         distance_jump_count=jumps, gaze_valid=gaze_valid, distance_trend_valid=distance_valid,
-        latest_distance_valid=latest_distance_valid, stationary_window_confirmed=stationary,
+        latest_distance_valid=latest_distance_valid, stationary_window_confirmed=stationary_segment,
     ), flags

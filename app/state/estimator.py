@@ -5,8 +5,8 @@ from bisect import bisect_right
 from dataclasses import dataclass, field
 
 from app.recording import TimestampOrderError
-from app.state.features import GazeMemory, adjacent, extract_features, moving
-from app.state.social_models import (CueChange, MotionContext, PersonSocialState, RobotState,
+from app.state.features import GazeMemory, adjacent, extract_features, moving, stationary
+from app.state.social_models import (CueChange, PersonSocialState, RobotState,
                                     SocialState, TemporalConfig)
 
 ZONES = ("TOO_CLOSE", "INTERACTION_RANGE", "APPROACHABLE", "FAR")
@@ -24,9 +24,8 @@ class PersonMemory:
 
 
 class SocialStateEstimator:
-    def __init__(self, config: TemporalConfig | None = None, context: MotionContext | None = None):
+    def __init__(self, config: TemporalConfig | None = None):
         self.config = config or TemporalConfig()
-        self.context = context.model_copy(deep=True) if context else None
         self._session = None
         self._last_timestamp = None
         self._last_sequence = 0
@@ -89,7 +88,7 @@ class SocialStateEstimator:
                 # Do not carry a category's dwell through an unobserved interval.
                 memory.category = memory.candidate = "UNKNOWN"
                 memory.candidate_since = now
-            evidence, flags = extract_features(track, now, self.config, memory.gaze, self.context)
+            evidence, flags = extract_features(track, now, self.config, memory.gaze)
             gaze = self._gaze_category(evidence, memory, now)
             if gaze == "UNKNOWN" and evidence.gaze_valid:
                 flags.append("GAZE_CATEGORY_PENDING_DWELL")
@@ -117,20 +116,15 @@ class SocialStateEstimator:
                 memory.previous[cue] = value
             people.append(person)
         robot = snapshot["robot"]
-        confirmed = bool(self.context and self.context.covers(now, now))
         robot_moving = moving(robot, self.config)
         validity = []
         if any(v is None for v in robot.values()):
             validity.append("VELOCITY_INCOMPLETE")
-        if confirmed and robot_moving:
-            validity.append("STATIONARITY_CONTEXT_CONTRADICTED")
-        if not confirmed:
-            validity.append("STATIONARITY_NOT_INDEPENDENTLY_CONFIRMED")
         state = SocialState(
             state_id=f"{session}:{sequence}", session_id=session, ingest_sequence=sequence,
             robot_timestamp_us=now, config_version=self.config.version, config=self.config,
-            motion_context=self.context, robot=RobotState(**robot,
-                motion_state="MOVING" if robot_moving else "STATIONARY" if confirmed else "UNKNOWN",
+            robot=RobotState(**robot,
+                motion_state="MOVING" if robot_moving else "STATIONARY" if stationary(robot, self.config) else "UNKNOWN",
                 measurement_validity=validity), people=people, cue_changes=changes,
             track_events=snapshot["events"])
         self._last_timestamp, self._last_sequence = now, sequence

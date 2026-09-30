@@ -8,7 +8,7 @@ from app.pipeline import TrackingPipeline
 from app.social_pipeline import SocialPipeline
 from app.social_scenarios import controlled_scenarios
 from app.state.estimator import SocialStateEstimator
-from app.state.social_models import MotionContext, TemporalConfig, SocialState
+from app.state.social_models import TemporalConfig, SocialState
 from app.state.tracks import TrackConfig
 from app.recording import TimestampOrderError
 from tests.fixtures import frame
@@ -20,10 +20,6 @@ def sample(i, gaze=0.95, distance=2.0, uid=17, velocity=0.0):
     f["people"] = [{"uid": uid, "gaze_overlap": gaze, "distance_m": distance}]
     f["robot"] = {"linear_velocity": velocity, "angular_velocity": 0.0}
     return f
-
-
-def confirmed(start=0, end=100_000_000):
-    return MotionContext.model_validate({"source": "test fixture", "stationary_intervals": [{"start_us": start, "end_us": end}]})
 
 
 def person(pipeline, f):
@@ -42,15 +38,15 @@ class SocialTests(unittest.TestCase):
         self.assertIn("GAZE_UNAVAILABLE", p["validity_flags"])
 
     def test_known_changing_patterns_from_recorded_template(self):
-        frames, expectations, context = controlled_scenarios(frame())
-        pipeline = SocialPipeline("stimulus", context=context)
+        frames, expectations = controlled_scenarios(frame())
+        pipeline = SocialPipeline("stimulus")
         for i, f in enumerate(frames):
             p = person(pipeline, f)
             for field, expected in expectations.get(i, {}).items():
                 self.assertEqual(p[field], expected, (i, field, p))
 
     def test_all_missing_cues_do_not_mean_no_attention_or_stationary(self):
-        pipeline = SocialPipeline("a", context=confirmed())
+        pipeline = SocialPipeline("a")
         for i in range(30):
             p = person(pipeline, sample(i, None, None))
         self.assertEqual(p["gaze_state"], "UNKNOWN")
@@ -113,32 +109,37 @@ class SocialTests(unittest.TestCase):
         self.assertEqual(p["gaze_state"], "UNKNOWN")
         self.assertEqual(person(pipeline, sample(13))["gaze_state"], "SUSTAINED")
 
-    def test_distance_slope_sign_and_robot_motion_ambiguity(self):
-        for rate, trend in [(-.2, "DECREASING"), (0, "STABLE"), (.2, "INCREASING")]:
+    def test_distance_slope_sign_and_stationary_robot_motion(self):
+        for rate, trend, human in [(-.2, "DECREASING", "TOWARD"),
+                                   (0, "STABLE", "STATIONARY"), (.2, "INCREASING", "AWAY")]:
             pipeline = SocialPipeline("a")
             for i in range(21):
                 p = person(pipeline, sample(i, distance=2 + rate*i/10))
             self.assertAlmostEqual(p["evidence"]["distance_slope_mps"], rate)
             self.assertEqual(p["relative_distance_trend"], trend)
-            self.assertEqual(p["human_radial_motion"], "UNKNOWN")
+            self.assertEqual(p["human_radial_motion"], human)
 
-    def test_confirmed_stationarity_must_cover_whole_distance_segment(self):
-        pipeline = SocialPipeline("a", context=confirmed(1_000_000))
+    def test_velocity_stationarity_must_cover_whole_distance_segment(self):
+        pipeline = SocialPipeline("a")
         for i in range(21):
-            p = person(pipeline, sample(i, distance=3-i*.02))
+            p = person(pipeline, sample(i, distance=3-i*.02, velocity=.2 if i == 10 else 0))
         self.assertEqual(p["human_radial_motion"], "UNKNOWN")
         for i in range(21, 32):
             p = person(pipeline, sample(i, distance=3-i*.02))
         self.assertEqual(p["human_radial_motion"], "TOWARD")
 
-    def test_moving_sample_contradicts_stationary_metadata(self):
-        pipeline = SocialPipeline("a", context=confirmed())
+    def test_moving_or_missing_velocity_blocks_human_motion(self):
+        pipeline = SocialPipeline("a")
         for i in range(21):
-            state = pipeline.process(sample(i, distance=3-i*.02, velocity=.2 if i == 10 else 0))["social_state"]
+            f = sample(i, distance=3-i*.02)
+            if i == 10:
+                f["robot"]["angular_velocity"] = None
+            state = pipeline.process(f)["social_state"]
         self.assertEqual(state["people"][0]["human_radial_motion"], "UNKNOWN")
+        self.assertIn("STATIONARY_BASE_UNVERIFIED", state["people"][0]["validity_flags"])
         state = pipeline.process(sample(21, velocity=.2))["social_state"]
         self.assertEqual(state["robot"]["motion_state"], "MOVING")
-        self.assertIn("STATIONARITY_CONTEXT_CONTRADICTED", state["robot"]["measurement_validity"])
+        self.assertEqual(state["people"][0]["human_radial_motion"], "UNKNOWN")
 
     def test_robust_fit_tolerates_small_outlier_and_large_jump_breaks_segment(self):
         pipeline = SocialPipeline("a")
