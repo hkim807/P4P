@@ -109,7 +109,7 @@ class NavelBehaviorIntegrationTests(unittest.IsolatedAsyncioTestCase):
                         'observation_id': observation['observation_id'], 'social_state_id': 'state-1',
                         'created_at_us': observation['timestamp_us'], 'action': 'APPROACH',
                         'target_human_id': observation['humans'][0]['track_id'],
-                        'preferences': {'preferred_social_distance_m': .7}, 'valid_for_ms': 60000,
+                        'preferences': {'preferred_social_distance_m': .7}, 'valid_for_ms': 15000,
                         'reason_codes': ['HUMAN_DETECTED']}
                 return ObservationResponse(200, {'behavior_intent': intent})
         transport = Transport()
@@ -151,7 +151,7 @@ class NavelBehaviorIntegrationTests(unittest.IsolatedAsyncioTestCase):
                     'observation_id': o['observation_id'], 'social_state_id': 'state',
                     'created_at_us': o['timestamp_us'], 'action': 'APPROACH',
                     'target_human_id': o['humans'][0]['track_id'],
-                    'preferences': {'preferred_social_distance_m': .7}, 'valid_for_ms': 60000,
+                    'preferences': {'preferred_social_distance_m': .7}, 'valid_for_ms': 15000,
                     'reason_codes': ['HUMAN_DETECTED']}})
         loop = asyncio.get_running_loop()
         with patch('robot.navel_client.main.navel.Robot', return_value=Connection(), create=True) as factory, \

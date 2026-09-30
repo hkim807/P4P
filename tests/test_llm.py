@@ -14,7 +14,7 @@ class FakeCompletions:
 
     def create(self, **request):
         self.request = request
-        message = SimpleNamespace(content='{"action":"MONITOR"}')
+        message = SimpleNamespace(content='{"action":"CONTINUE"}')
         return SimpleNamespace(choices=[SimpleNamespace(message=message)])
 
 
@@ -43,7 +43,7 @@ class OllamaLLMTests(unittest.TestCase):
             response_schema=schema,
         )
 
-        self.assertEqual(output, '{"action":"MONITOR"}')
+        self.assertEqual(output, '{"action":"CONTINUE"}')
         self.assertEqual(completions.request["temperature"], 0.0)
         response_format = completions.request["response_format"]
         self.assertEqual(response_format["type"], "json_schema")

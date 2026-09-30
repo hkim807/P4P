@@ -64,6 +64,15 @@ class Config:
     frame_yaw_deg: float = 0.0
     target_uid: int | None = None
     detection_range: float = 4.0
+    speech_timeout_s: float = 5.0
+    invert_yield_turn_direction: bool = False
+    max_admission_age_ms: int = 15_000
+
+    def __post_init__(self):
+        if not math.isfinite(self.speech_timeout_s) or self.speech_timeout_s <= 0:
+            raise ValueError('Speech timeout must be finite and positive')
+        if not 250 <= self.max_admission_age_ms <= 15_000:
+            raise ValueError('Local admission cap must be 250..15000 ms')
 
 
 class EventLog:
@@ -144,13 +153,16 @@ class Runtime:
         self.motion_active = False
 
     @asynccontextmanager
-    async def action(self, uid, seed=None):
+    async def action(self, uid=None, seed=None, *, behavior="APPROACH"):
         """Lease wheels and reset acquisition without restarting any sensor reader."""
         if self.action_active or self.motion_active:
             raise RuntimeError('Another wheel-control behaviour is active')
         if self.stop_failure or self.shutdown.is_set():
             raise RuntimeError(self.stop_failure or 'Runtime is shutting down')
-        uid = navel_uid(uid)
+        if behavior == 'APPROACH':
+            uid = navel_uid(uid)
+        elif behavior != 'YIELD' or uid is not None or seed is not None:
+            raise ValueError('Invalid action lease or YIELD target acquisition')
         self.action_active = True
         self.stop.clear()
         self.target = None
@@ -235,7 +247,7 @@ class Runtime:
         context = self.contexts.get(intent.observation_id)
         if context is None or intent.created_at_us != context['timestamp_us']:
             raise ValueError('Unknown observation source or mismatched intent clock origin')
-        deadline = (context['timestamp_us'] + intent.valid_for_ms*1000)/1e6
+        deadline = (context['timestamp_us'] + min(intent.valid_for_ms, self.cfg.max_admission_age_ms)*1000)/1e6
         if time.monotonic() >= deadline:
             raise TimeoutError('Intent expired since source observation (including HTTP/LLM latency)')
         return context, deadline
@@ -353,7 +365,9 @@ class Runtime:
         start, stable = time.monotonic(), None
         last_pose_at = start
         while time.monotonic()-start < 3:
-            self.robot.base_vel(0., 0.)
+            result = self.robot.base_vel(0., 0.)
+            if inspect.isawaitable(result):
+                await asyncio.wait_for(result, 1.)
             pose = self.pose()
             if self.pose_at <= last_pose_at:
                 await asyncio.sleep(.01)

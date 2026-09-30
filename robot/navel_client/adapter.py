@@ -59,7 +59,7 @@ class NavelAdapterConfig:
         if len(self.adapter_id) > 128 or len(self.robot_type) > 256:
             raise ValueError("adapter_id or robot_type is too long for the canonical schema")
         if self.robot_task not in {
-            "IDLE", "GUIDING", "APPROACHING", "INTERACTING", "PAUSED", "COMPLETE", "ERROR"
+            "IDLE", "GUIDING", "APPROACHING", "YIELDING", "INTERACTING", "PAUSED", "COMPLETE", "ERROR"
         }:
             raise ValueError("robot_task is not a canonical NavigationTask")
         if self.controller_status not in {

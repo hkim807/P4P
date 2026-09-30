@@ -49,7 +49,7 @@ def state_with_humans(count: int, *, observed: bool = True):
 
 def selection_json(**updates):
     payload = {
-        "action": "MONITOR",
+        "action": "CONTINUE",
         "target_human_id": None,
         "preferences": {},
         "valid_for_ms": 1_000,
@@ -62,27 +62,11 @@ def selection_json(**updates):
 
 VALID_SELECTIONS = {
     "CONTINUE": {"target_human_id": None, "preferences": {}},
-    "MONITOR": {"target_human_id": None, "preferences": {}},
-    "ORIENT": {"target_human_id": "visitor-1", "preferences": {}},
-    "SLOW": {
-        "target_human_id": None,
-        "preferences": {"target_speed_mps": 0.2},
-    },
+    "APPROACH": {"target_human_id": "visitor-1", "preferences": {"preferred_social_distance_m": 1.2}},
+    "ENGAGE": {"target_human_id": "visitor-1", "preferences": {}},
     "YIELD": {"target_human_id": None, "preferences": {}},
-    "AVOID": {"target_human_id": None, "preferences": {}},
-    "APPROACH": {
-        "target_human_id": "visitor-1",
-        "preferences": {"preferred_social_distance_m": 1.2},
-    },
-    "GREET": {"target_human_id": "visitor-1", "preferences": {}},
-    "GUIDE": {"target_human_id": "visitor-1", "preferences": {}},
-    "WAIT": {
-        "target_human_id": None,
-        "preferences": {"hold_duration_s": 1.0},
-    },
-    "RESUME": {"target_human_id": None, "preferences": {}},
-    "DISENGAGE": {"target_human_id": "visitor-1", "preferences": {}},
 }
+
 
 VALID_PREFERENCE_VALUES = {
     "target_speed_mps": 0.2,
@@ -182,7 +166,7 @@ class LLMPolicyTests(unittest.TestCase):
                 policy = LLMPolicyBridge(
                     RecordingLLM(
                         selection_json(
-                            action="GREET",
+                            action="ENGAGE",
                             target_human_id=None,
                             preferences={},
                         )
@@ -222,6 +206,9 @@ class LLMPolicyTests(unittest.TestCase):
             )
             preferences = dict(VALID_SELECTIONS[action]["preferences"])
             preferences[field_name] = VALID_PREFERENCE_VALUES[field_name]
+            if action == 'YIELD':
+                self.assert_selection_invalid(action, preferences=preferences)
+                continue
             with self.subTest(action=action, field=field_name):
                 intent = self.assert_selection_valid(
                     action, preferences=preferences
@@ -250,9 +237,9 @@ class LLMPolicyTests(unittest.TestCase):
                         VALID_PREFERENCE_VALUES[field_name],
                     )
 
-    def test_contradictory_wait_preferences_and_target_are_rejected(self):
+    def test_contradictory_continue_preferences_and_target_are_rejected(self):
         self.assert_selection_invalid(
-            "WAIT",
+            "CONTINUE",
             target_human_id="visitor-1",
             preferences={
                 "target_speed_mps": 0.8,
@@ -263,9 +250,7 @@ class LLMPolicyTests(unittest.TestCase):
 
     def test_safe_required_preference_defaults_are_applied(self):
         cases = (
-            ("SLOW", "target_speed_mps", 0.2),
             ("APPROACH", "preferred_social_distance_m", 1.2),
-            ("WAIT", "hold_duration_s", 1.0),
         )
         for action, field_name, expected in cases:
             for supplied in ({}, {field_name: None}):
@@ -295,7 +280,7 @@ class LLMPolicyTests(unittest.TestCase):
         policy = LLMPolicyBridge(
             RecordingLLM(
                 selection_json(
-                    action="SLOW",
+                    action="APPROACH",
                     preferences={"hold_duration_s": 2.0},
                 )
             )
@@ -305,15 +290,15 @@ class LLMPolicyTests(unittest.TestCase):
         diagnostic = logs.output[-1]
         self.assertIn("validation_mode=tolerant", diagnostic)
         self.assertIn("model='test-model'", diagnostic)
-        self.assertIn("selected_action='SLOW'", diagnostic)
+        self.assertIn("selected_action='APPROACH'", diagnostic)
         self.assertIn("removed preferences.hold_duration_s", diagnostic)
-        self.assertIn("preferences.target_speed_mps=0.2", diagnostic)
+        self.assertIn("preferences.preferred_social_distance_m=1.2", diagnostic)
         self.assertIn(intent.decision_id, diagnostic)
 
     def test_existing_numeric_and_enum_constraints_remain_authoritative(self):
         invalid_selections = (
-            {"action": "SLOW", "preferences": {"target_speed_mps": -0.1}},
-            {"action": "SLOW", "preferences": {"target_speed_mps": 0.9}},
+            {"action": "APPROACH", "preferences": {"target_speed_mps": -0.1}},
+            {"action": "APPROACH", "preferences": {"target_speed_mps": 0.9}},
             {
                 "action": "APPROACH",
                 "target_human_id": "visitor-1",
@@ -325,17 +310,17 @@ class LLMPolicyTests(unittest.TestCase):
                 "preferences": {"preferred_social_distance_m": 1.5},
             },
             {
-                "action": "ORIENT",
+                "action": "ENGAGE",
                 "target_human_id": "visitor-1",
                 "preferences": {"orientation_target_rad": 3.2},
             },
             {"action": "YIELD", "preferences": {"passing_side": "MIDDLE"}},
-            {"action": "WAIT", "preferences": {"hold_duration_s": -0.1}},
-            {"action": "WAIT", "preferences": {"hold_duration_s": 10.1}},
-            {"action": "MONITOR", "valid_for_ms": 249},
-            {"action": "MONITOR", "valid_for_ms": 2_001},
-            {"action": "MONITOR", "decision_confidence": -0.1},
-            {"action": "MONITOR", "decision_confidence": 1.1},
+            {"action": "CONTINUE", "preferences": {"hold_duration_s": -0.1}},
+            {"action": "CONTINUE", "preferences": {"hold_duration_s": 10.1}},
+            {"action": "CONTINUE", "valid_for_ms": 249},
+            {"action": "CONTINUE", "valid_for_ms": 15_001},
+            {"action": "CONTINUE", "decision_confidence": -0.1},
+            {"action": "CONTINUE", "decision_confidence": 1.1},
             {"action": "FLY"},
         )
         for updates in invalid_selections:
@@ -448,14 +433,14 @@ class LLMPolicyTests(unittest.TestCase):
         state = social_state()
         llm = RecordingLLM(
             selection_json(
-                action="ORIENT",
+                action="ENGAGE",
                 target_human_id="visitor-1",
                 reason_codes=["HUMAN_DETECTED"],
                 decision_confidence=0.72,
             )
         )
         intent = LLMPolicyBridge(llm).decide(state, ["HUMAN_DETECTED"])
-        self.assertEqual(intent.action, "ORIENT")
+        self.assertEqual(intent.action, "ENGAGE")
         self.assertEqual(intent.target_human_id, "visitor-1")
 
     def test_policy_rejects_non_json_output(self):
@@ -473,7 +458,7 @@ class LLMPolicyTests(unittest.TestCase):
     def test_policy_rejects_unknown_target_even_without_schema_enforcement(self):
         llm = RecordingLLM(
             selection_json(
-                action="ORIENT",
+                action="ENGAGE",
                 target_human_id="invented-person",
                 reason_codes=["HUMAN_DETECTED"],
             )
@@ -484,7 +469,7 @@ class LLMPolicyTests(unittest.TestCase):
     def test_policy_rejects_predicted_only_target(self):
         llm = RecordingLLM(
             selection_json(
-                action="ORIENT",
+                action="ENGAGE",
                 target_human_id="visitor-1",
                 reason_codes=["HUMAN_DETECTED"],
             )
@@ -501,7 +486,7 @@ class LLMPolicyTests(unittest.TestCase):
         )
         state = state.model_copy(update={"humans": [stale_human]})
         llm = RecordingLLM(
-            selection_json(action="ORIENT", target_human_id="visitor-1")
+            selection_json(action="ENGAGE", target_human_id="visitor-1")
         )
         with self.assertRaisesRegex(LLMPolicyError, "not currently observed"):
             LLMPolicyBridge(llm).decide(state, ["HUMAN_DETECTED"])
@@ -509,7 +494,7 @@ class LLMPolicyTests(unittest.TestCase):
     def test_policy_rejects_out_of_bounds_preferences(self):
         llm = RecordingLLM(
             selection_json(
-                action="SLOW",
+                action="APPROACH",
                 preferences={"target_speed_mps": 1.5},
                 reason_codes=["HUMAN_NEARBY"],
             )

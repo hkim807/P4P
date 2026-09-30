@@ -128,7 +128,10 @@ async def run(args: argparse.Namespace) -> None:
     try:
         async with navel.Robot() as robot:
             runtime = Runtime(robot, Config(execute=args.execute, head_x=args.head_x,
-                head_y=args.head_y, frame_yaw_deg=args.frame_yaw_deg))
+                head_y=args.head_y, frame_yaw_deg=args.frame_yaw_deg,
+                speech_timeout_s=args.speech_timeout,
+                invert_yield_turn_direction=args.invert_yield_turn_direction,
+                max_admission_age_ms=args.max_admission_age_ms))
             adapter = NavelObservationAdapter(NavelAdapterConfig(adapter_id=args.adapter_id,
                 stationary_velocity_fallback=args.stationary_velocity_fallback), runtime=runtime)
             controller = BehaviorController(runtime=runtime)
@@ -160,7 +163,7 @@ async def run(args: argparse.Namespace) -> None:
 
 def parse_args(argv=None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Send Navel observations and execute bounded approach intents only with --execute."
+        description="Send Navel observations and execute bounded APPROACH/YIELD intents only with --execute."
     )
     parser.add_argument(
         "--server",
@@ -185,18 +188,23 @@ def parse_args(argv=None) -> argparse.Namespace:
     parser.add_argument("--stationary-velocity-fallback", action="store_true")
     parser.add_argument("--force-decision", action="store_true")
     parser.add_argument("--print-only", action="store_true")
-    parser.add_argument('--execute', action='store_true', help='Enable bounded approach movement')
+    parser.add_argument('--execute', action='store_true', help='Enable bounded APPROACH/YIELD movement and speech')
+    parser.add_argument('--speech-timeout', type=float, default=5.)
+    parser.add_argument('--max-admission-age-ms', type=int, default=15000)
+    parser.add_argument('--invert-yield-turn-direction', action='store_true')
     parser.add_argument('--head-x', type=float, default=0.)
     parser.add_argument('--head-y', type=float, default=0.)
     parser.add_argument('--frame-yaw-deg', type=float, default=0.)
     args = parser.parse_args(argv)
-    values = (args.request_timeout, args.minimum_send_interval, args.head_x, args.head_y, args.frame_yaw_deg)
+    values = (args.request_timeout, args.minimum_send_interval, args.head_x, args.head_y, args.frame_yaw_deg, args.speech_timeout)
     if not all(math.isfinite(v) for v in values):
         parser.error('Numeric arguments must be finite')
     if args.request_timeout <= 0 or args.minimum_send_interval < 0:
         parser.error('Timeouts must be positive and send interval non-negative')
     if max(abs(args.head_x), abs(args.head_y)) > .5 or abs(args.frame_yaw_deg) > 45:
         parser.error('Head offsets must be within .5 m; frame yaw within 45 degrees')
+    if args.speech_timeout <= 0 or not 250 <= args.max_admission_age_ms <= 15000:
+        parser.error('Speech timeout must be positive; admission cap must be 250..15000 ms')
     if args.execute and (args.stationary_velocity_fallback or args.print_only):
         parser.error('--execute cannot be combined with stationary fallback or --print-only')
     return args

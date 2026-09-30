@@ -122,24 +122,16 @@ null, and optional preferences may be omitted, null, or valid.
 | Action | Target | Required preferences | Optional preferences | Forbidden preferences |
 | --- | --- | --- | --- | --- |
 | `CONTINUE` | Forbidden | — | — | `target_speed_mps`, `preferred_social_distance_m`, `passing_side`, `orientation_target_rad`, `hold_duration_s` |
-| `MONITOR` | Forbidden | — | — | `target_speed_mps`, `preferred_social_distance_m`, `passing_side`, `orientation_target_rad`, `hold_duration_s` |
-| `ORIENT` | Required | — | `orientation_target_rad` | `target_speed_mps`, `preferred_social_distance_m`, `passing_side`, `hold_duration_s` |
-| `SLOW` | Optional | `target_speed_mps` | — | `preferred_social_distance_m`, `passing_side`, `orientation_target_rad`, `hold_duration_s` |
-| `YIELD` | Optional | — | `target_speed_mps`, `preferred_social_distance_m`, `passing_side`, `hold_duration_s` | `orientation_target_rad` |
-| `AVOID` | Optional | — | `target_speed_mps`, `preferred_social_distance_m`, `passing_side` | `orientation_target_rad`, `hold_duration_s` |
 | `APPROACH` | Required | `preferred_social_distance_m` | `target_speed_mps` | `passing_side`, `orientation_target_rad`, `hold_duration_s` |
-| `GREET` | Required | — | — | `target_speed_mps`, `preferred_social_distance_m`, `passing_side`, `orientation_target_rad`, `hold_duration_s` |
-| `GUIDE` | Required | — | `target_speed_mps`, `preferred_social_distance_m`, `passing_side` | `orientation_target_rad`, `hold_duration_s` |
-| `WAIT` | Forbidden | `hold_duration_s` | — | `target_speed_mps`, `preferred_social_distance_m`, `passing_side`, `orientation_target_rad` |
-| `RESUME` | Forbidden | — | — | `target_speed_mps`, `preferred_social_distance_m`, `passing_side`, `orientation_target_rad`, `hold_duration_s` |
-| `DISENGAGE` | Required | — | — | `target_speed_mps`, `preferred_social_distance_m`, `passing_side`, `orientation_target_rad`, `hold_duration_s` |
+| `ENGAGE` | Required | — | — | `target_speed_mps`, `preferred_social_distance_m`, `passing_side`, `orientation_target_rad`, `hold_duration_s` |
+| `YIELD` | Optional | — | — | `target_speed_mps`, `preferred_social_distance_m`, `passing_side`, `orientation_target_rad`, `hold_duration_s` |
 
-Optional targets on `SLOW`, `YIELD`, and `AVOID` identify the human associated
-with the global navigation response when one track is relevant. This contract
-does not decide whether that target remains fresh, whether a speed is safe, or
-whether the robot is in a state where `RESUME` is feasible. Those contextual
-checks remain responsibilities of the later deterministic validator and
-controller.
+The canonical vocabulary is exactly CONTINUE / APPROACH / ENGAGE / YIELD.
+YIELD's optional target is provenance, not an execution tracking requirement.
+It uses the fixed rotation and reverse escape documented in
+[output mapping](behavior-intent-output-mapping.md); any non-null YIELD
+preference is rejected. It does not infer direction from a passing side.
+APPROACH retains current target validation and local movement protections.
 
 `LLMPolicyBridge.decide(state, triggers)` performs these steps:
 
@@ -151,10 +143,8 @@ controller.
 3. Parse and type-check the response strictly. Markdown, explanatory prose,
    unknown fields, invalid enums, invalid types, unsupported reason codes, NaN,
    infinity, and out-of-range values fail.
-4. Normalise only safe omissions: remove preferences forbidden for the selected
-   action; default `SLOW.target_speed_mps` to 0.2,
-   `APPROACH.preferred_social_distance_m` to 1.2, and `WAIT.hold_duration_s` to
-   1.0; and fill a required target only when exactly one currently observed
+4. Normalise only safe omissions: reject non-null YIELD preferences; for other actions remove forbidden
+   preferences; default `APPROACH.preferred_social_distance_m` to 1.2; and fill a required target only when exactly one currently observed
    human is eligible. Unknown, predicted-only, stale, or ambiguous targets fail.
 5. Add `decision_id`, observation/state IDs, schema version, and the state clock
    timestamp in deterministic code, then validate the complete result through
@@ -179,20 +169,29 @@ per-person speech meaning, a confirmed guidance request, body pose, groups, or
 images. Absent and `UNKNOWN` fields therefore remain unknown; the prompt forbids
 turning absence into negative evidence.
 
-In particular, gaze or speech activity may justify `ORIENT`, `GREET`, or further
+In particular, gaze or speech activity may justify `ENGAGE` or further
 monitoring, but cannot establish what a visitor said. A future dialogue or
 request-intent field must be added to `SocialState` before the policy can infer a
-new destination and confidently begin `GUIDE`. This limitation should be
+new destination or provide route guidance. This limitation should be
 represented in test labels rather than hidden in prompt assumptions.
 
 ## What is still outside this change
 
 - Deterministic semantic and safety validation against the newest state.
 - A conservative fallback policy for invalid, stale, or timed-out decisions.
-- Mapping `BehaviorIntent` to Navel capabilities and commands.
+- Full executable CONTINUE and ENGAGE implementations.
 - Prompt calibration on a labelled scenario suite, comparison against a rule
   policy, and accuracy/calibration reporting by action and social scenario.
 - A VLM policy using the same action-selection schema and aligned images.
 
-Until those stages exist, the Navel client remains observation-only and prints
-the returned intent for inspection.
+The Navel client defaults to dry-run; APPROACH and YIELD execute only with
+`--execute`. CONTINUE and ENGAGE map correctly but return UNSUPPORTED_ACTION.
+Faults remain local stop/lockout conditions; no intent clears them.
+
+Admission validity is 250–15,000 ms in the policy, public model and client.
+The source observation timestamp is retained unchanged; LLM/HTTP latency,
+acquisition and initial YIELD speech consume this window. The local configurable
+`--max-admission-age-ms` cap can tighten it (default 15,000). No request is
+renewed on receipt or queued. Before first motion the client rechecks expiry;
+a started bounded manoeuvre may finish later. Real model latency and hardware
+speech/motion timing have not been measured by these mock tests.

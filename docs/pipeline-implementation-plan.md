@@ -122,17 +122,9 @@ The initial action vocabulary should preserve the outcomes identified in the pro
 
 ```text
 CONTINUE
-MONITOR
-ORIENT
-SLOW
-YIELD
-AVOID
 APPROACH
-GREET
-GUIDE
-WAIT
-RESUME
-DISENGAGE
+ENGAGE
+YIELD
 ```
 
 Each action needs a precise operational definition, compatible and required parameters, preconditions, completion conditions, and fallback behaviour.
@@ -184,10 +176,10 @@ class DecisionPolicy(Protocol):
 Implement a conservative rule policy before evaluating generative models. Example rules include:
 
 - High path conflict and low predicted clearance produce `YIELD`.
-- A stale or highly uncertain nearby track produces `SLOW` or `WAIT`.
-- A stationary person showing sustained attention may permit `ORIENT` or `APPROACH`.
-- A conversational group produces `AVOID` if the planned path crosses its interaction space.
-- No relevant human interaction returns `CONTINUE` or `MONITOR`.
+- A stale or highly uncertain track must not authorize assertive interaction; local stop protections remain in force.
+- A stationary person showing sustained attention may permit `ENGAGE` or `APPROACH`.
+- A conversational group on the path may justify `YIELD` when the fixed escape is feasible.
+- No relevant human interaction returns `CONTINUE`.
 
 This baseline answers whether either generative model adds value, rather than merely which model performs better.
 
@@ -229,7 +221,7 @@ Validation should occur in layers:
 5. **Robot capability:** the selected robot supports the requested behaviour.
 6. **Safety:** local clearance, braking, speed, and collision rules permit execution.
 
-Invalid, timed-out, or stale decisions should produce an explicit conservative fallback such as `SLOW`, `WAIT`, or continuation of the last validated safe behaviour. Never silently coerce a substantially invalid decision into an executable command.
+Invalid, timed-out, or stale decisions should produce an explicit conservative fallback such as retaining a local stop or the last validated safe behaviour. Never silently coerce a substantially invalid decision into an executable command.
 
 The execution adapter should convert `BehaviorIntent` into robot-specific calls. On Navel, high-level operations such as approaching or navigating to a pose should be preferred where suitable. If velocity control is required, it must run in a separate deterministic process at the frequency required by the SDK, with a watchdog that stops the robot on missed updates.
 

@@ -258,13 +258,13 @@ When a decision is triggered successfully, the response contains a complete
     "observation_id": "navel-5010005:123456789:000001",
     "social_state_id": "state-...",
     "created_at_us": 123456789,
-    "action": "ORIENT",
+    "action": "ENGAGE",
     "target_human_id": "17",
     "preferences": {
       "target_speed_mps": null,
       "preferred_social_distance_m": null,
       "passing_side": null,
-      "orientation_target_rad": 0.0,
+      "orientation_target_rad": null,
       "hold_duration_s": null
     },
     "valid_for_ms": 1000,
@@ -515,13 +515,18 @@ is an optional scheduling diagnostic. `--execute` cannot be combined with
 `--print-only` or `--stationary-velocity-fallback`. The latter is an explicit
 stationary-only diagnostic for unavailable odometry. In execution mode, stale
 odometry causes observations to be skipped and movement to fail and stop.
-No greeting or other speech is implemented. The demo's automatic drive,
-nearest-person trigger and detection announcement are absent.
+YIELD includes two fixed announcements. The approach demo's automatic drive
+and nearest-person trigger are absent.
 
 ### Target, coordinates and parameters
 
-Only `APPROACH` has an executable handler. All 12 server action names still parse
-and map. The other 11 placeholder handlers have been removed.
+The canonical vocabulary is exactly **CONTINUE / APPROACH / ENGAGE / YIELD**.
+APPROACH and YIELD have real handlers. CONTINUE and ENGAGE parse and map, but
+return explicit `UNSUPPORTED_ACTION` results. Removed behaviour actions are
+rejected without aliases. See [YIELD execution and timing](docs/behavior-intent-output-mapping.md#reusable-yield-and-pipeline-invocation).
+
+The following target and approach-geometry rules apply to APPROACH. YIELD needs
+no target and uses fixed movement parameters; any target is provenance only.
 
 `target_human_id` must be a canonical nonnegative integer UID string found in the
 referenced locally generated Navel observation. IDs from other sources, unknown
@@ -565,19 +570,20 @@ Execution results record requested distance/speed and applied distance/speed cap
 
 - Decision IDs are deduplicated in a bounded history of 256 parsed requests,
   including rejected ones. A repeated ID returns `DUPLICATE`.
-- Same-target requests while active return `ALREADY_RUNNING`; another target
-  returns `BUSY`. Nothing is queued. Null intents leave execution unchanged.
-- Recognized unimplemented actions return `UNSUPPORTED_ACTION`, including WAIT
-  and AVOID during an approach. They neither cancel nor replace it and issue no
+- Same-action/same-target requests while active return `ALREADY_RUNNING`; another
+  action or target returns `BUSY`. Nothing is queued. Null intents leave execution unchanged.
+- Recognized unimplemented actions return `UNSUPPORTED_ACTION`, for CONTINUE
+  and ENGAGE, including during an active behaviour. They neither cancel nor replace it and issue no
   actuator command. Unknown/malformed intents return `INVALID_INTENT`.
 - The server's `created_at_us` is copied from `SocialState.timestamp_us`, which
   comes from the source observation's **client host monotonic clock**. Admission
   requires an exact retained observation/timestamp match. Expiry is source time
-  plus `valid_for_ms`, compared with that same local clock. SDK and server-host
+  plus `valid_for_ms` (250–15,000 ms), compared with that same local clock.
+  `--max-admission-age-ms` may tighten this bound (default 15,000). SDK and server-host
   clocks are never compared with it. Slow LLM/HTTP responses may already be
   expired; receipt never renews validity. Unknown clock origins fail closed.
 - Fresh median target sampling and expiry are rechecked after acquisition before
-  movement. Once admitted and started before expiry, the bounded movement may
+  movement. YIELD rechecks expiry after its initial speech before rotation. Once admitted and started before expiry, the bounded movement may
   finish after expiry. Expiry during acquisition fails the execution.
 - `await controller.cancel_active()` is the explicit application cancellation
   path. Ctrl+C/SIGTERM invoke shutdown. The SDK sender is cancelled and awaited
@@ -588,13 +594,34 @@ Execution results record requested distance/speed and applied distance/speed cap
 
 Execution snapshots distinguish `ACCEPTED`, `RUNNING`, `DRY_RUN_COMPLETED`,
 `COMPLETED`, `CANCELLED`, and `FAILED`. Results carry decision ID, requested and
-resolved target, parameters, distance, heading error and live verification.
+resolved target and parameters. APPROACH adds distance, heading error and live
+verification; YIELD adds completed phase, movement completion, applied commands
+and distinct speech errors.
 Admission rejection does not replace the running snapshot. Existing observation
-fields show `APPROACHING/ACTIVE` while execution runs, `COMPLETE/STOPPED` when a
+fields show `APPROACHING/ACTIVE` or `YIELDING/ACTIVE` while execution runs, `COMPLETE/STOPPED` when a
 bounded execution finishes, and `ERROR/FAULT` on failure. COMPLETE means the
 execution ended, **not verified arrival**; the schema has no approach-result
 field, so detailed outcomes remain in controller state and logs. No new server
 endpoint is added.
+
+### YIELD sequence
+
+After acquiring shared exclusive ownership, say **"conflict person detected"**
+and await speech completion. Rotate **+100° at 30°/s, acceleration 35°/s²**,
+await completion and confirm stop; then move **-0.60 m at 0.25 m/s, acceleration
+0.35 m/s²** relative to the new heading, await completion and confirm stop.
+Say **"yield complete"** and return the explicit result. Remain there with that
+heading: no return to path or route resumption. Local turn inversion is optional.
+Use `await yield_to_person(runtime)` from
+`robot.navel_client.behavior.actions.yield_to_person` with shared readers running.
+
+Dry-run sends no speech or actuator commands. Speech waits are bounded by
+`--speech-timeout` (5 s default). Initial speech failure prevents movement;
+movement failure suppresses completion speech; final speech failure preserves
+successful movement in the result. Cancellation awaits owned speech and motion
+tasks and confirms stop before releasing ownership. SDK completion and fresh
+stopped odometry do not verify physical travel accuracy. Mock coverage does not
+validate real LLM latency, hardware speech/movement semantics or clearance.
 
 ### Reusing the approach
 
@@ -632,7 +659,7 @@ head-control scripts during eventual controlled hardware validation.
 
 Prior standalone-script hardware testing does **not** validate this integration.
 The integrated pipeline is tested only with mocks, mathematical checks, and a
-local HTTP server/fake LLM. Physical validation of the integrated approach,
+local HTTP server/fake LLM. Physical validation of integrated APPROACH/YIELD,
 calibration, stop response and realistic LLM latency remains outstanding.
 
 ### Observation API
@@ -660,7 +687,8 @@ python3 -m unittest discover -s tests -v
 ```
 
 Tests cover parsing and routing, target/freshness admission, deduplication,
-exclusive motion, transport progress during approach, shared sensor readers,
+exclusive motion, transport progress during APPROACH/YIELD, shared sensor readers,
 shutdown ordering, dry-run isolation, face loss, distance/alignment corrections,
-second-target execution, and stop/odometry failures. The HTTP test needs local
+second-target execution, stop/odometry failures, exact YIELD sequence and parameters,
+speech failures/timeouts, and source-clock expiry before movement. The HTTP test needs local
 loopback socket permission. Tests construct only mock robot connections.

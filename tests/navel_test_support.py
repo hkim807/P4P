@@ -116,14 +116,14 @@ async def setup_runtime(test, robot=None, execute=False, **config):
     return robot, rt, controller, queue, readers
 
 
-def response(rt, decision='decision-1', target=None, action='APPROACH', distance=.7, speed=None, validity=60000):
+def response(rt, decision='decision-1', target=None, action='APPROACH', distance=.7, speed=None, validity=15000):
     observation_id, context = next(reversed(rt.contexts.items()))
-    target = target if target is not None else next(iter(context['targets']), '999')
+    target = target if target is not None else (next(iter(context['targets']), '999') if action in {'APPROACH', 'ENGAGE'} else None)
     return {'behavior_intent': {'schema_version': '1.0', 'decision_id': decision,
         'observation_id': observation_id, 'social_state_id': 'state-1',
         'created_at_us': context['timestamp_us'], 'action': action,
         'target_human_id': target, 'preferences': {'preferred_social_distance_m': distance,
-            'target_speed_mps': speed, 'hold_duration_s': 1.},
+            'target_speed_mps': speed} if action == 'APPROACH' else {},
         'valid_for_ms': validity, 'reason_codes': ['HUMAN_DETECTED'], 'decision_confidence': .9}}
 
 

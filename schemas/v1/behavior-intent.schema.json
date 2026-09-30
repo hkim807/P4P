@@ -3,17 +3,9 @@
     "Action": {
       "enum": [
         "CONTINUE",
-        "MONITOR",
-        "ORIENT",
-        "SLOW",
-        "YIELD",
-        "AVOID",
         "APPROACH",
-        "GREET",
-        "GUIDE",
-        "WAIT",
-        "RESUME",
-        "DISENGAGE"
+        "ENGAGE",
+        "YIELD"
       ],
       "title": "Action",
       "type": "string"
@@ -175,8 +167,8 @@
       "title": "Target Human Id"
     },
     "valid_for_ms": {
-      "exclusiveMinimum": 0,
-      "maximum": 60000,
+      "maximum": 15000,
+      "minimum": 250,
       "title": "Valid For Ms",
       "type": "integer"
     }

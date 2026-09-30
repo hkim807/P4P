@@ -12,17 +12,9 @@ from typing import Any
 
 class NavelAction(str, Enum):
     CONTINUE = "CONTINUE"
-    MONITOR = "MONITOR"
-    ORIENT = "ORIENT"
-    SLOW = "SLOW"
-    YIELD = "YIELD"
-    AVOID = "AVOID"
     APPROACH = "APPROACH"
-    GREET = "GREET"
-    GUIDE = "GUIDE"
-    WAIT = "WAIT"
-    RESUME = "RESUME"
-    DISENGAGE = "DISENGAGE"
+    ENGAGE = "ENGAGE"
+    YIELD = "YIELD"
 
 
 class NavelPassingSide(str, Enum):
@@ -118,8 +110,8 @@ class NavelBehaviorIntent:
             valid_for_ms=_integer(
                 _required(payload, "valid_for_ms"),
                 "valid_for_ms",
-                minimum=1,
-                maximum=60_000,
+                minimum=250,
+                maximum=15_000,
             ),
             reason_codes=_reason_codes(_required(payload, "reason_codes")),
             decision_confidence=confidence,
@@ -268,23 +260,13 @@ def _validate_mapper_requirements(
     target_human_id: str | None,
     preferences: NavelBehaviorPreferences,
 ) -> None:
-    targeted = {
-        NavelAction.ORIENT,
-        NavelAction.APPROACH,
-        NavelAction.GREET,
-        NavelAction.GUIDE,
-        NavelAction.DISENGAGE,
-    }
-    if action in targeted and target_human_id is None:
+    if action in {NavelAction.APPROACH, NavelAction.ENGAGE} and target_human_id is None:
         raise NavelIntentParseError(f"{action.value} requires target_human_id")
-    required_preferences = {
-        NavelAction.SLOW: ("target_speed_mps", preferences.target_speed_mps),
-        NavelAction.APPROACH: (
-            "preferred_social_distance_m",
-            preferences.preferred_social_distance_m,
-        ),
-        NavelAction.WAIT: ("hold_duration_s", preferences.hold_duration_s),
-    }
-    required = required_preferences.get(action)
-    if required is not None and required[1] is None:
-        raise NavelIntentParseError(f"{action.value} requires {required[0]}")
+    if action == NavelAction.CONTINUE and target_human_id is not None:
+        raise NavelIntentParseError("CONTINUE forbids target_human_id")
+    allowed = {"preferred_social_distance_m", "target_speed_mps"} if action == NavelAction.APPROACH else set()
+    for field in _PREFERENCE_FIELDS - allowed:
+        if getattr(preferences, field) is not None:
+            raise NavelIntentParseError(f"{action.value} has unsupported preference: {field}")
+    if action == NavelAction.APPROACH and preferences.preferred_social_distance_m is None:
+        raise NavelIntentParseError("APPROACH requires preferred_social_distance_m")

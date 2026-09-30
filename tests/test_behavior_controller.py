@@ -33,9 +33,10 @@ class BehaviorControllerTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(controller.handle_response(payload).status, 'DUPLICATE')
         self.assertEqual(controller.handle_response(response(rt, decision='same', target=state.target_human_id)).status, 'ALREADY_RUNNING')
         self.assertEqual(controller.handle_response(response(rt, decision='other', target='777')).status, 'BUSY')
-        for action in ('WAIT', 'AVOID', 'GREET', 'ORIENT', 'CONTINUE', 'MONITOR', 'GUIDE', 'YIELD', 'SLOW', 'RESUME', 'DISENGAGE'):
+        for action in ('CONTINUE', 'ENGAGE'):
             result = controller.handle_response(response(rt, decision=action, action=action, speed=.2))
             self.assertEqual(result.status, 'UNSUPPORTED_ACTION')
+        self.assertEqual(controller.handle_response(response(rt, decision='yield', action='YIELD', target=state.target_human_id)).status, 'BUSY')
         self.assertEqual(controller.handle_response({'behavior_intent': None}).status, 'NO_INTENT')
         self.assertIs(controller.execution_state, state)
         await controller.cancel_active()
@@ -64,14 +65,14 @@ class BehaviorControllerTests(unittest.IsolatedAsyncioTestCase):
 
     async def test_expiry_counts_time_before_receipt_and_acquisition(self):
         robot, rt, controller, _, _ = await setup_runtime(self)
-        payload = response(rt, validity=1)
-        await asyncio.sleep(.01)
+        payload = response(rt, validity=250)
+        await asyncio.sleep(.26)
         self.assertEqual(controller.handle_response(payload).status, 'EXPIRED')
-        payload = response(rt, decision='acquire', validity=100)
+        payload = response(rt, decision='acquire', validity=250)
         self.assertEqual(controller.handle_response(payload).status, 'ACCEPTED')
         state = await controller.active_task
         self.assertEqual(state.status, 'FAILED')
-        self.assertIn('deadline', state.latest_error)
+        self.assertTrue('deadline' in state.latest_error or 'expired' in state.latest_error)
         self.assertEqual(robot.calls, [])
 
     async def test_wrong_source_clock_uid_missing_ambiguous_and_stale_target(self):

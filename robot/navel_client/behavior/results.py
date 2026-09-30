@@ -3,6 +3,7 @@ from dataclasses import dataclass
 from enum import Enum
 from robot.navel_client.behavior.intent import NavelAction
 from robot.navel_client.behavior.actions.approach_human import ApproachResult
+from robot.navel_client.behavior.actions.yield_to_person import YieldResult
 
 
 @dataclass(frozen=True)
@@ -15,6 +16,7 @@ class BehaviorExecutionResult:
     requested_target: str | None = None
     resolved_target: str | None = None
     approach: ApproachResult | None = None
+    yield_result: YieldResult | None = None
 
 
 class BehaviorHandlingStatus(str, Enum):

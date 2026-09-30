@@ -6,7 +6,7 @@ from robot.navel_client.behavior.commands import ApproachCommand
 from robot.navel_client.behavior.dispatcher import BehaviorDispatcher
 from robot.navel_client.behavior.execution_state import BehaviorExecutionState, BehaviorExecutionStatus as Lifecycle
 from robot.navel_client.behavior.handlers.approach_human import validate_parameters
-from robot.navel_client.behavior.intent import NavelBehaviorIntent, NavelIntentParseError
+from robot.navel_client.behavior.intent import NavelAction, NavelBehaviorIntent, NavelIntentParseError
 from robot.navel_client.behavior.mapper import BehaviorIntentMapper
 from robot.navel_client.behavior.registry import build_handler_registry
 from robot.navel_client.behavior.results import BehaviorHandlingResult, BehaviorHandlingStatus
@@ -64,14 +64,15 @@ class BehaviorController:
         except Exception as exc:
             return self._admit(S.INVALID_INTENT, intent, str(exc))
         if not self._dispatcher.supports(command):
-            return self._admit(S.UNSUPPORTED_ACTION, intent, 'Unimplemented action; active approach is unchanged')
+            return self._admit(S.UNSUPPORTED_ACTION, intent, 'Unimplemented action; active execution is unchanged')
         if self.runtime.stop_failure or self.runtime.shutdown.is_set():
             return self._admit(S.FAILED, intent, self.runtime.stop_failure or 'Shutting down')
         if self.active_task is not None and not self.active_task.done():
             if self.active_task.cancelling() or self.runtime.stop.is_set():
                 return self._admit(S.BUSY, intent, 'Cancellation cleanup is still running')
-            same = intent.target_human_id == self.execution_state.target_human_id
-            if not same and self.runtime.target is not None:
+            same_action = intent.action == self.execution_state.action
+            same = same_action and intent.target_human_id == self.execution_state.target_human_id
+            if same_action and isinstance(command, ApproachCommand) and not same and self.runtime.target is not None:
                 try:
                     context, _ = self.runtime.intent_context(intent)
                     target = self.runtime.resolve(context, intent.target_human_id)
@@ -88,7 +89,7 @@ class BehaviorController:
         except (ValueError, RuntimeError) as exc:
             return self._admit(S.INVALID_INTENT, intent, str(exc))
         try:
-            seed = self.runtime.resolve(context, intent.target_human_id)
+            seed = self.runtime.resolve(context, intent.target_human_id) if isinstance(command, ApproachCommand) else None
         except (ValueError, RuntimeError) as exc:
             return self._admit(S.TARGET_UNAVAILABLE, intent, str(exc))
         self._execution_state.accept(intent)
@@ -96,7 +97,7 @@ class BehaviorController:
         return self._admit(S.ACCEPTED, intent)
 
     async def _execute(self, command, seed, deadline, decision_id):
-        self._execution_state.update(Lifecycle.RUNNING, resolved_target=str(seed['uid']))
+        self._execution_state.update(Lifecycle.RUNNING, resolved_target=str(seed['uid']) if seed else None)
         try:
             result = await self._dispatcher.dispatch(command, seed=seed,
                                                      deadline=deadline, decision_id=decision_id)
@@ -104,11 +105,17 @@ class BehaviorController:
             self._execution_state.update(Lifecycle.CANCELLED)
         except Exception as exc:
             self._execution_state.update(Lifecycle.FAILED, latest_error=str(exc),
-                resolved_target=str(self.runtime.target['uid']) if self.runtime.target else str(seed['uid']))
+                resolved_target=str(self.runtime.target['uid']) if self.runtime.target else str(seed['uid']) if seed else None)
             self._logger.exception('BEHAVIOR_FAILED decision=%s', decision_id)
         else:
-            self._execution_state.update(Lifecycle.DRY_RUN_COMPLETED if result.dry_run else Lifecycle.COMPLETED,
-                                         result=result, resolved_target=result.resolved_target)
+            outcome = result.yield_result
+            status = Lifecycle.DRY_RUN_COMPLETED if result.dry_run else Lifecycle.COMPLETED
+            if outcome and outcome.status == 'CANCELLED':
+                status = Lifecycle.CANCELLED
+            elif outcome and outcome.status in {'FAILED', 'SPEECH_FAILED'}:
+                status = Lifecycle.FAILED
+            self._execution_state.update(status, result=result, resolved_target=result.resolved_target,
+                                         latest_error=outcome.error if outcome else None)
         self._logger.info('BEHAVIOR_EXECUTION %s', self.execution_state)
         return self.execution_state
 
@@ -138,7 +145,7 @@ class BehaviorController:
         if self.runtime.stop_failure or (state and state.status == Lifecycle.FAILED):
             return {'task': 'ERROR', 'controller_status': 'FAULT'}
         if state and state.status in (Lifecycle.ACCEPTED, Lifecycle.RUNNING):
-            return {'task': 'APPROACHING' if self.runtime.cfg.execute else 'IDLE',
+            return {'task': ('YIELDING' if state.action == NavelAction.YIELD else 'APPROACHING') if self.runtime.cfg.execute else 'IDLE',
                     'controller_status': 'ACTIVE' if self.runtime.cfg.execute else 'STOPPED'}
         if state and state.status == Lifecycle.COMPLETED:
             return {'task': 'COMPLETE', 'controller_status': 'STOPPED'}
