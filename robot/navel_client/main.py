@@ -13,6 +13,7 @@ from dataclasses import dataclass
 from typing import Any
 
 from robot.navel_client.adapter import NavelObservationAdapter
+from robot.navel_client.decision_dispatch import DecisionDispatcher, DryRunHandlers
 from robot.navel_client.transport import ObservationTransport, TransportError
 
 
@@ -68,6 +69,7 @@ async def _send_observations(
     *,
     minimum_send_interval_s: float,
     print_only: bool,
+    decision_dispatcher: DecisionDispatcher | None = None,
 ) -> None:
     last_sent_at = -math.inf
     while True:
@@ -87,14 +89,20 @@ async def _send_observations(
                 response = await asyncio.to_thread(transport.send, observation)
             except TransportError as error:
                 logger.warning("timestamp=%s transport_error=%s", observation["timestamp"], error)
+                if decision_dispatcher is not None:
+                    await decision_dispatcher.invalidate("transport_error")
                 continue
             if 200 <= response.status_code < 300 and response.payload.get("accepted") is True:
                 print(json.dumps(observation, allow_nan=False, indent=2), flush=True)
                 logger.info("timestamp=%s people=%s accepted=true",
                             observation["timestamp"], len(observation["people"]))
+                if decision_dispatcher is not None:
+                    await decision_dispatcher.accept(response.payload, observation)
             else:
                 logger.warning("timestamp=%s status=%s response=%s",
                                observation["timestamp"], response.status_code, response.payload)
+                if decision_dispatcher is not None:
+                    await decision_dispatcher.invalidate("observation_not_accepted")
         finally:
             queue.task_done()
 
@@ -104,6 +112,10 @@ async def collect_and_stream(robot: Any, args: argparse.Namespace) -> None:
     adapter = NavelObservationAdapter()
     queue: asyncio.Queue[dict[str, Any]] = asyncio.Queue(maxsize=1)
     latest = LatestLocomotion()
+    decision_dispatcher = (DecisionDispatcher(DryRunHandlers(robot),
+                           max_age_s=args.max_decision_age,
+                           timeout_s=args.decision_timeout)
+                           if args.decision_dry_run else None)
     tasks = [
         asyncio.create_task(_collect_locomotion(robot, latest)),
         asyncio.create_task(_collect_perception(
@@ -113,14 +125,19 @@ async def collect_and_stream(robot: Any, args: argparse.Namespace) -> None:
             queue, transport,
             minimum_send_interval_s=args.minimum_send_interval,
             print_only=args.print_only,
+            decision_dispatcher=decision_dispatcher,
         )),
     ]
+    if decision_dispatcher is not None:
+        tasks.append(asyncio.create_task(decision_dispatcher.watchdog()))
     try:
         await asyncio.gather(*tasks)
     finally:
         for task in tasks:
             task.cancel()
         await asyncio.gather(*tasks, return_exceptions=True)
+        if decision_dispatcher is not None:
+            await decision_dispatcher.invalidate("client_stopped")
 
 
 async def run(args: argparse.Namespace) -> None:
@@ -141,11 +158,20 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--max-locomotion-age", type=float, default=1.0,
                         help="Seconds before cached robot velocity/ranges become unavailable")
     parser.add_argument("--print-only", action="store_true", help="Print JSON frames without HTTP")
+    parser.add_argument("--decision-dry-run", action="store_true",
+                        help="Log validated policy handler calls without robot actions")
+    parser.add_argument("--max-decision-age", type=float, default=1.0,
+                        help="Maximum age of a source frame when its decision arrives (seconds)")
+    parser.add_argument("--decision-timeout", type=float, default=2.0,
+                        help="Expire a dry-run decision after this long without a valid response (seconds)")
     args = parser.parse_args(argv)
-    for name in ("request_timeout", "max_locomotion_age", "minimum_send_interval"):
+    if args.print_only and args.decision_dry_run:
+        parser.error("--decision-dry-run requires HTTP; remove --print-only")
+    for name in ("request_timeout", "max_locomotion_age", "minimum_send_interval",
+                 "max_decision_age", "decision_timeout"):
         value = getattr(args, name)
         if not math.isfinite(value) or value < 0 or (name != "minimum_send_interval" and value == 0):
-            parser.error("timeouts/maximum age must be positive and finite; send interval may be zero")
+            parser.error("timeouts/maximum ages must be positive and finite; send interval may be zero")
     try:
         ObservationTransport(args.server, timeout_seconds=args.request_timeout)
     except ValueError as error:

@@ -2,16 +2,19 @@
 
 ## Objective and starting point
 
-**Layers 1-3 are implemented at the software level:** raw receiving/recording/replay,
-bounded UID histories, temporal measurements, and provisional SocialState categories.
-The next gate is **calibration and identity-continuity validation before Layer 4 policy**.
+**Layers 1-3 and the first stateless Layer 4a rule policy are implemented at the
+software level:** raw receiving/recording/replay, bounded UID histories, temporal
+measurements, provisional SocialState categories, and explainable decisions.
+The next build is the **Layer 4b interaction lifecycle**. Calibration and identity
+continuity remain gates before physical approach.
 The [temporal design record](temporal-social-state.md) and
 [temporal validation report](results/temporal-state/report.md) document the current
 algorithms, synthetic checkpoints, and the original recordings' sensor limitations.
 The [tracking design record](person-tracking.md) documents implementation choices,
 study support, and limitations; the [validation report](results/person-tracking/report.md)
-covers all seven supplied recordings. Continue one layer at a time: calibrate
-SocialState, then decisions, then execution.
+covers all seven supplied recordings. The [first rule policy](social-policy.md)
+documents decision precedence and replay. Continue one layer at a time:
+interaction lifecycle, command delivery, then execution.
 Each layer must have an inspectable replay output and pass its acceptance gate
 before adding the next layer.
 
@@ -47,7 +50,7 @@ Layer 1 [implemented]  Navel -> RawObservationFrame -> receive / record / replay
 Layer 2 [implemented]  ordered frames -> bounded PersonTrack histories by UID
 Layer 3a [implemented] histories -> temporal measurements and data quality
 Layer 3b [provisional] measurements -> categorical SocialState; calibration pending
-Layer 4a               SocialState -> explainable rule decision
+Layer 4a [implemented] SocialState -> explainable rule decision
 Layer 4b               decisions + feedback -> target lock / interaction lifecycle
 Layer 5a               intent -> validated command -> dry-run execution feedback
 Layer 5b               verified robot actions -> controlled full-loop evaluation
@@ -102,7 +105,7 @@ Observed limitations that shape the next layers:
   stationary-base conditions or yaw accuracy.
 
 Use these as development/pilot inputs. Add a small sidecar manifest with file
-hash, scenario, confirmed robot motion context, and manually annotated intervals
+hash, scenario, verified robot motion conditions, and manually annotated intervals
 when calibrating. Scenario names and human labels must never become policy
 inputs. Collect independent repetitions for held-out evaluation.
 
@@ -288,12 +291,12 @@ large gaps rather than joining unrelated pieces of history. Retain the signed
 slope and a fit-quality measure. Negative slope means separation is decreasing;
 positive means increasing. Calibrate a deadband from stationary-person recordings.
 
-**Motion interpretation.** Only convert the relative trend to a human radial
-motion label after the relevant window has verified stationary-base context.
-An unverified always-zero yaw channel cannot establish this. Use independently
-confirmed stopped-base status in controlled recordings/robot execution feedback,
-or verified motion channels. Head/camera motion and face-distance noise remain
-limitations even during stationary-base observation.
+**Motion interpretation.** The implemented estimator converts a relative trend
+to human radial motion only when both recorded robot velocities are present and
+near zero at every sample in the fitted distance segment. Validate the live
+velocity channels and their freshness before using this label for physical
+actions. Head/camera motion and face-distance noise remain limitations even
+during stationary-base observation.
 
 **Distance zones.** Calibrate the boundaries of four regions with separate entry/exit
 limits. Do not adopt the PDF's mixed near/mid/far wording as several competing
@@ -316,7 +319,7 @@ sensor calibration remains a separate task before interpreting cues or moving.
 | 2. Person tracking - implemented | Bounded UID histories, visibility lifecycle, session isolation, replay track trace | Passed: all 682 frames; continuous histories in 03/05; separate changed UIDs; lifecycle edge cases; identical traces at replay speeds 0/1/2 and through the receiver. See the linked validation report. |
 | 3a. Temporal measurements - implemented | Windowed gaze evidence, robust distance slope, coverage and gap handling | Seven recordings and controlled stimuli pass source-time, validity, and replay checks. Evidence traces expose gaps/UID fragmentation. |
 | 3b. SocialState - implemented with provisional thresholds | Gaze categories, distance zones, relative trend and conditional human radial motion, validity | Synthetic pattern checkpoints pass; output carries evidence/config/uncertainty. Calibration and human-labeled evaluation remain pending; original 04/05 show gaze-score ambiguity. |
-| 4a. Rule decision | Pure rule table over SocialState; action or defer with rule/reason IDs | Table cases pass using controlled state fixtures; replay decisions match valid evidence, not filename labels. No commands or robot dependency are needed. |
+| 4a. Rule decision - implemented | Pure rule table over SocialState; action or defer with reason ID | Branch tests and live/replay decision parity pass. No commands or robot dependency. See the [rule policy](social-policy.md). |
 | 4b. Interaction lifecycle | Observe/decide, target lock, cooldown, completion/cancellation handling | Simulated feedback demonstrates the full state progression; missing/changed UIDs never transfer a lock; repeated frames do not retrigger engagement. Live inspection emits the same stage outputs as replay and detects stream loss. |
 | 5a. Commands and dry-run round trip | Full session envelope, intent validation, command parsing/deduplication, fake executor, execution events | Real HTTP through the existing tunnel delivers correlated commands and feedback. Stale/lost-target/old-session/duplicate/unsupported commands are rejected or deduplicated. |
 | 5b. Controlled physical execution | Verified local pause/hold/resume, one utterance, bounded approach, cancellation/watchdog | Enable and demonstrate one capability at a time, including target loss, obstacle-data loss, tunnel loss, operator override, and route arbitration. |

@@ -164,6 +164,27 @@ See [temporal design and commands](docs/temporal-social-state.md) and
 [validation results](docs/results/temporal-state/report.md), including controlled
 transformations of a recorded frame into changing cue patterns.
 
+## Inspect rule decisions
+
+With `--social-output` enabled, each accepted HTTP response also includes a
+`policy_decision`: `CONTINUE`, `APPROACH`, `ENGAGE`, or `DEFER`, with its reason and
+source state ID. The current cues cannot establish a route conflict, so the
+policy does not emit `YIELD`. These are proposals, not robot commands.
+
+Apply the same rules to an existing SocialState trace:
+
+```bash
+python3 -m app.decide var/temporal-validation/01-velocity-social.jsonl \
+  --output var/temporal-validation/01-decisions.jsonl
+```
+
+See [rule logic and limits](docs/social-policy.md). The decision output path
+must be new.
+
+To receive and log live decisions on Navel without robot actions, start the
+receiver with `--social-output` and add `--decision-dry-run` to the robot client.
+See the [robot decision dry-run guide](docs/robot-decision-dry-run.md).
+
 ## Synthetic replay example
 
 A three-frame synthetic example is included for a quick check:

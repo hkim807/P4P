@@ -1,0 +1,73 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "decision_id": {
+      "title": "Decision Id",
+      "type": "string"
+    },
+    "source_state_id": {
+      "title": "Source State Id",
+      "type": "string"
+    },
+    "session_id": {
+      "title": "Session Id",
+      "type": "string"
+    },
+    "policy_version": {
+      "const": "social-rules-v1",
+      "default": "social-rules-v1",
+      "title": "Policy Version",
+      "type": "string"
+    },
+    "decision": {
+      "enum": [
+        "CONTINUE",
+        "APPROACH",
+        "ENGAGE",
+        "YIELD",
+        "DEFER"
+      ],
+      "title": "Decision",
+      "type": "string"
+    },
+    "reason_code": {
+      "title": "Reason Code",
+      "type": "string"
+    },
+    "target_uid": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Target Uid"
+    },
+    "target_track_epoch": {
+      "anyOf": [
+        {
+          "minimum": 1,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Target Track Epoch"
+    }
+  },
+  "required": [
+    "decision_id",
+    "source_state_id",
+    "session_id",
+    "decision",
+    "reason_code"
+  ],
+  "title": "PolicyDecision",
+  "type": "object"
+}

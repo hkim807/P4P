@@ -15,6 +15,7 @@ from werkzeug.exceptions import HTTPException
 from app.domain.models import RawObservationFrame
 from app.recording import RecordingWriter, TimestampOrderError
 from app.pipeline import TrackTraceWriter, TrackingPipeline, TrackingProcessingError
+from app.policy.rules import decide
 from app.state.tracks import TrackConfig
 from app.social_pipeline import SocialPipeline
 from app.state.social_models import TemporalConfig
@@ -80,10 +81,21 @@ def create_app(output_path: str | Path | None = None, *,
         except TrackingProcessingError as error:
             logger.exception("Raw observation saved, but tracking failed")
             return jsonify(accepted=True, timestamp=frame.timestamp, people_count=len(frame.people),
-                           processing_status="failed", processing_stage=error.stage), 200
+                           processing_status="failed", processing_stage=error.stage,
+                           policy_decision=None), 200
         if snapshot is not None:
             social = snapshot.get("social_state")
-            extra = {"social_state": social} if social is not None else {}
+            if social is not None:
+                try:
+                    decision = decide(social).model_dump(mode="json")
+                except Exception:
+                    logger.exception("Raw observation and social state saved, but policy decision failed")
+                    return jsonify(accepted=True, timestamp=frame.timestamp, people_count=len(frame.people),
+                                   processing_status="failed", processing_stage="policy_decision",
+                                   policy_decision=None), 200
+                extra = {"social_state": social, "policy_decision": decision}
+            else:
+                extra = {}
             return jsonify(accepted=True, timestamp=frame.timestamp, people_count=len(frame.people),
                            processing_status="complete", tracking={
                                "session_id": snapshot["session_id"],
