@@ -1,10 +1,11 @@
 # LLM/VLM Social Navigation Pipeline
 
-This repository contains a read-only social-navigation proof of concept: canonical
+This repository contains a social-navigation proof of concept: canonical
 observation contracts, synthetic/replay sources, temporal state estimation,
 event-driven decision scheduling, and an HTTP gateway to a locally hosted Ollama
 model. It also includes a Navel-side collector that reads SDK data and sends
-canonical observations without commanding the robot.
+canonical observations. Bounded approaches to pipeline-selected people can be enabled
+explicitly; the client defaults to dry-run.
 
 ![LLM/VLM social-navigation architecture](docs/architecture.jpg)
 
@@ -23,7 +24,8 @@ Navel next_frame + next_locomotion
   -> LLMPolicyBridge
   -> Ollama structured response
   -> validated BehaviorIntent in the HTTP response
-  -> typed Navel behavior command and dry-run handler
+  -> local freshness/target admission -> typed command -> asynchronous approach handler
+  -> shared runtime -> bounded approach -> explicit execution outcome
 ```
 
 The simpler `POST /chat` route remains available only as an Ollama connectivity
@@ -32,9 +34,9 @@ diagnostic. The robot pipeline uses `POST /api/v1/observations`.
 This path is covered offline with Navel SDK-shaped perception and locomotion
 objects, a real local HTTP request, and a fake structured LLM. A live test still
 requires the Navel SDK and sockets on the robot, a network route to the gateway,
-and the configured Ollama model on the lab computer. VLM input, final validation
-for execution, and physical robot control are not implemented. See
-`docs/behavior-intent-output-mapping.md` for the dry-run output architecture.
+and the configured Ollama model on the lab computer. VLM input is not implemented.
+The supplied standalone approach scripts were previously hardware-tested; this
+new pipeline integration has only been tested without physical hardware.
 
 Ollama is the local model runtime. It performs inference on the computer where it is installed; requests are not sent to an Ollama cloud model. The Python gateway and Ollama are expected to run on the same server computer by default. Navel calls the gateway using that computer's LAN IP address.
 
@@ -50,7 +52,7 @@ app/
   server.py       Flask API
   state/          Temporal social-state estimation
 robot/
-  navel_client/   Read-only collection, transport, and dry-run behavior mapping
+  navel_client/   Shared sensors, transport, intent admission and bounded approach
 client.py         Minimal client for Navel or another computer
 docs/
   architecture.jpg
@@ -256,13 +258,13 @@ When a decision is triggered successfully, the response contains a complete
     "observation_id": "navel-5010005:123456789:000001",
     "social_state_id": "state-...",
     "created_at_us": 123456789,
-    "action": "ORIENT",
+    "action": "ENGAGE",
     "target_human_id": "17",
     "preferences": {
       "target_speed_mps": null,
       "preferred_social_distance_m": null,
       "passing_side": null,
-      "orientation_target_rad": 0.0,
+      "orientation_target_rad": null,
       "hold_duration_s": null
     },
     "valid_for_ms": 1000,
@@ -432,23 +434,24 @@ behaviour are configurable through `SchedulerConfig`.
 
 ## Navel observation-to-policy pipeline
 
-The Navel integration reads perception and locomotion only. It does not call any
-motion, navigation, head, gaze, speech, or actuator API. The server validates the
-LLM selection as `BehaviorIntent`, but the robot client only prints it.
-
-The implemented flow is:
+One `navel.Robot()` connection has one `next_frame()` reader and one
+`next_locomotion()` reader. `main.py` feeds `navel_runtime.py` and the observation
+adapter from those collectors. HTTP runs in a worker thread, and the response
+loop submits actions without awaiting movement. Sensor processing and observation
+sending continue throughout the action.
 
 ```text
-Navel next_frame/next_locomotion
-  -> robot-side canonical ObservationFrame dictionary
-  -> POST /api/v1/observations
-  -> server-side Pydantic validation
-  -> TemporalSocialStateEstimator
-  -> DecisionScheduler
-  -> Ollama only when scheduled
-  -> schema validation and canonical BehaviorIntent
-  -> intent returned for inspection, never execution
+behavior_intent -> parser -> mapper -> admission -> async dispatcher
+  -> behavior/handlers/approach_human.py
+  -> behavior/actions/approach_human.py -> shared navel_runtime.py
+  -> BehaviorExecutionSnapshot + ApproachResult
 ```
+
+The controller owns the active task and records its result or exception. Admission
+results (including rejected requests) are separate from the accepted execution.
+The runtime owns raw packets, receipt times, synchronized odometry history,
+position association and exclusive movement. It has no reader-starting method.
+No extra robot connection or event loop is created by the action.
 
 The prompt and its research rationale are documented in
 [`docs/llm-policy-prompt-design.md`](docs/llm-policy-prompt-design.md).
@@ -490,75 +493,174 @@ curl http://127.0.0.1:6060/health
 Only the Flask port needs to be reachable from the robot. Keep Ollama local when
 possible. The Navel command must use the laptop's LAN address, not `127.0.0.1`.
 
-### Navel setup and run command
+### Navel setup and usage
 
-The Navel SDK is expected to already be installed on the robot. From a directory
-where the repository may be stored:
-
-```bash
-git clone https://github.com/hkim807/P4P.git
-cd P4P
-git fetch origin
-git switch feature/behavior-intent-output-mapper
-git pull --ff-only
-python3 --version
-python3 -m robot.navel_client.main \
-  --server http://<LAPTOP_IP>:6060 \
-  --adapter-id navel-<ROBOT_ID>
-```
-
-Until this feature is merged into `main`, both computers must check out
-`feature/behavior-intent-output-mapper`. The robot must use Python 3.10 or newer.
-The Navel SDK is provided on the robot. The client uses only that SDK and the
-Python standard library: no virtual environment, internet connection, or
-installation from the server's `requirements.txt` is required. The
-`requirements-navel.txt` file records that there are currently no additional
-PyPI dependencies.
-
-The client collects locomotion concurrently, keeps only the newest unsent frame,
-and performs blocking standard-library HTTP in a worker thread. Temporary SDK
-and HTTP timeouts are reported without immediately terminating collection.
-
-Before running the full pipeline on the robot, verify the dependency boundary:
+Use Python 3.11+ and the robot-provided Navel SDK (the supplied algorithm targets
+0.15.3). No extra robot-side PyPI dependencies are needed. From this repository's
+root on the robot, with the gateway running on the example LAN address:
 
 ```bash
-python3 -c "import robot.navel_client.main; print('Navel client imports OK')"
-```
+# Default: validate/acquire/preview, without movement, stop or speech commands.
+python3 -m robot.navel_client.main --server http://192.168.1.100:6060 --adapter-id navel-5010005
 
-Useful diagnostics:
+# Explicitly enable pipeline-requested bounded approach movement.
+python3 -m robot.navel_client.main --server http://192.168.1.100:6060 --adapter-id navel-5010005 --execute
 
-```bash
-# Print canonical observations locally without HTTP or Ollama calls.
+# Sensor-only diagnostic, without HTTP.
 python3 -m robot.navel_client.main --print-only
-
-# Make this diagnostic run bypass normal scheduling.
-python3 -m robot.navel_client.main \
-  --server http://<LAPTOP_IP>:6060 \
-  --force-decision
 ```
 
-`--force-decision` defaults off; leaving it enabled can request an LLM decision
-for every transmitted frame. Stop that diagnostic immediately after confirming
-one round trip.
+Replace `192.168.1.100` with the gateway's actual LAN address. `--force-decision`
+is an optional scheduling diagnostic. `--execute` cannot be combined with
+`--print-only` or `--stationary-velocity-fallback`. The latter is an explicit
+stationary-only diagnostic for unavailable odometry. In execution mode, stale
+odometry causes observations to be skipped and movement to fail and stop.
+YIELD includes two fixed announcements. The approach demo's automatic drive
+and nearest-person trigger are absent.
 
-If locomotion velocity is temporarily unavailable, the client skips perception
-frames by default. `--stationary-velocity-fallback` explicitly substitutes zero
-velocity, but it is valid only when the physical robot is confirmed stationary.
+### Target, coordinates and parameters
 
-The SDK documentation does not identify any `g_head_position` coordinate as a
-robot-base origin. Consequently, 3-D human position is omitted by default. After
-physically verifying a coordinate label and transform as equivalent to the
-contract's `ROBOT_BASE`, opt in explicitly:
+The canonical vocabulary is exactly **CONTINUE / APPROACH / ENGAGE / YIELD**.
+APPROACH and YIELD have real handlers. CONTINUE and ENGAGE parse and map, but
+return explicit `UNSUPPORTED_ACTION` results. Removed behaviour actions are
+rejected without aliases. See [YIELD execution and timing](docs/behavior-intent-output-mapping.md#reusable-yield-and-pipeline-invocation).
 
-```bash
-python3 -m robot.navel_client.main \
-  --server http://<LAPTOP_IP>:6060 \
-  --robot-base-coordinate-system <VERIFIED_SDK_LABEL>
+The following target and approach-geometry rules apply to APPROACH. YIELD needs
+no target and uses fixed movement parameters; any target is provenance only.
+
+`target_human_id` must be a canonical nonnegative integer UID string found in the
+referenced locally generated Navel observation. IDs from other sources, unknown
+observations, missing positions, ambiguity and stale targets are rejected; there
+is no nearest-person fallback. Up to 2,048 local observation contexts are retained
+for at most 60 seconds. Their position associations advance with incoming frames,
+so an ordinary UID change during an HTTP response delay can be resolved. The
+supplied 0.5 m association gate, 0.20 m ambiguity margin, 2 s loss limit, and
+0.35 m acquisition gate are retained. New executions reset target/acquisition
+state, while keeping the connection and readers.
+
+The live adapter and movement share `g_nose`, transformed from `HEAD_STRAIGHT`
+(SDK coordinate 3) into the base plane. They do not use `g_head_position` or
+`dist_mm` as a conflicting movement measurement. Forward is +x, left is +y.
+The supplied default assumes the head origin is vertically above the wheel
+rotation centre and aligned forwards. Calibration options are `--head-x`,
+`--head-y` (each within ±0.5 m), and `--frame-yaw-deg` (within ±45°).
+Published `position_robot_m` projects the nose onto the horizontal base plane
+(`z=0`); height is not calibrated. `distance_m` is its horizontal norm.
+
+The shared decoder handles standard planar quaternions and the supplied SDK
+0.15.3 positional-layout workaround: quaternion x/y encode yaw, and velocity
+`linear_y` encodes yaw rate. In that layout it is **not lateral velocity**.
+The live adapter publishes the same decoded yaw rate and forward velocity as the
+action. SDK timestamps are treated as microseconds for nearest-pose alignment
+(maximum skew 180 ms); duplicate/backward packets do not refresh local state.
+As in the supplied runtime, absent SDK timestamps use receipt-time freshness and
+the latest pose, with weaker alignment assurance. Odometry expires after 0.6 s,
+perception after 0.8 s; initial target positions must be current within 0.4 s.
+
+`preferred_social_distance_m` is required and applied directly, supported from
+0.6 to 1.5 m. It measures **horizontal wheel-rotation-centre to estimated nose**,
+not shell-to-body clearance. Optional `target_speed_mps` must be finite and
+positive. Its applied cap is `min(request, 0.25)` m/s, defaulting to 0.25 m/s;
+curved motion may reduce speed further to keep angular speed at most 70°/s.
+Execution results record requested distance/speed and applied distance/speed cap;
+`APPROACH_ARC` logs record each actual arc speed. Single-arc length is at most
+4 m and angle at most 100°; acquisition is within 4 m and ±60°.
+
+### Admission, expiry and cancellation
+
+- Decision IDs are deduplicated in a bounded history of 256 parsed requests,
+  including rejected ones. A repeated ID returns `DUPLICATE`.
+- Same-action/same-target requests while active return `ALREADY_RUNNING`; another
+  action or target returns `BUSY`. Nothing is queued. Null intents leave execution unchanged.
+- Recognized unimplemented actions return `UNSUPPORTED_ACTION`, for CONTINUE
+  and ENGAGE, including during an active behaviour. They neither cancel nor replace it and issue no
+  actuator command. Unknown/malformed intents return `INVALID_INTENT`.
+- The server's `created_at_us` is copied from `SocialState.timestamp_us`, which
+  comes from the source observation's **client host monotonic clock**. Admission
+  requires an exact retained observation/timestamp match. Expiry is source time
+  plus `valid_for_ms` (250–15,000 ms), compared with that same local clock.
+  `--max-admission-age-ms` may tighten this bound (default 15,000). SDK and server-host
+  clocks are never compared with it. Slow LLM/HTTP responses may already be
+  expired; receipt never renews validity. Unknown clock origins fail closed.
+- Fresh median target sampling and expiry are rechecked after acquisition before
+  movement. YIELD rechecks expiry after its initial speech before rotation. Once admitted and started before expiry, the bounded movement may
+  finish after expiry. Expiry during acquisition fails the execution.
+- `await controller.cancel_active()` is the explicit application cancellation
+  path. Ctrl+C/SIGTERM invoke shutdown. The SDK sender is cancelled and awaited
+  before zero-velocity commands; new odometry must confirm stopping. Readers
+  remain alive until cleanup finishes. Stop failure records `FAILED`/`FAULT`
+  and latches a lockout; restart only after independently confirming the base
+  has stopped. There is no automatic reset or queued retry.
+
+Execution snapshots distinguish `ACCEPTED`, `RUNNING`, `DRY_RUN_COMPLETED`,
+`COMPLETED`, `CANCELLED`, and `FAILED`. Results carry decision ID, requested and
+resolved target and parameters. APPROACH adds distance, heading error and live
+verification; YIELD adds completed phase, movement completion, applied commands
+and distinct speech errors.
+Admission rejection does not replace the running snapshot. Existing observation
+fields show `APPROACHING/ACTIVE` or `YIELDING/ACTIVE` while execution runs, `COMPLETE/STOPPED` when a
+bounded execution finishes, and `ERROR/FAULT` on failure. COMPLETE means the
+execution ended, **not verified arrival**; the schema has no approach-result
+field, so detailed outcomes remain in controller state and logs. No new server
+endpoint is added.
+
+### YIELD sequence
+
+After acquiring shared exclusive ownership, say **"conflict person detected"**
+and await speech completion. Rotate **+100° at 30°/s, acceleration 35°/s²**,
+await completion and confirm stop; then move **-0.60 m at 0.25 m/s, acceleration
+0.35 m/s²** relative to the new heading, await completion and confirm stop.
+Say **"yield complete"** and return the explicit result. Remain there with that
+heading: no return to path or route resumption. Local turn inversion is optional.
+Use `await yield_to_person(runtime)` from
+`robot.navel_client.behavior.actions.yield_to_person` with shared readers running.
+
+Dry-run sends no speech or actuator commands. Speech waits are bounded by
+`--speech-timeout` (5 s default). Initial speech failure prevents movement;
+movement failure suppresses completion speech; final speech failure preserves
+successful movement in the result. Cancellation awaits owned speech and motion
+tasks and confirms stop before releasing ownership. SDK completion and fresh
+stopped odometry do not verify physical travel accuracy. Mock coverage does not
+validate real LLM latency, hardware speech/movement semantics or clearance.
+
+### Reusing the approach
+
+Inside an existing asynchronous application whose collectors feed this runtime:
+
+```python
+from robot.navel_client.behavior.actions.approach_human import approach_human
+
+# runtime.cfg.execute is false by default. Configure stand-off/speed before use.
+# No other wheel controller may be active; UID explicitly identifies the person.
+result = await approach_human(runtime, uid=17)
+# result is None for dry-run; otherwise inspect result.status and verification.
 ```
 
-Images are not transported. `id_score` is not mapped because its meaning is not
-documented, and SST activity is not associated with people. Body orientation,
-speech activity, and groups remain absent.
+Pipeline callers should use `BehaviorController(runtime=runtime)` so source,
+expiry and deduplication checks also apply. Direct callers own those admission
+checks; optional `seed` and local-monotonic `deadline` can carry validated context.
+Do not start additional readers or call `asyncio.run()` inside the action.
+
+### Algorithm limits and validation status
+
+The supplied algorithm is retained: fresh median nose samples, a fixed target for
+each curved approach, odometry monitoring, at most one terminal distance
+correction, and at most two final body-heading corrections. Losing the face
+mid-arc does not automatically cancel it. Memory-based completion is
+`APPROACHED_UNVERIFIED`; fresh estimates within ±0.10 m and ±4° give
+`APPROACHED_VERIFIED`; fresh estimates outside those tolerances give
+`OUTSIDE_TOLERANCE`. Verification refers to sensors, not external ground truth.
+
+There is no continuous tracking/replanning, lidar obstacle avoidance, long-gap
+re-identification, route resumption or head/eye control. The observed-person
+0.50 m stop check cannot protect against unseen people or obstacles. The braking
+estimate and head transform require hardware calibration. Run no other wheel or
+head-control scripts during eventual controlled hardware validation.
+
+Prior standalone-script hardware testing does **not** validate this integration.
+The integrated pipeline is tested only with mocks, mathematical checks, and a
+local HTTP server/fake LLM. Physical validation of integrated APPROACH/YIELD,
+calibration, stop response and realistic LLM latency remains outstanding.
 
 ### Observation API
 
@@ -578,31 +680,15 @@ The `triggers` array contains only actual `DecisionTrigger` enum values. A force
 decision with no scheduler event therefore returns an empty trigger array and
 `"forced_decision": true`.
 
-### Safe staged verification
+### Verification
 
-1. On the gateway computer, run `python3 -m unittest discover -s tests -v`.
-2. Start Ollama and the gateway, then confirm `GET /health` returns HTTP 200 and
-   `model_available=true`.
-3. On Navel, run the client with `--print-only`. Confirm frames contain plausible
-   person IDs, distances, gaze values, and measured locomotion velocity.
-4. Run normally against `http://<LAPTOP_IP>:6060`. A visible person should cause
-   `accepted=true`, a `social_state_id`, `HUMAN_DETECTED`, and eventually a
-   a structured `[NAVEL BEHAVIOR] ... dry_run=true` log.
-5. If no person is present, use one brief `--force-decision` run to exercise the
-   structured Ollama response, then stop it immediately.
-6. Confirm malformed model output is reported as
-   `invalid_llm_behavior_selection`, rather than being returned as an intent.
+```bash
+python3 -m unittest discover -s tests -v
+```
 
-The live test is successful only after a response contains a non-null
-`behavior_intent` that matches `schemas/v1/behavior-intent.schema.json`.
-
-This proof of concept remains read-only throughout these stages. A structured
-LLM selection is parsed and validated into `BehaviorIntent`, mapped to an
-action-specific command, and dispatched to a dry-run handler; it is never
-executed as a robot behavior.
-
-## Next milestone
-
-Add deterministic state-freshness, action-precondition, capability, and motion
-safety validation plus a conservative fallback policy. Only after those gates
-and shadow-mode trials should a robot-specific executor consume an intent.
+Tests cover parsing and routing, target/freshness admission, deduplication,
+exclusive motion, transport progress during APPROACH/YIELD, shared sensor readers,
+shutdown ordering, dry-run isolation, face loss, distance/alignment corrections,
+second-target execution, stop/odometry failures, exact YIELD sequence and parameters,
+speech failures/timeouts, and source-clock expiry before movement. The HTTP test needs local
+loopback socket permission. Tests construct only mock robot connections.

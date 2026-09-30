@@ -566,6 +566,7 @@
         "IDLE",
         "GUIDING",
         "APPROACHING",
+        "YIELDING",
         "INTERACTING",
         "PAUSED",
         "COMPLETE",

@@ -159,12 +159,7 @@ def intent_payload(action: str = "YIELD") -> dict:
         "created_at_us": 1_000_100,
         "action": action,
         "target_human_id": "17",
-        "preferences": {
-            "target_speed_mps": 0.2,
-            "preferred_social_distance_m": 1.0,
-            "passing_side": "RIGHT",
-            "hold_duration_s": 1.0,
-        },
+        "preferences": {"preferred_social_distance_m": 1.0} if action == "APPROACH" else {},
         "valid_for_ms": 750,
         "reason_codes": ["HIGH_PATH_CONFLICT", "HUMAN_APPROACHING"],
         "decision_confidence": 0.88,
@@ -235,7 +230,7 @@ class BehaviorIntentTests(unittest.TestCase):
 
     def test_rejects_unbounded_validity(self):
         payload = intent_payload()
-        payload["valid_for_ms"] = 60_001
+        payload["valid_for_ms"] = 15_001
         with self.assertRaises(ValidationError):
             BehaviorIntent.model_validate(payload)
 

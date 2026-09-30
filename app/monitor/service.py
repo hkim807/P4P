@@ -35,7 +35,7 @@ class DeterministicReplayLLM:
     """Offline policy response used for repeatable monitor development."""
 
     provider = "offline"
-    model = "deterministic-monitor-stub-v1"
+    model = "deterministic-monitor-stub-v2-four-intents"
     endpoint = "in-process"
 
     def health(self) -> dict[str, Any]:
@@ -56,7 +56,7 @@ class DeterministicReplayLLM:
         del message, system_prompt, temperature, response_schema
         return json.dumps(
             {
-                "action": "MONITOR",
+                "action": "CONTINUE",
                 "target_human_id": None,
                 "preferences": {},
                 "valid_for_ms": 1_000,

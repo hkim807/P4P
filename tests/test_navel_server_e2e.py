@@ -42,9 +42,9 @@ class StructuredFakeLLM:
         self.response_schema = response_schema
         return json.dumps(
             {
-                "action": "ORIENT",
+                "action": "ENGAGE",
                 "target_human_id": "17",
-                "preferences": {"orientation_target_rad": 0.0},
+                "preferences": {},
                 "valid_for_ms": 1_000,
                 "reason_codes": ["HUMAN_DETECTED"],
                 "decision_confidence": 0.75,
@@ -116,7 +116,7 @@ class NavelServerEndToEndTests(unittest.TestCase):
         self.assertTrue(response.payload["decision_triggered"])
         self.assertIn("HUMAN_DETECTED", response.payload["triggers"])
         intent = response.payload["behavior_intent"]
-        self.assertEqual(intent["action"], "ORIENT")
+        self.assertEqual(intent["action"], "ENGAGE")
         self.assertEqual(intent["target_human_id"], "17")
         self.assertEqual(intent["observation_id"], observation["observation_id"])
         self.assertEqual(
@@ -128,9 +128,9 @@ class NavelServerEndToEndTests(unittest.TestCase):
         with self.assertLogs("robot.navel_client.behavior", "INFO") as logs:
             robot = Mock()
             handled = BehaviorController(robot).handle_response(response.payload)
-        self.assertEqual(handled.status, BehaviorHandlingStatus.HANDLED)
-        self.assertEqual(handled.execution.action.value, "ORIENT")
-        self.assertIn("action=ORIENT dry_run=true", logs.output[-1])
+        self.assertEqual(handled.status, BehaviorHandlingStatus.UNSUPPORTED_ACTION)
+        self.assertIsNone(handled.execution)
+        self.assertIn("UNSUPPORTED_ACTION", logs.output[-1])
         self.assertEqual(robot.mock_calls, [])
 
 

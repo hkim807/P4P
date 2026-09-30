@@ -40,7 +40,7 @@ class FakeLLM:
             return self.response_override
         return json.dumps(
             {
-                "action": "MONITOR",
+                "action": "CONTINUE",
                 "target_human_id": None,
                 "preferences": {},
                 "valid_for_ms": 1_000,
@@ -107,7 +107,7 @@ class ObservationEndpointTests(unittest.TestCase):
         self.assertTrue(body["decision_triggered"])
         self.assertIn("HUMAN_DETECTED", body["triggers"])
         intent = body["behavior_intent"]
-        self.assertEqual(intent["action"], "MONITOR")
+        self.assertEqual(intent["action"], "CONTINUE")
         self.assertEqual(intent["observation_id"], body["observation_id"])
         self.assertEqual(intent["social_state_id"], body["social_state_id"])
         self.assertTrue(intent["decision_id"].startswith("decision-"))
@@ -129,7 +129,7 @@ class ObservationEndpointTests(unittest.TestCase):
         self.assertTrue(body["forced_decision"])
         self.assertEqual(body["triggers"], [])
         self.assertEqual(len(self.llm.calls), 1)
-        self.assertEqual(body["behavior_intent"]["action"], "MONITOR")
+        self.assertEqual(body["behavior_intent"]["action"], "CONTINUE")
 
     def test_llm_failure_preserves_observation_acceptance_and_state(self):
         self.llm.fail = True
@@ -191,7 +191,7 @@ class ObservationEndpointTests(unittest.TestCase):
         compact_json = first.split("Input JSON: ", 1)[1]
         self.assertNotIn(": ", compact_json)
         self.assertIn('"scheduler_triggers":["HUMAN_DETECTED"]', first)
-        self.assertIn('"policy_prompt_version":"llm-social-navigation-v1"', first)
+        self.assertIn('"policy_prompt_version":"llm-social-navigation-v2-four-intents"', first)
         self.assertIn('"response_json_schema"', first)
 
 

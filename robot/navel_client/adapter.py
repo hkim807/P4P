@@ -59,7 +59,7 @@ class NavelAdapterConfig:
         if len(self.adapter_id) > 128 or len(self.robot_type) > 256:
             raise ValueError("adapter_id or robot_type is too long for the canonical schema")
         if self.robot_task not in {
-            "IDLE", "GUIDING", "APPROACHING", "INTERACTING", "PAUSED", "COMPLETE", "ERROR"
+            "IDLE", "GUIDING", "APPROACHING", "YIELDING", "INTERACTING", "PAUSED", "COMPLETE", "ERROR"
         }:
             raise ValueError("robot_task is not a canonical NavigationTask")
         if self.controller_status not in {
@@ -80,8 +80,10 @@ class NavelObservationAdapter:
         config: NavelAdapterConfig | None = None,
         *,
         monotonic_ns: Callable[[], int] = time.monotonic_ns,
+        runtime=None,
     ) -> None:
         self.config = config or NavelAdapterConfig()
+        self.runtime = runtime
         self._monotonic_ns = monotonic_ns
         self._last_timestamp_us = -1
         self._counter = 0
@@ -114,7 +116,7 @@ class NavelObservationAdapter:
             "humans.facial_expression",
             *robot_available,
         ]
-        if self.config.robot_base_coordinate_systems:
+        if self.runtime is not None or self.config.robot_base_coordinate_systems:
             available_fields.append("humans.position_robot_m")
 
         unavailable_fields = [
@@ -126,7 +128,7 @@ class NavelObservationAdapter:
             "humans.speech_activity",
             "robot.free_space",
         ]
-        if not self.config.robot_base_coordinate_systems:
+        if self.runtime is None and not self.config.robot_base_coordinate_systems:
             unavailable_fields.append("humans.position_robot_m")
         if "robot.pose" not in robot_available:
             unavailable_fields.append("robot.pose")
@@ -152,9 +154,10 @@ class NavelObservationAdapter:
                 "available_fields": sorted(set(available_fields)),
                 "unavailable_fields": sorted(unavailable_fields),
                 "notes": [
-                    "PerceptionData.time is not used because its clock unit is undocumented; host monotonic time is used.",
+                    "Wire timestamps use client host monotonic time. SDK microseconds are used only for local perception/odometry alignment.",
                     "id_score is not mapped because its semantics are undocumented.",
-                    "Only explicitly configured robot-base coordinate labels are accepted for 3D positions.",
+                    ("g_nose HEAD_STRAIGHT uses the configured planar head-to-base transform; distance is horizontal base-centre to nose. Positions project the nose onto the base horizontal plane (z=0); nose height is not calibrated."
+                     if self.runtime is not None else "Only explicitly configured robot-base coordinate labels are accepted for 3D positions."),
                     *robot_notes,
                 ],
             },
@@ -217,6 +220,14 @@ class NavelObservationAdapter:
         position = self._robot_base_position(
             getattr(person, "g_head_position", None)
         )
+        if self.runtime is not None:
+            # Only publish synchronized transformed nose positions used by the action.
+            candidates = [p for p in self.runtime.people if str(p['uid']) == track_id]
+            position = ({'x': candidates[0]['x'], 'y': candidates[0]['y'], 'z': 0.0}
+                        if len(candidates) == 1 else None)
+            result.pop('distance_m', None)
+            if position is not None:
+                result['distance_m'] = math.hypot(position['x'], position['y'])
         if position is not None:
             result["position_robot_m"] = position
         return result
@@ -276,6 +287,21 @@ class NavelObservationAdapter:
     def _robot_observation(
         self, locomotion: Any | None
     ) -> tuple[dict[str, Any], list[str], list[str]]:
+        if self.runtime is not None:
+            try:
+                pose = self.runtime.pose()
+            except RuntimeError as exc:
+                if self.config.stationary_velocity_fallback and not self.runtime.cfg.execute:
+                    return ({'linear_velocity_mps': {'x': 0.0, 'y': 0.0},
+                             'angular_velocity_radps': 0.0, 'task': 'IDLE', 'controller_status': 'STOPPED'},
+                            [], ['Explicit stationary-only fallback; no measured odometry.'])
+                raise ValueError(str(exc)) from exc
+            return ({'linear_velocity_mps': {'x': pose['v'], 'y': 0.0},
+                     'angular_velocity_radps': pose['w'],
+                     'pose': {'x_m': pose['x'], 'y_m': pose['y'], 'heading_rad': pose['yaw']},
+                     'task': self.config.robot_task, 'controller_status': self.config.controller_status},
+                    ['robot.linear_velocity_mps', 'robot.angular_velocity_radps', 'robot.pose'],
+                    ['Shared planar odometry decoder: '+pose['layout']])
         odometry = getattr(locomotion, "odometry", None)
         velocity = getattr(odometry, "velocity", None)
         linear_x = _finite_number(getattr(velocity, "linear_x", None))

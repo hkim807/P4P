@@ -66,6 +66,7 @@ class NavigationTask(str, Enum):
     IDLE = "IDLE"
     GUIDING = "GUIDING"
     APPROACHING = "APPROACHING"
+    YIELDING = "YIELDING"
     INTERACTING = "INTERACTING"
     PAUSED = "PAUSED"
     COMPLETE = "COMPLETE"
@@ -125,17 +126,9 @@ class ProxemicZone(str, Enum):
 
 class Action(str, Enum):
     CONTINUE = "CONTINUE"
-    MONITOR = "MONITOR"
-    ORIENT = "ORIENT"
-    SLOW = "SLOW"
-    YIELD = "YIELD"
-    AVOID = "AVOID"
     APPROACH = "APPROACH"
-    GREET = "GREET"
-    GUIDE = "GUIDE"
-    WAIT = "WAIT"
-    RESUME = "RESUME"
-    DISENGAGE = "DISENGAGE"
+    ENGAGE = "ENGAGE"
+    YIELD = "YIELD"
 
 
 class PassingSide(str, Enum):
@@ -475,7 +468,7 @@ class BehaviorIntent(DomainModel):
     action: Action
     target_human_id: EntityId | None = None
     preferences: BehaviorPreferences = Field(default_factory=BehaviorPreferences)
-    valid_for_ms: Annotated[int, Field(gt=0, le=60_000)]
+    valid_for_ms: Annotated[int, Field(ge=250, le=15_000)]
     reason_codes: list[
         Annotated[str, Field(pattern=r"^[A-Z][A-Z0-9_]{1,63}$")]
     ] = Field(min_length=1, max_length=16)
@@ -483,12 +476,14 @@ class BehaviorIntent(DomainModel):
 
     @model_validator(mode="after")
     def validate_action_target(self) -> "BehaviorIntent":
-        targeted_actions = {
-            Action.ORIENT.value,
-            Action.APPROACH.value,
-            Action.GREET.value,
-            Action.GUIDE.value,
-        }
-        if self.action in targeted_actions and self.target_human_id is None:
+        if self.action in {Action.APPROACH.value, Action.ENGAGE.value} and self.target_human_id is None:
             raise ValueError(f"{self.action} requires target_human_id")
+        if self.action == Action.CONTINUE.value and self.target_human_id is not None:
+            raise ValueError("CONTINUE forbids target_human_id")
+        allowed = {"preferred_social_distance_m", "target_speed_mps"} if self.action == Action.APPROACH.value else set()
+        supplied = self.preferences.model_dump(exclude_none=True)
+        if set(supplied) - allowed:
+            raise ValueError(f"{self.action} has unsupported preferences: {sorted(set(supplied) - allowed)}")
+        if self.action == Action.APPROACH.value and self.preferences.preferred_social_distance_m is None:
+            raise ValueError("APPROACH requires preferred_social_distance_m")
         return self

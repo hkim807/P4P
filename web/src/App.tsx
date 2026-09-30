@@ -5,6 +5,8 @@ import {
 } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
+type BehaviorAction = "CONTINUE" | "APPROACH" | "ENGAGE" | "YIELD";
+type BehaviorIntent = { action: BehaviorAction; decision_confidence?: number | null; [key: string]: unknown };
 type Dict = Record<string, any>;
 type Recording = { id: string; name: string; source_id: string; robot_type: string; frames: number; duration_s: number; expected_event?: string };
 type Source = { id: string; name: string; robot_type: string; status: string; frame_count: number; human_count: number; controller_status: string; recording_run_id?: string; latest_cycle?: Cycle };
@@ -14,7 +16,7 @@ type Cycle = {
   sequence: number; observation_id: string; elapsed_s: number; status: string;
   duration_ms: number; observation: Dict; social_state?: Dict | null;
   scheduler?: { decision_triggered: boolean; triggers: string[] } | null;
-  behavior_intent?: Dict | null; stages: Stage[]; changes: Change[];
+  behavior_intent?: BehaviorIntent | null; stages: Stage[]; changes: Change[];
   error?: string | null; ground_truth?: Dict | null;
 };
 type Run = {

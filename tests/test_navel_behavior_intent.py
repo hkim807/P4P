@@ -14,6 +14,7 @@ from app.domain.models import Action as ServerAction
 from app.domain.models import BehaviorIntent as ServerBehaviorIntent
 from robot.navel_client.behavior import BehaviorController, BehaviorHandlingStatus
 from robot.navel_client.behavior.commands import COMMAND_TYPES
+from robot.navel_client.behavior.mapper import BehaviorIntentMapper
 from robot.navel_client.behavior.intent import (
     NavelAction,
     NavelBehaviorIntent,
@@ -24,15 +25,9 @@ from robot.navel_client.behavior.intent import (
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def intent_payload(action: str = "MONITOR") -> dict:
-    targeted = {"ORIENT", "APPROACH", "GREET", "GUIDE", "DISENGAGE"}
-    preferences = {}
-    if action == "SLOW":
-        preferences["target_speed_mps"] = 0.3
-    elif action == "APPROACH":
-        preferences["preferred_social_distance_m"] = 1.2
-    elif action == "WAIT":
-        preferences["hold_duration_s"] = 2.0
+def intent_payload(action: str = "CONTINUE") -> dict:
+    targeted = {"APPROACH", "ENGAGE"}
+    preferences = {"preferred_social_distance_m": 1.2} if action == "APPROACH" else {}
     return {
         "schema_version": "1.0",
         "decision_id": f"decision-{action.lower()}",
@@ -66,9 +61,9 @@ class NavelBehaviorIntentParserTests(unittest.TestCase):
             {action.value for action in NavelAction},
             {action.value for action in ServerAction},
         )
-        self.assertEqual(len(NavelAction), 12)
+        self.assertEqual(len(NavelAction), 4)
 
-    def test_all_server_actions_complete_the_client_behavior_path(self):
+    def test_all_server_actions_still_parse_and_map_with_explicit_admission(self):
         robot = Mock()
         controller = BehaviorController(robot)
         command_types = set()
@@ -84,9 +79,12 @@ class NavelBehaviorIntentParserTests(unittest.TestCase):
                         "behavior_intent": server_intent.model_dump(mode="json")
                     }
                 )
-                self.assertEqual(result.status, BehaviorHandlingStatus.HANDLED)
-                self.assertEqual(result.execution.action.value, server_action.value)
-                command_types.add(result.execution.command_type)
+                expected = (BehaviorHandlingStatus.INVALID_INTENT if server_action.value in {'APPROACH', 'YIELD'}
+                            else BehaviorHandlingStatus.UNSUPPORTED_ACTION)
+                self.assertEqual(result.status, expected)
+                command = BehaviorIntentMapper().map(NavelBehaviorIntent.from_payload(
+                    server_intent.model_dump(mode='json')))
+                command_types.add(type(command).__name__)
         self.assertEqual(command_types, {kind.__name__ for kind in COMMAND_TYPES})
         self.assertEqual(robot.mock_calls, [])
 
@@ -141,7 +139,7 @@ class NavelBehaviorIntentParserTests(unittest.TestCase):
     def test_non_numeric_boolean_and_non_finite_preferences_fail(self):
         invalid_values = ("fast", True, math.nan, math.inf, -math.inf)
         for value in invalid_values:
-            payload = intent_payload("SLOW")
+            payload = intent_payload("APPROACH")
             payload["preferences"]["target_speed_mps"] = value
             with self.subTest(value=value), self.assertRaises(
                 NavelIntentParseError
@@ -150,9 +148,7 @@ class NavelBehaviorIntentParserTests(unittest.TestCase):
 
     def test_mapper_required_values_are_checked_at_parse_boundary(self):
         for action, field in (
-            ("SLOW", "target_speed_mps"),
             ("APPROACH", "preferred_social_distance_m"),
-            ("WAIT", "hold_duration_s"),
         ):
             payload = intent_payload(action)
             payload["preferences"][field] = None
