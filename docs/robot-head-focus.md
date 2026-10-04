@@ -38,7 +38,8 @@ policy response handlers in logging mode.
 
 When the app server returns a validated target lock, its selected UID pins
 local head acquisition. A changed UID cannot take over during the server's
-missing or unresolved state. The pin expires after three seconds without a
+missing or unresolved state. After a guarded server handoff, the same logical
+lock pins the new UID and the head can follow it. The pin expires after three seconds without a
 valid response; see the [target lock guide](target-lock.md).
 
 The local selection is cleared when the client stops. The
@@ -63,5 +64,5 @@ needs a separate neutral gaze or head reset command.
 
 The existing seven recordings contain raw observations and can exercise future
 logical locking, but they cannot demonstrate actual head motion or the SDK's
-focus release behavior. A changed UID is still a new raw track; this feature
-does not reidentify the same person.
+focus release behavior. A changed UID is still a new raw track; the
+[logical lock](target-lock.md) may associate it after a guarded handoff.

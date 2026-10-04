@@ -185,8 +185,8 @@ To receive and log live decisions on Navel without executing policy actions, sta
 receiver with `--social-output` and add `--decision-dry-run` to the robot client.
 See the [robot decision dry-run guide](docs/robot-decision-dry-run.md).
 The server now returns a [target lock lifecycle](docs/target-lock.md) with a
-separate effective decision. It holds the selected UID through brief loss and
-defers decisions while a different UID is unresolved.
+separate effective decision. A short, exclusive, distance-consistent return
+can bind a changed SDK UID to the same logical lock; ambiguous returns defer.
 
 ## Synthetic replay example
 

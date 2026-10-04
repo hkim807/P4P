@@ -78,7 +78,7 @@ robot before enabling automatic head movement.
 | Local focused UID and last-seen time | Robot focus controller | Implemented behind `--head-focus`; one unambiguous UID, short loss grace, SDK command and event logs. Focus epoch, modes, and server correlation remain planned. A command log is not measured head pose. |
 | Base route and head-motion/settling status | Robot controller | Planned: distinguish a stationary base from a moving camera. If actual head motion is unavailable, treat camera motion as uncertain until focus is held and a measured settling interval passes. |
 | `(session_id, uid, track_epoch)` | PC tracker | Implemented track key; changing UID or expired epoch remains a distinct raw history. |
-| Logical `lock_id`, selected UID/epoch, status, missing hold, release cooldown | PC target lock | Implemented; one exact track survives brief loss, and a different UID remains unresolved. Alias evidence, actual completion, and cross-UID confirmation remain planned. |
+| Logical `lock_id`, selected UID/epoch, bound tracks, status, missing hold, release cooldown | PC target lock | Implemented; a changed UID can inherit the logical lock after a short exclusive, distance-consistent multi-frame handoff. Actual completion and validated identity accuracy remain planned. |
 | Command ID, source state, lock ID, target UID/epoch, expiry, capability | PC command protocol | Planned: robot validates before any action. |
 | Execution events and local safety/route state | Robot executor | Planned: feedback closes the loop; lidar/sonar are local obstacle inputs, not person identity evidence. |
 
@@ -91,8 +91,9 @@ short-term lock or supplies a documented match decision for a new UID.
 ## Rule output versus interaction intent
 
 The pure rule evaluates one SocialState and returns a reasoned proposal. The
-implemented lock layer holds an exact UID/epoch through brief loss and gates
-that proposal. Completion and cross-UID confirmation remain planned:
+implemented lock layer holds an interaction through brief loss, can hand off
+to a new UID under guarded evidence, and gates that proposal. Completion and
+validated identity accuracy remain planned:
 
 | Current evidence | Pure rule today | Completed lifecycle |
 | --- | --- | --- |
@@ -111,18 +112,19 @@ that proposal. Completion and cross-UID confirmation remain planned:
 | `FOCUSED` | Head follows a provisional UID while raw frames reach the PC. Route may continue until the interaction controller requests a controlled pause. No speech or approach. | `LOCKED`, `MISSING`, or `RELEASED` |
 | `LOCKED` | PC creates a logical lock for one visible `(session, UID, epoch)`. Pause the route to collect valid social evidence. The pure rule may propose `APPROACH` or `ENGAGE`; a command is sent only if target, freshness, capability, and cooldown gates pass. | `MISSING`, `COOLDOWN`, or `RELEASED` |
 | `MISSING` | Keep the logical lock for a bounded interval; hold/observe rather than interpreting `NO_VISIBLE_PERSON` as `CONTINUE`. Cancel active target-specific execution locally. | Same UID returns, `TENTATIVE_RETURN`, or `RELEASED` |
-| `TENTATIVE_RETURN` | A different UID is a candidate, not the locked person. A sole candidate with a short gap and plausible distance/spatial evidence may receive provisional head focus. Block approach/speech while identity is uncertain; reject ambiguous or competing candidates. | Confirmed rebind to `LOCKED`, or `RELEASED` |
+| `TENTATIVE_RETURN` | A different UID is a candidate while exclusive, distance-consistent evidence accumulates. The head remains pinned to the old UID until the server accepts a handoff. Block approach/speech while identity is uncertain; reject ambiguous or competing candidates. | Guarded rebind to `LOCKED`, or `RELEASED` |
 | `COOLDOWN` | An interaction completed. Preserve completion and cooldown under the logical lock, including a confidently rebound UID; repeated `ENGAGE` frames do not repeat speech. | `ROAMING` after cooldown/release |
 | `RELEASED` | Clear the lock and focus using robot-verified SDK behavior; resume the route only after route ownership is reconciled. | `ROAMING` |
 
 Same UID within the configured tracker grace keeps its track epoch. A different
-UID starts a new raw track; reassociation only updates the logical lock after a
-unique, sufficiently supported match. Distance alone never confirms a match.
+UID starts a new raw track; a short exclusive, distance-consistent, multi-frame
+return can update the logical lock while the raw histories stay separate. This
+heuristic can still confuse a different person at a similar distance.
 Head-following moves camera-relative positions and tends to center the focused
-face. Without measured head pose and compensation, only attempt cross-UID
-reassociation after the camera is held/settled; otherwise keep the target
-unresolved. Rebuild gaze and distance-trend evidence for the new track rather
-than copying measurements across UIDs.
+face. The current handoff deliberately does not use camera-relative position.
+Do not add image/relative-position matching until head pose or a settled-camera
+condition is verified. Rebuild gaze and distance-trend evidence for the new
+track rather than copying measurements across UIDs.
 
 The current temporal estimator checks only base velocity before labeling human
 radial motion. The completed estimator must mark this cue unknown while head
@@ -140,7 +142,7 @@ stable frame. Gaze thresholds also need evaluation with head following enabled.
 | Spatial reassociation | Planned | Add optional face box; use time, distance, and spatial evidence only when camera pose is suitable. No auto-transfer on ambiguity | Human-annotated same-person returns and impostor/crossing trials. Report correct returns, false transfers, unresolved cases, and latency separately. Recordings 01-07 lack 3D head position and identity labels, so they cannot validate this accuracy. |
 | Temporal SocialState | Implemented with provisional thresholds | Gate motion evidence during head movement; calibrate gaze and distance with head following on/off | Synthetic cue tests and replay parity; annotated head-on/head-off robot recordings; measure false `APPROACH`/`ENGAGE` in conditions like recordings 04, 05, and 07. |
 | Pure rule policy | Implemented: explainable `CONTINUE`, `APPROACH`, `ENGAGE`, `DEFER`; no verified `YIELD` cue | Keep pure table, but let lifecycle override `NO_VISIBLE_PERSON` while a lock is missing | Branch tests for every rule and validity flag; exact reason code/source state on live and replay paths; no target-specific output for missing or ambiguous targets. |
-| Interaction lifecycle | Partly implemented: exact UID/epoch lock, missing/return states, stream-gap release, release cooldown, effective decision | Add cross-UID confirmation from labeled spatial evidence, completion feedback and greeting cooldown | Deterministic tests cover same/different UID, new epoch, crowds, target loss, stream gap, and replay/live parity. Completed greeting and false-transfer trials remain. |
+| Interaction lifecycle | Partly implemented: logical lock, guarded UID handoff, missing/return states, stream-gap release, release cooldown, effective decision | Calibrate handoff with labeled return/impostor trials; add completion feedback and greeting cooldown | Deterministic tests cover successful handoff, new epoch, crowd and distance rejection, target loss, stream gap, and replay/live parity. Completed greeting and false-transfer trials remain. |
 | Command and feedback protocol | Planned; current HTTP carries policy proposals and robot has logging handlers | Versioned command envelope, IDs, expiry, deduplication, execution events, session restart | Robot-to-PC-to-fake-executor HTTP tests; reject stale, mismatched, duplicate, old-session, lost-target, and unsupported commands; correlate every feedback event. |
 | Physical executor and route | Planned in this branch | Local pause/hold/resume ownership, bounded head/approach/speech actions, obstacle checks, physical cancellation and watchdog | One capability at a time on Navel; verify stop after target loss, sensor loss, tunnel loss, stale command, operator override, and route handoff. A dry-run watchdog only clears logs today. |
 | Full-loop evaluation | Planned | Freeze configuration and compare complete runs with human labels | Repeated roam-to-interaction scenarios with aligned raw/state/decision/lock/command/feedback traces. Report UID switches, false lock transfers, repeated greetings, missed engagement, latency, and safety overrides. |
@@ -150,9 +152,9 @@ stable frame. Gaze thresholds also need evaluation with head following enabled.
 1. Validate the opt-in robot focus controller's `look_at_person` lifecycle on
    Navel. Determine physical release behavior and log a focus epoch for server
    correlation. Keep the route and speech handlers in dry-run during this step.
-2. Validate the implemented logical lock and its `NO_VISIBLE_PERSON` override
-   on Navel. Keep cross-UID return candidates unresolved until labeled
-   evidence supports a safe rebind rule.
+2. Validate the logical lock, its `NO_VISIBLE_PERSON` override, and guarded UID
+   handoffs on Navel. Collect labeled returns and impostors before physical
+   actions use rebound targets.
 3. Collect labeled head-follow recordings with face boxes and test spatial
    reassociation and head-motion effects. Set thresholds from those trials.
 4. Add command/feedback envelopes and a fake executor; then enable head, route

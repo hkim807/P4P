@@ -88,7 +88,7 @@ def parse_decision(payload: Mapping[str, Any], observation: Mapping[str, Any],
         raise DecisionRejected("unexpected_target")
     lock = payload.get("target_lock")
     if lock is not None:
-        if (not isinstance(lock, Mapping) or lock.get("lock_version") != "target-lock-v1"
+        if (not isinstance(lock, Mapping) or lock.get("lock_version") != "target-lock-v2"
                 or lock.get("source_state_id") != state_id or lock.get("session_id") != session_id
                 or not _integer(lock.get("robot_timestamp_us"))
                 or lock.get("robot_timestamp_us") != timestamp):
@@ -97,8 +97,8 @@ def parse_decision(payload: Mapping[str, Any], observation: Mapping[str, Any],
         if (not isinstance(effective, Mapping)
                 or effective.get("source_state_id") != state_id
                 or effective.get("session_id") != session_id
-                or effective.get("policy_version") != "target-lock-v1"
-                or effective.get("decision_id") != f"{state_id}:target-lock-v1"
+                or effective.get("policy_version") != "target-lock-v2"
+                or effective.get("decision_id") != f"{state_id}:target-lock-v2"
                 or effective.get("lock_id") != lock.get("lock_id")):
             raise DecisionRejected("target_lock_decision_mismatch")
         status = lock.get("status")

@@ -85,6 +85,13 @@ class HeadFocusTests(unittest.TestCase):
         self.focus.observe(perception(person(18)))
         self.assertEqual(self.robot.commands, [(18, 0.5)])
 
+    def test_server_rebind_redirects_head_to_new_uid(self):
+        self.focus.observe(perception(person(17)))
+        self.focus.apply_server_lock({"status": "LOCKED", "target_uid": 17, "lock_id": "lock-1"})
+        self.focus.apply_server_lock({"status": "LOCKED", "target_uid": 18, "lock_id": "lock-1"})
+        self.focus.observe(perception(person(18)))
+        self.assertEqual(self.robot.commands, [(17, 0.5), (18, 0.5)])
+
     def test_failed_command_is_retried_after_cooldown(self):
         attempts = []
 
