@@ -14,6 +14,7 @@ from typing import Any
 
 from robot.navel_client.adapter import NavelObservationAdapter
 from robot.navel_client.decision_dispatch import DecisionDispatcher, DryRunHandlers
+from robot.navel_client.head_focus import HeadFocusController
 from robot.navel_client.transport import ObservationTransport, TransportError
 
 
@@ -53,12 +54,17 @@ async def _collect_perception(
     queue: asyncio.Queue[dict[str, Any]],
     *,
     max_locomotion_age_s: float,
+    head_focus: HeadFocusController | None = None,
 ) -> None:
     while True:
         try:
             perception = await robot.next_frame(timeout=1.0)
         except TimeoutError:
+            if head_focus is not None:
+                head_focus.tick()
             continue
+        if head_focus is not None:
+            head_focus.observe(perception)
         observation = adapter.convert(perception, latest.fresh_value(max_locomotion_age_s))
         _replace_queued(queue, observation)
 
@@ -112,6 +118,9 @@ async def collect_and_stream(robot: Any, args: argparse.Namespace) -> None:
     adapter = NavelObservationAdapter()
     queue: asyncio.Queue[dict[str, Any]] = asyncio.Queue(maxsize=1)
     latest = LatestLocomotion()
+    head_focus = (HeadFocusController(robot, magnitude=args.head_focus_magnitude,
+                                     grace_s=args.head_focus_grace)
+                  if args.head_focus else None)
     decision_dispatcher = (DecisionDispatcher(DryRunHandlers(robot),
                            max_age_s=args.max_decision_age,
                            timeout_s=args.decision_timeout)
@@ -120,6 +129,7 @@ async def collect_and_stream(robot: Any, args: argparse.Namespace) -> None:
         asyncio.create_task(_collect_locomotion(robot, latest)),
         asyncio.create_task(_collect_perception(
             robot, adapter, latest, queue, max_locomotion_age_s=args.max_locomotion_age,
+            head_focus=head_focus,
         )),
         asyncio.create_task(_send_observations(
             queue, transport,
@@ -138,6 +148,8 @@ async def collect_and_stream(robot: Any, args: argparse.Namespace) -> None:
         await asyncio.gather(*tasks, return_exceptions=True)
         if decision_dispatcher is not None:
             await decision_dispatcher.invalidate("client_stopped")
+        if head_focus is not None:
+            head_focus.stop()
 
 
 async def run(args: argparse.Namespace) -> None:
@@ -159,7 +171,13 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
                         help="Seconds before cached robot velocity/ranges become unavailable")
     parser.add_argument("--print-only", action="store_true", help="Print JSON frames without HTTP")
     parser.add_argument("--decision-dry-run", action="store_true",
-                        help="Log validated policy handler calls without robot actions")
+                        help="Log validated policy handler calls without executing policy actions")
+    parser.add_argument("--head-focus", action="store_true",
+                        help="Move the robot head to follow the first unambiguous visible person")
+    parser.add_argument("--head-focus-magnitude", type=float, default=0.5,
+                        help="Head motion magnitude for look_at_person, 0..1 (default: 0.5)")
+    parser.add_argument("--head-focus-grace", type=float, default=0.75,
+                        help="Seconds to hold the current UID through perception loss (default: 0.75)")
     parser.add_argument("--max-decision-age", type=float, default=1.0,
                         help="Maximum age of a source frame when its decision arrives (seconds)")
     parser.add_argument("--decision-timeout", type=float, default=2.0,
@@ -168,10 +186,12 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     if args.print_only and args.decision_dry_run:
         parser.error("--decision-dry-run requires HTTP; remove --print-only")
     for name in ("request_timeout", "max_locomotion_age", "minimum_send_interval",
-                 "max_decision_age", "decision_timeout"):
+                 "max_decision_age", "decision_timeout", "head_focus_grace"):
         value = getattr(args, name)
         if not math.isfinite(value) or value < 0 or (name != "minimum_send_interval" and value == 0):
             parser.error("timeouts/maximum ages must be positive and finite; send interval may be zero")
+    if not math.isfinite(args.head_focus_magnitude) or not 0 <= args.head_focus_magnitude <= 1:
+        parser.error("--head-focus-magnitude must be finite and between 0 and 1")
     try:
         ObservationTransport(args.server, timeout_seconds=args.request_timeout)
     except ValueError as error:

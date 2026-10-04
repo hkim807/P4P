@@ -111,9 +111,12 @@ Unavailable measurements remain `null`, and optional head position is included
 when available. Acknowledgements such as `timestamp=... people=... accepted=true`
 and request errors go to stderr. Failed requests do not print an accepted frame.
 This output also applies when streaming through the reverse SSH tunnel.
-To inspect policy decisions on Navel without invoking robot actions, start the
+To inspect policy decisions on Navel without executing policy actions, start the
 receiver with `--social-output` and add `--decision-dry-run` to the robot client.
 See the [decision dry-run procedure](robot-decision-dry-run.md).
+Add `--head-focus` to move the head toward the first unambiguous visible UID.
+This operates locally before HTTP delivery, including when `--decision-dry-run`
+is enabled. See the [head focus procedure](robot-head-focus.md) before enabling it.
 On the computer, inspect the output with:
 
 ```bash
@@ -138,11 +141,15 @@ robot or tunnel. The receiver and replay both validate the existing raw format.
 | `--max-locomotion-age` | 1 second | Maximum cache age before velocities/ranges become null |
 | `--print-only` | Off | Print collected frames instead of sending them |
 | `--decision-dry-run` | Off | Validate live policy responses and log one placeholder call per decision/target transition |
+| `--head-focus` | Off | Send `look_at_person` for one unambiguous visible UID before HTTP delivery; this moves the head even with `--decision-dry-run` |
+| `--head-focus-magnitude` | 0.5 | SDK head movement magnitude, from 0 to 1 |
+| `--head-focus-grace` | 0.75 seconds | Hold the selected UID across a short perception gap before allowing another |
 | `--max-decision-age` | 1 second | Reject a response if its source frame is older than this on Navel's monotonic clock |
 | `--decision-timeout` | 2 seconds | Cancel the active logging placeholder after this long without a valid response |
 
 Timeout and age values must be finite and positive. The interval must be finite
-and nonnegative. `--server` takes a base URL, without an API path or query.
+and nonnegative. Head magnitude must be finite and between 0 and 1. `--server`
+takes a base URL, without an API path or query.
 
 ## Troubleshooting
 

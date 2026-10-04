@@ -9,7 +9,8 @@ and the schema/tests/documentation needed to operate that path.
 
 1. `robot/navel_client/main.py` opens `navel.Robot()`. One async task awaits
    `next_locomotion(timeout=1.0)`; another awaits `next_frame(timeout=1.0)`.
-   The only robot methods invoked by the application are these receive methods.
+   With `--head-focus`, the perception collector also invokes
+   `look_at_person` before adapting or queuing an eligible frame.
 2. `adapter.py` copies selected measured fields into plain JSON-compatible
    dictionaries. It uses neither the SDK nor any computer-side package at import.
 3. A queue with capacity one holds the newest pending perception frame. Replacing
@@ -17,8 +18,8 @@ and the schema/tests/documentation needed to operate that path.
 4. A third task rate-limits sends and calls `ObservationTransport.send` through
    `asyncio.to_thread`. Collection continues while blocking HTTP waits.
 5. `transport.py` sends JSON to `POST /api/v1/observations` with a timeout. It
-   returns HTTP status and a JSON acknowledgement. Responses are logged and never
-   dispatched to a robot behavior.
+   returns HTTP status and a JSON acknowledgement. Optional dry-run handlers
+   inspect policy responses; local head focus is independent of HTTP.
 6. `app/server.py` validates `RawObservationFrame`; `app/recording.py` checks
    timestamp order and writes one JSON line under a thread lock.
    Acknowledgement follows a successful write/close.

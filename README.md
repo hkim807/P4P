@@ -181,7 +181,7 @@ python3 -m app.decide var/temporal-validation/01-velocity-social.jsonl \
 See [rule logic and limits](docs/social-policy.md). The decision output path
 must be new.
 
-To receive and log live decisions on Navel without robot actions, start the
+To receive and log live decisions on Navel without executing policy actions, start the
 receiver with `--social-output` and add `--decision-dry-run` to the robot client.
 See the [robot decision dry-run guide](docs/robot-decision-dry-run.md).
 
@@ -210,6 +210,12 @@ Then stream to the computer, replacing the example address with its actual LAN I
 ```bash
 python3 -m robot.navel_client.main --server http://192.168.1.100:6060
 ```
+
+To enable immediate robot-local head following for one visible person, add
+`--head-focus`. This calls the Navel SDK before the frame enters the HTTP queue.
+The feature is opt-in and does not establish the logical interaction lock. See
+the [head focus guide](docs/robot-head-focus.md) for settings and the hardware
+validation steps.
 
 After each accepted POST, the client prints the full `RawObservationFrame` as
 indented JSON to stdout. Request acknowledgements and errors go to stderr.
@@ -267,6 +273,7 @@ config/                Person tracking development settings
 robot/navel_client/
   adapter.py           SDK packet -> raw frame mapping
   main.py              Async sensor collectors and streaming loop
+  head_focus.py        Optional robot-local provisional head focus
   transport.py         Standard-library HTTP POST transport
 robot/tests/           Standalone live SDK diagnostics to run on Navel
 recordings/examples/   Small synthetic recording for trying replay
@@ -286,6 +293,9 @@ The next-stage build is described in the
 [PC social-state and execution implementation plan](docs/pc-social-state-implementation-plan.md).
 It stages UID histories, temporal features, SocialState, a rule policy, command
 delivery, and robot execution as separate milestones.
+The [completed rule-policy system diagram](docs/completed-rule-policy-system.md)
+maps the current components and the planned target lock, command, execution,
+and validation steps.
 
 To inspect angular velocity directly on Navel, run:
 
