@@ -1,9 +1,9 @@
 # Sensor-stream extraction
 
 Branch: `feature/navel-raw-http-stream`. Starting point: `main` commit
-`af211ba` (recorder/replayer merge). The original pipeline remains in main's
-history. This branch retains only raw Navel collection, HTTP delivery, a receiver,
-and the schema/tests/documentation needed to operate that path.
+`af211ba` (recorder/replayer merge). This branch now includes the raw Navel
+stream, UID tracking, temporal SocialState, pure rules, and a conservative
+logical target lock. Robot policy actions remain dry-run.
 
 ## Components
 
@@ -27,6 +27,11 @@ and the schema/tests/documentation needed to operate that path.
    file. Closing a write is not an explicit fsync guarantee against power loss.
 7. `app/replay.py` reads/validates JSONL lazily and replays using timestamp gaps.
    It prints frames locally by default; optional `--server` sends them by HTTP.
+8. With social processing enabled, `app/social_pipeline.py` serializes tracking,
+   SocialState, pure rules, and the target lock. The response carries the pure
+   `policy_decision` and `target_lock.effective_decision`. The robot's optional
+   dry-run dispatcher uses the latter. Validated lock responses also pin
+   provisional head acquisition to the server's selected UID while current.
 
 ## Delivery semantics
 
@@ -50,17 +55,17 @@ The file has no source identifier because the requested frame contains none.
 Use one receiver/output file per robot when records must remain attributable.
 The receiver's `/health` endpoint reports service liveness only.
 
-## Changes from the full pipeline
+## Current boundary
 
 - Replaced `ObservationFrame` with `RawObservationFrame`.
 - Retained person IDs, distances, gaze overlap, optional measured head position,
   and forward/yaw velocities; added lidar/sonar range readings.
-- Removed task/controller assumptions, images, capability metadata, and inferred
-  social features from the wire format.
-- Removed the LLM client, state estimator, scheduler, behavior mapping/dispatch,
-  synthetic scenarios, monitor backend, and web UI.
-- Reduced computer dependencies to Flask and Pydantic. The robot still needs only
-  its supplied Navel SDK plus the standard library.
+- The wire format contains no task/controller assumptions, images, capability
+  metadata, or inferred social features. Tracking, SocialState, rules, and the
+  target lock are derived on the computer from the raw frames.
+- Robot policy handlers still log only. There is no physical approach, speech,
+  route controller, command lease, or completion feedback.
+- The robot still needs only its supplied Navel SDK plus the standard library.
 
 The receiver is a simple Flask development service for the computer/robot LAN
 workflow. It has no authentication layer. Its output defaults to the ignored
@@ -71,11 +76,11 @@ session headers and per-frame envelopes are deferred until stateful processing.
 
 ## Verification boundary
 
-Offline tests exercise measured field mapping, null/invalid sensor data, strict
-server validation, JSONL writes, latest-frame queue behavior, request failures,
-worker-thread HTTP, SDK disconnect cleanup, and the complete concurrent collector
-through a real local HTTP receiver. Dependency-isolation tests block Navel and
-server packages while importing the robot client.
+Offline tests exercise sensor mapping, strict server validation, ordered JSONL,
+tracking, temporal states, pure rules, lock transitions, replay/live parity,
+head focus with a fake SDK, HTTP failures, and the concurrent collector through
+a real local receiver. Dependency-isolation tests block Navel and server
+packages while importing the robot client.
 
 These checks cannot establish physical socket access, range units, sensor
 accuracy, or availability on a specific Navel. Verify those on hardware with

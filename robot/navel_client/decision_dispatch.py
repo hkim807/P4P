@@ -29,10 +29,11 @@ class RobotDecision:
     reason_code: str
     target_uid: int | None
     target_track_epoch: int | None
+    lock_id: str | None = None
 
     @property
-    def action_key(self) -> tuple[str, int | None, int | None]:
-        return (self.decision, self.target_uid, self.target_track_epoch)
+    def action_key(self) -> tuple[str, int | None, int | None, str | None]:
+        return (self.decision, self.target_uid, self.target_track_epoch, self.lock_id)
 
 
 def _integer(value: Any, *, minimum: int = 0) -> bool:
@@ -85,7 +86,55 @@ def parse_decision(payload: Mapping[str, Any], observation: Mapping[str, Any],
             raise DecisionRejected("target_not_observed")
     elif uid is not None or epoch is not None:
         raise DecisionRejected("unexpected_target")
-    return RobotDecision(decision_id, state_id, session_id, decision, reason, uid, epoch)
+    lock = payload.get("target_lock")
+    if lock is not None:
+        if (not isinstance(lock, Mapping) or lock.get("lock_version") != "target-lock-v1"
+                or lock.get("source_state_id") != state_id or lock.get("session_id") != session_id
+                or not _integer(lock.get("robot_timestamp_us"))
+                or lock.get("robot_timestamp_us") != timestamp):
+            raise DecisionRejected("target_lock_state_mismatch")
+        effective = lock.get("effective_decision")
+        if (not isinstance(effective, Mapping)
+                or effective.get("source_state_id") != state_id
+                or effective.get("session_id") != session_id
+                or effective.get("policy_version") != "target-lock-v1"
+                or effective.get("decision_id") != f"{state_id}:target-lock-v1"
+                or effective.get("lock_id") != lock.get("lock_id")):
+            raise DecisionRejected("target_lock_decision_mismatch")
+        status = lock.get("status")
+        lock_id = lock.get("lock_id")
+        if (not isinstance(status, str)
+                or status not in {"UNLOCKED", "LOCKED", "MISSING", "TENTATIVE_RETURN", "AMBIGUOUS", "COOLDOWN"}):
+            raise DecisionRejected("target_lock_status_invalid")
+        if lock_id is not None and (not isinstance(lock_id, str) or not lock_id):
+            raise DecisionRejected("target_lock_id_invalid")
+        lock_uid, lock_epoch = lock.get("target_uid"), lock.get("target_track_epoch")
+        if status in {"LOCKED", "MISSING", "TENTATIVE_RETURN", "AMBIGUOUS"}:
+            if not lock_id or not _integer(lock_uid) or not _integer(lock_epoch, minimum=1):
+                raise DecisionRejected("target_lock_target_invalid")
+        elif lock_uid is not None or lock_epoch is not None:
+            raise DecisionRejected("target_lock_unexpected_target")
+        decision, reason = effective.get("decision"), effective.get("reason_code")
+        if not isinstance(decision, str) or decision not in DECISIONS or not isinstance(reason, str) or not reason:
+            raise DecisionRejected("target_lock_decision_invalid")
+        uid, epoch = effective.get("target_uid"), effective.get("target_track_epoch")
+        if decision in ("APPROACH", "ENGAGE"):
+            if (status != "LOCKED" or not lock_id
+                    or not _integer(uid) or not _integer(epoch, minimum=1)
+                    or (uid, epoch) != (lock.get("target_uid"), lock.get("target_track_epoch"))
+                    or (uid, epoch) != (raw.get("target_uid"), raw.get("target_track_epoch"))
+                    or decision != raw.get("decision")):
+                raise DecisionRejected("target_lock_does_not_authorize_target")
+        elif uid is not None or epoch is not None:
+            raise DecisionRejected("target_lock_unexpected_target")
+        if status in {"MISSING", "TENTATIVE_RETURN", "AMBIGUOUS", "COOLDOWN"} and decision != "DEFER":
+            raise DecisionRejected("target_lock_hold_requires_defer")
+        if status == "LOCKED" and decision == "CONTINUE":
+            raise DecisionRejected("target_lock_locked_cannot_continue")
+        decision_id = effective["decision_id"]
+    else:
+        lock_id = None
+    return RobotDecision(decision_id, state_id, session_id, decision, reason, uid, epoch, lock_id)
 
 
 class DryRunHandlers:
@@ -114,7 +163,8 @@ class DryRunHandlers:
         logger.info("decision_dry_run=%s", json.dumps({
             "event": "CANCEL", "decision": decision.decision,
             "decision_id": decision.decision_id, "target_uid": decision.target_uid,
-            "target_track_epoch": decision.target_track_epoch, "reason": reason,
+            "target_track_epoch": decision.target_track_epoch, "lock_id": decision.lock_id,
+            "reason": reason,
         }, separators=(",", ":")))
 
     @staticmethod
@@ -123,6 +173,7 @@ class DryRunHandlers:
             "event": "CALL", "handler": handler, "decision_id": decision.decision_id,
             "source_state_id": decision.source_state_id, "target_uid": decision.target_uid,
             "target_track_epoch": decision.target_track_epoch,
+            "lock_id": decision.lock_id,
             "reason_code": decision.reason_code,
         }, separators=(",", ":")))
 

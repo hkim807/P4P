@@ -1,7 +1,8 @@
 # Test policy decisions on Navel without executing actions
 
-The robot client can now read `policy_decision` from each accepted observation
-response and route it to named placeholder handlers. Enable this explicitly with
+The robot client reads `target_lock.effective_decision` when the server enables
+social processing, while retaining `policy_decision` as the pure rule result.
+It routes the effective decision to named placeholder handlers. Enable this with
 `--decision-dry-run`. The handlers in
 [`decision_dispatch.py`](../robot/navel_client/decision_dispatch.py) only log;
 they do not call Navel motion, speech, route, or configuration APIs.
@@ -15,6 +16,7 @@ with a **new** raw path and social trace path:
 .venv/bin/python -m app.server --host 0.0.0.0 --port 6060 \
   --output var/recordings/decision-pilot-01.jsonl \
   --social-output var/temporal-validation/decision-pilot-01.social.jsonl \
+  --lock-output var/temporal-validation/decision-pilot-01.lock.jsonl \
   --temporal-config config/temporal-state.json
 ```
 
@@ -36,7 +38,7 @@ Accepted raw frames still print to stdout. On stderr, a first valid decision
 or a changed decision/target produces a line such as:
 
 ```text
-decision_dry_run={"event":"CALL","handler":"APPROACH","decision_id":"...","source_state_id":"...","target_uid":17,"target_track_epoch":1,"reason_code":"SUSTAINED_GAZE_IN_APPROACHABLE_RANGE"}
+decision_dry_run={"event":"CALL","handler":"APPROACH","decision_id":"...","source_state_id":"...","target_uid":17,"target_track_epoch":1,"lock_id":"...","reason_code":"SUSTAINED_GAZE_IN_APPROACHABLE_RANGE"}
 ```
 
 When the decision or target changes, or a response is lost or rejected, the
@@ -53,9 +55,9 @@ replay command:
   --output var/temporal-validation/decision-pilot-01.decisions.jsonl
 ```
 
-The decision trace should match the decisions returned during the live run for
-each source state. The robot's stderr log shows which of those decisions passed
-its local response checks and reached a placeholder. Stop the client with Ctrl-C;
+The decision trace matches the **pure** decisions returned during the live run.
+The lock trace records the effective decisions that reached the robot's
+placeholder after local response checks. Stop the client with Ctrl-C;
 the active placeholder is cancelled in the log.
 
 ## What is checked locally
@@ -69,6 +71,10 @@ the response arrives, measured with the robot's own monotonic clock. An
 with the same UID and track epoch. Older, conflicting, or new-session responses
 are rejected. Restart the robot client after restarting the PC receiver so it
 can bind to the new session.
+When a target lock is present, the client also validates its source state,
+selected UID/epoch, lock ID, and effective decision. A missing or unresolved
+target produces `DEFER`, even when the pure rule says `CONTINUE` or proposes an
+action for a different UID.
 
 An independent local task expires the active placeholder after two seconds
 without a valid decision response. `--max-decision-age` and
@@ -84,10 +90,10 @@ rejected response also clears the placeholder. These checks protect this
 - The PC sends **policy decisions, not commands**. There is no command ID,
   execution lease, local capability check, or `STARTED`/`COMPLETED`/`REJECTED`
   feedback route to the PC.
-- There is no completion-aware interaction lifecycle or cooldown. The dispatcher
-  suppresses identical decision/target calls while that decision remains active,
-  but a later change can cause another `ENGAGE` call. Calibrate gaze and identity
-  continuity before using that decision for speech or motion.
+- The logical lock has a missing hold and release cooldown, but no completion
+  feedback. The dispatcher suppresses identical decision/target/lock calls
+  while active; a later change can still cause another `ENGAGE` call. Calibrate
+  gaze and identity continuity before using that decision for speech or motion.
 - The watchdog cancels a logging placeholder only. Before physical execution,
   add a robot-local controller that can verify and perform a physical stop,
   arbitrate route motion, recheck current target and obstacle data, and expire

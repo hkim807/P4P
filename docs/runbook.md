@@ -114,6 +114,10 @@ This output also applies when streaming through the reverse SSH tunnel.
 To inspect policy decisions on Navel without executing policy actions, start the
 receiver with `--social-output` and add `--decision-dry-run` to the robot client.
 See the [decision dry-run procedure](robot-decision-dry-run.md).
+With social processing enabled, responses also include the
+[target lock lifecycle](target-lock.md). Add `--lock-output` on the server to
+write its frame-by-frame trace. The robot dry-run uses the lock's effective
+decision.
 Add `--head-focus` to move the head toward the first unambiguous visible UID.
 This operates locally before HTTP delivery, including when `--decision-dry-run`
 is enabled. See the [head focus procedure](robot-head-focus.md) before enabling it.
@@ -146,6 +150,10 @@ robot or tunnel. The receiver and replay both validate the existing raw format.
 | `--head-focus-grace` | 0.75 seconds | Hold the selected UID across a short perception gap before allowing another |
 | `--max-decision-age` | 1 second | Reject a response if its source frame is older than this on Navel's monotonic clock |
 | `--decision-timeout` | 2 seconds | Cancel the active logging placeholder after this long without a valid response |
+
+Server-side `--lock-output PATH` writes a new lock trace and enables social
+processing. `--lock-config PATH` loads hold/cooldown settings. Both are described
+in the [target lock guide](target-lock.md).
 
 Timeout and age values must be finite and positive. The interval must be finite
 and nonnegative. Head magnitude must be finite and between 0 and 1. `--server`

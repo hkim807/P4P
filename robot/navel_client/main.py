@@ -13,7 +13,9 @@ from dataclasses import dataclass
 from typing import Any
 
 from robot.navel_client.adapter import NavelObservationAdapter
-from robot.navel_client.decision_dispatch import DecisionDispatcher, DryRunHandlers
+from robot.navel_client.decision_dispatch import (
+    DecisionDispatcher, DecisionRejected, DryRunHandlers, parse_decision,
+)
 from robot.navel_client.head_focus import HeadFocusController
 from robot.navel_client.transport import ObservationTransport, TransportError
 
@@ -76,6 +78,8 @@ async def _send_observations(
     minimum_send_interval_s: float,
     print_only: bool,
     decision_dispatcher: DecisionDispatcher | None = None,
+    head_focus: HeadFocusController | None = None,
+    max_decision_age_s: float = 1.0,
 ) -> None:
     last_sent_at = -math.inf
     while True:
@@ -99,6 +103,14 @@ async def _send_observations(
                     await decision_dispatcher.invalidate("transport_error")
                 continue
             if 200 <= response.status_code < 300 and response.payload.get("accepted") is True:
+                if head_focus is not None and response.payload.get("target_lock") is not None:
+                    try:
+                        parse_decision(response.payload, observation, time.monotonic_ns() // 1000,
+                                       round(max_decision_age_s * 1_000_000))
+                    except DecisionRejected as error:
+                        logger.warning("head_focus_lock_rejected=%s", error)
+                    else:
+                        head_focus.apply_server_lock(response.payload["target_lock"])
                 print(json.dumps(observation, allow_nan=False, indent=2), flush=True)
                 logger.info("timestamp=%s people=%s accepted=true",
                             observation["timestamp"], len(observation["people"]))
@@ -136,6 +148,8 @@ async def collect_and_stream(robot: Any, args: argparse.Namespace) -> None:
             minimum_send_interval_s=args.minimum_send_interval,
             print_only=args.print_only,
             decision_dispatcher=decision_dispatcher,
+            head_focus=head_focus,
+            max_decision_age_s=args.max_decision_age,
         )),
     ]
     if decision_dispatcher is not None:

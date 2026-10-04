@@ -184,6 +184,9 @@ must be new.
 To receive and log live decisions on Navel without executing policy actions, start the
 receiver with `--social-output` and add `--decision-dry-run` to the robot client.
 See the [robot decision dry-run guide](docs/robot-decision-dry-run.md).
+The server now returns a [target lock lifecycle](docs/target-lock.md) with a
+separate effective decision. It holds the selected UID through brief loss and
+defers decisions while a different UID is unresolved.
 
 ## Synthetic replay example
 
@@ -268,8 +271,11 @@ app/
   state/estimator.py   Categorical SocialState and cue changes
   social_pipeline.py  Shared live/replay temporal processing
   social.py           SocialState replay CLI
+  lock.py             Raw-recording target-lock replay CLI
   validate_social.py  Recorded/synthetic temporal validation reports
-config/                Person tracking development settings
+  policy/target_lock.py  Stateful logical interaction lock
+config/                Tracking, temporal, and lock settings
+  target-lock.json      Default lock hold and cooldown settings
 robot/navel_client/
   adapter.py           SDK packet -> raw frame mapping
   main.py              Async sensor collectors and streaming loop
@@ -294,7 +300,7 @@ The next-stage build is described in the
 It stages UID histories, temporal features, SocialState, a rule policy, command
 delivery, and robot execution as separate milestones.
 The [completed rule-policy system diagram](docs/completed-rule-policy-system.md)
-maps the current components and the planned target lock, command, execution,
+maps the current components and the remaining command, execution,
 and validation steps.
 
 To inspect angular velocity directly on Navel, run:

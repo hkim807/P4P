@@ -29,9 +29,10 @@ Rules run in this order:
 The policy checks cue validity as well as category names. It never emits `YIELD`:
 the current SocialState has no verified route-conflict input. This initial rule
 does not lock a target, manage cooldown, or deduplicate repeated decisions.
-These functions belong to the following interaction-lifecycle layer. In
-particular, repeated `ENGAGE` decisions must not be interpreted as repeated
-speech commands.
+The [target lock layer](target-lock.md) now keeps one exact UID/epoch and
+overrides unsafe transitions during loss or ambiguity. Completion feedback and
+speech deduplication remain separate work. Repeated `ENGAGE` decisions must
+not be interpreted as repeated speech commands.
 
 Replay of the seven pilot recordings shows why these are provisional decisions:
 recording 04 (named no gaze) produces 3 `APPROACH` frames; recording 05 (named

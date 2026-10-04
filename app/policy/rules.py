@@ -28,7 +28,7 @@ def decide(state: SocialState | dict, *, stale: bool = False,
     """Classify one scene. Caller supplies freshness and processing status.
 
     DEFER is a decision to keep observing, never an executable robot command.
-    This function has no interaction memory; target lock and cooldown come later.
+    This function has no interaction memory; target_lock.py handles the lock.
     """
     state = SocialState.model_validate(state)
 

@@ -15,7 +15,7 @@ from werkzeug.exceptions import HTTPException
 from app.domain.models import RawObservationFrame
 from app.recording import RecordingWriter, TimestampOrderError
 from app.pipeline import TrackTraceWriter, TrackingPipeline, TrackingProcessingError
-from app.policy.rules import decide
+from app.policy.target_lock import LockConfig
 from app.state.tracks import TrackConfig
 from app.social_pipeline import SocialPipeline
 from app.state.social_models import TemporalConfig
@@ -29,20 +29,23 @@ def create_app(output_path: str | Path | None = None, *,
                track_config: TrackConfig | None = None,
                session_id: str | None = None,
                social_output: str | Path | None = None,
-               temporal_config: TemporalConfig | None = None) -> Flask:
+               temporal_config: TemporalConfig | None = None,
+               lock_output: str | Path | None = None,
+               lock_config: LockConfig | None = None) -> Flask:
     """Start a fresh JSONL recording; None prints accepted frames to stdout."""
     app = Flask(__name__)
     app.config["MAX_CONTENT_LENGTH"] = 1024 * 1024
-    paths = [Path(p).resolve() for p in (output_path, tracking_output, social_output) if p is not None]
+    paths = [Path(p).resolve() for p in (output_path, tracking_output, social_output, lock_output) if p is not None]
     if len(set(paths)) != len(paths):
-        raise ValueError("Raw, tracking, and social outputs must use different paths")
+        raise ValueError("Raw, tracking, social, and lock outputs must use different paths")
     recording = RecordingWriter(output_path)
     pipeline = None
-    if social_output is not None:
+    if social_output is not None or lock_output is not None:
         pipeline = SocialPipeline(session_id or f"live-{uuid4().hex}", track_config,
                                   temporal_config, recording,
                                   TrackTraceWriter(tracking_output) if tracking_output else None,
-                                  TrackTraceWriter(social_output))
+                                  TrackTraceWriter(social_output) if social_output else None,
+                                  lock_config, TrackTraceWriter(lock_output) if lock_output else None)
         app.extensions["social_pipeline"] = pipeline
     elif tracking_output is not None:
         pipeline = TrackingPipeline(session_id or f"live-{uuid4().hex}", track_config,
@@ -86,14 +89,8 @@ def create_app(output_path: str | Path | None = None, *,
         if snapshot is not None:
             social = snapshot.get("social_state")
             if social is not None:
-                try:
-                    decision = decide(social).model_dump(mode="json")
-                except Exception:
-                    logger.exception("Raw observation and social state saved, but policy decision failed")
-                    return jsonify(accepted=True, timestamp=frame.timestamp, people_count=len(frame.people),
-                                   processing_status="failed", processing_stage="policy_decision",
-                                   policy_decision=None), 200
-                extra = {"social_state": social, "policy_decision": decision}
+                extra = {"social_state": social, "policy_decision": snapshot["policy_decision"],
+                         "target_lock": snapshot["target_lock"]}
             else:
                 extra = {}
             return jsonify(accepted=True, timestamp=frame.timestamp, people_count=len(frame.people),
@@ -114,16 +111,20 @@ def main() -> None:
     parser.add_argument("--port", type=int, default=6060)
     parser.add_argument("--output", help="New JSONL path, or '-' for stdout; default is a timestamped file in var/recordings")
     parser.add_argument("--tracking-output", help="Enable UID tracking and write a new derived JSONL trace")
-    parser.add_argument("--tracking-config", help="Tracking configuration JSON (requires tracking or social output)")
+    parser.add_argument("--tracking-config", help="Tracking configuration JSON (requires tracking, social, or lock output)")
     parser.add_argument("--social-output", help="Enable temporal SocialState and write a new JSONL trace")
-    parser.add_argument("--temporal-config", help="Temporal configuration JSON (requires --social-output)")
+    parser.add_argument("--lock-output", help="Enable social processing and write target lock JSONL")
+    parser.add_argument("--lock-config", help="Target lock configuration JSON (requires social or lock output)")
+    parser.add_argument("--temporal-config", help="Temporal configuration JSON (requires social or lock output)")
     args = parser.parse_args()
     if not 1 <= args.port <= 65535:
         parser.error("port must be between 1 and 65535")
-    if args.tracking_config and not (args.tracking_output or args.social_output):
-        parser.error("--tracking-config requires --tracking-output or --social-output")
-    if args.temporal_config and not args.social_output:
-        parser.error("--temporal-config requires --social-output")
+    if args.tracking_config and not (args.tracking_output or args.social_output or args.lock_output):
+        parser.error("--tracking-config requires --tracking-output, --social-output, or --lock-output")
+    if args.temporal_config and not (args.social_output or args.lock_output):
+        parser.error("--temporal-config requires --social-output or --lock-output")
+    if args.lock_config and not (args.social_output or args.lock_output):
+        parser.error("--lock-config requires --social-output or --lock-output")
     logging.basicConfig(level=logging.INFO, format="%(message)s")
     output = args.output
     if output is None:
@@ -133,7 +134,9 @@ def main() -> None:
         config = TrackConfig.from_file(args.tracking_config) if args.tracking_config else None
         app = create_app(None if output == "-" else output, tracking_output=args.tracking_output,
                          track_config=config, social_output=args.social_output,
-                         temporal_config=TemporalConfig.from_file(args.temporal_config) if args.temporal_config else None)
+                         temporal_config=TemporalConfig.from_file(args.temporal_config) if args.temporal_config else None,
+                         lock_output=args.lock_output,
+                         lock_config=LockConfig.from_file(args.lock_config) if args.lock_config else None)
     except (OSError, ValueError) as error:
         parser.error(str(error))
     logger.info("Recording raw sensor frames to %s", "stdout" if output == "-" else output)
@@ -141,6 +144,8 @@ def main() -> None:
         logger.info("Recording UID track snapshots to %s", args.tracking_output)
     if args.social_output:
         logger.info("Recording temporal SocialState to %s", args.social_output)
+    if args.lock_output:
+        logger.info("Recording target locks to %s", args.lock_output)
     app.run(host=args.host, port=args.port, threaded=True)
 
 

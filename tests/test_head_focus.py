@@ -66,6 +66,25 @@ class HeadFocusTests(unittest.TestCase):
         self.assertIsNone(self.focus.uid)
         self.assertEqual(self.robot.commands, [(17, 0.5), (17, 0.5)])
 
+    def test_server_lock_blocks_uid_switch_and_reacquires_known_target_in_crowd(self):
+        self.focus.observe(perception(person(17)))
+        self.focus.apply_server_lock({"status": "LOCKED", "target_uid": 17, "lock_id": "lock-1"})
+        self.now += 1
+        self.focus.observe(perception(person(18)))
+        self.assertEqual(self.robot.commands, [(17, 0.5)])
+        self.focus.observe(perception(person(17), person(18)))
+        self.assertEqual(self.robot.commands, [(17, 0.5), (17, 0.5)])
+        self.focus.apply_server_lock({"status": "COOLDOWN", "target_uid": None, "lock_id": "lock-1"})
+        self.now += 1
+        self.focus.observe(perception(person(18)))
+        self.assertEqual(self.robot.commands[-1], (18, 0.5))
+
+    def test_server_pin_expires_if_responses_stop(self):
+        self.focus.apply_server_lock({"status": "MISSING", "target_uid": 17, "lock_id": "lock-1"})
+        self.now += 3.1
+        self.focus.observe(perception(person(18)))
+        self.assertEqual(self.robot.commands, [(18, 0.5)])
+
     def test_failed_command_is_retried_after_cooldown(self):
         attempts = []
 

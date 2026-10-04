@@ -2,6 +2,8 @@
 from threading import Lock
 
 from app.pipeline import TrackingPipeline, TrackTraceWriter, TrackingProcessingError
+from app.policy.rules import decide
+from app.policy.target_lock import LockConfig, TargetLockController
 from app.state.estimator import SocialStateEstimator
 from app.state.social_models import TemporalConfig
 from app.state.tracks import TrackConfig
@@ -9,7 +11,8 @@ from app.state.tracks import TrackConfig
 
 class SocialPipeline:
     def __init__(self, session_id, track_config=None, temporal_config=None,
-                 recording=None, tracking_trace=None, social_trace=None):
+                 recording=None, tracking_trace=None, social_trace=None,
+                 lock_config=None, lock_trace=None):
         track_config = track_config or TrackConfig()
         temporal_config = temporal_config or TemporalConfig()
         if track_config.history_window_s < temporal_config.window_s:
@@ -19,6 +22,8 @@ class SocialPipeline:
         self.tracking = TrackingPipeline(session_id, track_config, recording, tracking_trace)
         self.estimator = SocialStateEstimator(temporal_config)
         self.social_trace = social_trace
+        self.lock_trace = lock_trace
+        self.lock = TargetLockController(lock_config or LockConfig())
         self._lock = Lock()
 
     def process(self, frame):
@@ -33,4 +38,18 @@ class SocialPipeline:
                     self.social_trace.write(state)
                 except Exception as error:
                     raise TrackingProcessingError("social_trace_write") from error
-            return {**snapshot, "social_state": state}
+            try:
+                proposal = decide(state).model_dump(mode="json")
+            except Exception as error:
+                raise TrackingProcessingError("policy_decision") from error
+            try:
+                target_lock = self.lock.update(state, proposal).model_dump(mode="json")
+            except Exception as error:
+                raise TrackingProcessingError("target_lock") from error
+            if self.lock_trace is not None:
+                try:
+                    self.lock_trace.write(target_lock)
+                except Exception as error:
+                    raise TrackingProcessingError("lock_trace_write") from error
+            return {**snapshot, "social_state": state, "policy_decision": proposal,
+                    "target_lock": target_lock}

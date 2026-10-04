@@ -34,7 +34,7 @@ flowchart LR
         T["Per-UID tracking + epochs<br/>IMPLEMENTED"]
         E["Temporal evidence + SocialState<br/>IMPLEMENTED, provisional thresholds"]
         Q["Pure rule decision + reason<br/>IMPLEMENTED"]
-        L["Interaction lifecycle + logical target lock<br/>PLANNED"]
+        L["Logical target lock + missing/return states<br/>IMPLEMENTED, conservative"]
         C["Correlated command / lease<br/>PLANNED"]
         J["Raw, state, decision, command, feedback trace<br/>PARTIAL"]
         I --> T --> E --> Q --> L --> C
@@ -46,7 +46,8 @@ flowchart LR
     end
 
     A -->|ordered observations| I
-    Q -->|current policy_decision in HTTP response| D
+    Q -->|pure policy_decision for audit| D
+    L -->|effective decision + lock ID in HTTP response| D
     C -->|future command tied to session, frame, lock| V
     X -->|STARTED / COMPLETED / REJECTED / CANCELLED| L
     X --> J
@@ -56,8 +57,9 @@ flowchart LR
 With `--head-focus`, the focus controller runs on every robot perception packet,
 before the rate-limited HTTP sender. Thus the head can respond to the first
 eligible detection without waiting for the server. Its focus is **provisional**. The
-server owns the logical interaction lock and may confirm, retain, or reject the
-robot's current focus. The robot must not treat local head focus as permission
+server owns the logical interaction lock. A validated response pins the robot's
+head acquisition to the selected UID while the response remains current. The
+robot must not treat local head focus as permission
 to approach or speak.
 
 The [Navel SDK](https://doc.navelrobotics.com/api/communication.html) documents
@@ -76,7 +78,7 @@ robot before enabling automatic head movement.
 | Local focused UID and last-seen time | Robot focus controller | Implemented behind `--head-focus`; one unambiguous UID, short loss grace, SDK command and event logs. Focus epoch, modes, and server correlation remain planned. A command log is not measured head pose. |
 | Base route and head-motion/settling status | Robot controller | Planned: distinguish a stationary base from a moving camera. If actual head motion is unavailable, treat camera motion as uncertain until focus is held and a measured settling interval passes. |
 | `(session_id, uid, track_epoch)` | PC tracker | Implemented track key; changing UID or expired epoch remains a distinct raw history. |
-| Logical `lock_id`, current UID/epoch, alias evidence, status, completion, cooldown | PC interaction lifecycle | Planned: one interaction can survive brief detection loss without automatically merging raw track histories. |
+| Logical `lock_id`, selected UID/epoch, status, missing hold, release cooldown | PC target lock | Implemented; one exact track survives brief loss, and a different UID remains unresolved. Alias evidence, actual completion, and cross-UID confirmation remain planned. |
 | Command ID, source state, lock ID, target UID/epoch, expiry, capability | PC command protocol | Planned: robot validates before any action. |
 | Execution events and local safety/route state | Robot executor | Planned: feedback closes the loop; lidar/sonar are local obstacle inputs, not person identity evidence. |
 
@@ -88,8 +90,9 @@ short-term lock or supplies a documented match decision for a new UID.
 
 ## Rule output versus interaction intent
 
-The current pure rule evaluates one SocialState and returns a reasoned proposal.
-The planned lifecycle interprets that proposal in the context of an active lock:
+The pure rule evaluates one SocialState and returns a reasoned proposal. The
+implemented lock layer holds an exact UID/epoch through brief loss and gates
+that proposal. Completion and cross-UID confirmation remain planned:
 
 | Current evidence | Pure rule today | Completed lifecycle |
 | --- | --- | --- |
@@ -137,7 +140,7 @@ stable frame. Gaze thresholds also need evaluation with head following enabled.
 | Spatial reassociation | Planned | Add optional face box; use time, distance, and spatial evidence only when camera pose is suitable. No auto-transfer on ambiguity | Human-annotated same-person returns and impostor/crossing trials. Report correct returns, false transfers, unresolved cases, and latency separately. Recordings 01-07 lack 3D head position and identity labels, so they cannot validate this accuracy. |
 | Temporal SocialState | Implemented with provisional thresholds | Gate motion evidence during head movement; calibrate gaze and distance with head following on/off | Synthetic cue tests and replay parity; annotated head-on/head-off robot recordings; measure false `APPROACH`/`ENGAGE` in conditions like recordings 04, 05, and 07. |
 | Pure rule policy | Implemented: explainable `CONTINUE`, `APPROACH`, `ENGAGE`, `DEFER`; no verified `YIELD` cue | Keep pure table, but let lifecycle override `NO_VISIBLE_PERSON` while a lock is missing | Branch tests for every rule and validity flag; exact reason code/source state on live and replay paths; no target-specific output for missing or ambiguous targets. |
-| Interaction lifecycle | Planned | Logical lock, provisional-to-confirmed handoff, missing/return, completion, cooldown, stream-loss timer | Deterministic event sequences: same/different UID, two candidates, target loss, stale stream, completed greeting, repeated `ENGAGE`. At most one completed greeting per lock; no silent target transfer. |
+| Interaction lifecycle | Partly implemented: exact UID/epoch lock, missing/return states, stream-gap release, release cooldown, effective decision | Add cross-UID confirmation from labeled spatial evidence, completion feedback and greeting cooldown | Deterministic tests cover same/different UID, new epoch, crowds, target loss, stream gap, and replay/live parity. Completed greeting and false-transfer trials remain. |
 | Command and feedback protocol | Planned; current HTTP carries policy proposals and robot has logging handlers | Versioned command envelope, IDs, expiry, deduplication, execution events, session restart | Robot-to-PC-to-fake-executor HTTP tests; reject stale, mismatched, duplicate, old-session, lost-target, and unsupported commands; correlate every feedback event. |
 | Physical executor and route | Planned in this branch | Local pause/hold/resume ownership, bounded head/approach/speech actions, obstacle checks, physical cancellation and watchdog | One capability at a time on Navel; verify stop after target loss, sensor loss, tunnel loss, stale command, operator override, and route handoff. A dry-run watchdog only clears logs today. |
 | Full-loop evaluation | Planned | Freeze configuration and compare complete runs with human labels | Repeated roam-to-interaction scenarios with aligned raw/state/decision/lock/command/feedback traces. Report UID switches, false lock transfers, repeated greetings, missed engagement, latency, and safety overrides. |
@@ -147,14 +150,15 @@ stable frame. Gaze thresholds also need evaluation with head following enabled.
 1. Validate the opt-in robot focus controller's `look_at_person` lifecycle on
    Navel. Determine physical release behavior and log a focus epoch for server
    correlation. Keep the route and speech handlers in dry-run during this step.
-2. Add the stateful interaction lifecycle and correct `NO_VISIBLE_PERSON` while a
-   lock is missing. Replay UID-dropout and ambiguity cases before enabling
-   cross-UID rebinds.
+2. Validate the implemented logical lock and its `NO_VISIBLE_PERSON` override
+   on Navel. Keep cross-UID return candidates unresolved until labeled
+   evidence supports a safe rebind rule.
 3. Collect labeled head-follow recordings with face boxes and test spatial
    reassociation and head-motion effects. Set thresholds from those trials.
 4. Add command/feedback envelopes and a fake executor; then enable head, route
    pause/resume, speech, and bounded approach one capability at a time.
 
 See [person tracking](person-tracking.md), [temporal state](temporal-social-state.md),
-[first rule policy](social-policy.md), and the [robot decision dry-run](robot-decision-dry-run.md)
+[first rule policy](social-policy.md), [target lock](target-lock.md), and the
+[robot decision dry-run](robot-decision-dry-run.md)
 for the existing contracts and commands.

@@ -36,6 +36,11 @@ policy response handlers in logging mode.
 - A failed SDK send is logged, and acquisition can be retried after one second.
   Raw sensor streaming continues.
 
+When the app server returns a validated target lock, its selected UID pins
+local head acquisition. A changed UID cannot take over during the server's
+missing or unresolved state. The pin expires after three seconds without a
+valid response; see the [target lock guide](target-lock.md).
+
 The local selection is cleared when the client stops. The
 [public Navel SDK reference](https://doc.navelrobotics.com/api/communication.html)
 documents `look_at_person` but no explicit focus cancel operation. The local
