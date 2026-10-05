@@ -13,6 +13,7 @@ from pydantic import ValidationError
 from werkzeug.exceptions import HTTPException
 
 from app.domain.models import RawObservationFrame
+from app.commands import CommandConfig, ExecutionEvent, FeedbackRejected
 from app.recording import RecordingWriter, TimestampOrderError
 from app.pipeline import TrackTraceWriter, TrackingPipeline, TrackingProcessingError
 from app.policy.target_lock import LockConfig
@@ -31,21 +32,27 @@ def create_app(output_path: str | Path | None = None, *,
                social_output: str | Path | None = None,
                temporal_config: TemporalConfig | None = None,
                lock_output: str | Path | None = None,
-               lock_config: LockConfig | None = None) -> Flask:
+               lock_config: LockConfig | None = None,
+               command_output: str | Path | None = None,
+               execution_output: str | Path | None = None,
+               command_config: CommandConfig | None = None) -> Flask:
     """Start a fresh JSONL recording; None prints accepted frames to stdout."""
     app = Flask(__name__)
     app.config["MAX_CONTENT_LENGTH"] = 1024 * 1024
-    paths = [Path(p).resolve() for p in (output_path, tracking_output, social_output, lock_output) if p is not None]
+    paths = [Path(p).resolve() for p in (output_path, tracking_output, social_output,
+                                        lock_output, command_output, execution_output) if p is not None]
     if len(set(paths)) != len(paths):
-        raise ValueError("Raw, tracking, social, and lock outputs must use different paths")
+        raise ValueError("Raw, tracking, social, lock, command, and execution outputs must use different paths")
     recording = RecordingWriter(output_path)
     pipeline = None
-    if social_output is not None or lock_output is not None:
+    if any(p is not None for p in (social_output, lock_output, command_output, execution_output)):
         pipeline = SocialPipeline(session_id or f"live-{uuid4().hex}", track_config,
                                   temporal_config, recording,
                                   TrackTraceWriter(tracking_output) if tracking_output else None,
                                   TrackTraceWriter(social_output) if social_output else None,
-                                  lock_config, TrackTraceWriter(lock_output) if lock_output else None)
+                                  lock_config, TrackTraceWriter(lock_output) if lock_output else None,
+                                  command_config, TrackTraceWriter(command_output) if command_output else None,
+                                  TrackTraceWriter(execution_output) if execution_output else None)
         app.extensions["social_pipeline"] = pipeline
     elif tracking_output is not None:
         pipeline = TrackingPipeline(session_id or f"live-{uuid4().hex}", track_config,
@@ -90,7 +97,8 @@ def create_app(output_path: str | Path | None = None, *,
             social = snapshot.get("social_state")
             if social is not None:
                 extra = {"social_state": social, "policy_decision": snapshot["policy_decision"],
-                         "target_lock": snapshot["target_lock"]}
+                         "target_lock": snapshot["target_lock"],
+                         "robot_command": snapshot["robot_command"]}
             else:
                 extra = {}
             return jsonify(accepted=True, timestamp=frame.timestamp, people_count=len(frame.people),
@@ -101,6 +109,25 @@ def create_app(output_path: str | Path | None = None, *,
                                "events": snapshot["events"],
                            }, **extra)
         return jsonify(accepted=True, timestamp=frame.timestamp, people_count=len(frame.people))
+
+    @app.post("/api/v1/execution-events")
+    def execution_events():
+        if not isinstance(pipeline, SocialPipeline):
+            return jsonify(accepted=False, error="command_pipeline_unavailable"), 409
+        try:
+            event = ExecutionEvent.model_validate(request.get_json())
+        except ValidationError as error:
+            return jsonify(accepted=False, error="invalid_execution_event",
+                           details=error.errors(include_url=False, include_input=False,
+                                                include_context=False)), 400
+        try:
+            duplicate = pipeline.record_execution_event(event)
+        except FeedbackRejected as error:
+            return jsonify(accepted=False, error=str(error)), 409
+        except OSError:
+            logger.exception("Could not store execution event")
+            return jsonify(accepted=False, error="execution_storage_failed"), 503
+        return jsonify(accepted=True, duplicate=duplicate, event_id=event.event_id)
 
     return app
 
@@ -114,17 +141,19 @@ def main() -> None:
     parser.add_argument("--tracking-config", help="Tracking configuration JSON (requires tracking, social, or lock output)")
     parser.add_argument("--social-output", help="Enable temporal SocialState and write a new JSONL trace")
     parser.add_argument("--lock-output", help="Enable social processing and write target lock JSONL")
+    parser.add_argument("--command-output", help="Enable social processing and write command proposals JSONL")
+    parser.add_argument("--execution-output", help="Enable social processing and write robot feedback JSONL")
+    parser.add_argument("--command-config", help="Command timing and capacity JSON (requires social processing)")
     parser.add_argument("--lock-config", help="Target lock configuration JSON (requires social or lock output)")
     parser.add_argument("--temporal-config", help="Temporal configuration JSON (requires social or lock output)")
     args = parser.parse_args()
     if not 1 <= args.port <= 65535:
         parser.error("port must be between 1 and 65535")
-    if args.tracking_config and not (args.tracking_output or args.social_output or args.lock_output):
-        parser.error("--tracking-config requires --tracking-output, --social-output, or --lock-output")
-    if args.temporal_config and not (args.social_output or args.lock_output):
-        parser.error("--temporal-config requires --social-output or --lock-output")
-    if args.lock_config and not (args.social_output or args.lock_output):
-        parser.error("--lock-config requires --social-output or --lock-output")
+    social_enabled = any((args.social_output, args.lock_output, args.command_output, args.execution_output))
+    if args.tracking_config and not (args.tracking_output or social_enabled):
+        parser.error("--tracking-config requires a derived output")
+    if (args.temporal_config or args.lock_config or args.command_config) and not social_enabled:
+        parser.error("temporal, lock, and command config require a social, lock, command, or execution output")
     logging.basicConfig(level=logging.INFO, format="%(message)s")
     output = args.output
     if output is None:
@@ -136,7 +165,9 @@ def main() -> None:
                          track_config=config, social_output=args.social_output,
                          temporal_config=TemporalConfig.from_file(args.temporal_config) if args.temporal_config else None,
                          lock_output=args.lock_output,
-                         lock_config=LockConfig.from_file(args.lock_config) if args.lock_config else None)
+                         lock_config=LockConfig.from_file(args.lock_config) if args.lock_config else None,
+                         command_output=args.command_output, execution_output=args.execution_output,
+                         command_config=CommandConfig.from_file(args.command_config) if args.command_config else None)
     except (OSError, ValueError) as error:
         parser.error(str(error))
     logger.info("Recording raw sensor frames to %s", "stdout" if output == "-" else output)
@@ -146,6 +177,10 @@ def main() -> None:
         logger.info("Recording temporal SocialState to %s", args.social_output)
     if args.lock_output:
         logger.info("Recording target locks to %s", args.lock_output)
+    if args.command_output:
+        logger.info("Recording command proposals to %s", args.command_output)
+    if args.execution_output:
+        logger.info("Recording execution events to %s", args.execution_output)
     app.run(host=args.host, port=args.port, threaded=True)
 
 

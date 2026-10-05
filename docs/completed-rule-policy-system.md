@@ -14,10 +14,10 @@ flowchart LR
         F["Immediate provisional head focus<br/>IMPLEMENTED, opt-in"]
         H["look_at_person(uid, head)<br/>IMPLEMENTED, opt-in"]
         A["Raw frame adapter + newest-frame HTTP sender<br/>IMPLEMENTED"]
-        V["Command validation + lease + deduplication<br/>PLANNED"]
-        X["Local executor + route arbitration + watchdog<br/>PLANNED"]
-        R["Fixed route / pause / resume<br/>PLANNED in this branch"]
-        B["Head, bounded approach, speech<br/>PLANNED"]
+        V["Command validation + expiry + deduplication<br/>IMPLEMENTED"]
+        X["Local script executor + route hooks + watchdog<br/>IMPLEMENTED opt-in"]
+        R["Fixed route / pause / resume scripts<br/>USER INTEGRATION"]
+        B["Bounded approach and engage scripts<br/>USER INTEGRATION"]
         D["Response checks + logging handlers<br/>IMPLEMENTED dry-run"]
         S --> F
         F -->|one visible UID, provisional| H
@@ -35,8 +35,8 @@ flowchart LR
         E["Temporal evidence + SocialState<br/>IMPLEMENTED, provisional thresholds"]
         Q["Pure rule decision + reason<br/>IMPLEMENTED"]
         L["Logical target lock + missing/return states<br/>IMPLEMENTED, conservative"]
-        C["Correlated command / lease<br/>PLANNED"]
-        J["Raw, state, decision, command, feedback trace<br/>PARTIAL"]
+        C["Correlated command / lease<br/>IMPLEMENTED proposal"]
+        J["Raw, state, decision, command, execution trace<br/>IMPLEMENTED opt-in"]
         I --> T --> E --> Q --> L --> C
         I --> J
         E --> J
@@ -48,8 +48,9 @@ flowchart LR
     A -->|ordered observations| I
     Q -->|pure policy_decision for audit| D
     L -->|effective decision + lock ID in HTTP response| D
-    C -->|future command tied to session, frame, lock| V
-    X -->|STARTED / COMPLETED / REJECTED / CANCELLED| L
+    C -->|command tied to session, frame, lock| V
+    V -->|RECEIVED / SIMULATED feedback| J
+    X -->|physical completion / failure / cancellation| L
     X --> J
     S -->|local obstacle data| X
 ```
@@ -79,8 +80,9 @@ robot before enabling automatic head movement.
 | Base route and head-motion/settling status | Robot controller | Planned: distinguish a stationary base from a moving camera. If actual head motion is unavailable, treat camera motion as uncertain until focus is held and a measured settling interval passes. |
 | `(session_id, uid, track_epoch)` | PC tracker | Implemented track key; changing UID or expired epoch remains a distinct raw history. |
 | Logical `lock_id`, selected UID/epoch, bound tracks, status, missing hold, release cooldown | PC target lock | Implemented; a changed UID can inherit the logical lock after a short exclusive, distance-consistent multi-frame handoff. Actual completion and validated identity accuracy remain planned. |
-| Command ID, source state, lock ID, target UID/epoch, expiry, capability | PC command protocol | Planned: robot validates before any action. |
-| Execution events and local safety/route state | Robot executor | Planned: feedback closes the loop; lidar/sonar are local obstacle inputs, not person identity evidence. |
+| Command ID, source state, lock ID, target UID/epoch, expiry, lease | PC command protocol | Implemented for `APPROACH` and `ENGAGE` proposals with stable retry IDs. |
+| Simulated execution events | Robot fake executor | Implemented behind `--command-dry-run`; validates current lock and posts correlated `RECEIVED` and `SIMULATED`. This is not physical completion. |
+| Physical execution events and route hook state | Robot executor | Implemented as an opt-in subprocess interface with stop and watchdog. The user-provided scripts must confirm physical effects; lidar/sonar remain local obstacle inputs, not identity evidence. |
 
 `id_score` is not a lock input yet: the
 [public Person reference](https://doc.navelrobotics.com/api/data_structs.html)
@@ -143,8 +145,8 @@ stable frame. Gaze thresholds also need evaluation with head following enabled.
 | Temporal SocialState | Implemented with provisional thresholds | Gate motion evidence during head movement; calibrate gaze and distance with head following on/off | Synthetic cue tests and replay parity; annotated head-on/head-off robot recordings; measure false `APPROACH`/`ENGAGE` in conditions like recordings 04, 05, and 07. |
 | Pure rule policy | Implemented: explainable `CONTINUE`, `APPROACH`, `ENGAGE`, `DEFER`; no verified `YIELD` cue | Keep pure table, but let lifecycle override `NO_VISIBLE_PERSON` while a lock is missing | Branch tests for every rule and validity flag; exact reason code/source state on live and replay paths; no target-specific output for missing or ambiguous targets. |
 | Interaction lifecycle | Partly implemented: logical lock, guarded UID handoff, missing/return states, stream-gap release, release cooldown, effective decision | Calibrate handoff with labeled return/impostor trials; add completion feedback and greeting cooldown | Deterministic tests cover successful handoff, new epoch, crowd and distance rejection, target loss, stream gap, and replay/live parity. Completed greeting and false-transfer trials remain. |
-| Command and feedback protocol | Planned; current HTTP carries policy proposals and robot has logging handlers | Versioned command envelope, IDs, expiry, deduplication, execution events, session restart | Robot-to-PC-to-fake-executor HTTP tests; reject stale, mismatched, duplicate, old-session, lost-target, and unsupported commands; correlate every feedback event. |
-| Physical executor and route | Planned in this branch | Local pause/hold/resume ownership, bounded head/approach/speech actions, obstacle checks, physical cancellation and watchdog | One capability at a time on Navel; verify stop after target loss, sensor loss, tunnel loss, stale command, operator override, and route handoff. A dry-run watchdog only clears logs today. |
+| Command and feedback protocol | Implemented for `APPROACH`/`ENGAGE` proposals, fake feedback, and physical outcomes | Validate timing and script effects on Navel | Software tests cover stale, mismatched, duplicate, missing-target commands and feedback correlation; robot HTTP trial remains. |
+| Physical executor and route | Script runner, pause/resume/stop hooks, cancellation and watchdog implemented; robot scripts still needed | Provide real route and action scripts with local obstacle handling and verified physical stop | Stub-script tests cover lifecycle and failures. On Navel verify stop after target loss, sensor loss, tunnel loss, stale command, operator override, and route handoff. |
 | Full-loop evaluation | Planned | Freeze configuration and compare complete runs with human labels | Repeated roam-to-interaction scenarios with aligned raw/state/decision/lock/command/feedback traces. Report UID switches, false lock transfers, repeated greetings, missed engagement, latency, and safety overrides. |
 
 ## Recommended build order
@@ -157,7 +159,7 @@ stable frame. Gaze thresholds also need evaluation with head following enabled.
    actions use rebound targets.
 3. Collect labeled head-follow recordings with face boxes and test spatial
    reassociation and head-motion effects. Set thresholds from those trials.
-4. Add command/feedback envelopes and a fake executor; then enable head, route
+4. Validate command/feedback envelopes and the fake executor on Navel; then enable route
    pause/resume, speech, and bounded approach one capability at a time.
 
 See [person tracking](person-tracking.md), [temporal state](temporal-social-state.md),

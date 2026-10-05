@@ -14,9 +14,11 @@ from werkzeug.serving import make_server
 from app.server import create_app
 from app.replay import main as replay_main
 from robot.navel_client.adapter import NavelObservationAdapter
+from robot.navel_client.command_dispatch import FakeCommandExecutor
 from robot.navel_client.main import collect_and_stream, parse_args
 from robot.navel_client.transport import ObservationTransport
 from tests.fixtures import frame, locomotion, perception, person
+from tests.test_social_state import sample
 
 
 class NavelServerEndToEndTests(unittest.IsolatedAsyncioTestCase):
@@ -65,6 +67,22 @@ class NavelServerEndToEndTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(response.status_code, 400)
         self.assertFalse(response.payload["accepted"])
         self.assertFalse(self.output.exists())
+
+    async def test_command_and_fake_feedback_round_trip_over_http(self):
+        for index in range(13):
+            response = await asyncio.to_thread(self.transport.send, sample(index))
+            self.assertEqual(response.status_code, 200)
+        observation = sample(13)
+        response = await asyncio.to_thread(self.transport.send, observation)
+        self.assertIsNotNone(response.payload["robot_command"])
+        executor = FakeCommandExecutor(monotonic_us=lambda: observation["timestamp"])
+        events = executor.accept(response.payload, observation)
+        for event in events:
+            feedback = await asyncio.to_thread(self.transport.send_event, event)
+            self.assertEqual(feedback.status_code, 200)
+            self.assertEqual(feedback.payload["event_id"], event["event_id"])
+        later = await asyncio.to_thread(self.transport.send, sample(14))
+        self.assertIsNone(later.payload["robot_command"])
 
     async def test_http_recording_can_be_replayed_to_a_fresh_receiver(self):
         payloads = [frame(), {**frame(), "timestamp": 1_200_000}]

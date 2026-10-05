@@ -145,6 +145,8 @@ robot or tunnel. The receiver and replay both validate the existing raw format.
 | `--max-locomotion-age` | 1 second | Maximum cache age before velocities/ranges become null |
 | `--print-only` | Off | Print collected frames instead of sending them |
 | `--decision-dry-run` | Off | Validate live policy responses and log one placeholder call per decision/target transition |
+| `--command-dry-run` | Off | Validate locked commands and POST simulated feedback; no approach or speech calls |
+| `--physical-executor` | Off | Run configured action and route scripts with a stop hook, response watchdog, and physical outcome feedback |
 | `--head-focus` | Off | Send `look_at_person` for one unambiguous visible UID before HTTP delivery; this moves the head even with `--decision-dry-run` |
 | `--head-focus-magnitude` | 0.5 | SDK head movement magnitude, from 0 to 1 |
 | `--head-focus-grace` | 0.75 seconds | Hold the selected UID across a short perception gap before allowing another |
@@ -154,6 +156,13 @@ robot or tunnel. The receiver and replay both validate the existing raw format.
 Server-side `--lock-output PATH` writes a new lock trace and enables social
 processing. `--lock-config PATH` loads hold/cooldown settings. Both are described
 in the [target lock guide](target-lock.md).
+Server-side `--command-output PATH` and `--execution-output PATH` enable and
+trace correlated command proposals and simulated robot feedback. Set
+`--command-config PATH` to tune source age, lease, and per-session capacity.
+`--command-dry-run` requires HTTP and cannot be combined with
+`--decision-dry-run`. See the [command and feedback guide](command-feedback.md).
+Physical mode requires all five script paths and excludes both dry-run modes.
+See the [physical executor script contract](physical-executor.md).
 
 Timeout and age values must be finite and positive. The interval must be finite
 and nonnegative. Head magnitude must be finite and between 0 and 1. `--server`

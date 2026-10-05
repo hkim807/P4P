@@ -1,15 +1,15 @@
 # Navel raw sensor HTTP stream
 
-This branch extracts the read-only Navel sensor collector and HTTP transport
-from `main` at `af211ba`. It contains a robot client and a small computer-side
-receiver. The client reads SDK perception and locomotion packets, builds one
-`RawObservationFrame`, and sends it using HTTP POST. The receiver validates each
-frame and appends it to a JSONL file.
+This branch began with the Navel sensor collector and HTTP transport extracted
+from `main` at `af211ba`. The robot client reads SDK perception and locomotion
+packets, builds one `RawObservationFrame`, and sends it using HTTP POST. The
+receiver records frames and derives tracking, social state, rules, target locks,
+and correlated action commands.
 
-The LLM/Ollama integration, social-state estimation, decision scheduling,
-behavior handlers, replay recordings, and React monitor belong to the original
-pipeline on `main`; they are removed from this extraction. There are no robot
-motion, speech, configuration, or actuator calls in the client.
+The LLM/Ollama integration and React monitor from `main` are outside this
+branch. Physical approach and engagement are opt-in through user-provided
+scripts; the default collector does not invoke them. `--head-focus` calls the
+Navel head API when enabled.
 
 ## Data flow
 
@@ -187,6 +187,16 @@ See the [robot decision dry-run guide](docs/robot-decision-dry-run.md).
 The server now returns a [target lock lifecycle](docs/target-lock.md) with a
 separate effective decision. A short, exclusive, distance-consistent return
 can bind a changed SDK UID to the same logical lock; ambiguous returns defer.
+The server can also return a correlated `robot_command` for a locked target.
+Use `--command-output` and `--execution-output` to save command and feedback
+traces, and `--command-dry-run` on the robot to validate commands and send
+simulated feedback. See the [command and feedback guide](docs/command-feedback.md).
+No approach or speech action is executed by this mode.
+An opt-in [physical executor](docs/physical-executor.md) now runs user-provided
+approach and engage scripts after validating commands and pausing the route.
+It requires route pause, route resume, and hardware stop scripts, and reports
+actual completion, failure, or cancellation to the server. The scripts and
+robot hardware validation are still to be supplied.
 
 ## Synthetic replay example
 

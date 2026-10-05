@@ -3,7 +3,7 @@
 Branch: `feature/navel-raw-http-stream`. Starting point: `main` commit
 `af211ba` (recorder/replayer merge). This branch now includes the raw Navel
 stream, UID tracking, temporal SocialState, pure rules, and a conservative
-logical target lock. Robot policy actions remain dry-run.
+logical target lock, a command protocol, and an opt-in physical script executor.
 
 ## Components
 
@@ -18,8 +18,8 @@ logical target lock. Robot policy actions remain dry-run.
 4. A third task rate-limits sends and calls `ObservationTransport.send` through
    `asyncio.to_thread`. Collection continues while blocking HTTP waits.
 5. `transport.py` sends JSON to `POST /api/v1/observations` with a timeout. It
-   returns HTTP status and a JSON acknowledgement. Optional dry-run handlers
-   inspect policy responses; local head focus is independent of HTTP.
+   returns HTTP status and a JSON acknowledgement. Optional dry-run or physical
+   executors inspect policy responses; local head focus starts before HTTP.
 6. `app/server.py` validates `RawObservationFrame`; `app/recording.py` checks
    timestamp order and writes one JSON line under a thread lock.
    Acknowledgement follows a successful write/close.
@@ -28,9 +28,10 @@ logical target lock. Robot policy actions remain dry-run.
 7. `app/replay.py` reads/validates JSONL lazily and replays using timestamp gaps.
    It prints frames locally by default; optional `--server` sends them by HTTP.
 8. With social processing enabled, `app/social_pipeline.py` serializes tracking,
-   SocialState, pure rules, and the target lock. The response carries the pure
-   `policy_decision` and `target_lock.effective_decision`. The robot's optional
-   dry-run dispatcher uses the latter. Validated lock responses also pin
+   SocialState, pure rules, target lock, and command proposal. The response
+   carries the pure `policy_decision`, `target_lock.effective_decision`, and an
+   eligible `robot_command`. The robot's optional executors validate these.
+   Validated lock responses also pin
    provisional head acquisition to the server's selected UID while current.
 
 ## Delivery semantics
@@ -40,9 +41,10 @@ Rate limiting, queue replacement, and temporary network failures can drop frames
 A frame already in flight cannot be replaced. At most one pending frame is kept;
 the next send uses the newest one available after waiting for the rate limit.
 
-SDK receive timeouts are retried. HTTP failures are reported; the failed frame
-is dropped and the next available frame is attempted. There is no retry backlog,
-retransmission, or batching. The receiver rejects duplicate/backward timestamps
+SDK receive timeouts are retried. Observation HTTP failures are reported; the
+failed frame is dropped and the next available frame is attempted. Physical
+execution feedback is queued in order and retried through transient HTTP
+failures while the client remains running. The receiver rejects duplicate/backward timestamps
 within a recording. A lost acknowledgement can occur after the server has
 already written the frame.
 
@@ -63,8 +65,9 @@ The receiver's `/health` endpoint reports service liveness only.
 - The wire format contains no task/controller assumptions, images, capability
   metadata, or inferred social features. Tracking, SocialState, rules, and the
   target lock are derived on the computer from the raw frames.
-- Robot policy handlers still log only. There is no physical approach, speech,
-  route controller, command lease, or completion feedback.
+- The physical executor runs configured approach/engage and route/stop scripts,
+  enforces command expiry and lease, and reports actual outcomes. Robot action
+  scripts and hardware verification must still be supplied.
 - The robot still needs only its supplied Navel SDK plus the standard library.
 
 The receiver is a simple Flask development service for the computer/robot LAN

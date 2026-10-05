@@ -99,6 +99,22 @@ class TargetLockController:
         self.candidate_frames = 0
         self.gap_contaminated = False
         self.bound_tracks: list[dict[str, int]] = []
+        self.pending_events: list[str] = []
+
+    def finish_execution(self, lock_id: str, action: str, status: str,
+                         robot_timestamp_us: int) -> None:
+        """Release only the current logical lock after a terminal physical outcome."""
+        if self.lock_id != lock_id or self.key is None:
+            return
+        if status == "COMPLETED" and action != "ENGAGE":
+            return
+        if status not in {"COMPLETED", "FAILED", "CANCELLED", "REJECTED"}:
+            return
+        reason = ("RELEASED_ENGAGEMENT_COMPLETED" if status == "COMPLETED"
+                  else f"RELEASED_EXECUTION_{status}")
+        self._release(max(robot_timestamp_us, self.last_timestamp_us or 0),
+                      self.pending_events, reason)
+        self.status = "COOLDOWN"
 
     def _clear_candidate(self) -> None:
         self.candidate_key = None
@@ -130,7 +146,8 @@ class TargetLockController:
         self.last_timestamp_us = now
         observed = {(p.uid, p.track_epoch): p for p in state.people if p.visibility == "OBSERVED"}
         visible = set(observed)
-        events: list[str] = []
+        events: list[str] = self.pending_events
+        self.pending_events = []
         candidate = None
         status = "UNLOCKED"
         reason = proposal.reason_code

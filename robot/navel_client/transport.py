@@ -39,12 +39,18 @@ class ObservationTransport:
         self._opener = build_opener(_NoRedirects())
 
     def send(self, observation: dict[str, Any]) -> ObservationResponse:
+        return self._post("/api/v1/observations", observation)
+
+    def send_event(self, event: dict[str, Any]) -> ObservationResponse:
+        return self._post("/api/v1/execution-events", event)
+
+    def _post(self, path: str, payload: dict[str, Any]) -> ObservationResponse:
         try:
-            body = json.dumps(observation, allow_nan=False, separators=(",", ":")).encode("utf-8")
+            body = json.dumps(payload, allow_nan=False, separators=(",", ":")).encode("utf-8")
         except (TypeError, ValueError) as error:
-            raise TransportError("observation must be finite JSON data") from error
+            raise TransportError("request must be finite JSON data") from error
         request = Request(
-            f"{self.server_url}/api/v1/observations",
+            f"{self.server_url}{path}",
             data=body,
             headers={"Content-Type": "application/json"},
             method="POST",
