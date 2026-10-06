@@ -7,7 +7,8 @@ receiver records frames and derives tracking, social state, rules, target locks,
 and correlated action commands.
 
 The LLM/Ollama integration and React monitor from `main` are outside this
-branch. Physical approach and engagement are opt-in through user-provided
+branch. A standalone [model contract and Ollama client](#model-decision-contract-and-ollama-client-step-1)
+provide the foundation for later policy integration. Physical approach and engagement are opt-in through user-provided
 scripts; the default collector does not invoke them. `--head-focus` calls the
 Navel head API when enabled.
 
@@ -263,6 +264,86 @@ written. Start a new receiver/recording if the robot's monotonic clock restarts.
 Errors contain `accepted: false`. This endpoint accepts only the new raw format;
 it is incompatible with the full pipeline's previous `ObservationFrame` contract.
 It returns acknowledgements, without behavior commands.
+
+## Model decision contract and Ollama client (Step 1)
+
+The standalone client in [`app/ollama.py`](app/ollama.py) uses the documented
+[Ollama Chat API](https://docs.ollama.com/api/chat): `POST /api/chat`,
+`stream: false`, and a JSON Schema in `format`. It is not connected to the
+observation pipeline. It adds no dependencies beyond the existing Pydantic and
+Python standard library.
+
+Model output has a separate contract in
+[`app/domain/model_decision.py`](app/domain/model_decision.py):
+
+```json
+{"action": "CONTINUE", "reason": "Brief explanation."}
+```
+
+Both fields are required, with no extra fields. Actions are exactly `STOP`,
+`CONTINUE`, `APPROACH`, and `ENGAGE`; the reason must be a string containing
+non-whitespace text. Numbers, booleans, nulls, other actions, duplicate keys,
+malformed/non-object JSON, prose, and code fences are rejected without repair.
+Use `parse_model_decision(text)` for untrusted JSON text so duplicate keys are
+checked before Pydantic validation. Valid explanation text is preserved exactly.
+`model_decision_schema()` generates the same schema as
+[`schemas/v1/model-decision.schema.json`](schemas/v1/model-decision.schema.json),
+which the client sends to Ollama. Structured output is still validated locally.
+The existing rule-based `PolicyDecision`, actions, and version are unchanged.
+
+Configure the HTTP(S) origin and a model already available on that server:
+
+```python
+from app.ollama import OllamaClient, OllamaConfig, OllamaMessage
+
+client = OllamaClient(OllamaConfig(
+    base_url="http://127.0.0.1:11434",
+    model="<installed-model-name>",  # Replace with your configured model.
+    timeout_seconds=30.0,
+    temperature=0.0,
+    seed=42,                        # Optional.
+    num_predict=128,                # Optional positive output-token limit.
+))
+result = client.chat([OllamaMessage(
+    role="user",
+    content="For this generic example, choose CONTINUE. Return only action and reason JSON.",
+)])
+if result.ok:
+    print(result.decision.model_dump())
+else:
+    print(result.error.category.value, result.error.message)
+```
+
+`base_url` accepts an origin with an optional trailing slash, without a path,
+query, fragment, or credentials. Timeout must be finite and positive;
+temperature must be finite and nonnegative. Defaults are 30 seconds and
+temperature 0, with seed/token limit omitted. Invalid caller settings or messages
+raise `ValueError` (including Pydantic `ValidationError`) before HTTP.
+Messages may also be dictionaries; roles are `system`, `user`, and `assistant`.
+The client sends only caller-supplied messages and adds no task prompt.
+
+For future vision callers, pass `images=[already_encoded_base64]` on an
+`OllamaMessage`. The [REST vision input](https://docs.ollama.com/capabilities/vision)
+is raw base64, not a filename, URL, or data-URL. Strings are passed through
+unchanged; image validity and model vision support remain the caller's concern.
+No image loading, decoding, conversion, or camera access is performed.
+
+`OllamaResult` contains `decision`, `error`, `requested_model`, `returned_model`,
+`raw_content`, and `request_duration_s` (HTTP send through response-body read).
+Failures return `decision=None`; error categories are `connection`, `timeout`,
+`http`, `response_format`, and `invalid_decision`. Available model identity and
+exact content survive content-validation failures. Before content is available,
+`raw_content` is `None`. Errors include an HTTP status when a response was read.
+The client expects a completed assistant chat envelope and rejects malformed JSON,
+duplicate envelope keys, and nonstandard JSON constants. It performs one request,
+with no redirect, automatic retry, fallback, or inferred robot action.
+
+Later steps will define LLM/VLM policy prompts, SocialState and image inputs,
+frame/session correlation, replay/logging, output-only pipeline integration,
+and any mapping between this contract and the rule-based contract. In particular,
+model `STOP` is an output label here; an inference failure never becomes `STOP`
+and does not execute anything. Tests inject fake HTTP responses and require no
+Ollama service or robot.
 
 ## Repository layout
 
