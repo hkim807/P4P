@@ -20,15 +20,15 @@ from app.domain.models import RawObservationFrame
 from app.commands import CommandConfig, ExecutionEvent, FeedbackRejected
 from app.recording import RecordingWriter, TimestampOrderError
 from app.sdk_capture import SdkCaptureOrderError, SdkCaptureWriter, validate_sdk_capture
-from app.camera_capture import CameraCaptureOrderError, CameraCaptureWriter, validate_camera_record
+from app.camera.capture import CameraCaptureOrderError, CameraCaptureWriter, validate_camera_record
 from app.pipeline import TrackTraceWriter, TrackingPipeline, TrackingProcessingError
 from app.policy.target_lock import LockConfig
 from app.state.tracks import TrackConfig
 from app.social_pipeline import SocialPipeline
 from app.state.social_models import TemporalConfig
-from app.live_camera import LiveCameraCache, validate_model_source
-from app.live_models import LiveModelConfig, LiveModelRunner
-from app.ollama import OllamaConfig
+from app.camera.live import LiveCameraCache, validate_model_source
+from app.inference.live import LiveModelConfig, LiveModelRunner
+from app.inference.ollama import OllamaConfig
 
 
 logger = logging.getLogger(__name__)

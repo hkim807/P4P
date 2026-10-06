@@ -5,7 +5,7 @@ from dataclasses import dataclass
 import json
 from typing import Any
 
-from app.ollama import OllamaClient, OllamaMessage, OllamaResult
+from app.inference.ollama import OllamaClient, OllamaMessage, OllamaResult
 from app.state.social_models import SocialState
 
 

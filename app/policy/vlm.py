@@ -6,7 +6,7 @@ import binascii
 from dataclasses import dataclass
 from typing import Any
 
-from app.ollama import OllamaClient, OllamaMessage, OllamaResult
+from app.inference.ollama import OllamaClient, OllamaMessage, OllamaResult
 
 
 PROMPT_VERSION = "image-only-vlm-v1"

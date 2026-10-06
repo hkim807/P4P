@@ -7,19 +7,19 @@ LLM result. It performs no sampling, estimation, rematching or robot execution.
 
 ## Files and interfaces
 
-- `app/vlm_inputs.py`: dedicated associated reader, provenance validation and
+- `app/replay/vlm_inputs.py`: dedicated associated reader, provenance validation and
   exact selected-frame loading/PNG encoding.
 - `app/policy/vlm.py`: `build_vlm_prompt(encoded_image)` and
   `decide_vlm(encoded_image, client)`; the result retains the original
   `OllamaResult` and prompt version.
-- `app/vlm_replay.py`: focused CLI, separate diagnostics, call cap, output
+- `app/replay/vlm.py`: focused CLI, separate diagnostics, call cap, output
   protection and complete/partial summary.
-- `app/camera_recordings.py`: `read_validated_stored_image(event)` returns the
+- `app/camera/recordings.py`: `read_validated_stored_image(event)` returns the
   existing validator's metadata and the same bounded file read;
   `read_selected_camera_event(path, line_number)` revalidates only the recorded
   manifest line, isolating unrelated broken frame paths. The old
   `validate_stored_image(event)` interface and validation behavior remain intact.
-- `app/image_matching.py`: one optional validation seam; its default remains
+- `app/camera/matching.py`: one optional validation seam; its default remains
   `allow_image_matching=False`, so Step 4 still rejects already-associated input.
 - `requirements.txt`: adds `Pillow>=12.0,<13`; computer-side dependency only.
 - `tests/test_vlm_inputs.py`, `tests/test_vlm_policy.py`,

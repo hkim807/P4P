@@ -172,7 +172,7 @@ def main(argv: list[str] | None = None) -> int:
                                           "acquired_epochs": result["events"].get("ACQUIRED", 0),
                                           "checks_passed": result["checks_passed"]})
         root = Path(__file__).resolve().parents[1]
-        source_files = ("app/state/tracks.py", "app/pipeline.py", "app/track.py", "app/replay.py",
+        source_files = ("app/state/tracks.py", "app/pipeline.py", "app/replay/track.py", "app/replay/__init__.py",
                         "app/recording.py", "app/domain/models.py", "app/server.py", "app/validate_tracking.py")
         report = {"tracker_version": TRACKER_VERSION, "config": asdict(config), "recordings": results,
                   "grace_sweep": sweep,

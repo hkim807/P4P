@@ -76,7 +76,7 @@ content, model action or scenario expectations.
 
 Stored manifests differ from the live RGB/base64 transport envelope, so the
 existing transport validator cannot be reused by inventing image bytes. No
-stored-image reader existed. `app/camera_recordings.py` adds a narrow read-only
+stored-image reader existed. `app/camera/recordings.py` adds a narrow read-only
 P6 RGB8 checker: regular readable file, bounded header/file size, P6/maxval,
 positive dimensions, exact raster length and manifest dimension agreement. It
 retains a SHA-256 digest and file byte count. It supports header comments and

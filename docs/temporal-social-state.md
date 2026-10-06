@@ -19,7 +19,7 @@ associations that the recorded input does not contain.
 | `app/state/estimator.py` | Gaze/distance hysteresis, categories, motion validity, cue-change events |
 | `app/state/social_models.py` | Validated configuration and typed SocialState |
 | `app/social_pipeline.py` | Same tracking-to-state computation for live and recorded frames |
-| `app/social.py` | Runnable recorded-input to SocialState replay |
+| `app/replay/social.py` | Runnable recorded-input to SocialState replay |
 | `app/validate_social.py` | Seven-recording audit, synthetic transformations, reproducible reports |
 | `app/social_scenarios.py` | Controlled raw-schema-compatible stimuli made from a recorded frame template |
 | `config/temporal-state.json` | Provisional thresholds and timing, embedded in every state |

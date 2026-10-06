@@ -268,7 +268,7 @@ It returns acknowledgements, without behavior commands.
 
 ## Model decision contract and Ollama client (Step 1)
 
-The standalone client in [`app/ollama.py`](app/ollama.py) uses the documented
+The standalone client in [`app/inference/ollama.py`](app/inference/ollama.py) uses the documented
 [Ollama Chat API](https://docs.ollama.com/api/chat): `POST /api/chat`,
 `stream: false`, and a JSON Schema in `format`. It is not connected to the
 observation pipeline. It adds no dependencies beyond the existing Pydantic and
@@ -388,7 +388,7 @@ model and supply your JSON file):
   --timeout 30 --temperature 0 --seed 42 --num-predict 256
 ```
 
-[`app/llm.py`](app/llm.py) reads exactly one JSON object, validates it before
+[`app/inference/llm.py`](app/inference/llm.py) reads exactly one JSON object, validates it before
 constructing the client, and prints one JSON result to stdout. JSONL, arrays,
 duplicate keys, nonstandard JSON constants and invalid SocialState fields are
 rejected before inference. Exit codes: `0` for a validated model decision, `1`
@@ -446,7 +446,7 @@ snapshot; it does not update SocialState or alter the rule-based behaviour.
 
 ## Offline LLM recording replay (Step 3)
 
-[`app/llm_replay.py`](app/llm_replay.py) selects source-time decision moments from
+[`app/replay/llm.py`](app/replay/llm.py) selects source-time decision moments from
 explicit SDK capture, RawObservation or saved SocialState JSONL inputs. SDK
 captures reuse the existing adapter; raw inputs use tracking and the estimator;
 saved states retain their recorded config and values. Every observation is
@@ -460,7 +460,7 @@ verification. The runner does not execute robot actions or match camera frames.
 
 ## Recorded camera association (Step 4)
 
-[`app/image_match.py`](app/image_match.py) associates each existing Step 3 replay
+[`app/replay/image_match.py`](app/replay/image_match.py) associates each existing Step 3 replay
 row with a recorded frame or explicit matching failure. It defaults to head-camera
 exact recorded SDK timestamp equality within the original capture session.
 Optional prior receipt matching requires an explicit maximum age and compatible
@@ -473,7 +473,7 @@ This step validates stored PPM images without conversion or model calls.
 
 ## Image-only VLM replay (Step 5)
 
-[`app/vlm_replay.py`](app/vlm_replay.py) processes existing Step 4 associated rows
+[`app/replay/vlm.py`](app/replay/vlm.py) processes existing Step 4 associated rows
 with a caller-selected Ollama vision model. It verifies the exact selected
 manifest/image and Step 4 hash, converts RGB8 P6 to PNG in memory, and sends only
 static English instructions and that image. It adds separate `vlm_inference`
@@ -496,22 +496,44 @@ local recorded-input execution check.
 
 ## Repository layout
 
+Implementation modules are grouped under `app/inference/`, `app/camera/`, and
+`app/replay/`. Existing module imports and `python -m app.*` commands remain
+supported through compatibility entry points.
+
 ```text
 app/
   domain/models.py     Server-side RawObservationFrame validation
   domain/schema.py     JSON Schema generator
   server.py            HTTP receiver
   recording.py         Ordered JSONL writer and validated streaming reader
-  replay.py            Local playback and optional HTTP replay CLI
+  inference/
+    ollama.py          Structured Ollama HTTP client and diagnostics
+    llm.py             Single-SocialState LLM CLI
+    live.py            Bounded output-only live model worker
+  camera/
+    capture.py         Camera ingestion validation and recording
+    recordings.py      Stored manifest and P6 image validation
+    live.py            Bounded live head-frame cache and association
+    matching.py        Recorded camera association and replay validation
+    encoding.py        Lossless RGB-to-PNG/base64 encoding
+  replay/
+    __init__.py        Timestamp-paced playback and compatibility API
+    __main__.py        Local playback and optional HTTP replay CLI
+    track.py           Track-snapshot replay CLI
+    social.py          SocialState replay CLI
+    lock.py            Raw-recording target-lock replay CLI
+    command.py         Raw-recording command replay CLI
+    llm.py             Recorded SocialState LLM inference CLI
+    llm_inputs.py      Recorded-input reconstruction and provenance
+    image_match.py     Associate replay moments with stored camera frames
+    vlm.py             Matched-frame VLM inference CLI
+    vlm_inputs.py      Associated replay validation and image loading
   state/tracks.py      Bounded UID histories and visibility lifecycle
   pipeline.py          Shared offline/live tracking and serialized persistence
-  track.py             Track-snapshot replay CLI
   validate_tracking.py Pilot-recording audit and reproducible reports
   state/features.py    Gaze coverage and robust distance measurements
   state/estimator.py   Categorical SocialState and cue changes
   social_pipeline.py  Shared live/replay temporal processing
-  social.py           SocialState replay CLI
-  lock.py             Raw-recording target-lock replay CLI
   validate_social.py  Recorded/synthetic temporal validation reports
   policy/target_lock.py  Stateful logical interaction lock
 config/                Tracking, temporal, and lock settings
