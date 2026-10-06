@@ -30,10 +30,10 @@ def _reject_constant(value: str) -> None:
     raise ValueError(f"non-finite JSON number: {value}")
 
 
-def _validate_replay_row(row: Any) -> None:
+def _validate_replay_row(row: Any, *, allow_image_matching: bool = False) -> None:
     if not isinstance(row, dict) or type(row.get("schema_version")) is not int or row["schema_version"] != 1:
         raise ValueError("requires a Step 3 replay object with schema_version 1")
-    if "image_matching" in row:
+    if "image_matching" in row and not allow_image_matching:
         raise ValueError("input already contains image_matching; use the original Step 3 replay")
     # Overflowing JSON numeric literals can decode to infinity even when the
     # decoder rejects NaN/Infinity tokens. Check metadata as well as the state.

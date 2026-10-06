@@ -1,0 +1,67 @@
+{
+  "automated_tests": {
+    "decision_quality_evaluated": false,
+    "existing_regressions_passed": 191,
+    "inference_responses": "fake",
+    "new_focused_passed": 84,
+    "total_passed": 275
+  },
+  "inputs": {
+    "exact-final.jsonl": {
+      "all_manifest_records_and_step4_hashes_verified": true,
+      "all_png_rgb_pixels_and_dimensions_identical": true,
+      "associated_sha256": "24cdf066c6aa4b5827f2f4f32afdd1d2591436f897d346c932825b981cdae91a",
+      "comparison": "Independently decoded original PPM and generated PNG with Pillow, compared RGB bytes and dimensions",
+      "converted_image_files_written": 0,
+      "input_path": "/tmp/p4p-image-match-step4.ig4HON/exact-final.jsonl",
+      "matched_rows_verified": 26,
+      "matching_methods": {
+        "exact_recorded_sdk_timestamp": 26
+      },
+      "model_calls": 0,
+      "png_bytes_per_selected_row_total": 6198226,
+      "rgb_dimensions": [
+        [
+          640,
+          480
+        ]
+      ],
+      "rows": 73,
+      "source_bytes_per_selected_row_total": 23961990,
+      "unavailable_rows": 47,
+      "unique_selected_images": 26
+    },
+    "receipt-1s-final.jsonl": {
+      "all_manifest_records_and_step4_hashes_verified": true,
+      "all_png_rgb_pixels_and_dimensions_identical": true,
+      "associated_sha256": "7e665bc2422953c36945fde4ec80c8b1d84b781e850d82db43256ae2d556f5d1",
+      "comparison": "Independently decoded original PPM and generated PNG with Pillow, compared RGB bytes and dimensions",
+      "converted_image_files_written": 0,
+      "input_path": "/tmp/p4p-image-match-step4.ig4HON/receipt-1s-final.jsonl",
+      "matched_rows_verified": 70,
+      "matching_methods": {
+        "exact_recorded_sdk_timestamp": 26,
+        "reception_monotonic": 44
+      },
+      "model_calls": 0,
+      "png_bytes_per_selected_row_total": 16755240,
+      "rgb_dimensions": [
+        [
+          640,
+          480
+        ]
+      ],
+      "rows": 73,
+      "source_bytes_per_selected_row_total": 64513050,
+      "unavailable_rows": 3,
+      "unique_selected_images": 70
+    }
+  },
+  "ollama_probe": {
+    "base_url": "http://127.0.0.1:11434",
+    "result": "connection refused; no service started or model downloaded"
+  },
+  "pillow_version": "12.3.0",
+  "real_vlm_inference_performed": false,
+  "validation_date": "2026-10-07"
+}

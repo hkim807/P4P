@@ -145,6 +145,41 @@ def load_camera_events(paths: Iterable[Path | str]) -> list[CameraEvent]:
     return events
 
 
+def read_selected_camera_event(path: Path | str, line_number: int) -> CameraEvent | None:
+    """Revalidate one exact recorded event without resolving unrelated images.
+
+    This performs no frame selection or timestamp matching. An absent/blank
+    original line returns None so callers can report changed provenance.
+    """
+    path = Path(path)
+    if type(line_number) is not int or line_number < 1:
+        raise _location(path, None, "selected line_number must be a positive integer")
+    try:
+        path = path.resolve()
+    except (OSError, RuntimeError, ValueError) as error:
+        raise _location(path, line_number, f"cannot resolve camera manifest: {error}") from error
+    try:
+        with path.open("rb") as stream:
+            for actual_line, line in enumerate(stream, 1):
+                if actual_line != line_number:
+                    continue
+                if not line.strip():
+                    return None
+                try:
+                    record = json.loads(line.decode("utf-8"), object_pairs_hook=_unique_object,
+                                        parse_constant=_reject_constant)
+                    record = _validate_manifest_record(record)
+                    image = _image_path(path, record["file"]) if record["event"] == "frame" else None
+                except (ValueError, RecursionError, OSError, RuntimeError) as error:
+                    raise _location(path, line_number, f"invalid selected camera event: {error}") from error
+                return CameraEvent(path, line_number, record, image)
+    except CameraManifestError:
+        raise
+    except OSError as error:
+        raise _location(path, line_number, f"cannot read camera manifest: {error}") from error
+    return None
+
+
 def _ppm_dimensions(data: bytes) -> tuple[int, int, int]:
     """Parse four P6 header tokens without skipping any raster bytes.
 
@@ -198,8 +233,8 @@ def _ppm_dimensions(data: bytes) -> tuple[int, int, int]:
     return width, height, cursor
 
 
-def validate_stored_image(event: CameraEvent) -> dict[str, Any]:
-    """Establish a selected image's format, dimensions, size and content digest."""
+def read_validated_stored_image(event: CameraEvent) -> tuple[dict[str, Any], bytes]:
+    """Validate one bounded read and return those same bytes with their digest."""
     location = f"{event.manifest_path}:{event.line_number}"
     if event.record.get("event") != "frame" or event.image_path is None:
         raise ImageValidationError("invalid_image", f"{location}: event has no stored frame image")
@@ -231,5 +266,11 @@ def validate_stored_image(event: CameraEvent) -> dict[str, Any]:
         raise ImageValidationError("image_dimension_mismatch",
                                    f"{location}: PPM dimensions {width}x{height} disagree with "
                                    f"manifest {event.record['width']}x{event.record['height']}")
-    return {"format": "PPM P6", "width": width, "height": height,
-            "byte_count": len(data), "sha256": hashlib.sha256(data).hexdigest()}
+    return ({"format": "PPM P6", "width": width, "height": height,
+             "byte_count": len(data), "sha256": hashlib.sha256(data).hexdigest()}, data)
+
+
+def validate_stored_image(event: CameraEvent) -> dict[str, Any]:
+    """Establish a selected image's format, dimensions, size and content digest."""
+    metadata, _ = read_validated_stored_image(event)
+    return metadata

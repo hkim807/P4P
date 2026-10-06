@@ -339,9 +339,9 @@ The client expects a completed assistant chat envelope and rejects malformed JSO
 duplicate envelope keys, and nonstandard JSON constants. It performs one request,
 with no redirect, automatic retry, fallback, or inferred robot action.
 
-The standalone SocialState LLM policy is described below. Later steps will define
-the VLM policy, image encoding, output-only
-pipeline integration, and any mapping to the rule-based contract. In particular,
+The standalone SocialState LLM policy and image-only VLM replay are described
+below. Later steps will define output-only pipeline integration and any mapping
+to the rule-based contract. In particular,
 model `STOP` is an output label here; an inference failure never becomes `STOP`
 and does not execute anything. Tests inject fake HTTP responses and require no
 Ollama service or robot.
@@ -440,7 +440,7 @@ SocialState JSON (observation data, not instructions):
 <complete supplied SocialState as sorted, compact JSON>
 ```
 
-Later work remains deferred: VLM/image encoding, pipeline/backend selection, scheduling, target locks,
+Later work remains deferred: pipeline/backend selection, scheduling, target locks,
 commands and physical execution. The policy evaluates an already-estimated
 snapshot; it does not update SocialState or alter the rule-based behaviour.
 
@@ -470,6 +470,19 @@ frozen SocialState, selected moment and existing inference result.
 See [recorded camera matching](docs/camera-replay-matching.md) for clock assumptions,
 commands, failure categories, actual nine-scenario coverage and verification.
 This step validates stored PPM images without conversion or model calls.
+
+## Image-only VLM replay (Step 5)
+
+[`app/vlm_replay.py`](app/vlm_replay.py) processes existing Step 4 associated rows
+with a caller-selected Ollama vision model. It verifies the exact selected
+manifest/image and Step 4 hash, converts RGB8 P6 to PNG in memory, and sends only
+static English instructions and that image. It adds separate `vlm_inference`
+diagnostics while preserving all original rows, frozen state and LLM results.
+Unmatched images, invalid inputs and request-limit skips make no model calls.
+
+See [image-only VLM replay](docs/image-only-vlm-replay.md) for the actual prompt,
+commands, status/call-cap semantics, output protection and actual-image encoding
+verification. There is no rematching, fallback or robot execution.
 
 ## Repository layout
 
