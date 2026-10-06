@@ -1,16 +1,10 @@
 """Read associated replay rows and encode their already-selected RGB images."""
 from __future__ import annotations
 
-import base64
-from dataclasses import dataclass
-import hashlib
-from io import BytesIO
 import json
 from pathlib import Path
 import re
 from typing import Any, Iterator
-
-from PIL import Image
 
 from app.camera_capture import MAX_RGB_BYTES
 from app.camera_recordings import (
@@ -21,6 +15,7 @@ from app.camera_recordings import (
 from app.image_matching import (
     _recorded_perception, _reject_constant, _unique_object, _validate_replay_row,
 )
+from app.image_encoding import EncodedVLMImage, encode_rgb_png
 
 
 class AssociatedReplayError(ValueError):
@@ -33,24 +28,6 @@ class VLMImageInputError(ValueError):
     def __init__(self, category: str, message: str) -> None:
         self.category, self.message = category, message
         super().__init__(message)
-
-
-@dataclass(frozen=True)
-class EncodedVLMImage:
-    image_base64: str
-    source_image_sha256: str
-    png_sha256: str
-    width: int
-    height: int
-    source_byte_count: int
-    png_byte_count: int
-
-    def to_dict(self) -> dict[str, Any]:
-        """Output metadata deliberately excludes the encoded image payload."""
-        return {"encoding_format": "PNG", "width": self.width, "height": self.height,
-                "source_image_sha256": self.source_image_sha256,
-                "png_sha256": self.png_sha256, "source_byte_count": self.source_byte_count,
-                "png_byte_count": self.png_byte_count}
 
 
 def _integer(value: Any, name: str, minimum: int = 0) -> int:
@@ -269,14 +246,7 @@ def load_vlm_image(matching: dict[str, Any]) -> EncodedVLMImage:
         # for otherwise valid stored images; frombytes preserves the exact RGB8
         # raster while Pillow supplies PNG encoding, without another file read.
         width, height, raster = _ppm_dimensions(data)
-        with Image.frombytes("RGB", (width, height), data[raster:]) as image:
-            encoded = BytesIO()
-            image.save(encoded, format="PNG")
-            png = encoded.getvalue()
+        return encode_rgb_png(data[raster:], width, height,
+                              source_image_sha256=validation["sha256"], source_byte_count=len(data))
     except (OSError, ValueError) as error:
         raise VLMImageInputError("encoding_error", f"{location}: cannot encode validated RGB image as PNG: {error}") from error
-    return EncodedVLMImage(
-        image_base64=base64.b64encode(png).decode("ascii"),
-        source_image_sha256=validation["sha256"], png_sha256=hashlib.sha256(png).hexdigest(),
-        width=width, height=height, source_byte_count=len(data), png_byte_count=len(png),
-    )

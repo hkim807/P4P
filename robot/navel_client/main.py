@@ -37,7 +37,18 @@ class LatestLocomotion:
         return self.packet[0]
 
 
-def _replace_queued(queue: asyncio.Queue[dict[str, Any]], observation: dict[str, Any]) -> None:
+@dataclass(frozen=True)
+class ModelObservation:
+    """Keep one raw observation paired with its exact captured perception."""
+
+    observation: dict[str, Any]
+    capture: dict[str, Any]
+
+
+QueuedObservation = dict[str, Any] | ModelObservation
+
+
+def _replace_queued(queue: asyncio.Queue[QueuedObservation], observation: QueuedObservation) -> None:
     if queue.full():
         queue.get_nowait()
         queue.task_done()
@@ -60,13 +71,16 @@ async def _collect_perception(
     robot: Any,
     adapter: NavelObservationAdapter,
     latest: LatestLocomotion,
-    queue: asyncio.Queue[dict[str, Any]],
+    queue: asyncio.Queue[QueuedObservation],
     *,
     max_locomotion_age_s: float,
     head_focus: HeadFocusController | None = None,
     physical_executor: PhysicalCommandExecutor | None = None,
     sdk_capture: SdkCapture | None = None,
+    model_provenance: bool = False,
 ) -> None:
+    if model_provenance and sdk_capture is None:
+        raise ValueError("model provenance requires SDK capture")
     while True:
         try:
             perception = await robot.next_frame(timeout=1.0)
@@ -74,16 +88,16 @@ async def _collect_perception(
             if head_focus is not None:
                 head_focus.tick()
             continue
-        if sdk_capture is not None:
-            sdk_capture.record("perception", perception)
+        captured = sdk_capture.record("perception", perception) if sdk_capture is not None else None
         if head_focus is not None and (physical_executor is None or physical_executor.active is None):
             head_focus.observe(perception)
         observation = adapter.convert(perception, latest.fresh_value(max_locomotion_age_s))
-        _replace_queued(queue, observation)
+        _replace_queued(queue, ModelObservation(observation, captured)
+                        if model_provenance else observation)
 
 
 async def _send_observations(
-    queue: asyncio.Queue[dict[str, Any]],
+    queue: asyncio.Queue[QueuedObservation],
     transport: ObservationTransport,
     *,
     minimum_send_interval_s: float,
@@ -96,20 +110,24 @@ async def _send_observations(
 ) -> None:
     last_sent_at = -math.inf
     while True:
-        observation = await queue.get()
+        queued = await queue.get()
         try:
             delay = minimum_send_interval_s - (time.monotonic() - last_sent_at)
             if delay > 0:
                 await asyncio.sleep(delay)
             while not queue.empty():
                 queue.task_done()
-                observation = queue.get_nowait()
+                queued = queue.get_nowait()
+            observation = queued.observation if isinstance(queued, ModelObservation) else queued
             last_sent_at = time.monotonic()
             if print_only:
                 print(json.dumps(observation, allow_nan=False, separators=(",", ":")), flush=True)
                 continue
             try:
-                response = await asyncio.to_thread(transport.send, observation)
+                response = (await asyncio.to_thread(transport.send_model_observation,
+                                                     observation, queued.capture)
+                            if isinstance(queued, ModelObservation)
+                            else await asyncio.to_thread(transport.send, observation))
             except TransportError as error:
                 logger.warning("timestamp=%s transport_error=%s", observation["timestamp"], error)
                 if decision_dispatcher is not None:
@@ -198,7 +216,7 @@ async def collect_and_stream(robot: Any, args: argparse.Namespace,
     camera_capture = (CameraCapture(transport, session_id=sdk_capture.session_id if sdk_capture else None)
                       if args.camera_capture else None)
     adapter = NavelObservationAdapter()
-    queue: asyncio.Queue[dict[str, Any]] = asyncio.Queue(maxsize=1)
+    queue: asyncio.Queue[QueuedObservation] = asyncio.Queue(maxsize=1)
     latest = LatestLocomotion()
     head_focus = (HeadFocusController(robot, magnitude=args.head_focus_magnitude,
                                      grace_s=args.head_focus_grace)
@@ -221,6 +239,7 @@ async def collect_and_stream(robot: Any, args: argparse.Namespace,
             robot, adapter, latest, queue, max_locomotion_age_s=args.max_locomotion_age,
             head_focus=head_focus, physical_executor=physical_executor,
             sdk_capture=sdk_capture,
+            model_provenance=args.model_provenance,
         )),
     ]
     if camera_capture is not None:
@@ -376,6 +395,8 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
                         help="Stream only SDK packets; no policy observations or robot commands")
     parser.add_argument("--camera-capture", action="store_true",
                         help="Also stream head and chest RGB frames; receiver needs --camera-output-dir")
+    parser.add_argument("--model-provenance", action="store_true",
+                        help="Attach captured perception provenance to observation POSTs; requires SDK and camera capture")
     parser.add_argument("--camera-interval", type=float, default=1.0,
                         help="Seconds between camera capture attempts (default: 1.0)")
     parser.add_argument("--decision-dry-run", action="store_true",
@@ -404,6 +425,11 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--decision-timeout", type=float, default=2.0,
                         help="Expire a dry-run decision after this long without a valid response (seconds)")
     args = parser.parse_args(argv)
+    if args.model_provenance:
+        if args.sdk_capture_only:
+            parser.error("--model-provenance excludes --sdk-capture-only")
+        if not args.sdk_capture or not args.camera_capture:
+            parser.error("--model-provenance requires --sdk-capture and --camera-capture")
     if args.sdk_capture_only:
         args.sdk_capture = True
         if (args.print_only or args.decision_dry_run or args.command_dry_run

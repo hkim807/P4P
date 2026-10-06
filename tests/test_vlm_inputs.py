@@ -223,7 +223,7 @@ class VLMImageInputTests(unittest.TestCase):
             read_selected_camera_event(self.manifest, 4)
 
     def test_in_memory_encoding_failure_is_separate_input_failure(self):
-        with patch("app.vlm_inputs.Image.frombytes", side_effect=OSError("codec failed")):
+        with patch("app.image_encoding.Image.frombytes", side_effect=OSError("codec failed")):
             self.assert_failure("encoding_error")
 
     def test_unmatched_image_is_unavailable(self):

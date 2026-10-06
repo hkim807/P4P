@@ -198,6 +198,11 @@ or HTTP. See [the diagnostic instructions](../robot/tests/README.md).
 
 ## Offline checks
 
+For optional output-only LLM/VLM inference in the live receiver, see
+[live model inference](live-model-inference.md). It includes disabled, LLM-only,
+VLM-only, and paired commands plus the sender's opt-in capture provenance.
+Model outputs are recorded separately and do not control the robot.
+
 ```bash
 source .venv/bin/activate
 python3 -m unittest discover -s tests -v

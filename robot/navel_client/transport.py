@@ -41,6 +41,14 @@ class ObservationTransport:
     def send(self, observation: dict[str, Any]) -> ObservationResponse:
         return self._post("/api/v1/observations", observation)
 
+    def send_model_observation(self, observation: dict[str, Any],
+                               capture: dict[str, Any]) -> ObservationResponse:
+        """Opt-in provenance shares the same POST as its unchanged raw frame."""
+        return self._post("/api/v1/observations", {
+            "observation": observation,
+            "model_source": {"version": 1, "clock": "robot-host-monotonic-us", "capture": capture},
+        })
+
     def send_event(self, event: dict[str, Any]) -> ObservationResponse:
         return self._post("/api/v1/execution-events", event)
 

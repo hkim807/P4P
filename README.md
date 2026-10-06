@@ -484,6 +484,16 @@ See [image-only VLM replay](docs/image-only-vlm-replay.md) for the actual prompt
 commands, status/call-cap semantics, output protection and actual-image encoding
 verification. There is no rematching, fallback or robot execution.
 
+## Optional live model inference (Step 6)
+
+The receiver supports opt-in `disabled`, `llm`, `vlm`, and `both` modes. One
+bounded background worker writes separate model-result JSONL without changing
+rule decisions, locks, or robot commands. The sender's optional provenance
+envelope connects head frames to perception through their original capture
+session and robot-host clock. See [live model inference](docs/live-model-inference.md)
+for exact receiver/sender commands, queue behavior, matching limits, and the
+local recorded-input execution check.
+
 ## Repository layout
 
 ```text

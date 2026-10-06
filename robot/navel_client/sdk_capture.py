@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import asyncio
+from copy import deepcopy
 import dataclasses
 import logging
 import math
@@ -61,7 +62,8 @@ class SdkCapture:
         self.session_id = uuid4().hex
         self.sequences = {"perception": 0, "locomotion": 0}
 
-    def record(self, stream: str, packet: Any) -> None:
+    def record(self, stream: str, packet: Any) -> dict[str, Any]:
+        """Queue a snapshot and return a detached copy for observation provenance."""
         if stream not in self.sequences:
             raise ValueError(f"unknown SDK stream: {stream}")
         received_monotonic_us = time.monotonic_ns() // 1000
@@ -81,6 +83,7 @@ class SdkCapture:
         except asyncio.QueueFull as error:
             raise RuntimeError("SDK capture queue full; recording would lose packets") from error
         self.sequences[stream] = sequence
+        return deepcopy(record)
 
     async def send(self) -> None:
         while True:
