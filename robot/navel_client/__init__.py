@@ -1,13 +1,6 @@
-"""Navel observation transport and dry-run behavior command architecture."""
+"""Read-only Navel sensor collection and standard-library HTTP transport."""
 
-from robot.navel_client.adapter import NavelAdapterConfig, NavelObservationAdapter
-from robot.navel_client.behavior import BehaviorController
+from robot.navel_client.adapter import NavelObservationAdapter
 from robot.navel_client.transport import ObservationTransport, TransportError
 
-__all__ = [
-    "NavelAdapterConfig",
-    "NavelObservationAdapter",
-    "BehaviorController",
-    "ObservationTransport",
-    "TransportError",
-]
+__all__ = ["NavelObservationAdapter", "ObservationTransport", "TransportError"]

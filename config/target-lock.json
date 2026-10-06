@@ -1,0 +1,11 @@
+{
+  "missing_hold_s": 2.0,
+  "release_cooldown_s": 1.0,
+  "rebind_window_s": 0.8,
+  "rebind_min_frames": 3,
+  "rebind_min_span_s": 0.15,
+  "rebind_max_frame_gap_s": 0.35,
+  "rebind_distance_slack_m": 0.25,
+  "rebind_max_relative_speed_mps": 1.5,
+  "max_rebinds_per_lock": 3
+}

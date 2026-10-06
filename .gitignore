@@ -1,35 +1,19 @@
-# ROS / catkin generated files
-build/
-devel/
-install/
-log/
-.catkin_tools/
-
-# Python
+# Python environments and generated files
 .venv/
 __pycache__/
 *.pyc
 
-# macOS / Windows
-.DS_Store
-Thumbs.db
+# Reproducible derived tracking traces; compact reports live in docs/results
+var/tracking-validation/
+var/temporal-validation/
 
-# Editors
-.vscode/
-.idea/
+# Local frontend build/dependency artifacts left from main
+web/
 
-# Large ROS data
-*.bag
-*.db3
-
-# Secrets
+# Local configuration and editor files
 .env
 *.env
-
-# Runtime recordings and frontend output
-var/
-web/dist/
-web/node_modules/
-web/*.tsbuildinfo
-web/vite.config.js
-web/vite.config.d.ts
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
