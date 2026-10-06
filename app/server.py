@@ -15,6 +15,8 @@ from werkzeug.exceptions import HTTPException
 from app.domain.models import RawObservationFrame
 from app.commands import CommandConfig, ExecutionEvent, FeedbackRejected
 from app.recording import RecordingWriter, TimestampOrderError
+from app.sdk_capture import SdkCaptureOrderError, SdkCaptureWriter, validate_sdk_capture
+from app.camera_capture import CameraCaptureOrderError, CameraCaptureWriter, validate_camera_record
 from app.pipeline import TrackTraceWriter, TrackingPipeline, TrackingProcessingError
 from app.policy.target_lock import LockConfig
 from app.state.tracks import TrackConfig
@@ -35,15 +37,20 @@ def create_app(output_path: str | Path | None = None, *,
                lock_config: LockConfig | None = None,
                command_output: str | Path | None = None,
                execution_output: str | Path | None = None,
-               command_config: CommandConfig | None = None) -> Flask:
+               command_config: CommandConfig | None = None,
+               sdk_output: str | Path | None = None,
+               camera_output_dir: str | Path | None = None) -> Flask:
     """Start a fresh JSONL recording; None prints accepted frames to stdout."""
     app = Flask(__name__)
-    app.config["MAX_CONTENT_LENGTH"] = 1024 * 1024
+    app.config["MAX_CONTENT_LENGTH"] = 36 * 1024 * 1024 if camera_output_dir else 1024 * 1024
     paths = [Path(p).resolve() for p in (output_path, tracking_output, social_output,
-                                        lock_output, command_output, execution_output) if p is not None]
+                                        lock_output, command_output, execution_output,
+                                        sdk_output, camera_output_dir) if p is not None]
     if len(set(paths)) != len(paths):
-        raise ValueError("Raw, tracking, social, lock, command, and execution outputs must use different paths")
+        raise ValueError("All receiver output paths must be different")
     recording = RecordingWriter(output_path)
+    sdk_recording = SdkCaptureWriter(sdk_output) if sdk_output is not None else None
+    camera_recording = CameraCaptureWriter(camera_output_dir) if camera_output_dir is not None else None
     pipeline = None
     if any(p is not None for p in (social_output, lock_output, command_output, execution_output)):
         pipeline = SocialPipeline(session_id or f"live-{uuid4().hex}", track_config,
@@ -110,6 +117,42 @@ def create_app(output_path: str | Path | None = None, *,
                            }, **extra)
         return jsonify(accepted=True, timestamp=frame.timestamp, people_count=len(frame.people))
 
+    @app.post("/api/v1/sdk-packets")
+    def sdk_packets():
+        if sdk_recording is None:
+            return jsonify(accepted=False, error="sdk_capture_unavailable"), 409
+        try:
+            record = validate_sdk_capture(request.get_json())
+        except ValueError as error:
+            return jsonify(accepted=False, error="invalid_sdk_capture", message=str(error)), 400
+        try:
+            duplicate = sdk_recording.write(record)
+        except SdkCaptureOrderError as error:
+            return jsonify(accepted=False, error="sdk_capture_out_of_order", message=str(error)), 409
+        except OSError:
+            logger.exception("Could not store SDK packet")
+            return jsonify(accepted=False, error="sdk_capture_storage_failed"), 503
+        return jsonify(accepted=True, stream=record["stream"],
+                       sequence=record["sequence"], duplicate=duplicate)
+
+    @app.post("/api/v1/camera-frames")
+    def camera_frames():
+        if camera_recording is None:
+            return jsonify(accepted=False, error="camera_capture_unavailable"), 409
+        try:
+            record, rgb = validate_camera_record(request.get_json())
+        except ValueError as error:
+            return jsonify(accepted=False, error="invalid_camera_capture", message=str(error)), 400
+        try:
+            duplicate = camera_recording.write(record, rgb)
+        except CameraCaptureOrderError as error:
+            return jsonify(accepted=False, error="camera_capture_out_of_order", message=str(error)), 409
+        except OSError:
+            logger.exception("Could not store camera frame")
+            return jsonify(accepted=False, error="camera_capture_storage_failed"), 503
+        return jsonify(accepted=True, camera=record["camera"],
+                       sequence=record["sequence"], duplicate=duplicate)
+
     @app.post("/api/v1/execution-events")
     def execution_events():
         if not isinstance(pipeline, SocialPipeline):
@@ -137,6 +180,8 @@ def main() -> None:
     parser.add_argument("--host", default="0.0.0.0")
     parser.add_argument("--port", type=int, default=6060)
     parser.add_argument("--output", help="New JSONL path, or '-' for stdout; default is a timestamped file in var/recordings")
+    parser.add_argument("--sdk-output", help="New JSONL path for unfiltered next_frame/next_locomotion packets")
+    parser.add_argument("--camera-output-dir", help="New directory for head/chest PPM images and frames.jsonl")
     parser.add_argument("--tracking-output", help="Enable UID tracking and write a new derived JSONL trace")
     parser.add_argument("--tracking-config", help="Tracking configuration JSON (requires tracking, social, or lock output)")
     parser.add_argument("--social-output", help="Enable temporal SocialState and write a new JSONL trace")
@@ -167,10 +212,15 @@ def main() -> None:
                          lock_output=args.lock_output,
                          lock_config=LockConfig.from_file(args.lock_config) if args.lock_config else None,
                          command_output=args.command_output, execution_output=args.execution_output,
-                         command_config=CommandConfig.from_file(args.command_config) if args.command_config else None)
+                         command_config=CommandConfig.from_file(args.command_config) if args.command_config else None,
+                         sdk_output=args.sdk_output, camera_output_dir=args.camera_output_dir)
     except (OSError, ValueError) as error:
         parser.error(str(error))
     logger.info("Recording raw sensor frames to %s", "stdout" if output == "-" else output)
+    if args.sdk_output:
+        logger.info("Recording SDK packets to %s", args.sdk_output)
+    if args.camera_output_dir:
+        logger.info("Recording camera images and manifest to %s", args.camera_output_dir)
     if args.tracking_output:
         logger.info("Recording UID track snapshots to %s", args.tracking_output)
     if args.social_output:

@@ -44,6 +44,12 @@ class ObservationTransport:
     def send_event(self, event: dict[str, Any]) -> ObservationResponse:
         return self._post("/api/v1/execution-events", event)
 
+    def send_sdk_packet(self, record: dict[str, Any]) -> ObservationResponse:
+        return self._post("/api/v1/sdk-packets", record)
+
+    def send_camera_frame(self, record: dict[str, Any]) -> ObservationResponse:
+        return self._post("/api/v1/camera-frames", record)
+
     def _post(self, path: str, payload: dict[str, Any]) -> ObservationResponse:
         try:
             body = json.dumps(payload, allow_nan=False, separators=(",", ":")).encode("utf-8")

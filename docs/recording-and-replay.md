@@ -14,6 +14,68 @@ Layer 3 adds `python3 -m app.social` for temporal SocialState replay and receive
 `--social-output` for live estimates. See [temporal social state](temporal-social-state.md)
 for commands, threshold assumptions, and recorded/synthetic validation.
 
+## Probe complete Navel SDK packets
+
+The ordinary observation recording discards SDK fields before HTTP and only
+sends the latest observation at up to 10 Hz. To inspect what the installed SDK
+actually populates, start the receiver with a **new** diagnostic output path:
+
+```bash
+# Computer; use --host 127.0.0.1 with the existing reverse SSH tunnel.
+python3 -m app.server --host 127.0.0.1 --port 6060 \
+  --output var/recordings/probe-01.observations.jsonl \
+  --sdk-output var/recordings/probe-01.sdk.jsonl \
+  --camera-output-dir var/recordings/probe-01.cameras
+```
+
+Then run this on Navel, using the tunnel URL (or the computer's LAN URL):
+
+```bash
+python3 -m robot.navel_client.main --server http://127.0.0.1:16060 \
+  --sdk-capture-only --camera-capture --camera-interval 1.0
+```
+
+`--sdk-capture-only` reads `next_frame()` and `next_locomotion()` concurrently,
+without sending policy observations or making robot commands. For simultaneous
+v1 observations and SDK diagnostics, use `--sdk-capture` instead. The SDK file
+is created on the first packet; the observations file remains absent during a
+capture-only run. Each SDK JSONL line has `stream` (`perception` or
+`locomotion`), per-stream `sequence`, `session_id`, robot-host
+`received_monotonic_us`, robot-host `received_unix_us`, and the complete
+JSON-compatible SDK `packet`. SDK source times such as `packet.time` and
+`packet.odometry.time` remain in their original units. Enum keys and values
+are stored by name; non-finite float values are stored as `"NaN"`, `"Infinity"`,
+or `"-Infinity"`. All fields present on an SDK data struct are retained,
+including null/invalid person IDs, sound metadata, odometry, and range arrays.
+
+With `--camera-capture`, the robot also tries `HeadCamera.get_frame()` and
+`ChestCamera.get_frame()` independently. Each successful RGB frame is sent to
+the computer and saved as a PPM file under `probe-01.cameras/head/` or
+`probe-01.cameras/chest/`. The `probe-01.cameras/frames.jsonl` manifest contains
+the relative image path, camera name, frame dimensions, SDK `timestamp_us`,
+robot receipt times, and sequence. Images are separate files because putting
+their pixel bytes in JSONL would make the recording difficult to inspect. A
+camera class missing from the installed SDK, failed context setup, missing or
+failing `get_frame()`, invalid frame format, or ten consecutive timeouts writes
+an `event: "unavailable"` manifest row with a reason and logs the same warning
+on the robot. The other camera and the two sensor packet streams continue.
+`--camera-interval` controls the attempt interval per camera; the default is
+one second. A new capture needs a new camera directory.
+
+Inspect a short pilot before the eight scenarios:
+
+```bash
+tail -f var/recordings/probe-01.sdk.jsonl
+tail -f var/recordings/probe-01.cameras/frames.jsonl
+```
+
+The robot queues packets separately from the rate-limited observation sender.
+Transport errors retry the same packet, and the receiver accepts identical
+retries without duplicate lines. If the 1024-packet queue fills, capture stops
+with an error rather than silently losing records. The SDK itself returns the
+newest available sample, so its API may skip intermediate generated samples
+if collection cannot keep up. A fresh run requires a fresh output path.
+
 ## Record through the working reverse tunnel
 
 On the PC, activate the existing environment and start a named recording:

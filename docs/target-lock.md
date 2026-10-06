@@ -5,8 +5,9 @@ interaction lock per recording session.
 The lock has a stable `lock_id` and currently binds to one
 `(session_id, uid, track_epoch)`. It produces a
 `target_lock` object alongside the existing pure `policy_decision` in each
-successful social response. The robot's dry-run dispatcher uses
-`target_lock.effective_decision`. The pure rule remains available for audit.
+successful social response. The robot's decision, command dry-run, and physical
+executors validate `target_lock.effective_decision`. The pure rule remains
+available for audit.
 
 ## States
 
@@ -17,7 +18,7 @@ successful social response. The robot's dry-run dispatcher uses
 | `MISSING` | Selected track absent within the hold window | `DEFER / LOCKED_TARGET_MISSING` |
 | `TENTATIVE_RETURN` | One different UID or epoch is visible; handoff evidence is accumulating | `DEFER` with the current evidence reason |
 | `AMBIGUOUS` | Several other tracks are visible | `DEFER / MULTIPLE_RETURN_CANDIDATES` |
-| `COOLDOWN` | Lock released by timeout, stream gap, or valid no-attention/away evidence | `DEFER / LOCK_COOLDOWN` |
+| `COOLDOWN` | Lock released by timeout, stream gap, valid no-attention/away evidence, completed engagement, or failed/cancelled/rejected action | `DEFER / LOCK_COOLDOWN` |
 
 The default hold is **2 seconds** from the selected track's last observation.
 The default release cooldown is **1 second**. Both use robot source timestamps,
@@ -50,8 +51,8 @@ get a *new* lock ID.
 **This is a continuity heuristic, not proof of identity.** A different person
 who enters alone at a similar distance can satisfy these checks. The pilot
 recordings have no ground-truth identity labels, so their handoffs cannot
-establish a false-transfer rate. Keep physical approach and speech disabled
-until return-versus-impostor trials establish acceptable error rates.
+establish a false-transfer rate. Validate return-versus-impostor behavior in
+dry-run and controlled robot trials before using physical approach or speech.
 
 ## Run and inspect
 
@@ -94,7 +95,8 @@ physical head motion stops.
 
 The handoff thresholds need labeled return and impostor trials. Stronger
 reassociation needs reliable spatial evidence under head motion; the current
-recordings lack identity labels and measured robot head pose. Completion feedback, a greeting
-cooldown tied to actual completion, route pause/resume, and physical approach
-and speech commands remain to be built. `APPROACH` and `ENGAGE` here are still
-dry-run proposals, not executable robot commands.
+recordings lack identity labels and measured robot head pose. The server now
+issues correlated `APPROACH` and `ENGAGE` commands, and the opt-in
+[physical executor](physical-executor.md) can run user-provided scripts and
+report actual outcomes. The route, action, and hardware stop scripts still
+need to be supplied and validated on Navel.
