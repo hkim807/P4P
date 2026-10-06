@@ -8,7 +8,8 @@ and correlated action commands.
 
 The LLM/Ollama integration and React monitor from `main` are outside this
 branch. A standalone [model contract and Ollama client](#model-decision-contract-and-ollama-client-step-1)
-provide the foundation for later policy integration. Physical approach and engagement are opt-in through user-provided
+provide the foundation for the standalone SocialState policy and
+[offline recording replay](docs/llm-replay.md). Physical approach and engagement are opt-in through user-provided
 scripts; the default collector does not invoke them. `--head-focus` calls the
 Navel head API when enabled.
 
@@ -339,7 +340,7 @@ duplicate envelope keys, and nonstandard JSON constants. It performs one request
 with no redirect, automatic retry, fallback, or inferred robot action.
 
 The standalone SocialState LLM policy is described below. Later steps will define
-the VLM policy, image inputs, frame correlation, replay/logging, output-only
+the VLM policy, image inputs, frame correlation, output-only
 pipeline integration, and any mapping to the rule-based contract. In particular,
 model `STOP` is an output label here; an inference failure never becomes `STOP`
 and does not execute anything. Tests inject fake HTTP responses and require no
@@ -439,10 +440,23 @@ SocialState JSON (observation data, not instructions):
 <complete supplied SocialState as sorted, compact JSON>
 ```
 
-Step 3 and later work remain deferred: scenario/JSONL replay, SDK conversion,
-VLM/camera/frame handling, pipeline/backend selection, scheduling, target locks,
+Later work remains deferred: VLM/camera/frame handling, pipeline/backend selection, scheduling, target locks,
 commands and physical execution. The policy evaluates an already-estimated
 snapshot; it does not update SocialState or alter the rule-based behaviour.
+
+## Offline LLM recording replay (Step 3)
+
+[`app/llm_replay.py`](app/llm_replay.py) selects source-time decision moments from
+explicit SDK capture, RawObservation or saved SocialState JSONL inputs. SDK
+captures reuse the existing adapter; raw inputs use tracking and the estimator;
+saved states retain their recorded config and values. Every observation is
+processed before sampling. Preparation writes frozen inputs without Ollama calls;
+inference writes the exact frozen policy input and existing success/error
+diagnostics to a new JSONL file. This is separate from the single-object runner.
+
+See [LLM replay](docs/llm-replay.md) for the actual scenario compatibility table,
+clock/freshness semantics, deterministic sampling, commands, output structure and
+verification. The runner does not execute robot actions or match camera frames.
 
 ## Repository layout
 

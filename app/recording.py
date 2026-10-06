@@ -47,19 +47,40 @@ class RecordingWriter:
             self._last_timestamp = frame.timestamp
 
 
-def read_frames(path: str | Path) -> Iterator[dict[str, Any]]:
-    """Read lazily, validating frame shape and order with file/line errors."""
+def _unique_json_object(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
+    result: dict[str, Any] = {}
+    for key, value in pairs:
+        if key in result:
+            raise ValueError(f"duplicate JSON key: {key}")
+        result[key] = value
+    return result
+
+
+def _reject_json_constant(value: str) -> None:
+    raise ValueError(f"non-finite JSON number: {value}")
+
+
+def read_frame_records(path: str | Path, *, strict_json: bool = False
+                       ) -> Iterator[tuple[int, dict[str, Any]]]:
+    """Yield original raw objects and line numbers using the existing validation.
+
+    Replay provenance needs the original object rather than a model dump. The
+    optional stricter JSON decoder does not change the established read_frames
+    interface or its decoding behaviour.
+    """
     path = Path(path)
     previous: int | None = None
     count = 0
-    with path.open(encoding="utf-8") as stream:
+    with path.open("rb") as stream:
         for line_number, line in enumerate(stream, 1):
             if not line.strip():
                 continue
             try:
-                payload = json.loads(line)
+                options = ({"object_pairs_hook": _unique_json_object,
+                            "parse_constant": _reject_json_constant} if strict_json else {})
+                payload = json.loads(line.decode("utf-8"), **options)
                 frame = RawObservationFrame.model_validate(payload)
-            except (json.JSONDecodeError, ValidationError) as error:
+            except (ValueError, RecursionError, ValidationError) as error:
                 raise ValueError(f"{path}:{line_number}: invalid raw frame: {error}") from error
             if previous is not None and frame.timestamp <= previous:
                 raise TimestampOrderError(
@@ -67,6 +88,12 @@ def read_frames(path: str | Path) -> Iterator[dict[str, Any]]:
                 )
             previous = frame.timestamp
             count += 1
-            yield frame.model_dump(exclude_unset=True)
+            yield line_number, payload
     if count == 0:
         raise ValueError(f"{path}: recording contains no frames")
+
+
+def read_frames(path: str | Path) -> Iterator[dict[str, Any]]:
+    """Read lazily, validating frame shape and order with file/line errors."""
+    for _, payload in read_frame_records(path):
+        yield RawObservationFrame.model_validate(payload).model_dump(exclude_unset=True)
