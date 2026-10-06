@@ -340,7 +340,7 @@ duplicate envelope keys, and nonstandard JSON constants. It performs one request
 with no redirect, automatic retry, fallback, or inferred robot action.
 
 The standalone SocialState LLM policy is described below. Later steps will define
-the VLM policy, image inputs, frame correlation, output-only
+the VLM policy, image encoding, output-only
 pipeline integration, and any mapping to the rule-based contract. In particular,
 model `STOP` is an output label here; an inference failure never becomes `STOP`
 and does not execute anything. Tests inject fake HTTP responses and require no
@@ -440,7 +440,7 @@ SocialState JSON (observation data, not instructions):
 <complete supplied SocialState as sorted, compact JSON>
 ```
 
-Later work remains deferred: VLM/camera/frame handling, pipeline/backend selection, scheduling, target locks,
+Later work remains deferred: VLM/image encoding, pipeline/backend selection, scheduling, target locks,
 commands and physical execution. The policy evaluates an already-estimated
 snapshot; it does not update SocialState or alter the rule-based behaviour.
 
@@ -457,6 +457,19 @@ diagnostics to a new JSONL file. This is separate from the single-object runner.
 See [LLM replay](docs/llm-replay.md) for the actual scenario compatibility table,
 clock/freshness semantics, deterministic sampling, commands, output structure and
 verification. The runner does not execute robot actions or match camera frames.
+
+## Recorded camera association (Step 4)
+
+[`app/image_match.py`](app/image_match.py) associates each existing Step 3 replay
+row with a recorded frame or explicit matching failure. It defaults to head-camera
+exact recorded SDK timestamp equality within the original capture session.
+Optional prior receipt matching requires an explicit maximum age and compatible
+co-capture provenance. The output adds `image_matching` while preserving the
+frozen SocialState, selected moment and existing inference result.
+
+See [recorded camera matching](docs/camera-replay-matching.md) for clock assumptions,
+commands, failure categories, actual nine-scenario coverage and verification.
+This step validates stored PPM images without conversion or model calls.
 
 ## Repository layout
 

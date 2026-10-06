@@ -1,0 +1,120 @@
+{
+  "approximate_delta_us": {
+    "count": 44,
+    "max": -8177,
+    "mean": -208693.63636363635,
+    "median": -190378.0,
+    "min": -989429,
+    "sign": "camera receipt minus perception receipt"
+  },
+  "max_frame_age_us": 1000000,
+  "original_rows_preserved": true,
+  "output_row_count": 73,
+  "per_scenario": {
+    "scenario-01.sdk.jsonl": {
+      "approximate": 8,
+      "exact": 1,
+      "rows": 9,
+      "unmatched_exact": 8,
+      "unmatched_with_receipt": 0
+    },
+    "scenario-02.sdk.jsonl": {
+      "approximate": 4,
+      "exact": 4,
+      "rows": 8,
+      "unmatched_exact": 4,
+      "unmatched_with_receipt": 0
+    },
+    "scenario-03.sdk.jsonl": {
+      "approximate": 5,
+      "exact": 5,
+      "rows": 11,
+      "unmatched_exact": 6,
+      "unmatched_with_receipt": 1
+    },
+    "scenario-04.sdk.jsonl": {
+      "approximate": 1,
+      "exact": 5,
+      "rows": 6,
+      "unmatched_exact": 1,
+      "unmatched_with_receipt": 0
+    },
+    "scenario-05.sdk.jsonl": {
+      "approximate": 2,
+      "exact": 2,
+      "rows": 4,
+      "unmatched_exact": 2,
+      "unmatched_with_receipt": 0
+    },
+    "scenario-06.sdk.jsonl": {
+      "approximate": 7,
+      "exact": 1,
+      "rows": 8,
+      "unmatched_exact": 7,
+      "unmatched_with_receipt": 0
+    },
+    "scenario-07.sdk.jsonl": {
+      "approximate": 0,
+      "exact": 2,
+      "rows": 3,
+      "unmatched_exact": 1,
+      "unmatched_with_receipt": 1
+    },
+    "scenario-08.sdk.jsonl": {
+      "approximate": 6,
+      "exact": 5,
+      "rows": 12,
+      "unmatched_exact": 7,
+      "unmatched_with_receipt": 1
+    },
+    "scenario-09.sdk.jsonl": {
+      "approximate": 11,
+      "exact": 1,
+      "rows": 12,
+      "unmatched_exact": 11,
+      "unmatched_with_receipt": 0
+    }
+  },
+  "prepared_sha256": "7d4aa81220dd19325646a3eae7ca918f99d44c1f8a99bde19bc22fc1746617ed",
+  "sample_interval_us": 1000000,
+  "unmatched_with_receipt": [
+    {
+      "error": {
+        "category": "frame_too_old",
+        "details": {
+          "age_us": 1043369,
+          "max_age_us": 1000000
+        },
+        "message": "Latest prior frame exceeds the configured maximum age"
+      },
+      "perception_sequence": 11,
+      "scenario": "scenario-03.sdk.jsonl"
+    },
+    {
+      "error": {
+        "category": "frame_too_old",
+        "details": {
+          "age_us": 1040843,
+          "max_age_us": 1000000
+        },
+        "message": "Latest prior frame exceeds the configured maximum age"
+      },
+      "perception_sequence": 11,
+      "scenario": "scenario-07.sdk.jsonl"
+    },
+    {
+      "error": {
+        "category": "frame_too_old",
+        "details": {
+          "age_us": 1009661,
+          "max_age_us": 1000000
+        },
+        "message": "Latest prior frame exceeds the configured maximum age"
+      },
+      "perception_sequence": 42,
+      "scenario": "scenario-08.sdk.jsonl"
+    }
+  ],
+  "validation_date": "2026-10-07",
+  "warmup_us": 0
+}
