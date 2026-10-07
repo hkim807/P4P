@@ -19,6 +19,7 @@ from robot.navel_client.main import (
 )
 from robot.navel_client.adapter import NavelObservationAdapter
 from robot.navel_client.transport import ObservationResponse, ObservationTransport, TransportError
+from robot.navel_client.single_trial import SingleTrial
 from tests.fixtures import frame, locomotion, perception
 
 
@@ -148,6 +149,28 @@ class ClientTests(unittest.IsolatedAsyncioTestCase):
             await collect_and_stream(Robot(), parse_args(["--print-only"]))
         self.assertTrue(stopped.is_set())
 
+    async def test_trial_timeout_and_interruption_use_collector_cleanup(self):
+        class Robot:
+            async def next_locomotion(self, timeout):
+                await asyncio.Event().wait()
+
+            async def next_frame(self, timeout):
+                await asyncio.Event().wait()
+
+        args = parse_args(["--decision-dry-run", "--single-trial"])
+        for interrupt in (False, True):
+            trial = SingleTrial(wait_timeout_s=0.01 if not interrupt else 30)
+            with patch("robot.navel_client.main.SingleTrial", return_value=trial):
+                task = asyncio.create_task(collect_and_stream(Robot(), args))
+                if interrupt:
+                    await asyncio.sleep(0)
+                    task.cancel()
+                    with self.assertRaises(asyncio.CancelledError):
+                        await task
+                else:
+                    self.assertIs(await asyncio.wait_for(task, 1), trial)
+            self.assertEqual(trial.failure_reason, "INTERRUPTED" if interrupt else "NO_DECISION_TIMEOUT")
+
 
 class TransportTests(unittest.TestCase):
     def test_invalid_urls_and_timeout_values_are_rejected(self):
@@ -189,7 +212,7 @@ import robot.navel_client.main
         self.assertEqual(result.returncode, 0, result.stderr)
 
     def test_nonfinite_cli_settings_are_rejected(self):
-        for option in ["--request-timeout", "--max-locomotion-age", "--minimum-send-interval"]:
+        for option in ["--request-timeout", "--max-locomotion-age", "--minimum-send-interval", "--decision-wait-timeout"]:
             with contextlib.redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
                 parse_args([option, "nan"])
 

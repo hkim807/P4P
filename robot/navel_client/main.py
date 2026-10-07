@@ -21,6 +21,7 @@ from robot.navel_client.decision_dispatch import (
 from robot.navel_client.head_focus import HeadFocusController
 from robot.navel_client.physical_executor import PhysicalCommandExecutor, ScriptPaths
 from robot.navel_client.sdk_capture import SdkCapture
+from robot.navel_client.single_trial import SingleTrial
 from robot.navel_client.transport import ObservationTransport, TransportError
 
 
@@ -107,6 +108,7 @@ async def _send_observations(
     max_decision_age_s: float = 1.0,
     command_executor: FakeCommandExecutor | None = None,
     physical_executor: PhysicalCommandExecutor | None = None,
+    trial: SingleTrial | None = None,
 ) -> None:
     last_sent_at = -math.inf
     while True:
@@ -149,6 +151,8 @@ async def _send_observations(
                             observation["timestamp"], len(observation["people"]))
                 if decision_dispatcher is not None:
                     await decision_dispatcher.accept(response.payload, observation)
+                if trial is not None:
+                    trial.accept_rule_response(response.payload, observation)
                 if command_executor is not None:
                     try:
                         events = command_executor.accept(response.payload, observation)
@@ -210,7 +214,7 @@ async def _send_execution_events(executor: PhysicalCommandExecutor,
 
 
 async def collect_and_stream(robot: Any, args: argparse.Namespace,
-                             camera_types: dict[str, Any] | None = None) -> None:
+                             camera_types: dict[str, Any] | None = None) -> SingleTrial | None:
     transport = ObservationTransport(args.server, timeout_seconds=args.request_timeout)
     sdk_capture = SdkCapture(transport) if args.sdk_capture else None
     camera_capture = (CameraCapture(transport, session_id=sdk_capture.session_id if sdk_capture else None)
@@ -221,10 +225,12 @@ async def collect_and_stream(robot: Any, args: argparse.Namespace,
     head_focus = (HeadFocusController(robot, magnitude=args.head_focus_magnitude,
                                      grace_s=args.head_focus_grace)
                   if args.head_focus else None)
+    trial = (SingleTrial(args.single_trial_policy, wait_timeout_s=args.decision_wait_timeout,
+                         max_age_s=args.max_decision_age) if args.single_trial else None)
     decision_dispatcher = (DecisionDispatcher(DryRunHandlers(robot),
                            max_age_s=args.max_decision_age,
                            timeout_s=args.decision_timeout)
-                           if args.decision_dry_run else None)
+                           if args.decision_dry_run and trial is None else None)
     command_executor = (FakeCommandExecutor(max_age_s=args.max_decision_age)
                         if args.command_dry_run else None)
     physical_executor = (PhysicalCommandExecutor(
@@ -256,6 +262,7 @@ async def collect_and_stream(robot: Any, args: argparse.Namespace,
             max_decision_age_s=args.max_decision_age,
             command_executor=command_executor,
             physical_executor=physical_executor,
+            trial=trial,
         )),
     ]
     sdk_sender = asyncio.create_task(sdk_capture.send()) if sdk_capture is not None else None
@@ -267,13 +274,30 @@ async def collect_and_stream(robot: Any, args: argparse.Namespace,
         tasks.append(camera_sender)
     if decision_dispatcher is not None:
         tasks.append(asyncio.create_task(decision_dispatcher.watchdog()))
+    if trial is not None:
+        tasks.append(asyncio.create_task(trial.watchdog()))
     if physical_executor is not None:
         tasks.append(asyncio.create_task(physical_executor.watchdog()))
         tasks.append(asyncio.create_task(_send_execution_events(physical_executor, transport)))
     group = asyncio.gather(*tasks)
     try:
-        await asyncio.shield(group)
+        if trial is None:
+            await asyncio.shield(group)
+        else:
+            done, _ = await asyncio.wait(tasks, return_when=asyncio.FIRST_COMPLETED)
+            for task in done:
+                task.result()
+    except asyncio.CancelledError:
+        if trial is not None:
+            trial.fail("INTERRUPTED")
+        raise
+    except Exception:
+        if trial is not None:
+            trial.fail("CLIENT_ERROR")
+        raise
     finally:
+        if trial is not None and not trial.terminal:
+            trial.fail("CLIENT_STOPPED")
         for task in collectors:
             task.cancel()
         await asyncio.gather(*collectors, return_exceptions=True)
@@ -303,9 +327,10 @@ async def collect_and_stream(robot: Any, args: argparse.Namespace,
             await decision_dispatcher.invalidate("client_stopped")
         if head_focus is not None:
             head_focus.stop()
+    return trial
 
 
-async def run(args: argparse.Namespace) -> None:
+async def run(args: argparse.Namespace) -> SingleTrial | None:
     # Delay the robot-only dependency so --help and offline tests work anywhere.
     import navel
 
@@ -316,7 +341,7 @@ async def run(args: argparse.Namespace) -> None:
         if args.sdk_capture_only:
             await collect_sdk_only(robot, args, camera_types)
         else:
-            await collect_and_stream(robot, args, camera_types)
+            return await collect_and_stream(robot, args, camera_types)
 
 
 async def collect_sdk_only(robot: Any, args: argparse.Namespace,
@@ -401,6 +426,11 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
                         help="Seconds between camera capture attempts (default: 1.0)")
     parser.add_argument("--decision-dry-run", action="store_true",
                         help="Log validated policy handler calls without executing policy actions")
+    parser.add_argument("--single-trial", action="store_true",
+                        help="Latch one final decision in decision dry-run mode; no action execution")
+    parser.add_argument("--single-trial-policy", choices=("rules", "llm", "vlm"), default="rules")
+    parser.add_argument("--decision-wait-timeout", type=float, default=30.0,
+                        help="Single-trial decision deadline in local monotonic seconds (default: 30)")
     parser.add_argument("--command-dry-run", action="store_true",
                         help="Validate correlated commands and POST simulated execution feedback")
     parser.add_argument("--physical-executor", action="store_true",
@@ -425,6 +455,8 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--decision-timeout", type=float, default=2.0,
                         help="Expire a dry-run decision after this long without a valid response (seconds)")
     args = parser.parse_args(argv)
+    if args.single_trial and (not args.decision_dry_run or args.sdk_capture_only):
+        parser.error("--single-trial requires --decision-dry-run and excludes --sdk-capture-only")
     if args.model_provenance:
         if args.sdk_capture_only:
             parser.error("--model-provenance excludes --sdk-capture-only")
@@ -464,6 +496,8 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         value = getattr(args, name)
         if not math.isfinite(value) or value < 0 or (name != "minimum_send_interval" and value == 0):
             parser.error("timeouts/maximum ages must be positive and finite; send interval may be zero")
+    if not math.isfinite(args.decision_wait_timeout) or args.decision_wait_timeout <= 0:
+        parser.error("--decision-wait-timeout must be positive and finite")
     if not math.isfinite(args.head_focus_magnitude) or not 0 <= args.head_focus_magnitude <= 1:
         parser.error("--head-focus-magnitude must be finite and between 0 and 1")
     if not math.isfinite(args.camera_interval) or args.camera_interval <= 0:
@@ -479,9 +513,13 @@ def main() -> int:
     logging.basicConfig(level=logging.INFO, format="%(message)s")
     args = parse_args()
     try:
-        asyncio.run(run(args))
+        trial = asyncio.run(run(args))
+        if trial is not None and trial.phase == "FAILED":
+            return 1
     except KeyboardInterrupt:
         logger.info("Navel sensor client stopped")
+        if args.single_trial:
+            return 130
     except ModuleNotFoundError as error:
         if error.name != "navel":
             raise
