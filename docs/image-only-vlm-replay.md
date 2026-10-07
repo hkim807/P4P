@@ -53,7 +53,7 @@ and passed as the single `OllamaMessage.images` item.
 
 ## Actual prompt
 
-Version: `image-only-vlm-v2`. The static system and user instructions are
+Version: `image-only-vlm-v3`. The static system and user instructions are
 `SYSTEM_PROMPT` and `USER_PROMPT` in [`app/policy/vlm.py`](../app/policy/vlm.py).
 
 Only that user message has an `images` list, containing one raw PNG base64
@@ -139,7 +139,7 @@ A JSONL subtree excerpt from **fake-response tests**, not real model inference:
   "vlm_inference": {
     "schema_version": 1,
     "status": "succeeded",
-    "prompt_version": "image-only-vlm-v2",
+    "prompt_version": "image-only-vlm-v3",
     "ok": true,
     "requested_model": "vision-model",
     "returned_model": "actual-vision-model",

@@ -43,12 +43,48 @@ async def engage_person(context):
 
 
 async def yield_space(context):
-    raise BehaviourNotImplemented("YIELD")
+    runtime = context.approach
+    if runtime is None:
+        raise RuntimeError("YIELD requires local odometry state")
+    stage = "BASE_STOP"
+
+    async def movement(name, command, margin):
+        nonlocal stage
+        stage = name
+        logger.info("yield_stage=%s", stage)
+        await runtime.motion(command, timeout=context.timeout_s,
+                             check_people=name in {"RETURN", "ADVANCE"})
+        await asyncio.sleep(margin)
+
+    try:
+        await runtime.wait_ready(require_perception=False)
+        await runtime.settle()
+        await movement("TURN_OUT", lambda: context.robot.rotate_base(
+            100.0, speed=30.0, acceleration=35.0), 0.50)
+        await movement("ESCAPE", lambda: context.robot.move_base(
+            -0.60, speed=0.25, acceleration=0.35), 0.30)
+        stage = "PASS_SPEECH"
+        logger.info("yield_stage=%s", stage)
+        await context.own_task(context.robot.say("Please go ahead."))
+        stage = "WAIT"
+        logger.info("yield_stage=%s timed_wait_s=3", stage)
+        await asyncio.sleep(3.0)
+        await movement("RETURN", lambda: context.robot.move_base(
+            0.60, speed=0.12, acceleration=0.15), 0.30)
+        await movement("TURN_BACK", lambda: context.robot.rotate_base(
+            -100.0, speed=30.0, acceleration=35.0), 0.50)
+        await movement("ADVANCE", lambda: context.robot.move_base(
+            0.15, speed=0.25, acceleration=0.35), 0.04)
+        stage = "COMPLETE_SPEECH"
+        logger.info("yield_stage=%s", stage)
+        await context.own_task(context.robot.say("Yielding complete!"))
+    except (Exception, asyncio.CancelledError) as exc:
+        logger.warning("yield_failed stage=%s error=%s", stage, str(exc) or type(exc).__name__)
+        raise
 
 
 HANDLERS = {"CONTINUE": continue_route, "APPROACH": approach_person,
             "ENGAGE": engage_person, "YIELD": yield_space}
-_UNIMPLEMENTED = frozenset({yield_space})
 
 
 @dataclass
@@ -61,6 +97,7 @@ class BehaviourContext:
     head: object = None
     approach: object = None
     approach_result: object = None
+    timeout_s: float = 120.0
     _tasks: set = field(default_factory=set, init=False, repr=False)
     _closing: bool = field(default=False, init=False, repr=False)
 
@@ -83,16 +120,15 @@ class BehaviourDispatcher:
                 not inspect.iscoroutinefunction(handler) for handler in self.handlers.values()):
             raise ValueError("behaviour handlers must map the four actions to async functions")
         self.trial, self.timeout_s = trial, timeout_s
-        self.context = BehaviourContext(robot, None, None, lambda: trial.current_observation, route, head)
-        if self.handlers["APPROACH"] is approach_person:
+        self.context = BehaviourContext(robot, None, None, lambda: trial.current_observation, route, head,
+                                        timeout_s=timeout_s)
+        if self.handlers["APPROACH"] is approach_person or self.handlers["YIELD"] is yield_space:
             self.context.approach = ApproachRuntime(self.context)
         self._dispatched = self._cleaned = False
         self._handler_task = None
         self._cleanup_lock = asyncio.Lock()
 
     def preflight(self):
-        if all(handler in _UNIMPLEMENTED for handler in self.handlers.values()):
-            raise BehaviourNotImplemented("BEHAVIOUR_NOT_IMPLEMENTED: no execution handlers available")
         if not callable(getattr(self.context.robot, "base_vel", None)):
             raise ValueError("execution requires SDK robot.base_vel for local stopping")
         if self.handlers["CONTINUE"] is continue_route:
@@ -106,6 +142,10 @@ class BehaviourDispatcher:
             for method in ("move_and_rotate_base", "rotate_base", "say"):
                 if not callable(getattr(self.context.robot, method, None)):
                     raise ValueError(f"APPROACH execution requires SDK robot.{method}")
+        if self.handlers["YIELD"] is yield_space:
+            for method in ("rotate_base", "move_base", "say"):
+                if not callable(getattr(self.context.robot, method, None)):
+                    raise ValueError(f"YIELD execution requires SDK robot.{method}")
 
     async def dispatch(self):
         if self._dispatched or self.trial.phase != "DECIDED":
@@ -118,8 +158,6 @@ class BehaviourDispatcher:
         handler = self.handlers[action]
         succeeded = False
         try:
-            if handler in _UNIMPLEMENTED:
-                raise BehaviourNotImplemented(action)
             if action != "CONTINUE":
                 if context.head is not None:
                     context.head.suspend()
@@ -189,7 +227,7 @@ class BehaviourDispatcher:
                     task.cancel()
             try:
                 if context._tasks:
-                    # APPROACH's cancellation includes up to 2 s sender settling
+                    # Local motion cancellation includes up to 2 s sender settling
                     # plus the reference's 3 s measured stop confirmation.
                     cleanup_timeout = 6.0 if context.approach is not None and context.approach.motion_active else 2.0
                     await asyncio.wait(context._tasks, timeout=cleanup_timeout)

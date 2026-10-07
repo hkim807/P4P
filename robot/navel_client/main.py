@@ -457,9 +457,9 @@ async def collect_and_stream(robot: Any, args: argparse.Namespace,
     finally:
         if trial is not None and not trial.terminal and trial.phase != "DECIDED":
             trial.fail("CLIENT_STOPPED")
-        keep_approach_sensors = (behaviour_dispatcher is not None and trial.decision is not None
-                                 and trial.decision["action"] == "APPROACH")
-        if not keep_approach_sensors:
+        keep_stop_sensors = (behaviour_dispatcher is not None and trial.decision is not None
+                             and trial.decision["action"] in {"APPROACH", "YIELD"})
+        if not keep_stop_sensors:
             for task in collectors:
                 task.cancel()
         if behaviour_dispatcher is not None or route is not None:
@@ -475,8 +475,8 @@ async def collect_and_stream(robot: Any, args: argparse.Namespace,
                 logger.exception("single_trial stop_failed physical_stop_verified=false")
             if head_focus is not None:
                 head_focus.suspend()
-        # APPROACH needs the shared odometry reader during measured stopping.
-        if keep_approach_sensors:
+        # APPROACH/YIELD need the shared odometry reader during measured stopping.
+        if keep_stop_sensors:
             for task in collectors:
                 task.cancel()
         if model_trial:
@@ -616,7 +616,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--single-trial", action="store_true",
                         help="Latch one final decision; requires decision dry-run or single-trial execution")
     parser.add_argument("--single-trial-execute", action="store_true",
-                        help="Execute CONTINUE, APPROACH or ENGAGE on the shared SDK connection; requires --route-trial")
+                        help="Execute one of the four actions on the shared SDK connection; requires --route-trial")
     parser.add_argument("--behaviour-timeout", type=float, default=120.0,
                         help="Maximum handler duration in seconds (default: 120; max: 3600)")
     parser.add_argument("--single-trial-policy", choices=("rules", "llm", "vlm"), default="rules")

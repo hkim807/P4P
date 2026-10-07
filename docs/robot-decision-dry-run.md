@@ -107,8 +107,18 @@ After measured stopping, only fresh `APPROACHED_VERIFIED` arrival permits the
 owned/awaited utterance "Approach complete!". `APPROACHED_UNVERIFIED` and
 `OUTSIDE_TOLERANCE` fail without speaking; measurements are retained in
 `SingleTrial.approach_result` and local approach logs, separately from policy.
-There is no ENGAGE greeting or route resumption after APPROACH. YIELD remains
-unsupported: acceptance fails with `BEHAVIOUR_NOT_IMPLEMENTED` and stops locally.
+There is no ENGAGE greeting or route resumption after APPROACH. YIELD temporarily
+moves aside/backwards, waits, returns towards the original route, advances a short
+distance and ends. It rotates +100° (30°/s, 35°/s²), reverses −0.60 m
+(0.25 m/s, 0.35 m/s²), stops and says "Please go ahead.". After speech completion
+it waits 3 seconds, moves +0.60 m (0.12 m/s, 0.15 m/s²), stops, rotates −100°
+(30°/s, 35°/s²), advances only +0.15 m (0.25 m/s, 0.35 m/s²), stops and awaits
+"Yielding complete!". Rotation margins are 0.50 s, escape/return margins 0.30 s,
+and the short advance margin 0.04 s, following actual SDK task completion and
+local measured stopping. The wait is timed, not sensor-confirmed clearance;
+return is nominal, not verified navigation to an exact path. YIELD uses local
+odometry without UID/nose acquisition and never restarts the cancelled baseline.
+Interruption/failure stops locally without forcing the remaining return stages.
 Preflight requires `--route-trial`
 and the SDK movement, arc, rotation, stopping and speech methods before motion starts.
 Dry-run remains at DECIDED and never calls this dispatcher.
@@ -216,8 +226,8 @@ rejected response also clears the placeholder. These checks protect this
   add a robot-local controller that can verify and perform a physical stop,
   arbitrate route motion, recheck current target and obstacle data, and expire
   executable command leases even while HTTP is stalled.
-- The current policy never emits `YIELD` because no route-conflict cue exists.
-  A placeholder handler is present for future use.
+- Rules select `YIELD` for TOO_CLOSE using the existing provisional proximity
+  condition; this does not establish a verified route conflict.
 - A changed PC session is rejected until the client restarts. A later command
   protocol should negotiate a new session explicitly.
 

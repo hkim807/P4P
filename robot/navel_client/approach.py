@@ -129,13 +129,14 @@ class ApproachRuntime:
         self.detect_seq = -1
         self.motion_active = False
 
-    async def wait_ready(self):
+    async def wait_ready(self, require_perception=True):
         until = time.monotonic()+4
-        while (self._pose is None or self.perception_at == 0) and time.monotonic() < until:
-            if self.errors or self.stop.is_set():
+        while (self._pose is None or (require_perception and self.perception_at == 0)) and time.monotonic() < until:
+            if ('odometry' in self.errors or (require_perception and 'perception' in self.errors)
+                    or self.stop.is_set()):
                 break
             await asyncio.sleep(.02)
-        self.check(require_perception=True)
+        self.check(require_perception=require_perception)
 
     def pose(self):
         if self._pose is None or time.monotonic()-self.pose_at > .6 or 'odometry' in self.errors:
@@ -247,7 +248,7 @@ class ApproachRuntime:
             await asyncio.sleep(.01)
         raise RuntimeError('Stop not confirmed within 3 s; use physical emergency stop')
 
-    async def motion(self, factory, timeout, tick=None, require_perception=False):
+    async def motion(self, factory, timeout, tick=None, require_perception=False, check_people=True):
         if self.motion_active:
             raise RuntimeError('Another motion sender is already active')
         self.check(require_perception=require_perception)
@@ -263,7 +264,7 @@ class ApproachRuntime:
                 self.check(require_perception=require_perception)
                 if time.monotonic()-start > timeout:
                     raise RuntimeError('Motion timed out')
-                if time.monotonic()-self.perception_at < .4:
+                if check_people and time.monotonic()-self.perception_at < .4:
                     pose = self.pose()
                     if any(math.hypot(*body_point(p, pose)) < .50 for p in self.people):
                         raise RuntimeError('Observed person within 0.50 m; stopping')

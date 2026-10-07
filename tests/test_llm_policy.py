@@ -137,7 +137,7 @@ class LLMPromptTests(unittest.TestCase):
         second = build_llm_prompt(reordered)
         self.assertEqual(first, second)
         self.assertEqual(first.messages, second.messages)
-        self.assertEqual(first.prompt_version, "social-state-llm-v2")
+        self.assertEqual(first.prompt_version, "social-state-llm-v3")
         self.assertEqual(first.prompt_version, PROMPT_VERSION)
         self.assertEqual(first.instructions, SYSTEM_PROMPT)
         changed = social_state()
@@ -150,7 +150,7 @@ class LLMPromptTests(unittest.TestCase):
         self.assertIn("The supplied robot state describes its actual movement at the observation moment.", text)
         definitions = {
             "CONTINUE": "Continue along the existing fixed route without approaching the person or initiating an interaction. During execution, the robot will complete the remaining route.",
-            "YIELD": "Give the person room to pass by temporarily moving aside and backwards. Once the manoeuvre finishes, remain stopped at that position. Do not automatically return to the route.",
+            "YIELD": "Temporarily move aside and backwards to let the person pass, wait briefly, return towards the original route, advance a short distance, and then end. The wait is timed, not sensor-confirmed clearance; the return is nominal, not verified navigation back to an exact path.",
             "APPROACH": "Leave the existing route, move towards the observed person, and stop at a suitable distance for conversation.",
             "ENGAGE": "The person is already at a suitable interaction distance. Stop or remain stationary and initiate an interaction, such as a greeting.",
         }

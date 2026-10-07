@@ -18,8 +18,9 @@ The four actions are:
 - `CONTINUE`: complete the remaining fixed route without approaching or initiating interaction.
 - `APPROACH`: leave the route, move towards the person and stop at conversation distance.
 - `ENGAGE`: stop or remain stationary and initiate interaction with the nearby person.
-- `YIELD`: temporarily move aside and backwards to give room to pass, then remain stopped
-  there without automatically returning to the route. Manoeuvre parameters remain for later work.
+- `YIELD`: temporarily move aside and backwards to give room to pass, wait briefly,
+  return towards the original route, advance a short distance, then end. The wait
+  is timed; the return is nominal rather than verified navigation to an exact path.
 
 `normalise_rule_decision` supplies an English reason for every rule action;
 DEFER and STOP are rejected in both rule and final contracts. Live and

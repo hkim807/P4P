@@ -9,14 +9,14 @@ from typing import Any
 from app.inference.ollama import OllamaClient, OllamaMessage, OllamaResult
 
 
-PROMPT_VERSION = "image-only-vlm-v2"
+PROMPT_VERSION = "image-only-vlm-v3"
 SYSTEM_PROMPT = """A robot is assigned to travel along a fixed route inside a laboratory. It must choose its next behaviour around people.
 
 Choose the most appropriate next action using only the attached image:
 - CONTINUE: Continue along the existing fixed route without approaching the person or initiating an interaction. During execution, the robot will complete the remaining route.
 - APPROACH: Leave the existing route, move towards the observed person, and stop at a suitable distance for conversation.
 - ENGAGE: The person is already at a suitable interaction distance. Stop or remain stationary and initiate an interaction, such as a greeting.
-- YIELD: Give the person room to pass by temporarily moving aside and backwards. Once the manoeuvre finishes, remain stopped at that position. Do not automatically return to the route.
+- YIELD: Temporarily move aside and backwards to let the person pass, wait briefly, return towards the original route, advance a short distance, and then end. The wait is timed, not sensor-confirmed clearance; the return is nominal, not verified navigation back to an exact path.
 
 Do not invent rotation angles, distances, speeds or an exact manoeuvre sequence for YIELD.
 One image cannot establish movement over time or sustained gaze. Do not invent measured distances, durations or velocities. Give a brief explanation grounded in visible evidence.

@@ -21,7 +21,7 @@ from robot.navel_client.main import (
 from robot.navel_client.adapter import NavelObservationAdapter
 from robot.navel_client.transport import ObservationResponse, ObservationTransport, TransportError
 from robot.navel_client.single_trial import SingleTrial
-from robot.navel_client.behaviour_dispatch import BehaviourContext, BehaviourDispatcher, HANDLERS
+from robot.navel_client.behaviour_dispatch import BehaviourContext, BehaviourDispatcher, BehaviourNotImplemented, HANDLERS
 from robot.navel_client.approach import (
     ApproachConfig, ApproachRuntime, approach_human, arc_plan,
     associate, body_point, nose_position, read_pose, sample_target, world_point,
@@ -397,8 +397,11 @@ class ClientTests(unittest.IsolatedAsyncioTestCase):
                 async def unexpected(context):
                     self.fail("Unavailable execution must not call a handler")
 
+                async def unavailable(context):
+                    raise BehaviourNotImplemented("test handler unavailable")
+
                 dispatcher = BehaviourDispatcher(trial, NS(base_vel=lambda x, r: None),
-                    handlers={} if scene == "missing_handler" else {"ENGAGE": unexpected})
+                    handlers={"YIELD": unavailable} if scene == "missing_handler" else {"ENGAGE": unexpected})
                 self.assertFalse(await dispatcher.dispatch())
                 self.assertEqual(trial.failure_reason, "BEHAVIOUR_NOT_IMPLEMENTED" if scene == "missing_handler"
                                  else "CURRENT_PERSON_UNAVAILABLE")
@@ -535,7 +538,10 @@ class ClientTests(unittest.IsolatedAsyncioTestCase):
 
                 args = parse_args(["--single-trial", "--single-trial-execute", "--route-trial",
                                    "--behaviour-timeout", "0.04", "--minimum-send-interval", "0"])
-                with patch.dict(HANDLERS, {} if outcome == "unsupported" else {action: handler}), \
+                async def unavailable(context):
+                    raise BehaviourNotImplemented("test handler unavailable")
+
+                with patch.dict(HANDLERS, {action: unavailable if outcome == "unsupported" else handler}), \
                         patch("robot.navel_client.main.SingleTrial", return_value=trial), \
                         patch.object(ObservationTransport, "send", side_effect=send), \
                         contextlib.redirect_stdout(io.StringIO()):
@@ -859,6 +865,156 @@ class ClientTests(unittest.IsolatedAsyncioTestCase):
                         self.assertEqual(call[3], min(70., math.sqrt(abs(call[2])*60.)))
                         self.assertEqual(call[4], 60.)
                 self.assertEqual(calls[-1], ('zero',))
+
+    async def test_production_yield_sequence_and_failure_cleanup(self):
+        expected = [('baseline', 10., .1, .2), ('rotate', 100., 30., 35.),
+                    ('move', -.6, .25, .35), ('move', .6, .12, .15),
+                    ('rotate', -100., 30., 35.), ('move', .15, .25, .35)]
+        for outcome in ('success', 'cancel_escape', 'cancel_wait', 'cancel_return',
+                        'motion_failure', 'speech_failure', 'final_speech_failure', 'timeout'):
+            with self.subTest(outcome=outcome):
+                events, sdk_tasks = [], []
+                readers = {'perception': set(), 'odometry': set()}
+                reached = {name: asyncio.Event() for name in ('escape', 'wait', 'return')}
+                baseline_started = asyncio.Event()
+                trial = SingleTrial()
+
+                class Robot:
+                    active = reads = 0
+
+                    async def next_locomotion(self, timeout):
+                        readers['odometry'].add(asyncio.current_task())
+                        await asyncio.sleep(.01)
+                        return NS(odometry=NS(position=NS(x=0., y=0.),
+                            orientation=NS(x=0., y=1., z=0., w=0.),
+                            velocity=NS(linear_x=.1 if self.active else 0., linear_y=0., angular_z=0.),
+                            time=int(time.monotonic()*1e6)))
+
+                    async def next_frame(self, timeout):
+                        readers['perception'].add(asyncio.current_task())
+                        await baseline_started.wait()
+                        await asyncio.sleep(.01)
+                        self.reads += 1
+                        # No usable nose and no person after acceptance. YIELD
+                        # must not acquire or retain the decision source UID.
+                        return perception(person(17)) if trial.phase == 'OBSERVING' else perception()
+
+                    async def look_at_person(self, uid, head):
+                        events.append(('head', uid))
+
+                    def movement(self, name, amount, speed, acceleration):
+                        assert self.active == 0, 'overlapping movement senders'
+                        events.append((name, amount, speed, acceleration))
+
+                        async def sender():
+                            self.active += 1
+                            try:
+                                if name == 'baseline':
+                                    baseline_started.set()
+                                    await asyncio.Event().wait()
+                                stage = 'escape' if amount == -.6 else 'return' if amount == .6 else None
+                                if stage:
+                                    reached[stage].set()
+                                if (stage and outcome == 'cancel_'+stage) or (stage == 'escape' and outcome == 'timeout'):
+                                    await asyncio.Event().wait()
+                                await asyncio.sleep(.01)
+                                if stage == 'escape' and outcome == 'motion_failure':
+                                    raise OSError('escape failed')
+                            finally:
+                                await asyncio.sleep(.03)
+                                self.active -= 1
+                                events.append(('settled', name, amount))
+                        task = asyncio.create_task(sender())
+                        sdk_tasks.append(task)
+                        return task
+
+                    def move_base(self, distance, *, speed, acceleration):
+                        return self.movement('baseline' if distance == 10. else 'move', distance, speed, acceleration)
+
+                    def rotate_base(self, angle, *, speed, acceleration):
+                        return self.movement('rotate', angle, speed, acceleration)
+
+                    def move_and_rotate_base(self, *args, **kwargs):
+                        raise AssertionError('YIELD must not approach')
+
+                    def base_vel(self, x, r):
+                        assert self.active == 0, 'zero before sender settled'
+                        events.append(('zero',))
+
+                    def say(self, text):
+                        assert self.active == 0
+                        assert events[-1][0] == 'margin', 'speech before stop/margin finished'
+                        events.append(('say', text))
+
+                        async def speech():
+                            before = self.reads
+                            await asyncio.sleep(.03)
+                            assert self.reads > before, 'collectors stopped during speech'
+                            if (outcome == 'speech_failure' and text == 'Please go ahead.') or (
+                                    outcome == 'final_speech_failure' and text == 'Yielding complete!'):
+                                raise OSError('speech failed')
+                            events.append(('speech_finished', text))
+                        task = asyncio.create_task(speech())
+                        sdk_tasks.append(task)
+                        return task
+
+                async def timed_sleep(seconds):
+                    if seconds == 3.:
+                        self.assertEqual(events[-1], ('speech_finished', 'Please go ahead.'))
+                        reached['wait'].set()
+                        events.append(('wait', seconds))
+                        if outcome == 'cancel_wait':
+                            await asyncio.Event().wait()
+                    else:
+                        self.assertEqual(events[-1], ('zero',))
+                        events.append(('margin', seconds))
+                    await asyncio.sleep(.005)
+
+                def send(observation):
+                    payload = response_for(observation, 1, 'YIELD', False)
+                    payload['final_decision'] = {'action': 'YIELD', 'reason': 'Give room.'}
+                    return ObservationResponse(200, payload)
+
+                robot = Robot()
+                yield_asyncio = NS(**vars(asyncio))
+                yield_asyncio.sleep = timed_sleep  # Keep real sensor/motion polling intact.
+                args = parse_args(['--single-trial', '--single-trial-execute', '--route-trial',
+                                   '--minimum-send-interval', '0', '--behaviour-timeout',
+                                   '1' if outcome == 'timeout' else '120'])
+                with patch('robot.navel_client.behaviour_dispatch.asyncio', yield_asyncio), \
+                        patch('robot.navel_client.main.SingleTrial', return_value=trial), \
+                        patch.object(ObservationTransport, 'send', side_effect=send), \
+                        patch.object(ApproachRuntime, 'detect', side_effect=AssertionError('YIELD acquired a target')), \
+                        contextlib.redirect_stdout(io.StringIO()):
+                    task = asyncio.create_task(collect_and_stream(robot, args))
+                    if outcome.startswith('cancel_'):
+                        await asyncio.wait_for(reached[outcome.removeprefix('cancel_')].wait(), 3)
+                        task.cancel()
+                        with self.assertRaises(asyncio.CancelledError):
+                            await asyncio.wait_for(task, 3)
+                    else:
+                        self.assertIs(await asyncio.wait_for(task, 5), trial)
+                self.assertEqual(trial.phase, 'COMPLETED' if outcome == 'success' else 'FAILED')
+                if outcome == 'timeout':
+                    self.assertEqual(trial.failure_reason, 'BEHAVIOUR_TIMEOUT')
+                self.assertTrue(all(task.done() and task.cancelling() <= 1 for task in sdk_tasks))
+                self.assertEqual(robot.active, 0)
+                self.assertEqual([len(value) for value in readers.values()], [1, 1])
+                motions = [e for e in events if e[0] in ('baseline', 'rotate', 'move')]
+                expected_count = 6 if outcome in ('success', 'final_speech_failure') else 4 if outcome == 'cancel_return' else 3
+                self.assertEqual(motions, expected[:expected_count])
+                speeches = [e[1] for e in events if e[0] == 'say']
+                expected_speech = (['Please go ahead.', 'Yielding complete!'] if expected_count == 6
+                                   else ['Please go ahead.'] if outcome in ('cancel_wait', 'cancel_return', 'speech_failure') else [])
+                self.assertEqual(speeches, expected_speech)
+                self.assertEqual(sum(e[0] == 'wait' for e in events),
+                                 1 if outcome in ('success', 'cancel_wait', 'cancel_return', 'final_speech_failure') else 0)
+                if outcome == 'success':
+                    self.assertEqual([e[1] for e in events if e[0] == 'margin'], [.5, .3, .3, .5, .04])
+                    self.assertIn(('speech_finished', 'Yielding complete!'), events)
+                baseline_end = events.index(('settled', 'baseline', 10.))
+                self.assertFalse(any(e[0] == 'head' for e in events[baseline_end:]))
+                self.assertEqual(events[-1], ('zero',))
 
 
 

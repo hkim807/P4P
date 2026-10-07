@@ -25,7 +25,7 @@ class PolicyDecision(StrictModel):
 
 
 _FINAL_REASONS = {
-    "PERSON_TOO_CLOSE": "The person is in the TOO_CLOSE zone; give more space by moving aside and backwards, then remain stopped. This provisional proximity rule does not imply a blocked path.",
+    "PERSON_TOO_CLOSE": "The person is in the TOO_CLOSE zone; give more space by temporarily moving aside and backwards, waiting briefly, returning towards the route and advancing a short distance before ending. This provisional proximity rule does not imply a blocked path.",
     "NO_INTERACTION_CUE": "Usable gaze evidence does not show sustained attention; continue along the fixed route.",
     "PERSON_FAR": "The person is outside the interaction and approach ranges; continue along the fixed route.",
     "NO_ATTENTION": "Gaze evidence is classified as no attention; continue along the fixed route.",
@@ -41,7 +41,7 @@ _ACTION_REASONS = {
     "CONTINUE": "Continue along the existing fixed route without initiating an interaction.",
     "APPROACH": "Move towards the observed person and stop at conversation distance.",
     "ENGAGE": "Stop or remain stationary and initiate an interaction with the nearby person.",
-    "YIELD": "Give the person room to pass, then remain stopped after moving aside and backwards.",
+    "YIELD": "Temporarily move aside and backwards to give the person room to pass, wait briefly, return towards the route, advance a short distance and end.",
 }
 
 

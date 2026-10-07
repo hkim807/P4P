@@ -396,7 +396,7 @@ Input/configuration failures have no model content or request duration. Inferenc
 failures retain Step 1 diagnostics with `decision: null`; there is no default
 action, retry or rule fallback. The CLI has no persistent output writer.
 
-Prompt version: **`social-state-llm-v2`**. Changing instructions or serialization
+Prompt version: **`social-state-llm-v3`**. Changing instructions or serialization
 semantics requires a new prompt version. Deterministic prompt construction does
 not guarantee deterministic model output; caller model/settings still matter.
 The system instructions are `SYSTEM_PROMPT` in

@@ -81,7 +81,7 @@ class VLMPromptTests(unittest.TestCase):
     def test_prompt_is_static_english_versioned_and_reproducible(self):
         first = build_vlm_prompt(ENCODED_IMAGE)
         second = build_vlm_prompt(base64.b64encode(png_bytes((5, 7, 9))).decode("ascii"))
-        self.assertEqual(first.prompt_version, "image-only-vlm-v2")
+        self.assertEqual(first.prompt_version, "image-only-vlm-v3")
         self.assertEqual(first.prompt_version, PROMPT_VERSION)
         self.assertEqual(first.instructions, SYSTEM_PROMPT)
         self.assertEqual(second.instructions, first.instructions)
