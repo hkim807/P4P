@@ -32,6 +32,23 @@ class HeadFocusTests(unittest.TestCase):
         self.assertEqual(self.robot.commands, [(17, 0.5)])
         self.assertEqual(self.focus.uid, 17)
 
+    def test_route_refresh_is_rate_limited_and_can_be_suspended(self):
+        focus = HeadFocusController(self.robot, magnitude=1.0,
+                                    command_interval_s=0.6, select_first_visible=True,
+                                    clock=lambda: self.now)
+        focus.observe(perception(person(None), person(17), person(18)))
+        self.now += 0.3
+        focus.observe(perception(person(17), person(18)))
+        self.now += 0.4
+        focus.observe(perception(person(17), person(18)))
+        self.now += 0.7
+        focus.observe(perception())
+        self.assertEqual(self.robot.commands, [(17, 1.0), (17, 1.0)])
+        focus.suspend()
+        self.now += 1
+        focus.observe(perception(person(18)))
+        self.assertEqual(self.robot.commands, [(17, 1.0), (17, 1.0)])
+
     def test_no_arbitrary_acquisition_in_ambiguous_frame(self):
         self.focus.observe(perception(person(17), person(18)))
         self.focus.observe(perception(person(None)))

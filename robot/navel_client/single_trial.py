@@ -153,7 +153,7 @@ class SingleTrial:
         logger.info("single_trial phase=FAILED reason=%s", reason)
         return True
 
-    async def watchdog(self):
-        while not self.terminal:
+    async def watchdog(self, *, stop_on_decision=False):
+        while not self.terminal and not (stop_on_decision and self.phase == "DECIDED"):
             self.tick()
             await asyncio.sleep(0.1)

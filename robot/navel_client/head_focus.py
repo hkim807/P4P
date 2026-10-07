@@ -26,6 +26,9 @@ class HeadFocusController:
         grace_s: float = 0.75,
         retry_s: float = 1.0,
         server_lock_timeout_s: float = 3.0,
+        command_interval_s: float | None = None,
+        raise_on_error: bool = False,
+        select_first_visible: bool = False,
         clock: Callable[[], float] = time.monotonic,
     ) -> None:
         self.robot = robot
@@ -34,6 +37,11 @@ class HeadFocusController:
         self.retry_s = retry_s
         self.server_lock_timeout_s = server_lock_timeout_s
         self.clock = clock
+        self.command_interval_s = command_interval_s
+        self.raise_on_error = raise_on_error
+        self.select_first_visible = select_first_visible
+        self.last_command_at = -float("inf")
+        self.suspended = False
         self.uid: int | None = None
         self.last_seen_at: float | None = None
         self.next_retry_at = 0.0
@@ -60,8 +68,10 @@ class HeadFocusController:
             self.server_lock_id = None
             self.server_lock_received_at = None
 
-    def observe(self, perception: Any) -> None:
+    def observe(self, perception: Any) -> Any:
         """Process a frame before it enters the rate-limited HTTP queue."""
+        if self.suspended:
+            return
         now = self.clock()
         self._expire_server_lock(now)
         persons = getattr(perception, "persons", None) or ()
@@ -71,8 +81,9 @@ class HeadFocusController:
         if self.uid is not None and self.uid in visible and (
                 self.server_lock_uid is None or self.uid == self.server_lock_uid):
             self.last_seen_at = now
-            return
-        if self.uid is not None:
+            if self.command_interval_s is None:
+                return
+        elif self.uid is not None:
             if (self.last_seen_at is not None and now - self.last_seen_at < self.grace_s
                     and (self.server_lock_uid is None or self.uid == self.server_lock_uid)):
                 return
@@ -80,26 +91,41 @@ class HeadFocusController:
             self.uid = None
             self.last_seen_at = None
 
-        if now < self.next_retry_at:
+        if (now < self.next_retry_at or (self.command_interval_s is not None
+                and now - self.last_command_at < self.command_interval_s)):
             return
-        if self.server_lock_uid is not None:
+        if self.uid in visible:
+            uid = self.uid
+        elif self.server_lock_uid is not None:
             if self.server_lock_uid not in visible:
                 return
             uid = self.server_lock_uid
         else:
-            # Unknown UIDs or other visible people make new acquisition ambiguous.
-            if len(uids) != 1 or len(visible) != 1:
+            if self.select_first_visible:
+                # Route baseline follows the reference's first detected valid UID.
+                uids = [uid for uid in uids if type(uid) is int and uid >= 0]
+            # Ordinary focus keeps its existing conservative acquisition rule.
+            if not uids or (not self.select_first_visible and (len(uids) != 1 or len(visible) != 1)):
                 return
-            uid = next(iter(visible))
+            uid = uids[0]
         try:
-            self.robot.look_at_person(uid, self.magnitude)
+            command = self.robot.look_at_person(uid, self.magnitude)
         except Exception as error:
+            if self.raise_on_error:
+                raise
             self.next_retry_at = now + self.retry_s
             logger.warning("head_focus=command_failed uid=%s error=%s", uid, error)
             return
         self.uid = uid
         self.last_seen_at = now
+        self.last_command_at = now
         logger.info("head_focus=acquired uid=%s magnitude=%s", uid, self.magnitude)
+        return command
+
+    def suspend(self) -> None:
+        """Yield baseline head ownership to a future behaviour controller."""
+        self.suspended = True
+        self.stop()
 
     def tick(self) -> None:
         """Expire local selection if perception stops delivering frames."""

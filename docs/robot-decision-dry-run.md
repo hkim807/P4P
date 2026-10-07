@@ -49,7 +49,44 @@ mode; accepting a pure proposal does not authorise a command. Ctrl-C fails the
 trial with `INTERRUPTED` and uses existing cleanup.
 LLM/VLM selection has an acceptance entry point but no result delivery yet, so
 those CLI selections currently time out. Existing server audit processing can
-continue; this mode never starts a route or claims a physical stop.
+continue; without `--route-trial` this mode never starts a route.
+
+`--route-trial` explicitly enables **real base movement**, even though selected
+policy behaviours remain in decision dry-run mode. On Navel, with the receiver
+running with social processing, use a short SDK distance request:
+
+```bash
+python3 -m robot.navel_client.main --server http://192.168.1.100:6060 \
+  --decision-dry-run --single-trial --route-trial \
+  --route-distance 0.5 --route-speed 0.1 --route-acceleration 0.2
+```
+
+For the default 10 m request, explicitly allow more than its nominal 100 seconds
+at 0.1 m/s (the decision timeout otherwise stays at 30 seconds):
+
+```bash
+python3 -m robot.navel_client.main --server http://192.168.1.100:6060 \
+  --decision-dry-run --single-trial --route-trial \
+  --route-distance 10 --route-speed 0.1 --route-acceleration 0.2 \
+  --decision-wait-timeout 120
+```
+
+One shared SDK connection and perception reader serve HTTP and local head
+tracking (head contribution 1.0, commands at most every 0.6 seconds). Detection
+does not alter the single base movement request; tracking retains a visible UID
+and uses the existing bounded loss grace without requiring a policy lock.
+No perception frames for 5 seconds ends the route. Distance is an SDK request,
+not verified travel; this adds no obstacle avoidance.
+
+Temporarily, an accepted decision stops the route and exits at `DECIDED` without
+executing the selected behaviour. Route completion first fails with
+`ROUTE_FINISHED_WITHOUT_DECISION`. Timeout, transport invalidation, interruption
+and task failures also stop it. Cleanup cancels and settles the movement sender
+before `base_vel(0.0, 0.0)`, independently of HTTP/head completion. Sender settling
+has a two-second bound; failure or a rejected zero command is logged as an
+unconfirmed stop. No software cancellation or zero request proves physical
+stopping. Hardware verification is still required. Later behaviour integration
+will retain this route for CONTINUE and transfer control for other actions.
 
 Accepted raw frames still print to stdout. On stderr, a first valid decision
 or a changed decision/target produces a line such as:

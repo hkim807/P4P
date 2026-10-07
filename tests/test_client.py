@@ -20,7 +20,7 @@ from robot.navel_client.main import (
 from robot.navel_client.adapter import NavelObservationAdapter
 from robot.navel_client.transport import ObservationResponse, ObservationTransport, TransportError
 from robot.navel_client.single_trial import SingleTrial
-from tests.fixtures import frame, locomotion, perception
+from tests.fixtures import frame, locomotion, perception, person
 
 
 class ClientTests(unittest.IsolatedAsyncioTestCase):
@@ -171,6 +171,123 @@ class ClientTests(unittest.IsolatedAsyncioTestCase):
                     self.assertIs(await asyncio.wait_for(task, 1), trial)
             self.assertEqual(trial.failure_reason, "INTERRUPTED" if interrupt else "NO_DECISION_TIMEOUT")
 
+    async def test_route_lifecycle_stops_one_sender_before_zero(self):
+        # SDK-shaped tasks, including an asynchronously settling cancellation.
+        for outcome in ("decision", "finished", "timeout", "slow_http", "transport", "rejected", "collector", "head", "interrupt"):
+            with self.subTest(outcome=outcome):
+                events = []
+                readers = set()
+                started = asyncio.Event()
+                finish = asyncio.Event()
+                tracking = asyncio.Event()
+                release_http = threading.Event()
+                http_done = threading.Event()
+                packets = asyncio.Queue()
+                packets.put_nowait(perception(person(17)))
+                packets.put_nowait(perception(person(17), person(18)))
+                packets.put_nowait(perception())
+                active = False
+
+                class Robot:
+                    def move_base(self, distance, *, speed, acceleration):
+                        events.append(("move", distance, speed, acceleration))
+
+                        async def movement():
+                            nonlocal active
+                            active = True
+                            started.set()
+                            try:
+                                await finish.wait()
+                            finally:
+                                await asyncio.sleep(0)
+                                active = False
+                                events.append("settled")
+                        return asyncio.create_task(movement())
+
+                    def base_vel(self, x, r):
+                        assert not active, "zero velocity before movement sender settled"
+                        if outcome == "slow_http":
+                            assert not http_done.is_set(), "local stop waited for HTTP"
+                        events.append(("zero", x, r))
+                        release_http.set()
+
+                    async def look_at_person(self, uid, head):
+                        events.append(("head", uid, head))
+                        tracking.set()
+                        if outcome == "head":
+                            raise OSError("head failed")
+
+                    async def next_frame(self, timeout):
+                        readers.add(asyncio.current_task())
+                        await started.wait()
+                        if outcome == "collector":
+                            raise ConnectionAbortedError("perception failed")
+                        packet = await packets.get()
+                        await asyncio.sleep(0.001)
+                        return packet
+
+                    async def next_locomotion(self, timeout):
+                        await asyncio.Event().wait()
+
+                trial = SingleTrial(wait_timeout_s=0.01 if outcome in ("timeout", "slow_http") else 30)
+
+                def send(observation):
+                    if outcome == "slow_http":
+                        release_http.wait(1)
+                        http_done.set()
+                    if outcome == "transport":
+                        raise TransportError("offline")
+                    if outcome == "rejected":
+                        return ObservationResponse(503, {"accepted": False})
+                    state_id = "session-a:1"
+                    return ObservationResponse(200, {
+                        "accepted": True, "processing_status": "complete",
+                        "timestamp": observation["timestamp"],
+                        "social_state": {
+                            "state_id": state_id, "session_id": "session-a",
+                            "robot_timestamp_us": observation["timestamp"],
+                            "people": [{"visibility": "OBSERVED", "evidence": {
+                                "latest_distance_valid": True, "gaze_valid": True}}]},
+                        "policy_decision": {
+                            "decision_id": f"{state_id}:social-rules-v1", "source_state_id": state_id,
+                            "session_id": "session-a", "policy_version": "social-rules-v1",
+                            "decision": "CONTINUE" if outcome == "decision" else "DEFER",
+                            "reason_code": "TEST", "target_uid": None, "target_track_epoch": None},
+                        "final_decision": ({"action": "CONTINUE", "reason": "Keep going."}
+                                           if outcome == "decision" else None),
+                    })
+
+                args = parse_args(["--decision-dry-run", "--single-trial", "--route-trial",
+                                   "--route-distance", "0.5", "--minimum-send-interval", "0"])
+                with patch("robot.navel_client.main.SingleTrial", return_value=trial), \
+                        patch.object(ObservationTransport, "send", side_effect=send), \
+                        contextlib.redirect_stdout(io.StringIO()):
+                    task = asyncio.create_task(collect_and_stream(Robot(), args))
+                    await asyncio.wait_for(started.wait(), 1)
+                    if outcome == "finished":
+                        await asyncio.wait_for(tracking.wait(), 1)
+                        finish.set()
+                    elif outcome == "interrupt":
+                        task.cancel()
+                    if outcome in ("collector", "head", "interrupt"):
+                        with self.assertRaises(asyncio.CancelledError if outcome == "interrupt" else OSError):
+                            await asyncio.wait_for(task, 1)
+                    else:
+                        self.assertIs(await asyncio.wait_for(task, 1), trial)
+                self.assertEqual([e for e in events if isinstance(e, tuple) and e[0] == "move"],
+                                 [("move", 0.5, 0.1, 0.2)])
+                self.assertEqual(events[-2:], ["settled", ("zero", 0.0, 0.0)])
+                self.assertEqual(len(readers), 1)
+                if outcome == "decision":
+                    self.assertEqual(trial.phase, "DECIDED")
+                    self.assertEqual(dict(trial.decision), {"action": "CONTINUE", "reason": "Keep going."})
+                else:
+                    self.assertEqual(trial.phase, "FAILED")
+                    if outcome == "finished":
+                        self.assertEqual(trial.failure_reason, "ROUTE_FINISHED_WITHOUT_DECISION")
+                if outcome not in ("collector", "interrupt"):
+                    self.assertIn(("head", 17, 1.0), events)
+
 
 class TransportTests(unittest.TestCase):
     def test_invalid_urls_and_timeout_values_are_rejected(self):
@@ -215,6 +332,15 @@ import robot.navel_client.main
         for option in ["--request-timeout", "--max-locomotion-age", "--minimum-send-interval", "--decision-wait-timeout"]:
             with contextlib.redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
                 parse_args([option, "nan"])
+
+    def test_route_requires_explicit_opt_in_and_valid_settings(self):
+        self.assertFalse(parse_args(["--decision-dry-run", "--single-trial"]).route_trial)
+        for argv in (["--route-trial"], ["--single-trial", "--route-trial"],
+                     ["--route-speed", "1.7"], ["--route-acceleration", "1.3"],
+                     ["--route-distance", "0"], ["--route-speed", "nan"],
+                     ["--route-acceleration", "inf"]):
+            with self.subTest(argv=argv), contextlib.redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
+                parse_args(argv)
 
 
 if __name__ == "__main__":

@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import asyncio
+import inspect
 import json
 import logging
 import math
@@ -22,6 +23,7 @@ from robot.navel_client.head_focus import HeadFocusController
 from robot.navel_client.physical_executor import PhysicalCommandExecutor, ScriptPaths
 from robot.navel_client.sdk_capture import SdkCapture
 from robot.navel_client.single_trial import SingleTrial
+from robot.navel_client.straight_route import StraightRoute
 from robot.navel_client.transport import ObservationTransport, TransportError
 
 
@@ -79,19 +81,27 @@ async def _collect_perception(
     physical_executor: PhysicalCommandExecutor | None = None,
     sdk_capture: SdkCapture | None = None,
     model_provenance: bool = False,
+    perception_loss_timeout_s: float | None = None,
 ) -> None:
     if model_provenance and sdk_capture is None:
         raise ValueError("model provenance requires SDK capture")
+    last_frame_at = time.monotonic()
     while True:
         try:
             perception = await robot.next_frame(timeout=1.0)
         except TimeoutError:
             if head_focus is not None:
                 head_focus.tick()
+            if (perception_loss_timeout_s is not None
+                    and time.monotonic() - last_frame_at >= perception_loss_timeout_s):
+                raise RuntimeError("No perception frames for 5 seconds")
             continue
+        last_frame_at = time.monotonic()
         captured = sdk_capture.record("perception", perception) if sdk_capture is not None else None
         if head_focus is not None and (physical_executor is None or physical_executor.active is None):
-            head_focus.observe(perception)
+            command = head_focus.observe(perception)
+            if inspect.isawaitable(command):
+                await command
         observation = adapter.convert(perception, latest.fresh_value(max_locomotion_age_s))
         _replace_queued(queue, ModelObservation(observation, captured)
                         if model_provenance else observation)
@@ -109,6 +119,7 @@ async def _send_observations(
     command_executor: FakeCommandExecutor | None = None,
     physical_executor: PhysicalCommandExecutor | None = None,
     trial: SingleTrial | None = None,
+    route_trial: bool = False,
 ) -> None:
     last_sent_at = -math.inf
     while True:
@@ -132,6 +143,9 @@ async def _send_observations(
                             else await asyncio.to_thread(transport.send, observation))
             except TransportError as error:
                 logger.warning("timestamp=%s transport_error=%s", observation["timestamp"], error)
+                if route_trial:
+                    trial.fail("TRANSPORT_INVALIDATED")
+                    return
                 if decision_dispatcher is not None:
                     await decision_dispatcher.invalidate("transport_error")
                 if physical_executor is not None:
@@ -153,6 +167,8 @@ async def _send_observations(
                     await decision_dispatcher.accept(response.payload, observation)
                 if trial is not None:
                     trial.accept_rule_response(response.payload, observation)
+                    if route_trial and (trial.phase == "DECIDED" or trial.terminal):
+                        return
                 if command_executor is not None:
                     try:
                         events = command_executor.accept(response.payload, observation)
@@ -178,6 +194,9 @@ async def _send_observations(
             else:
                 logger.warning("timestamp=%s status=%s response=%s",
                                observation["timestamp"], response.status_code, response.payload)
+                if route_trial:
+                    trial.fail("TRANSPORT_INVALIDATED")
+                    return
                 if decision_dispatcher is not None:
                     await decision_dispatcher.invalidate("observation_not_accepted")
                 if physical_executor is not None:
@@ -222,9 +241,15 @@ async def collect_and_stream(robot: Any, args: argparse.Namespace,
     adapter = NavelObservationAdapter()
     queue: asyncio.Queue[QueuedObservation] = asyncio.Queue(maxsize=1)
     latest = LatestLocomotion()
-    head_focus = (HeadFocusController(robot, magnitude=args.head_focus_magnitude,
-                                     grace_s=args.head_focus_grace)
-                  if args.head_focus else None)
+    route = (StraightRoute(robot, args.route_distance, args.route_speed, args.route_acceleration)
+             if args.route_trial else None)
+    head_focus = (HeadFocusController(robot,
+                                     magnitude=1.0 if route else args.head_focus_magnitude,
+                                     grace_s=args.head_focus_grace,
+                                     command_interval_s=0.6 if route else None,
+                                     raise_on_error=route is not None,
+                                     select_first_visible=route is not None)
+                  if args.head_focus or route else None)
     trial = (SingleTrial(args.single_trial_policy, wait_timeout_s=args.decision_wait_timeout,
                          max_age_s=args.max_decision_age) if args.single_trial else None)
     decision_dispatcher = (DecisionDispatcher(DryRunHandlers(robot),
@@ -246,6 +271,7 @@ async def collect_and_stream(robot: Any, args: argparse.Namespace,
             head_focus=head_focus, physical_executor=physical_executor,
             sdk_capture=sdk_capture,
             model_provenance=args.model_provenance,
+            perception_loss_timeout_s=5.0 if route else None,
         )),
     ]
     if camera_capture is not None:
@@ -258,11 +284,12 @@ async def collect_and_stream(robot: Any, args: argparse.Namespace,
             minimum_send_interval_s=args.minimum_send_interval,
             print_only=args.print_only,
             decision_dispatcher=decision_dispatcher,
-            head_focus=head_focus,
+            head_focus=None if route else head_focus,
             max_decision_age_s=args.max_decision_age,
             command_executor=command_executor,
             physical_executor=physical_executor,
             trial=trial,
+            route_trial=route is not None,
         )),
     ]
     sdk_sender = asyncio.create_task(sdk_capture.send()) if sdk_capture is not None else None
@@ -275,18 +302,23 @@ async def collect_and_stream(robot: Any, args: argparse.Namespace,
     if decision_dispatcher is not None:
         tasks.append(asyncio.create_task(decision_dispatcher.watchdog()))
     if trial is not None:
-        tasks.append(asyncio.create_task(trial.watchdog()))
+        tasks.append(asyncio.create_task(trial.watchdog(stop_on_decision=route is not None)))
     if physical_executor is not None:
         tasks.append(asyncio.create_task(physical_executor.watchdog()))
         tasks.append(asyncio.create_task(_send_execution_events(physical_executor, transport)))
-    group = asyncio.gather(*tasks)
+    group = None
     try:
+        if route is not None:
+            tasks.append(route.start())
+        group = asyncio.gather(*tasks)
         if trial is None:
             await asyncio.shield(group)
         else:
             done, _ = await asyncio.wait(tasks, return_when=asyncio.FIRST_COMPLETED)
             for task in done:
                 task.result()
+            if route is not None and trial.phase == "OBSERVING" and route.task in done:
+                trial.fail("ROUTE_FINISHED_WITHOUT_DECISION")
     except asyncio.CancelledError:
         if trial is not None:
             trial.fail("INTERRUPTED")
@@ -296,10 +328,22 @@ async def collect_and_stream(robot: Any, args: argparse.Namespace,
             trial.fail("CLIENT_ERROR")
         raise
     finally:
-        if trial is not None and not trial.terminal:
+        if trial is not None and not trial.terminal and not (route and trial.phase == "DECIDED"):
             trial.fail("CLIENT_STOPPED")
         for task in collectors:
             task.cancel()
+        if route is not None:
+            # Stop locally before waiting for head, capture queues or HTTP.
+            cleanup = asyncio.create_task(route.stop())
+            try:
+                try:
+                    await asyncio.shield(cleanup)
+                except asyncio.CancelledError:
+                    await cleanup
+            except Exception:
+                trial.fail("ROUTE_STOP_FAILED")
+                logger.exception("route_trial stop_failed physical_stop_verified=false")
+            head_focus.suspend()
         await asyncio.gather(*collectors, return_exceptions=True)
         if sdk_capture is not None and sdk_sender is not None and not sdk_sender.done():
             try:
@@ -321,7 +365,7 @@ async def collect_and_stream(robot: Any, args: argparse.Namespace,
         for task in tasks:
             task.cancel()
         await asyncio.gather(*tasks, return_exceptions=True)
-        if group.done() and not group.cancelled():
+        if group is not None and group.done() and not group.cancelled():
             group.exception()
         if decision_dispatcher is not None:
             await decision_dispatcher.invalidate("client_stopped")
@@ -431,6 +475,11 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--single-trial-policy", choices=("rules", "llm", "vlm"), default="rules")
     parser.add_argument("--decision-wait-timeout", type=float, default=30.0,
                         help="Single-trial decision deadline in local monotonic seconds (default: 30)")
+    parser.add_argument("--route-trial", action="store_true",
+                        help="Enable REAL straight base movement and head tracking; requires single-trial decision dry-run")
+    parser.add_argument("--route-distance", type=float, default=10.0, help="SDK forward distance request in metres (default: 10)")
+    parser.add_argument("--route-speed", type=float, default=0.1, help="Route peak speed in m/s (default: 0.1; max: 1.6)")
+    parser.add_argument("--route-acceleration", type=float, default=0.2, help="Route acceleration in m/s² (default: 0.2; max: 1.2)")
     parser.add_argument("--command-dry-run", action="store_true",
                         help="Validate correlated commands and POST simulated execution feedback")
     parser.add_argument("--physical-executor", action="store_true",
@@ -455,6 +504,12 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--decision-timeout", type=float, default=2.0,
                         help="Expire a dry-run decision after this long without a valid response (seconds)")
     args = parser.parse_args(argv)
+    if args.route_trial and not args.single_trial:
+        parser.error("--route-trial requires --single-trial and --decision-dry-run")
+    try:
+        StraightRoute(None, args.route_distance, args.route_speed, args.route_acceleration)
+    except ValueError as error:
+        parser.error(str(error))
     if args.single_trial and (not args.decision_dry_run or args.sdk_capture_only):
         parser.error("--single-trial requires --decision-dry-run and excludes --sdk-capture-only")
     if args.model_provenance:
