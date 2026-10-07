@@ -229,14 +229,21 @@ class DecisionDispatchTests(unittest.IsolatedAsyncioTestCase):
         # An image policy does not need a temporal window; source/freshness still apply.
         trial = SingleTrial("vlm", wait_timeout_s=1, monotonic=lambda: self.now_s,
                             monotonic_us=lambda: observation["timestamp"])
+        payload["model_trial"] = {"image_ready": True}
         trial.observe(payload, observation)
+        source.update(trial_id=trial.trial_id, policy="vlm", request_id="request")
+        self.assertTrue(trial.register_request(source))
         self.assertFalse(trial.accept_decision("vlm", final, {**source, "source_state_id": "old"}))
         self.assertTrue(trial.accept_decision("vlm", final, source))
         changed = deepcopy(payload)
         changed["social_state"]["session_id"] = "new-session"
         trial.observe(changed, observation)
-        self.assertEqual((trial.phase, trial.failure_reason), ("FAILED", "SESSION_INVALIDATED"))
+        self.assertEqual((trial.phase, trial.failure_reason), ("DECIDED", None))
         self.assertFalse(trial.accept_decision("vlm", final, source))
+        fresh = SingleTrial("vlm", monotonic_us=lambda: observation["timestamp"])
+        fresh.observe(payload, observation)
+        fresh.observe(changed, observation)
+        self.assertEqual(fresh.failure_reason, "SESSION_INVALIDATED")
         trial = SingleTrial("vlm", wait_timeout_s=1, monotonic=lambda: self.now_s,
                             monotonic_us=lambda: observation["timestamp"])
         trial.observe(payload, observation)

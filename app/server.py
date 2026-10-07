@@ -124,19 +124,75 @@ def create_app(output_path: str | Path | None = None, *,
         extra = {"model_inference": models.status()} if models is not None else {}
         return jsonify(status="ok", service="navel-raw-sensor-receiver", **extra)
 
+    def trial_identity(payload):
+        if not isinstance(payload, dict) or any(
+                not isinstance(payload.get(key), str) or not 0 < len(payload[key]) <= 128
+                for key in ("trial_id", "session_id", "policy")):
+            raise ValueError("Trial requires trial_id, session_id and policy")
+        if not isinstance(pipeline, SocialPipeline) or payload["session_id"] != pipeline.tracking.tracker.session_id:
+            raise ValueError("Trial server session is unavailable or mismatched")
+        if models is None:
+            raise ValueError("Model trial requires enabled --model-inference and --model-output")
+        return payload
+
+    @app.post("/api/v1/model-trials")
+    def open_model_trial():
+        try:
+            payload = request.get_json()
+            if not isinstance(payload, dict) or set(payload) != {"trial_id", "policy", "wait_s", "max_age_s"}:
+                raise ValueError("Expected trial_id, policy, wait_s and max_age_s")
+            if not isinstance(pipeline, SocialPipeline):
+                raise ValueError("Model trial requires a social/model pipeline")
+            identity = trial_identity({**payload, "session_id": pipeline.tracking.tracker.session_id})
+            for key in ("wait_s", "max_age_s"):
+                if type(payload[key]) not in (int, float) or not 0 < payload[key] <= 3600:
+                    raise ValueError("Trial wait and model age must be positive and at most 3600 seconds")
+            if payload["policy"] == "vlm" and sdk_recording is None:
+                raise ValueError("VLM trial capture requires receiver --sdk-output")
+            models.open_trial(identity["trial_id"], identity["session_id"], identity["policy"],
+                              payload["wait_s"], payload["max_age_s"])
+            return jsonify(accepted=True, **{key: identity[key] for key in ("trial_id", "session_id", "policy")})
+        except ValueError as error:
+            return jsonify(accepted=False, error="invalid_model_trial", message=str(error)), 409
+
+    @app.post("/api/v1/model-trials/result")
+    def model_trial_result():
+        try:
+            identity = trial_identity(request.get_json())
+            result = models.trial_result(identity)
+            return jsonify(accepted=True, result=result)
+        except ValueError as error:
+            return jsonify(accepted=False, error="invalid_model_trial", message=str(error)), 409
+
+    @app.post("/api/v1/model-trials/close")
+    def close_model_trial():
+        try:
+            identity = trial_identity(request.get_json())
+            models.close_trial(identity)
+            return jsonify(accepted=True)
+        except ValueError as error:
+            return jsonify(accepted=False, error="invalid_model_trial", message=str(error)), 409
+
     @app.post("/api/v1/observations")
     def observations():
         received_monotonic_us = time.monotonic_ns() // 1000
         received_unix_us = time.time_ns() // 1000
         payload = request.get_json()
         model_source = None
+        trial = None
         if models is not None and isinstance(payload, dict) and "observation" in payload:
-            if set(payload) != {"observation", "model_source"}:
+            if set(payload) not in ({"observation", "model_source"}, {"observation", "model_source", "trial"}):
                 return jsonify(accepted=False, error="invalid_model_observation",
-                               message="Expected only observation and model_source"), 400
+                               message="Expected observation, model_source and optional trial"), 400
             raw_payload = payload["observation"]
         else:
             raw_payload = payload
+        if isinstance(payload, dict) and "trial" in payload:
+            try:
+                trial = trial_identity(payload["trial"])
+                models.validate_trial(trial)
+            except ValueError as error:
+                return jsonify(accepted=False, error="invalid_model_trial", message=str(error)), 409
         try:
             frame = RawObservationFrame.model_validate(raw_payload)
         except ValidationError as error:
@@ -145,7 +201,7 @@ def create_app(output_path: str | Path | None = None, *,
                 error="invalid_raw_observation",
                 details=error.errors(include_url=False, include_input=False, include_context=False),
             ), 400
-        if raw_payload is not payload:
+        if raw_payload is not payload and payload["model_source"] is not None:
             try:
                 model_source = validate_model_source(payload["model_source"], frame.timestamp)
             except ValueError as error:
@@ -159,13 +215,15 @@ def create_app(output_path: str | Path | None = None, *,
                 model_status = None
                 if models is not None and snapshot is not None:
                     try:
-                        model_status = models.submit(snapshot["social_state"], {
+                        source_metadata = {
                             "observation_timestamp_us": frame.timestamp,
                             "model_source": model_source,
                             "receiver_received_monotonic_us": received_monotonic_us,
                             "receiver_received_unix_us": received_unix_us,
                             "receiver_receipt_clock": "receiver-host-monotonic-us",
-                        })
+                        }
+                        model_status = (models.submit_trial(snapshot["social_state"], source_metadata, trial)
+                                        if trial is not None else models.submit(snapshot["social_state"], source_metadata))
                     except Exception:
                         logger.exception("Observation processed, but model submission failed")
                         model_status = {"status": "not_run", "reason": "submission_failed"}
@@ -188,7 +246,7 @@ def create_app(output_path: str | Path | None = None, *,
                          "target_lock": snapshot["target_lock"],
                          "robot_command": snapshot["robot_command"]}
                 if models is not None:
-                    extra["model_inference"] = model_status
+                    extra["model_trial" if trial is not None else "model_inference"] = model_status
             else:
                 extra = {}
             return jsonify(accepted=True, timestamp=frame.timestamp, people_count=len(frame.people),
@@ -286,7 +344,7 @@ def main(argv: list[str] | None = None) -> None:
     parser.add_argument("--lock-config", help="Target lock configuration JSON (requires social or lock output)")
     parser.add_argument("--temporal-config", help="Temporal configuration JSON (requires social or lock output)")
     parser.add_argument("--model-inference", choices=("disabled", "llm", "vlm", "both"), default="disabled",
-                        help="Optional output-only model inference; default disabled")
+                        help="Optional live model inference and audit; default disabled")
     parser.add_argument("--model-output", help="New exclusive JSONL path for model results")
     parser.add_argument("--model-sample-interval", type=float, default=1.0,
                         help="Minimum selected SocialState interval in robot seconds; zero selects every input")
@@ -368,7 +426,7 @@ def main(argv: list[str] | None = None) -> None:
     if args.execution_output:
         logger.info("Recording execution events to %s", args.execution_output)
     if args.model_output:
-        logger.info("Output-only %s model results to %s", args.model_inference, args.model_output)
+        logger.info("Live %s model results to %s", args.model_inference, args.model_output)
     try:
         app.run(host=args.host, port=args.port, threaded=True, use_reloader=False)
     finally:

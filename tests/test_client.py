@@ -173,7 +173,7 @@ class ClientTests(unittest.IsolatedAsyncioTestCase):
 
     async def test_route_lifecycle_stops_one_sender_before_zero(self):
         # SDK-shaped tasks, including an asynchronously settling cancellation.
-        for outcome in ("decision", "finished", "timeout", "slow_http", "transport", "rejected", "collector", "head", "interrupt"):
+        for outcome in ("decision", "finished", "timeout", "slow_http", "transport", "rejected", "collector", "head", "interrupt", "model_stall", "poll_stall"):
             with self.subTest(outcome=outcome):
                 events = []
                 readers = set()
@@ -182,6 +182,7 @@ class ClientTests(unittest.IsolatedAsyncioTestCase):
                 tracking = asyncio.Event()
                 release_http = threading.Event()
                 http_done = threading.Event()
+                poll_started = threading.Event()
                 packets = asyncio.Queue()
                 packets.put_nowait(perception(person(17)))
                 packets.put_nowait(perception(person(17), person(18)))
@@ -206,7 +207,9 @@ class ClientTests(unittest.IsolatedAsyncioTestCase):
 
                     def base_vel(self, x, r):
                         assert not active, "zero velocity before movement sender settled"
-                        if outcome == "slow_http":
+                        if model_trial:
+                            assert poll_started.is_set(), "poll never ran during trial"
+                        if outcome in ("slow_http", "poll_stall"):
                             assert not http_done.is_set(), "local stop waited for HTTP"
                         events.append(("zero", x, r))
                         release_http.set()
@@ -229,7 +232,9 @@ class ClientTests(unittest.IsolatedAsyncioTestCase):
                     async def next_locomotion(self, timeout):
                         await asyncio.Event().wait()
 
-                trial = SingleTrial(wait_timeout_s=0.01 if outcome in ("timeout", "slow_http") else 30)
+                model_trial = outcome in ("model_stall", "poll_stall")
+                trial = SingleTrial("llm" if model_trial else "rules",
+                    wait_timeout_s=0.15 if model_trial else 0.01 if outcome in ("timeout", "slow_http") else 30)
 
                 def send(observation):
                     if outcome == "slow_http":
@@ -257,9 +262,34 @@ class ClientTests(unittest.IsolatedAsyncioTestCase):
                                            if outcome == "decision" else None),
                     })
 
+                pending = None
+
+                def send_trial(observation, capture, identity):
+                    nonlocal pending
+                    response = send(observation)
+                    if pending is None:
+                        pending = {**trial.model_identity(), "request_id": "request",
+                            "source_state_id": "session-a:1", "source_robot_timestamp_us": observation["timestamp"],
+                            "status": "pending", "decision": None}
+                    return ObservationResponse(200, {**response.payload,
+                        "model_trial": {"image_ready": False, "result": pending}})
+
+                def poll(identity):
+                    poll_started.set()
+                    if outcome == "poll_stall":
+                        release_http.wait(1)
+                        http_done.set()
+                    return ObservationResponse(200, {"accepted": True, "result": pending})
+
                 args = parse_args(["--decision-dry-run", "--single-trial", "--route-trial",
                                    "--route-distance", "0.5", "--minimum-send-interval", "0"])
+                args.single_trial_policy = trial.policy
                 with patch("robot.navel_client.main.SingleTrial", return_value=trial), \
+                        patch.object(ObservationTransport, "open_model_trial", return_value=ObservationResponse(200,
+                            {"accepted": True, "trial_id": trial.trial_id, "session_id": "session-a", "policy": trial.policy})), \
+                        patch.object(ObservationTransport, "send_trial_observation", side_effect=send_trial), \
+                        patch.object(ObservationTransport, "poll_model_trial", side_effect=poll), \
+                        patch.object(ObservationTransport, "close_model_trial", return_value=ObservationResponse(200, {"accepted": True})), \
                         patch.object(ObservationTransport, "send", side_effect=send), \
                         contextlib.redirect_stdout(io.StringIO()):
                     task = asyncio.create_task(collect_and_stream(Robot(), args))

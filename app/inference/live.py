@@ -1,8 +1,8 @@
-"""Bounded, output-only live model work; model decisions never enter the pipeline."""
+"""Bounded live model work with separate audit and single-trial delivery."""
 from __future__ import annotations
 
 from collections import deque
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from datetime import datetime, timezone
 import json
 import logging
@@ -12,6 +12,7 @@ from pathlib import Path
 from threading import Condition, Lock, Thread
 import time
 from typing import Any, Callable, Literal
+from uuid import uuid4
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
@@ -64,6 +65,7 @@ class _Job:
     source_json: str
     matching_json: str | None
     frame: LiveFrame | None
+    execution: dict[str, Any] | None = None
 
 
 def _utc_now() -> str:
@@ -99,6 +101,7 @@ class LiveModelRunner:
         self._active: _Job | None = None
         self._sample_session: str | None = None
         self._last_selected_us: int | None = None
+        self._trials: dict[str, dict[str, Any]] = {}
         self._clients: dict[str, Any] = {}
         self._write_error: str | None = None
         self._last_error: str | None = None
@@ -206,6 +209,116 @@ class LiveModelRunner:
         return {"status": audit_status, "selected": audit_status == "queue_dropped",
                 "source_state_id": job.state_id}
 
+    def _prune_trials(self) -> None:
+        # Called under the scheduling lock. Never wait for an active HTTP call.
+        now = time.monotonic()
+        for trial_id, trial in list(self._trials.items()):
+            if now >= trial["deadline"]:
+                del self._trials[trial_id]
+        self._pending = deque(job for job in self._pending if job.execution is None or (
+            job.execution["trial_id"] in self._trials
+            and self._trials[job.execution["trial_id"]]["result"] is not None
+            and self._trials[job.execution["trial_id"]]["result"]["request_id"] == job.execution["request_id"]
+            and self._trials[job.execution["trial_id"]]["result"]["status"] == "pending"))
+
+    def open_trial(self, trial_id: str, session_id: str, policy: str,
+                   wait_s: float, max_age_s: float) -> None:
+        if not self._enabled(policy) or policy not in ("llm", "vlm"):
+            raise ValueError(f"Receiver --model-inference does not enable {policy}")
+        with self._condition:
+            self._prune_trials()
+            if self._closing or self._closed or self._write_error:
+                raise ValueError("Model worker is unavailable; inspect /health")
+            if trial_id in self._trials:
+                raise ValueError("Trial ID is already registered")
+            if len(self._trials) >= 16:
+                raise ValueError("Receiver already has 16 live model trials")
+            self._trials[trial_id] = {"session_id": session_id, "policy": policy,
+                "deadline": time.monotonic() + wait_s, "max_age_s": max_age_s,
+                "result": None, "submitted_at": None}
+
+    def _trial(self, identity: dict[str, Any]) -> dict[str, Any]:
+        self._prune_trials()
+        trial = self._trials.get(identity["trial_id"])
+        if trial is None or any(trial[key] != identity[key] for key in ("session_id", "policy")):
+            raise ValueError("Unknown, expired or mismatched model trial")
+        result = trial["result"]
+        if result is not None and time.monotonic() - trial["submitted_at"] > trial["max_age_s"]:
+            result.update(status="failed", decision=None, error={"category": "request_expired"})
+        return trial
+
+    def validate_trial(self, identity: dict[str, Any]) -> None:
+        with self._condition:
+            self._trial(identity)
+
+    def trial_result(self, identity: dict[str, Any]) -> dict[str, Any] | None:
+        with self._condition:
+            result = self._trial(identity)["result"]
+            if result is None or result["request_id"] != identity.get("request_id"):
+                raise ValueError("Unknown model request")
+            return json.loads(json.dumps(result))
+
+    def close_trial(self, identity: dict[str, Any]) -> None:
+        with self._condition:
+            self._trial(identity)
+            del self._trials[identity["trial_id"]]
+            self._prune_trials()
+
+    def submit_trial(self, state: dict[str, Any], source: dict[str, Any],
+                     identity: dict[str, Any]) -> dict[str, Any]:
+        job = self._freeze(state, source)
+        people = [person for person in state["people"] if person["visibility"] == "OBSERVED"]
+        evidence = people[0]["evidence"] if len(people) == 1 else {}
+        image_ready = job.frame is not None
+        ready = len(people) == 1 and (image_ready if identity["policy"] == "vlm" else (
+            evidence.get("latest_distance_valid") is True and (
+                evidence.get("gaze_valid") is True or evidence.get("distance_trend_valid") is True)))
+        with self._condition:
+            trial = self._trial(identity)
+            current = trial["result"]
+            # The sender explicitly names the request it knows. A completed result
+            # cannot be replaced by a newer frame before the robot has polled it.
+            if current is not None and (current["status"] != "failed"
+                                       or identity.get("retry_request_id") != current["request_id"]):
+                return {"result": json.loads(json.dumps(current)), "image_ready": image_ready}
+            if not ready:
+                return {"result": None, "image_ready": image_ready}
+            envelope = {key: identity[key] for key in ("trial_id", "session_id", "policy")}
+            envelope.update(request_id=uuid4().hex, source_state_id=job.state_id,
+                            source_robot_timestamp_us=job.timestamp_us, status="pending",
+                            decision=None, error=None)
+            trial["result"], trial["submitted_at"] = envelope, time.monotonic()
+            self._prune_trials()
+            self._stats["submitted"] += 1
+            self._stats["selected"] += 1
+            if self._closing or self._closed or self._write_error or len(self._pending) >= self.config.queue_capacity:
+                envelope.update(status="failed", error={"category": "worker_unavailable"})
+            else:
+                self._pending.append(replace(job, execution=dict(envelope)))
+                self._stats["enqueued"] += 1
+                self._condition.notify_all()
+            return {"result": dict(envelope), "image_ready": image_ready}
+
+    def _publish_trial(self, job: _Job, row: dict[str, Any]) -> None:
+        if job.execution is None:
+            return
+        with self._condition:
+            self._prune_trials()
+            trial = self._trials.get(job.execution["trial_id"])
+            if trial is None:
+                return
+            result = trial["result"]
+            if result is None or result["request_id"] != job.execution["request_id"] or result["status"] != "pending":
+                return
+            inference = row[job.execution["policy"] + "_inference"]
+            result.update({key: value for key, value in inference.items() if key not in (
+                "status", "decision", "session_id", "source_state_id", "source_robot_timestamp_us")})
+            succeeded = inference["status"] == "succeeded"
+            result.update(status="succeeded" if succeeded else "failed",
+                          decision=inference["decision"] if succeeded else None)
+            if time.monotonic() - trial["submitted_at"] > trial["max_age_s"]:
+                result.update(status="failed", decision=None, error={"category": "request_expired"})
+
     def _policy_base(self, job: _Job, policy: str) -> dict[str, Any]:
         config = self.config.llm_config if policy == "llm" else self.config.vlm_config
         data = {"status": "not_run_disabled", "prompt_version": (
@@ -223,7 +336,8 @@ class LiveModelRunner:
         return data
 
     def _base_row(self, job: _Job) -> dict[str, Any]:
-        return {"schema_version": 1, "mode": self.config.mode, "source_state_id": job.state_id,
+        return {"schema_version": 1, "mode": self.config.mode,
+                **({"trial": job.execution} if job.execution is not None else {}), "source_state_id": job.state_id,
                 "session_id": job.session_id, "ingest_sequence": job.ingest_sequence,
                 "source_robot_timestamp_us": job.timestamp_us, "social_state": json.loads(job.state_json),
                 "social_state_json": job.state_json, "source": json.loads(job.source_json),
@@ -251,7 +365,7 @@ class LiveModelRunner:
 
     def _infer(self, job: _Job, policy: str) -> dict[str, Any]:
         inference = self._policy_base(job, policy)
-        if not self._enabled(policy):
+        if not self._enabled(policy) or (job.execution is not None and job.execution["policy"] != policy):
             inference["completed_at"] = _utc_now()
             return inference
         stage = "image_input" if policy == "vlm" else "ollama"
@@ -326,6 +440,9 @@ class LiveModelRunner:
                         self._condition.wait()
                     if not self._pending:
                         break
+                    self._prune_trials()
+                    if not self._pending:
+                        continue
                     job = self._pending.popleft()
                     self._active = job
                     audit_failed = self._write_error is not None
@@ -339,6 +456,7 @@ class LiveModelRunner:
                     row["llm_inference"] = self._infer(job, "llm")
                     row["vlm_inference"] = self._infer(job, "vlm")
                     row["completed_at"] = _utc_now()
+                self._publish_trial(job, row)
                 self._write_row(row)
                 with self._condition:
                     self._stats["completed"] += 1

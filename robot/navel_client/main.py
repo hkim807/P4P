@@ -82,6 +82,7 @@ async def _collect_perception(
     sdk_capture: SdkCapture | None = None,
     model_provenance: bool = False,
     perception_loss_timeout_s: float | None = None,
+    trial: SingleTrial | None = None,
 ) -> None:
     if model_provenance and sdk_capture is None:
         raise ValueError("model provenance requires SDK capture")
@@ -103,6 +104,8 @@ async def _collect_perception(
             if inspect.isawaitable(command):
                 await command
         observation = adapter.convert(perception, latest.fresh_value(max_locomotion_age_s))
+        if trial is not None:
+            trial.note_observation(observation)
         _replace_queued(queue, ModelObservation(observation, captured)
                         if model_provenance else observation)
 
@@ -137,13 +140,20 @@ async def _send_observations(
                 print(json.dumps(observation, allow_nan=False, separators=(",", ":")), flush=True)
                 continue
             try:
-                response = (await asyncio.to_thread(transport.send_model_observation,
-                                                     observation, queued.capture)
-                            if isinstance(queued, ModelObservation)
-                            else await asyncio.to_thread(transport.send, observation))
+                if trial is not None and trial.policy != "rules":
+                    if trial.phase != "OBSERVING":
+                        return
+                    response = await asyncio.to_thread(transport.send_trial_observation,
+                        observation, queued.capture if isinstance(queued, ModelObservation) else None,
+                        {**trial.model_identity(), "retry_request_id": trial.retry_request_id})
+                else:
+                    response = (await asyncio.to_thread(transport.send_model_observation,
+                                                         observation, queued.capture)
+                                if isinstance(queued, ModelObservation)
+                                else await asyncio.to_thread(transport.send, observation))
             except TransportError as error:
                 logger.warning("timestamp=%s transport_error=%s", observation["timestamp"], error)
-                if route_trial:
+                if trial is not None:
                     trial.fail("TRANSPORT_INVALIDATED")
                     return
                 if decision_dispatcher is not None:
@@ -167,6 +177,15 @@ async def _send_observations(
                     await decision_dispatcher.accept(response.payload, observation)
                 if trial is not None:
                     trial.accept_rule_response(response.payload, observation)
+                    if trial.policy != "rules":
+                        delivery = response.payload.get("model_trial")
+                        if not isinstance(delivery, dict):
+                            trial.fail("MODEL_DELIVERY_UNAVAILABLE")
+                            return
+                        trial.register_request(delivery.get("result"))
+                    elif "social_state" not in response.payload:
+                        trial.fail("SOCIAL_PIPELINE_UNAVAILABLE")
+                        return
                     if route_trial and (trial.phase == "DECIDED" or trial.terminal):
                         return
                 if command_executor is not None:
@@ -194,7 +213,7 @@ async def _send_observations(
             else:
                 logger.warning("timestamp=%s status=%s response=%s",
                                observation["timestamp"], response.status_code, response.payload)
-                if route_trial:
+                if trial is not None:
                     trial.fail("TRANSPORT_INVALIDATED")
                     return
                 if decision_dispatcher is not None:
@@ -203,6 +222,28 @@ async def _send_observations(
                     await physical_executor.invalidate("observation_not_accepted")
         finally:
             queue.task_done()
+
+
+async def _poll_model_trial(trial: SingleTrial, transport: ObservationTransport) -> None:
+    while trial.phase == "OBSERVING":
+        trial.tick()
+        pending = trial.pending_request
+        if pending is not None:
+            if not 0 <= trial.monotonic_us() - pending["source_robot_timestamp_us"] <= trial.model_max_age_us:
+                trial.expire_request()
+            else:
+                try:
+                    response = await asyncio.to_thread(transport.poll_model_trial, dict(pending))
+                except TransportError:
+                    trial.fail("TRANSPORT_INVALIDATED")
+                    return
+                if response.status_code != 200 or response.payload.get("accepted") is not True:
+                    trial.fail("MODEL_POLL_INVALIDATED")
+                    return
+                trial.accept_model_result(response.payload.get("result"))
+                if trial.phase != "OBSERVING":
+                    return
+        await asyncio.sleep(0.1)
 
 
 async def _send_execution_events(executor: PhysicalCommandExecutor,
@@ -251,7 +292,18 @@ async def collect_and_stream(robot: Any, args: argparse.Namespace,
                                      select_first_visible=route is not None)
                   if args.head_focus or route else None)
     trial = (SingleTrial(args.single_trial_policy, wait_timeout_s=args.decision_wait_timeout,
-                         max_age_s=args.max_decision_age) if args.single_trial else None)
+                         max_age_s=args.max_decision_age, model_max_age_s=args.model_result_max_age)
+             if args.single_trial else None)
+    model_trial = trial is not None and trial.policy != "rules"
+    if model_trial:
+        registered = await asyncio.to_thread(transport.open_model_trial, trial.trial_id, trial.policy,
+                                             args.decision_wait_timeout, args.model_result_max_age)
+        if (registered.status_code != 200 or registered.payload.get("accepted") is not True
+                or registered.payload.get("trial_id") != trial.trial_id
+                or registered.payload.get("policy") != trial.policy
+                or not isinstance(registered.payload.get("session_id"), str)):
+            raise ValueError(f"Model trial configuration rejected: {registered.payload}")
+        trial.session_id = registered.payload["session_id"]
     decision_dispatcher = (DecisionDispatcher(DryRunHandlers(robot),
                            max_age_s=args.max_decision_age,
                            timeout_s=args.decision_timeout)
@@ -272,6 +324,7 @@ async def collect_and_stream(robot: Any, args: argparse.Namespace,
             sdk_capture=sdk_capture,
             model_provenance=args.model_provenance,
             perception_loss_timeout_s=5.0 if route else None,
+            trial=trial,
         )),
     ]
     if camera_capture is not None:
@@ -302,7 +355,9 @@ async def collect_and_stream(robot: Any, args: argparse.Namespace,
     if decision_dispatcher is not None:
         tasks.append(asyncio.create_task(decision_dispatcher.watchdog()))
     if trial is not None:
-        tasks.append(asyncio.create_task(trial.watchdog(stop_on_decision=route is not None)))
+        tasks.append(asyncio.create_task(trial.watchdog(stop_on_decision=route is not None or model_trial)))
+    if model_trial:
+        tasks.append(asyncio.create_task(_poll_model_trial(trial, transport)))
     if physical_executor is not None:
         tasks.append(asyncio.create_task(physical_executor.watchdog()))
         tasks.append(asyncio.create_task(_send_execution_events(physical_executor, transport)))
@@ -328,7 +383,7 @@ async def collect_and_stream(robot: Any, args: argparse.Namespace,
             trial.fail("CLIENT_ERROR")
         raise
     finally:
-        if trial is not None and not trial.terminal and not (route and trial.phase == "DECIDED"):
+        if trial is not None and not trial.terminal and trial.phase != "DECIDED":
             trial.fail("CLIENT_STOPPED")
         for task in collectors:
             task.cancel()
@@ -344,13 +399,21 @@ async def collect_and_stream(robot: Any, args: argparse.Namespace,
                 trial.fail("ROUTE_STOP_FAILED")
                 logger.exception("route_trial stop_failed physical_stop_verified=false")
             head_focus.suspend()
+        if model_trial:
+            for task in tasks:
+                if task not in collectors:
+                    task.cancel()
+            try:
+                await asyncio.wait_for(asyncio.to_thread(transport.close_model_trial, trial.model_identity()), 0.2)
+            except (asyncio.TimeoutError, TransportError):
+                logger.info("model_trial close_unacknowledged; receiver expiry remains active")
         await asyncio.gather(*collectors, return_exceptions=True)
-        if sdk_capture is not None and sdk_sender is not None and not sdk_sender.done():
+        if not model_trial and sdk_capture is not None and sdk_sender is not None and not sdk_sender.done():
             try:
                 await asyncio.wait_for(sdk_capture.queue.join(), timeout=args.request_timeout)
             except asyncio.TimeoutError:
                 logger.warning("sdk_capture_pending_on_shutdown=%s", sdk_capture.queue.qsize())
-        if camera_capture is not None and camera_sender is not None and not camera_sender.done():
+        if not model_trial and camera_capture is not None and camera_sender is not None and not camera_sender.done():
             try:
                 await asyncio.wait_for(camera_capture.queue.join(), timeout=args.request_timeout)
             except asyncio.TimeoutError:
@@ -473,6 +536,8 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--single-trial", action="store_true",
                         help="Latch one final decision in decision dry-run mode; no action execution")
     parser.add_argument("--single-trial-policy", choices=("rules", "llm", "vlm"), default="rules")
+    parser.add_argument("--model-result-max-age", type=float, default=10.0,
+                        help="Maximum model source age in robot monotonic seconds (provisional default: 10)")
     parser.add_argument("--decision-wait-timeout", type=float, default=30.0,
                         help="Single-trial decision deadline in local monotonic seconds (default: 30)")
     parser.add_argument("--route-trial", action="store_true",
@@ -512,6 +577,8 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         parser.error(str(error))
     if args.single_trial and (not args.decision_dry_run or args.sdk_capture_only):
         parser.error("--single-trial requires --decision-dry-run and excludes --sdk-capture-only")
+    if args.single_trial and args.single_trial_policy == "vlm" and not args.model_provenance:
+        parser.error("VLM single-trial requires --model-provenance --sdk-capture --camera-capture")
     if args.model_provenance:
         if args.sdk_capture_only:
             parser.error("--model-provenance excludes --sdk-capture-only")
@@ -551,6 +618,8 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         value = getattr(args, name)
         if not math.isfinite(value) or value < 0 or (name != "minimum_send_interval" and value == 0):
             parser.error("timeouts/maximum ages must be positive and finite; send interval may be zero")
+    if not math.isfinite(args.model_result_max_age) or not 0 < args.model_result_max_age <= 3600:
+        parser.error("--model-result-max-age must be positive, finite and at most 3600")
     if not math.isfinite(args.decision_wait_timeout) or args.decision_wait_timeout <= 0:
         parser.error("--decision-wait-timeout must be positive and finite")
     if not math.isfinite(args.head_focus_magnitude) or not 0 <= args.head_focus_magnitude <= 1:
@@ -575,6 +644,9 @@ def main() -> int:
         logger.info("Navel sensor client stopped")
         if args.single_trial:
             return 130
+    except (ValueError, TransportError) as error:
+        logger.error("Trial/client configuration failed: %s", error)
+        return 1
     except ModuleNotFoundError as error:
         if error.name != "navel":
             raise

@@ -49,6 +49,22 @@ class ObservationTransport:
             "model_source": {"version": 1, "clock": "robot-host-monotonic-us", "capture": capture},
         })
 
+    def open_model_trial(self, trial_id, policy, wait_s, max_age_s):
+        return self._post("/api/v1/model-trials", {
+            "trial_id": trial_id, "policy": policy, "wait_s": wait_s, "max_age_s": max_age_s})
+
+    def send_trial_observation(self, observation, capture, trial):
+        model_source = ({"version": 1, "clock": "robot-host-monotonic-us", "capture": capture}
+                        if capture is not None else None)
+        return self._post("/api/v1/observations", {
+            "observation": observation, "model_source": model_source, "trial": trial})
+
+    def poll_model_trial(self, identity):
+        return self._post("/api/v1/model-trials/result", identity)
+
+    def close_model_trial(self, identity):
+        return self._post("/api/v1/model-trials/close", identity)
+
     def send_event(self, event: dict[str, Any]) -> ObservationResponse:
         return self._post("/api/v1/execution-events", event)
 
