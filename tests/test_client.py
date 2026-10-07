@@ -181,7 +181,7 @@ class ClientTests(unittest.IsolatedAsyncioTestCase):
 
     async def test_route_lifecycle_stops_one_sender_before_zero(self):
         # SDK-shaped tasks, including an asynchronously settling cancellation.
-        for outcome in ("decision", "finished", "timeout", "slow_http", "transport", "rejected", "collector", "head", "interrupt", "model_stall", "poll_stall"):
+        for outcome in ("decision", "decision_no_head", "finished", "timeout", "slow_http", "transport", "rejected", "collector", "head", "interrupt", "model_stall", "poll_stall"):
             with self.subTest(outcome=outcome):
                 events = []
                 readers = set()
@@ -223,6 +223,7 @@ class ClientTests(unittest.IsolatedAsyncioTestCase):
                         release_http.set()
 
                     async def look_at_person(self, uid, head):
+                        assert outcome != "decision_no_head", "baseline tracking was disabled"
                         events.append(("head", uid, head))
                         tracking.set()
                         if outcome == "head":
@@ -265,9 +266,9 @@ class ClientTests(unittest.IsolatedAsyncioTestCase):
                             "decision_id": f"{state_id}:social-rules-v2", "source_state_id": state_id,
                             "session_id": "session-a", "policy_version": "social-rules-v2",
                             "decision": "CONTINUE",
-                            "reason_code": "TEST", "target_uid": None, "target_track_epoch": None} if outcome == "decision" else None,
+                            "reason_code": "TEST", "target_uid": None, "target_track_epoch": None} if outcome in ("decision", "decision_no_head") else None,
                         "final_decision": ({"action": "CONTINUE", "reason": "Keep going."}
-                                           if outcome == "decision" else None),
+                                           if outcome in ("decision", "decision_no_head") else None),
                     })
 
                 pending = None
@@ -290,7 +291,8 @@ class ClientTests(unittest.IsolatedAsyncioTestCase):
                     return ObservationResponse(200, {"accepted": True, "result": pending})
 
                 args = parse_args(["--decision-dry-run", "--single-trial", "--route-trial",
-                                   "--route-distance", "0.5", "--minimum-send-interval", "0"])
+                                   "--route-distance", "0.5", "--minimum-send-interval", "0"]
+                                  + (["--no-head-focus"] if outcome == "decision_no_head" else []))
                 args.single_trial_policy = trial.policy
                 with patch("robot.navel_client.main.SingleTrial", return_value=trial), \
                         patch.object(BehaviourDispatcher, "dispatch", side_effect=AssertionError("dry-run dispatched behaviour")), \
@@ -317,14 +319,16 @@ class ClientTests(unittest.IsolatedAsyncioTestCase):
                                  [("move", 0.5, 0.1, 0.2)])
                 self.assertEqual(events[-2:], ["settled", ("zero", 0.0, 0.0)])
                 self.assertEqual(len(readers), 1)
-                if outcome == "decision":
+                if outcome in ("decision", "decision_no_head"):
                     self.assertEqual(trial.phase, "DECIDED")
                     self.assertEqual(dict(trial.decision), {"action": "CONTINUE", "reason": "Keep going."})
                 else:
                     self.assertEqual(trial.phase, "FAILED")
                     if outcome == "finished":
                         self.assertEqual(trial.failure_reason, "ROUTE_FINISHED_WITHOUT_DECISION")
-                if outcome not in ("collector", "interrupt"):
+                if outcome == "decision_no_head":
+                    self.assertFalse(any(isinstance(e, tuple) and e[0] == "head" for e in events))
+                elif outcome not in ("collector", "interrupt"):
                     self.assertIn(("head", 17, 1.0), events)
 
     async def test_behaviour_dispatch_calls_selected_handler_once_and_freezes_lifecycle(self):
@@ -410,6 +414,7 @@ class ClientTests(unittest.IsolatedAsyncioTestCase):
 
     async def test_behaviour_handoff_and_failure_cleanup_on_shared_client(self):
         for outcome, action in (("success", "CONTINUE"), ("success", "ENGAGE"),
+                                ("success_no_head", "ENGAGE"),
                                 ("error", "APPROACH"), ("timeout", "YIELD"),
                                 ("cancel", "ENGAGE"), ("collector", "CONTINUE"),
                                 ("timeout", "ENGAGE"), ("cancel", "CONTINUE"),
@@ -446,6 +451,7 @@ class ClientTests(unittest.IsolatedAsyncioTestCase):
                         events.append(("zero", trial.phase))
 
                     async def look_at_person(self, uid, head):
+                        assert outcome != "success_no_head", "baseline tracking was disabled"
                         events.append("baseline_head")
 
                     def say(self, text):
@@ -505,7 +511,10 @@ class ClientTests(unittest.IsolatedAsyncioTestCase):
                     else:
                         self.assertTrue(context.route.stopped)
                         self.assertTrue(context.route.task.done())
-                        self.assertTrue(context.head.suspended)
+                        if outcome == "success_no_head":
+                            self.assertIsNone(context.head)
+                        else:
+                            self.assertTrue(context.head.suspended)
                         self.assertLess(events.index("baseline_settled"), events.index("handler_start"))
 
                         if action == "ENGAGE":
@@ -537,7 +546,8 @@ class ClientTests(unittest.IsolatedAsyncioTestCase):
                     return ObservationResponse(200, payload)
 
                 args = parse_args(["--single-trial", "--single-trial-execute", "--route-trial",
-                                   "--behaviour-timeout", "0.04", "--minimum-send-interval", "0"])
+                                   "--behaviour-timeout", "0.04", "--minimum-send-interval", "0"]
+                                  + (["--no-head-focus"] if outcome == "success_no_head" else []))
                 async def unavailable(context):
                     raise BehaviourNotImplemented("test handler unavailable")
 
@@ -548,7 +558,7 @@ class ClientTests(unittest.IsolatedAsyncioTestCase):
                     task = asyncio.create_task(collect_and_stream(robot, args))
                     if outcome != "unsupported":
                         await asyncio.wait_for(handler_started.wait(), 1)
-                    if outcome == "success":
+                    if outcome in ("success", "success_no_head"):
                         await asyncio.sleep(0.015)
                         self.assertEqual(trial.phase, "EXECUTING")
                         self.assertNotIn("handler_finish", events)
@@ -569,7 +579,7 @@ class ClientTests(unittest.IsolatedAsyncioTestCase):
                                  [("say", "Hello! Do you need any guidance in the lab?")] if action == "ENGAGE" else [])
                 self.assertEqual(len(readers), 1)
                 self.assertEqual(events[-1][0], "zero")
-                self.assertEqual(trial.phase, "COMPLETED" if outcome == "success" else "FAILED")
+                self.assertEqual(trial.phase, "COMPLETED" if outcome in ("success", "success_no_head") else "FAILED")
                 if outcome == "timeout":
                     self.assertEqual(trial.failure_reason, "BEHAVIOUR_TIMEOUT")
                 if outcome == "error":

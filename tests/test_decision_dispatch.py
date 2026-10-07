@@ -191,6 +191,17 @@ class DecisionDispatchTests(unittest.IsolatedAsyncioTestCase):
         trial = SingleTrial(monotonic=lambda: self.now_s, monotonic_us=lambda: observation["timestamp"])
         payload = response_for(observation, 1, "CONTINUE", False)
         payload["final_decision"] = {"action": "CONTINUE", "reason": "No attention."}
+        payload["policy_readiness"] = {"status": "OBSERVING", "reason_code": "INSUFFICIENT_GAZE_EVIDENCE"}
+        evidence = payload["social_state"]["people"][0]["evidence"]
+        evidence.update(gaze_valid=False, gaze_valid_coverage_s=.267)
+        with self.assertLogs("robot.navel_client.single_trial", level="INFO") as logs:
+            self.assertFalse(trial.accept_rule_response(payload, observation))
+            self.assertFalse(trial.accept_rule_response(payload, observation))
+        self.assertEqual(len(logs.output), 1)
+        self.assertIn("reason=INSUFFICIENT_GAZE_EVIDENCE", logs.output[0])
+        self.assertIn("gaze_valid_coverage_s=0.267", logs.output[0])
+        evidence["gaze_valid"] = True
+        payload["policy_readiness"] = {"status": "READY", "reason_code": None}
         payload["social_state"]["people"] = []
         self.assertFalse(trial.accept_rule_response(payload, {**observation, "people": []}))
         self.assertFalse(trial.ready)
@@ -198,7 +209,9 @@ class DecisionDispatchTests(unittest.IsolatedAsyncioTestCase):
             "latest_distance_valid": True, "gaze_valid": True, "distance_trend_valid": False}}]
         payload["policy_decision"]["decision"] = "DEFER"
         payload["final_decision"] = None
-        self.assertFalse(trial.accept_rule_response(payload, observation))
+        with self.assertLogs("robot.navel_client.single_trial", level="WARNING") as logs:
+            self.assertFalse(trial.accept_rule_response(payload, observation))
+        self.assertIn("decision_rejected=decision_or_reason_invalid", logs.output[0])
         self.assertEqual(trial.phase, "OBSERVING")
         source = {**payload["policy_decision"], "source_robot_timestamp_us": observation["timestamp"]}
         final = {"action": "CONTINUE", "reason": "No attention."}

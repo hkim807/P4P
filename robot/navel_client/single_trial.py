@@ -27,6 +27,7 @@ class SingleTrial:
         self.retry_request_id = None
         self._local_observation = None
         self._latest_trend_valid = False
+        self._readiness_key = None
         self.policy = policy
         self.phase = "OBSERVING"
         self.failure_reason = None
@@ -137,6 +138,16 @@ class SingleTrial:
         if not isinstance(people, list) or not isinstance(local_people, list):
             return
         observed = [p for p in people if isinstance(p, Mapping) and p.get("visibility") == "OBSERVED"]
+        readiness = payload.get("policy_readiness")
+        if self.policy == "rules" and isinstance(readiness, Mapping):
+            key = (readiness.get("status"), readiness.get("reason_code"))
+            if key != self._readiness_key:
+                self._readiness_key = key
+                person = observed[0] if len(observed) == 1 else {}
+                evidence = person.get("evidence", {})
+                coverage = evidence.get("gaze_valid_coverage_s") if isinstance(evidence, Mapping) else None
+                logger.info("single_trial policy_readiness=%s reason=%s gaze_state=%s gaze_valid_coverage_s=%s",
+                            *key, person.get("gaze_state"), coverage)
         if len(observed) != 1 or len(local_people) != 1:
             return
         evidence = observed[0].get("evidence", {})
@@ -208,7 +219,8 @@ class SingleTrial:
             # Acceptance of a pure proposal does not authorise a robot command.
             parsed = parse_decision({**payload, "target_lock": None}, observation,
                                     self.monotonic_us(), self.max_age_us)
-        except DecisionRejected:
+        except DecisionRejected as error:
+            logger.warning("single_trial decision_rejected=%s", error)
             return False
         final = payload.get("final_decision")
         if parsed is None or not isinstance(final, Mapping) or final.get("action") != parsed.decision:

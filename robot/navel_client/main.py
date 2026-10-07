@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import argparse
 import asyncio
-import inspect
 import json
 import logging
 import math
@@ -102,23 +101,17 @@ async def _collect_perception(
                 raise RuntimeError("No perception frames for 5 seconds")
             continue
         last_frame_at = time.monotonic()
+        captured = sdk_capture.record("perception", perception) if sdk_capture is not None else None
+        # Timestamp and publish at receipt, independently of SDK head completion.
+        observation = adapter.convert(perception, latest.fresh_value(max_locomotion_age_s))
         if approach is not None:
             approach.ingest_perception(perception)
-        captured = sdk_capture.record("perception", perception) if sdk_capture is not None else None
-        if head_focus is not None and (physical_executor is None or physical_executor.active is None):
-            command = head_focus.observe(perception)
-            if inspect.isawaitable(command):
-                try:
-                    await command
-                except asyncio.CancelledError:
-                    # Handoff cancels the head command, not the shared reader.
-                    if asyncio.current_task().cancelling() or not head_focus.suspended:
-                        raise
-        observation = adapter.convert(perception, latest.fresh_value(max_locomotion_age_s))
         if trial is not None:
             trial.note_observation(observation)
         _replace_queued(queue, ModelObservation(observation, captured)
                         if model_provenance else observation)
+        if head_focus is not None and (physical_executor is None or physical_executor.active is None):
+            head_focus.observe(perception)
 
 
 async def _send_observations(
@@ -343,7 +336,7 @@ async def collect_and_stream(robot: Any, args: argparse.Namespace,
                                      command_interval_s=0.6 if route else None,
                                      raise_on_error=route is not None,
                                      select_first_visible=route is not None)
-                  if args.head_focus or route else None)
+                  if not args.no_head_focus and (args.head_focus or route) else None)
     trial = (SingleTrial(args.single_trial_policy, wait_timeout_s=args.decision_wait_timeout,
                          max_age_s=args.max_decision_age, model_max_age_s=args.model_result_max_age)
              if args.single_trial else None)
@@ -410,6 +403,8 @@ async def collect_and_stream(robot: Any, args: argparse.Namespace,
         ))
     decision_tasks = [sender]
     tasks = collectors + [sender]
+    if head_focus is not None and head_focus.raise_on_error:
+        tasks.append(asyncio.create_task(head_focus.watch_failures()))
     sdk_sender = asyncio.create_task(sdk_capture.send()) if sdk_capture is not None else None
     if sdk_sender is not None:
         tasks.append(sdk_sender)
@@ -462,16 +457,29 @@ async def collect_and_stream(robot: Any, args: argparse.Namespace,
         if not keep_stop_sensors:
             for task in collectors:
                 task.cancel()
-        if behaviour_dispatcher is not None or route is not None:
+        if behaviour_dispatcher is not None or route is not None or head_focus is not None:
             # Stop locally before waiting for head, capture queues or HTTP.
-            cleanup = asyncio.create_task(behaviour_dispatcher.close() if behaviour_dispatcher else route.stop())
+            async def stop_local():
+                if head_focus is not None:
+                    head_focus.suspend()
+                try:
+                    if behaviour_dispatcher is not None:
+                        await behaviour_dispatcher.close()
+                    elif route is not None:
+                        await route.stop()
+                finally:
+                    if head_focus is not None:
+                        await head_focus.suspend_and_settle()
+
+            cleanup = asyncio.create_task(stop_local())
             try:
                 try:
                     await asyncio.shield(cleanup)
                 except asyncio.CancelledError:
                     await cleanup
             except Exception:
-                trial.fail("LOCAL_CLEANUP_FAILED" if behaviour_dispatcher else "ROUTE_STOP_FAILED")
+                if trial is not None:
+                    trial.fail("LOCAL_CLEANUP_FAILED" if behaviour_dispatcher else "ROUTE_STOP_FAILED")
                 logger.exception("single_trial stop_failed physical_stop_verified=false")
             if head_focus is not None:
                 head_focus.suspend()
@@ -642,8 +650,11 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
                         help="Cancel a running action after this many seconds without a valid response")
     parser.add_argument("--hook-timeout", type=float, default=2.0)
     parser.add_argument("--stop-timeout", type=float, default=2.0)
-    parser.add_argument("--head-focus", action="store_true",
-                        help="Move the robot head to follow the first unambiguous visible person")
+    head_options = parser.add_mutually_exclusive_group()
+    head_options.add_argument("--head-focus", action="store_true",
+                             help="Move the robot head to follow the first unambiguous visible person")
+    head_options.add_argument("--no-head-focus", action="store_true",
+                             help="Disable baseline look_at_person tracking, including during route trials")
     parser.add_argument("--head-focus-magnitude", type=float, default=0.5,
                         help="Head motion magnitude for look_at_person, 0..1 (default: 0.5)")
     parser.add_argument("--head-focus-grace", type=float, default=0.75,

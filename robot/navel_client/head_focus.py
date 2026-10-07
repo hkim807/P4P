@@ -45,6 +45,9 @@ class HeadFocusController:
         self.last_command_at = -float("inf")
         self.suspended = False
         self._command_task = None
+        self._command_uid = None
+        self._command_error = None
+        self._command_failed = asyncio.Event()
         self.uid: int | None = None
         self.last_seen_at: float | None = None
         self.next_retry_at = 0.0
@@ -72,7 +75,11 @@ class HeadFocusController:
             self.server_lock_received_at = None
 
     def observe(self, perception: Any) -> Any:
-        """Process a frame before it enters the rate-limited HTTP queue."""
+        """Process a received frame without waiting for SDK head completion."""
+        if self._command_task is not None and self._command_task.done():
+            self._command_finished(self._command_task)
+        if self._command_error is not None:
+            raise self._command_error
         if self.suspended:
             return
         now = self.clock()
@@ -94,7 +101,7 @@ class HeadFocusController:
             self.uid = None
             self.last_seen_at = None
 
-        if (now < self.next_retry_at or (self.command_interval_s is not None
+        if (self._command_task is not None or now < self.next_retry_at or (self.command_interval_s is not None
                 and now - self.last_command_at < self.command_interval_s)):
             return
         if self.uid in visible:
@@ -125,8 +132,34 @@ class HeadFocusController:
         logger.info("head_focus=acquired uid=%s magnitude=%s", uid, self.magnitude)
         if inspect.isawaitable(command):
             self._command_task = asyncio.ensure_future(command)
+            self._command_uid = uid
+            self._command_task.add_done_callback(self._command_finished)
             return self._command_task
         return command
+
+    def _command_finished(self, task) -> None:
+        if task is not self._command_task:
+            return  # Already observed synchronously before the callback ran.
+        uid = self._command_uid
+        self._command_task = self._command_uid = None
+        if task.cancelled():
+            error = None if self.suspended else RuntimeError("head command cancelled unexpectedly")
+        else:
+            error = task.exception()
+        if error is None:
+            return
+        if self.raise_on_error:
+            self._command_error = error
+            self._command_failed.set()
+        else:
+            self.uid = self.last_seen_at = None
+            self.next_retry_at = self.clock() + self.retry_s
+            logger.warning("head_focus=command_failed uid=%s error=%s", uid, error)
+
+    async def watch_failures(self) -> None:
+        """Wake route supervision even if the next perception read is blocked."""
+        await self._command_failed.wait()
+        raise self._command_error
 
     def suspend(self) -> None:
         """Yield baseline head ownership to a future behaviour controller."""
@@ -144,9 +177,14 @@ class HeadFocusController:
             if not done:
                 raise RuntimeError("baseline head command did not settle")
             await asyncio.gather(task, return_exceptions=True)
+            self._command_finished(task)
+        if self._command_error is not None:
+            raise self._command_error
 
     def tick(self) -> None:
         """Expire local selection if perception stops delivering frames."""
+        if self._command_error is not None:
+            raise self._command_error
         self._expire_server_lock(self.clock())
         if self.uid is not None and self.last_seen_at is not None:
             if self.clock() - self.last_seen_at >= self.grace_s:
