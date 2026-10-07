@@ -8,7 +8,8 @@ import tempfile
 import unittest
 
 from app.decide import main as decide_main
-from app.policy.rules import decide
+from app.domain.model_decision import FinalDecision
+from app.policy.rules import decide, normalise_rule_decision
 from app.server import create_app
 from app.social_pipeline import SocialPipeline
 from app.policy.rules import PolicyDecision
@@ -25,6 +26,27 @@ def ready_state(distance=2.0):
 
 
 class PolicyRulesTests(unittest.TestCase):
+    def test_rule_normalisation_and_defer(self):
+        for action, reason_code in (
+            ("CONTINUE", "NO_VISIBLE_PERSON"),
+            ("APPROACH", "SUSTAINED_GAZE_IN_APPROACHABLE_RANGE"),
+            ("ENGAGE", "SUSTAINED_GAZE_IN_INTERACTION_RANGE"),
+            ("YIELD", "ROUTE_CONFLICT"),
+            ("DEFER", "HUMAN_MOTION_UNKNOWN"),
+        ):
+            with self.subTest(action=action):
+                proposal = PolicyDecision(decision_id="test", source_state_id="test:1",
+                    session_id="test", decision=action, reason_code=reason_code)
+                final = normalise_rule_decision(proposal)
+                if action == "DEFER":
+                    self.assertIsNone(final)
+                    self.assertEqual(proposal.reason_code, "HUMAN_MOTION_UNKNOWN")
+                else:
+                    self.assertIsInstance(final, FinalDecision)
+                    self.assertEqual(final.action, action)
+                    self.assertNotEqual(final.reason, reason_code)
+                    self.assertEqual(set(final.model_dump()), {"action", "reason"})
+
     def test_sustained_gaze_and_known_motion_select_one_target(self):
         for distance, expected in ((1.0, "ENGAGE"), (2.0, "APPROACH")):
             with self.subTest(distance=distance):
@@ -89,16 +111,25 @@ class PolicyRulesTests(unittest.TestCase):
             raw, social = root/"raw.jsonl", root/"social.jsonl"
             client = create_app(raw, social_output=social, session_id="policy-test").test_client()
             responses = []
+            finals = []
             for i in range(21):
                 response = client.post("/api/v1/observations", json=sample(i))
                 self.assertEqual(response.status_code, 200)
                 responses.append(response.json["policy_decision"])
+                finals.append(response.json["final_decision"])
                 self.assertNotIn("command", response.json)
             output = root/"decisions.jsonl"
             with contextlib.redirect_stderr(io.StringIO()):
                 self.assertEqual(decide_main([str(social), "--output", str(output)]), 0)
             replayed = [json.loads(line) for line in output.read_text().splitlines()]
-            self.assertEqual(responses, replayed)
+            self.assertEqual(responses, [{k: v for k, v in row.items() if k != "final_decision"}
+                                         for row in replayed])
+            self.assertEqual(finals, [row["final_decision"] for row in replayed])
+            self.assertIsNone(finals[0])
+            self.assertEqual(replayed[0]["decision"], "DEFER")
+            self.assertEqual(replayed[0]["reason_code"], "GAZE_INSUFFICIENT_OR_INTERMITTENT")
+            self.assertEqual(FinalDecision.model_validate(finals[-1]).action, "APPROACH")
+            self.assertEqual(responses[-1]["target_uid"], 17)
             self.assertEqual(replayed[-1]["decision"], "APPROACH")
             with contextlib.redirect_stderr(io.StringIO()):
                 self.assertEqual(decide_main([str(social), "--output", str(output)]), 1)

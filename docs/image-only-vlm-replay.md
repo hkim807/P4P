@@ -25,7 +25,8 @@ LLM result. It performs no sampling, estimation, rematching or robot execution.
 - `tests/test_vlm_inputs.py`, `tests/test_vlm_policy.py`,
   `tests/test_vlm_replay.py`: offline pixel, prompt, transport and runner tests.
 
-The generic Ollama client, ModelDecision and SocialState LLM prompt are unchanged.
+The Ollama client validates the same shared `FinalDecision` contract as the LLM.
+See [action meanings and output shape](social-policy.md).
 
 ## Integrity and encoding
 
@@ -52,27 +53,8 @@ and passed as the single `OllamaMessage.images` item.
 
 ## Actual prompt
 
-Version: `image-only-vlm-v1`. The system message is exactly:
-
-```text
-A robot is assigned to travel along a fixed route inside a laboratory. It must choose its next behaviour around people.
-
-Choose the most appropriate next action using only the attached image:
-- CONTINUE: Continue along the existing fixed route without initiating an interaction or diverting towards the person.
-- STOP: Stop the robot's base movement and remain in place for now.
-- APPROACH: Leave the existing route to move towards the person and stop at a suitable distance for conversation.
-- ENGAGE: The person is already at a suitable interaction distance. Remain in place and initiate an interaction, such as a greeting.
-
-One image cannot establish movement over time or sustained gaze. Do not invent measured distances, durations or velocities. Give a brief explanation grounded in visible evidence.
-
-Select exactly one of the four actions. Return exactly one JSON object with only the required fields action and reason. action must be exactly STOP, CONTINUE, APPROACH or ENGAGE; reason must be a string containing non-whitespace text. Do not return prose, code fences or additional fields.
-```
-
-The user message is exactly:
-
-```text
-Choose one action based only on the attached image.
-```
+Version: `image-only-vlm-v2`. The static system and user instructions are
+`SYSTEM_PROMPT` and `USER_PROMPT` in [`app/policy/vlm.py`](../app/policy/vlm.py).
 
 Only that user message has an `images` list, containing one raw PNG base64
 string. Neither function accepts a replay row or SocialState. Paths, scenario
@@ -157,7 +139,7 @@ A JSONL subtree excerpt from **fake-response tests**, not real model inference:
   "vlm_inference": {
     "schema_version": 1,
     "status": "succeeded",
-    "prompt_version": "image-only-vlm-v1",
+    "prompt_version": "image-only-vlm-v2",
     "ok": true,
     "requested_model": "vision-model",
     "returned_model": "actual-vision-model",

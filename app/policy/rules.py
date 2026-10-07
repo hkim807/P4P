@@ -5,6 +5,7 @@ from typing import Literal
 
 from pydantic import Field
 
+from app.domain.model_decision import FinalDecision
 from app.state.social_models import SocialState, StrictModel
 
 
@@ -21,6 +22,36 @@ class PolicyDecision(StrictModel):
     reason_code: str
     target_uid: int | None = Field(default=None, ge=0)
     target_track_epoch: int | None = Field(default=None, ge=1)
+
+
+_FINAL_REASONS = {
+    "NO_VISIBLE_PERSON": "No person is currently visible; continue along the fixed route.",
+    "NO_ATTENTION": "The person is not looking at the robot; continue along the fixed route.",
+    "PERSON_MOVING_AWAY": "The person is moving away; continue along the fixed route.",
+    "SUSTAINED_GAZE_IN_INTERACTION_RANGE": (
+        "The person is looking steadily at the robot and is within conversation distance."
+    ),
+    "SUSTAINED_GAZE_IN_APPROACHABLE_RANGE": (
+        "The person is looking steadily at the robot and is within approach distance."
+    ),
+}
+_ACTION_REASONS = {
+    "CONTINUE": "Continue along the existing fixed route without initiating an interaction.",
+    "APPROACH": "Move towards the observed person and stop at conversation distance.",
+    "ENGAGE": "Stop or remain stationary and initiate an interaction with the nearby person.",
+    "YIELD": "Give the person room to pass, then remain stopped after moving aside and backwards.",
+}
+
+
+def normalise_rule_decision(proposal: PolicyDecision | dict) -> FinalDecision | None:
+    """Normalise a pure rule proposal; DEFER has no final decision."""
+    proposal = PolicyDecision.model_validate(proposal)
+    if proposal.decision == "DEFER":
+        return None
+    return FinalDecision(
+        action=proposal.decision,
+        reason=_FINAL_REASONS.get(proposal.reason_code, _ACTION_REASONS[proposal.decision]),
+    )
 
 
 def decide(state: SocialState | dict, *, stale: bool = False,

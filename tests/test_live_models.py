@@ -164,7 +164,7 @@ class LiveModelRunnerTests(unittest.TestCase):
                          {"temperature": 0.1, "seed": 42, "num_predict": 128})
         self.assertEqual(row["vlm_inference"]["status"], "not_run_disabled")
         self.assertNotEqual(row["completed_at"], metadata["receiver_received_unix_us"])
-        for forbidden in ("policy_decision", "target_lock", "robot_command"):
+        for forbidden in ("policy_decision", "final_decision", "target_lock", "robot_command"):
             self.assertNotIn(forbidden, row)
 
     def test_both_freeze_state_source_and_selected_image_before_slow_llm(self):
@@ -337,9 +337,11 @@ class LiveModelRunnerTests(unittest.TestCase):
         value.robot_timestamp_us = "invalid"
         self.assertEqual(runner.submit(value, metadata)["status"], "input_invalid")
         value = state()
-        metadata = source(value)
-        metadata["robot_command"] = {"action": "STOP"}
-        self.assertEqual(runner.submit(value, metadata)["status"], "input_invalid")
+        for field in ("final_decision", "robot_command"):
+            with self.subTest(field=field):
+                metadata = source(value)
+                metadata[field] = {"action": "YIELD", "reason": "Rule output."}
+                self.assertEqual(runner.submit(value, metadata)["status"], "input_invalid")
         self.assertEqual(text.calls, [])
 
     def test_exclusive_output_and_duplicate_start_and_fork_guards(self):

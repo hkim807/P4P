@@ -135,7 +135,7 @@ class LiveModelRunner:
         prompt = build_llm_prompt(snapshot)
         if not isinstance(source, dict):
             raise ValueError("model source metadata must be an object")
-        if any(key in source for key in ("policy_decision", "target_lock", "robot_command")):
+        if any(key in source for key in ("policy_decision", "final_decision", "target_lock", "robot_command")):
             raise ValueError("rule, target lock and command data must not enter model work")
         if (type(source.get("observation_timestamp_us")) is not int
                 or source["observation_timestamp_us"] != snapshot.robot_timestamp_us):

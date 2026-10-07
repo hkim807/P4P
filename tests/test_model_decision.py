@@ -21,7 +21,7 @@ class ModelDecisionTests(unittest.TestCase):
             parse_model_decision(content)
 
     def test_all_four_actions_are_accepted(self):
-        for action in ("STOP", "CONTINUE", "APPROACH", "ENGAGE"):
+        for action in ("YIELD", "CONTINUE", "APPROACH", "ENGAGE"):
             with self.subTest(action=action):
                 decision = parse_model_decision(json.dumps({
                     "action": action,
@@ -37,28 +37,28 @@ class ModelDecisionTests(unittest.TestCase):
         for reason in ("x", "  Brief explanation.\n", "설명입니다.", "\t!\r"):
             with self.subTest(reason=reason):
                 decision = parse_model_decision(json.dumps({
-                    "action": "STOP", "reason": reason,
+                    "action": "YIELD", "reason": reason,
                 }))
                 self.assertEqual(decision.reason, reason)
         decision = parse_model_decision(
-            ' \n { "reason": "A reason.", "action": "STOP" } \t '
+            ' \n { "reason": "A reason.", "action": "YIELD" } \t '
         )
-        self.assertEqual(decision.action, "STOP")
+        self.assertEqual(decision.action, "YIELD")
 
     def test_missing_and_extra_fields_are_rejected(self):
         for value in (
             {},
-            {"action": "STOP"},
+            {"action": "YIELD"},
             {"reason": "A reason."},
-            {"action": "STOP", "reason": "A reason.", "target_uid": 17},
-            {"action": "STOP", "reason": "A reason.", "confidence": None},
-            {"Action": "STOP", "reason": "A reason."},
+            {"action": "YIELD", "reason": "A reason.", "target_uid": 17},
+            {"action": "YIELD", "reason": "A reason.", "confidence": None},
+            {"Action": "YIELD", "reason": "A reason."},
         ):
             with self.subTest(value=value):
                 self.assert_invalid(json.dumps(value))
 
     def test_invalid_actions_are_rejected_without_normalization(self):
-        for action in ("YIELD", "DEFER", "stop", "Stop", " STOP", "STOP ", "", "WAIT"):
+        for action in ("STOP", "DEFER", "stop", "Stop", "yield", "Yield", " YIELD", "YIELD ", "", "WAIT"):
             with self.subTest(action=action):
                 self.assert_invalid(json.dumps({"action": action, "reason": "A reason."}))
 
@@ -66,7 +66,7 @@ class ModelDecisionTests(unittest.TestCase):
         for field in ("action", "reason"):
             for value in (0, 1.5, True, False, None, [], {}):
                 with self.subTest(field=field, value=value):
-                    payload = {"action": "STOP", "reason": "A reason."}
+                    payload = {"action": "YIELD", "reason": "A reason."}
                     payload[field] = value
                     self.assert_invalid(json.dumps(payload))
                     with self.assertRaises(ValidationError):
@@ -75,7 +75,7 @@ class ModelDecisionTests(unittest.TestCase):
     def test_empty_and_whitespace_only_reasons_are_rejected(self):
         for reason in ("", " ", "\t\r\n", " \t\n ", "\u2003", "\u00a0"):
             with self.subTest(reason=reason):
-                self.assert_invalid(json.dumps({"action": "STOP", "reason": reason}))
+                self.assert_invalid(json.dumps({"action": "YIELD", "reason": reason}))
 
     def test_all_python_whitespace_has_matching_schema_and_runtime_validation(self):
         whitespace_characters = tuple(
@@ -86,39 +86,39 @@ class ModelDecisionTests(unittest.TestCase):
         for whitespace in whitespace_characters:
             with self.subTest(codepoint=ord(whitespace)):
                 self.assertIsNone(re.search(pattern, whitespace))
-                self.assert_invalid(json.dumps({"action": "STOP", "reason": whitespace}))
+                self.assert_invalid(json.dumps({"action": "YIELD", "reason": whitespace}))
                 with self.assertRaises(ValidationError):
-                    ModelDecision(action="STOP", reason=whitespace)
+                    ModelDecision(action="YIELD", reason=whitespace)
 
                 reason = whitespace + "Brief explanation." + whitespace
                 self.assertIsNotNone(re.search(pattern, reason))
                 self.assertEqual(parse_model_decision(json.dumps({
-                    "action": "STOP", "reason": reason,
+                    "action": "YIELD", "reason": reason,
                 })).reason, reason)
-                self.assertEqual(ModelDecision(action="STOP", reason=reason).reason, reason)
+                self.assertEqual(ModelDecision(action="YIELD", reason=reason).reason, reason)
 
     def test_malformed_and_nonstandard_json_is_rejected(self):
         for content in (
             "",
             " ",
-            '{"action": "STOP", "reason": "A reason."',
-            '{"action": "STOP", "reason": "A reason.",}',
-            "{'action': 'STOP', 'reason': 'A reason.'}",
-            '{"action": "STOP", "reason": "A reason."} {}',
-            '{"action": "STOP", "reason": NaN}',
-            '{"action": "STOP", "reason": Infinity}',
-            '{"action": "STOP", "reason": -Infinity}',
+            '{"action": "YIELD", "reason": "A reason."',
+            '{"action": "YIELD", "reason": "A reason.",}',
+            "{'action': 'YIELD', 'reason': 'A reason.'}",
+            '{"action": "YIELD", "reason": "A reason."} {}',
+            '{"action": "YIELD", "reason": NaN}',
+            '{"action": "YIELD", "reason": Infinity}',
+            '{"action": "YIELD", "reason": -Infinity}',
         ):
             with self.subTest(content=content):
                 self.assert_invalid(content)
 
     def test_duplicate_keys_are_rejected_including_identical_values(self):
         for content in (
-            '{"action": "STOP", "action": "ENGAGE", "reason": "A reason."}',
-            '{"action": "STOP", "action": "STOP", "reason": "A reason."}',
-            '{"action": "STOP", "reason": "First", "reason": "Second"}',
-            '{"action": "STOP", "reason": "Same", "reason": "Same"}',
-            '{"action": "STOP", "\\u0061ction": "STOP", "reason": "A reason."}',
+            '{"action": "YIELD", "action": "ENGAGE", "reason": "A reason."}',
+            '{"action": "YIELD", "action": "YIELD", "reason": "A reason."}',
+            '{"action": "YIELD", "reason": "First", "reason": "Second"}',
+            '{"action": "YIELD", "reason": "Same", "reason": "Same"}',
+            '{"action": "YIELD", "\\u0061ction": "YIELD", "reason": "A reason."}',
         ):
             with self.subTest(content=content):
                 self.assert_invalid(content)
@@ -126,13 +126,13 @@ class ModelDecisionTests(unittest.TestCase):
     def test_non_object_json_is_rejected(self):
         for value in (
             None, True, False, 12, 1.5, "A reason.", [],
-            [{"action": "STOP", "reason": "A reason."}],
+            [{"action": "YIELD", "reason": "A reason."}],
         ):
             with self.subTest(value=value):
                 self.assert_invalid(json.dumps(value))
 
     def test_prose_and_code_fences_are_not_repaired(self):
-        valid = '{"action": "STOP", "reason": "A reason."}'
+        valid = '{"action": "YIELD", "reason": "A reason."}'
         for content in (
             "Here is the decision: " + valid,
             valid + "\nThis is my decision.",
@@ -144,7 +144,7 @@ class ModelDecisionTests(unittest.TestCase):
 
     def test_contract_is_frozen_and_validation_error_is_a_value_error(self):
         self.assertTrue(issubclass(ModelDecisionValidationError, ValueError))
-        decision = ModelDecision(action="STOP", reason="A reason.")
+        decision = ModelDecision(action="YIELD", reason="A reason.")
         with self.assertRaises(ValidationError):
             decision.action = "CONTINUE"
         with self.assertRaises(ValidationError):
@@ -166,7 +166,7 @@ class ModelDecisionTests(unittest.TestCase):
         action_schema = schema["properties"]["action"]
         self.assertEqual(action_schema["type"], "string")
         self.assertEqual(set(action_schema["enum"]), {
-            "STOP", "CONTINUE", "APPROACH", "ENGAGE",
+            "YIELD", "CONTINUE", "APPROACH", "ENGAGE",
         })
         reason_schema = schema["properties"]["reason"]
         self.assertEqual(reason_schema["type"], "string")
@@ -185,7 +185,7 @@ class ModelDecisionTests(unittest.TestCase):
                     and re.search(reason_schema["pattern"], reason) is not None
                 )
                 self.assertEqual(schema_valid, expected_valid)
-                content = json.dumps({"action": "STOP", "reason": reason})
+                content = json.dumps({"action": "YIELD", "reason": reason})
                 if schema_valid:
                     self.assertEqual(parse_model_decision(content).reason, reason)
                 else:
@@ -193,11 +193,11 @@ class ModelDecisionTests(unittest.TestCase):
 
     def test_schema_calls_return_independent_mutable_dictionaries(self):
         schema = model_decision_schema()
-        schema["properties"]["action"]["enum"].append("YIELD")
+        schema["properties"]["action"]["enum"].append("STOP")
         schema["required"].clear()
         schema["properties"]["reason"]["pattern"] = ".*"
         fresh = model_decision_schema()
-        self.assertNotIn("YIELD", fresh["properties"]["action"]["enum"])
+        self.assertNotIn("STOP", fresh["properties"]["action"]["enum"])
         self.assertEqual(set(fresh["required"]), {"action", "reason"})
         self.assertEqual(fresh, ModelDecision.model_json_schema(mode="validation"))
 

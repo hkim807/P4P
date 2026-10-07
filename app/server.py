@@ -178,11 +178,12 @@ def create_app(output_path: str | Path | None = None, *,
             logger.exception("Raw observation saved, but tracking failed")
             return jsonify(accepted=True, timestamp=frame.timestamp, people_count=len(frame.people),
                            processing_status="failed", processing_stage=error.stage,
-                           policy_decision=None), 200
+                           policy_decision=None, final_decision=None), 200
         if snapshot is not None:
             social = snapshot.get("social_state")
             if social is not None:
                 extra = {"social_state": social, "policy_decision": snapshot["policy_decision"],
+                         "final_decision": snapshot["final_decision"],
                          "target_lock": snapshot["target_lock"],
                          "robot_command": snapshot["robot_command"]}
                 if models is not None:

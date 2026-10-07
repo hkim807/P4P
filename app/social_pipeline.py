@@ -3,7 +3,7 @@ from threading import Lock
 
 from app.commands import CommandConfig, CommandPlanner, ExecutionEvent
 from app.pipeline import TrackingPipeline, TrackTraceWriter, TrackingProcessingError
-from app.policy.rules import decide
+from app.policy.rules import decide, normalise_rule_decision
 from app.policy.target_lock import LockConfig, TargetLockController
 from app.state.estimator import SocialStateEstimator
 from app.state.social_models import TemporalConfig
@@ -44,6 +44,7 @@ class SocialPipeline:
                     raise TrackingProcessingError("social_trace_write") from error
             try:
                 proposal = decide(state).model_dump(mode="json")
+                final_decision = normalise_rule_decision(proposal)
             except Exception as error:
                 raise TrackingProcessingError("policy_decision") from error
             try:
@@ -65,6 +66,7 @@ class SocialPipeline:
                 except Exception as error:
                     raise TrackingProcessingError("command_trace_write") from error
             return {**snapshot, "social_state": state, "policy_decision": proposal,
+                    "final_decision": final_decision.model_dump(mode="json") if final_decision else None,
                     "target_lock": target_lock, "robot_command": command}
 
     def record_execution_event(self, payload):

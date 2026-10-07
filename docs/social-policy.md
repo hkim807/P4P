@@ -11,6 +11,24 @@ The result includes `decision_id`, `source_state_id`, `session_id`,
 Only `APPROACH` and `ENGAGE` identify a target. The output contract is
 [`schemas/v1/policy-decision.schema.json`](../schemas/v1/policy-decision.schema.json).
 
+Final outputs share the strict `FinalDecision` model in
+`app.domain.model_decision`: `{"action":"CONTINUE","reason":"No person is visible."}`.
+The four actions are:
+
+- `CONTINUE`: complete the remaining fixed route without approaching or initiating interaction.
+- `APPROACH`: leave the route, move towards the person and stop at conversation distance.
+- `ENGAGE`: stop or remain stationary and initiate interaction with the nearby person.
+- `YIELD`: temporarily move aside and backwards to give room to pass, then remain stopped
+  there without automatically returning to the route. Manoeuvre parameters remain for later work.
+
+`normalise_rule_decision` supplies an English reason. Live responses add
+`final_decision` beside the unchanged `policy_decision`; `app.decide` replay rows
+add it beside the existing rule fields. `DEFER` produces `final_decision: null`,
+with its reason code and provenance retained in those fields. LLM/VLM envelopes
+keep their existing `decision` field with the same action/reason shape. `STOP`
+and `DEFER` are rejected as final actions; errors never become fallback actions.
+Target-lock and command consumers continue to use their existing metadata.
+
 Rules run in this order:
 
 1. A failed processing status or stale state gives `DEFER`. Callers supply those

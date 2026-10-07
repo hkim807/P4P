@@ -7,7 +7,7 @@ from pathlib import Path
 import sys
 
 from app.pipeline import trace_line
-from app.policy.rules import decide
+from app.policy.rules import decide, normalise_rule_decision
 from app.state.social_models import SocialState
 
 
@@ -33,7 +33,11 @@ def main(argv=None):
         with (open(args.output, "x", encoding="utf-8") if args.output else nullcontext(sys.stdout)) as output:
             for state in read_states(args.social_trace):
                 decision = decide(state)
-                output.write(trace_line(decision.model_dump(mode="json")))
+                final_decision = normalise_rule_decision(decision)
+                output.write(trace_line({
+                    **decision.model_dump(mode="json"),
+                    "final_decision": final_decision.model_dump(mode="json") if final_decision else None,
+                }))
                 counts[decision.decision] += 1
         print(json.dumps({"decisions": dict(counts)}), file=sys.stderr)
         return 0

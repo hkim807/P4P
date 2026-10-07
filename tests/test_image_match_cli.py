@@ -122,9 +122,9 @@ class ImageMatchingRunnerTests(unittest.TestCase):
     def test_existing_success_and_failure_inference_results_are_preserved(self):
         rows = deepcopy(self.original_rows)
         rows[0].update(status="succeeded", ok=True,
-                       decision={"action": "STOP", "reason": "Recorded decision."},
+                       decision={"action": "YIELD", "reason": "Recorded decision."},
                        error=None, returned_model="recorded-model", request_duration_s=0.5,
-                       raw_content='{"action":"STOP","reason":"Recorded decision."}')
+                       raw_content='{"action":"YIELD","reason":"Recorded decision."}')
         rows[1].update(status="failed", ok=False, decision=None,
                        error={"category": "invalid_decision", "message": "Wrong action.",
                               "http_status": 200}, returned_model="recorded-model",

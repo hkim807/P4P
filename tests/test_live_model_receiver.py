@@ -95,7 +95,7 @@ class LiveReceiverTests(unittest.TestCase):
         self.assertTrue(runner.wait_idle(3))
         baseline = create_app(self.root / "baseline.jsonl", social_output=self.root / "baseline-social.jsonl",
                               session_id="receiver").test_client().post("/api/v1/observations", json=frame())
-        for key in ("social_state", "policy_decision", "target_lock", "robot_command"):
+        for key in ("social_state", "policy_decision", "final_decision", "target_lock", "robot_command"):
             self.assertEqual(response.json[key], baseline.json[key])
         self.assertEqual(len(self.messages), 2)
         llm = self.messages[0][1]

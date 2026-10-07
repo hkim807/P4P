@@ -15,7 +15,7 @@ from app.ollama import (
 )
 
 
-def chat_payload(content='{"action":"STOP","reason":"Pause briefly."}', **overrides):
+def chat_payload(content='{"action":"YIELD","reason":"Give the person room to pass."}', **overrides):
     payload = {
         "model": "returned-model:latest",
         "done": True,
@@ -96,7 +96,7 @@ class OllamaClientTests(unittest.TestCase):
         self.assertEqual(payload["messages"], [{"role": "user", "content": "입력"}])
 
     def test_all_four_decisions_preserve_content_identity_and_duration(self):
-        for action in ("STOP", "CONTINUE", "APPROACH", "ENGAGE"):
+        for action in ("YIELD", "CONTINUE", "APPROACH", "ENGAGE"):
             with self.subTest(action=action):
                 content = json.dumps({"action": action, "reason": "Brief explanation."}, indent=2)
                 client, transport = self.make_client(json_response(chat_payload(content)))
@@ -172,7 +172,7 @@ class OllamaClientTests(unittest.TestCase):
                 self.assertEqual(len(transport.calls), 1)
 
     def test_missing_or_invalid_ollama_envelope_fields(self):
-        content = '{"action":"STOP","reason":"Keep the exact raw text."}'
+        content = '{"action":"YIELD","reason":"Keep the exact raw text."}'
         invalid = []
         for field in ("model", "done", "message"):
             payload = chat_payload(content)
@@ -202,12 +202,12 @@ class OllamaClientTests(unittest.TestCase):
 
     def test_invalid_decision_preserves_raw_content_without_retry_or_fallback(self):
         contents = [
-            "", "not JSON", '```json\n{"action":"STOP","reason":"Pause."}\n```',
-            '{"action":"YIELD","reason":"Unavailable action."}',
+            "", "not JSON", '```json\n{"action":"YIELD","reason":"Pause."}\n```',
             '{"action":"DEFER","reason":"Unavailable action."}',
-            '{"action":"STOP","reason":" "}',
-            '{"action":"STOP","action":"CONTINUE","reason":"Duplicate."}',
-            '{"action":"STOP","reason":true}',
+            '{"action":"STOP","reason":"Obsolete model action."}',
+            '{"action":"YIELD","reason":" "}',
+            '{"action":"YIELD","action":"CONTINUE","reason":"Duplicate."}',
+            '{"action":"YIELD","reason":true}',
         ]
         for content in contents:
             with self.subTest(content=content):
