@@ -95,10 +95,22 @@ tracking active; it never starts another movement. ENGAGE cancels/settles/zeros
 the route and settles baseline head commands, then says exactly once:
 "Hello! Do you need any guidance in the lab?" It owns and awaits `robot.say()`'s
 asyncio task. The [SDK documentation](https://doc.navelrobotics.com/getting_started.html#creating-your-own-scripts)
-defines awaiting this task as waiting for speech to finish. APPROACH/YIELD remain
-possible policy outputs; acceptance fails with `BEHAVIOUR_NOT_IMPLEMENTED` and
-stops locally, without a substitute action. Preflight requires `--route-trial`
-and the SDK movement, stopping and speech methods before motion starts.
+defines awaiting this task as waiting for speech to finish. APPROACH uses the
+ported demo's `HEAD_STRAIGHT` g_nose geometry and timestamp-matched odometry
+from the existing shared readers. It targets 0.7 m horizontal base-centre-to-nose
+distance, with ±0.10 m distance and ±4° heading tolerances. Arc speed is
+`min(0.25, radians(70) * length / max(abs(theta), 1e-9))`, acceleration 1.0 m/s²;
+heading speed is `min(70, sqrt(abs(angle_degrees) * 60))`, acceleration 60°/s².
+The reference acquisition, filtering, geometric UID association, arc monitoring,
+one distance correction and up to two final heading corrections are retained.
+After measured stopping, only fresh `APPROACHED_VERIFIED` arrival permits the
+owned/awaited utterance "Approach complete!". `APPROACHED_UNVERIFIED` and
+`OUTSIDE_TOLERANCE` fail without speaking; measurements are retained in
+`SingleTrial.approach_result` and local approach logs, separately from policy.
+There is no ENGAGE greeting or route resumption after APPROACH. YIELD remains
+unsupported: acceptance fails with `BEHAVIOUR_NOT_IMPLEMENTED` and stops locally.
+Preflight requires `--route-trial`
+and the SDK movement, arc, rotation, stopping and speech methods before motion starts.
 Dry-run remains at DECIDED and never calls this dispatcher.
 
 Handlers are asynchronous functions receiving the frozen decision/source,
@@ -127,7 +139,7 @@ For execution, start the computer receiver with new recording paths:
 ```
 
 On Navel, using its SDK-enabled Python and the computer's LAN IP, explicitly
-enable the route (this performs real movement and ENGAGE speech):
+enable the route (this performs real movement and selected behaviour speech):
 
 ```bash
 python3 -m robot.navel_client.main --server http://COMPUTER_LAN_IP:6060 \

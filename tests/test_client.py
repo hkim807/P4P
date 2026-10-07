@@ -4,6 +4,7 @@ import asyncio
 import contextlib
 import io
 import json
+import math
 import subprocess
 import sys
 import threading
@@ -11,7 +12,7 @@ import time
 import unittest
 from pathlib import Path
 from types import SimpleNamespace as NS
-from unittest.mock import patch
+from unittest.mock import AsyncMock, patch
 
 from robot.navel_client.main import (
     LatestLocomotion, _collect_perception, _replace_queued, _send_observations,
@@ -20,7 +21,11 @@ from robot.navel_client.main import (
 from robot.navel_client.adapter import NavelObservationAdapter
 from robot.navel_client.transport import ObservationResponse, ObservationTransport, TransportError
 from robot.navel_client.single_trial import SingleTrial
-from robot.navel_client.behaviour_dispatch import BehaviourDispatcher, HANDLERS
+from robot.navel_client.behaviour_dispatch import BehaviourContext, BehaviourDispatcher, HANDLERS
+from robot.navel_client.approach import (
+    ApproachConfig, ApproachRuntime, approach_human, arc_plan,
+    associate, body_point, nose_position, read_pose, sample_target, world_point,
+)
 from robot.navel_client.straight_route import StraightRoute
 from tests.test_decision_dispatch import response_for
 from tests.fixtures import frame, locomotion, perception, person
@@ -378,8 +383,8 @@ class ClientTests(unittest.IsolatedAsyncioTestCase):
         for scene in ("missing_handler", "absent", "ambiguous", "stale"):
             with self.subTest(scene=scene):
                 trial = SingleTrial(monotonic_us=lambda: observation["timestamp"])
-                action = "APPROACH" if scene == "missing_handler" else "ENGAGE"
-                payload = response_for(observation, 1, action)
+                action = "YIELD" if scene == "missing_handler" else "ENGAGE"
+                payload = response_for(observation, 1, action, action in ('APPROACH', 'ENGAGE'))
                 payload["final_decision"] = {"action": action, "reason": "Test decision."}
                 self.assertTrue(trial.accept_rule_response(payload, observation))
                 if scene != "missing_handler":
@@ -405,7 +410,7 @@ class ClientTests(unittest.IsolatedAsyncioTestCase):
                                 ("error", "APPROACH"), ("timeout", "YIELD"),
                                 ("cancel", "ENGAGE"), ("collector", "CONTINUE"),
                                 ("timeout", "ENGAGE"), ("cancel", "CONTINUE"),
-                                ("unsupported", "APPROACH"), ("unsupported", "YIELD")):
+                                ("unsupported", "YIELD"),):
             with self.subTest(outcome=outcome, action=action):
                 events, readers = [], set()
                 baseline_started, handler_started = asyncio.Event(), asyncio.Event()
@@ -454,6 +459,12 @@ class ClientTests(unittest.IsolatedAsyncioTestCase):
                                 active_behaviour = False
                                 events.append("behaviour_settled")
                         return asyncio.create_task(speech())
+
+                    def move_and_rotate_base(self, *args, **kwargs):
+                        raise AssertionError("unexpected approach motion")
+
+                    def rotate_base(self, *args, **kwargs):
+                        raise AssertionError("unexpected heading correction")
 
                     async def next_frame(self, timeout):
                         nonlocal reads
@@ -572,7 +583,9 @@ class ClientTests(unittest.IsolatedAsyncioTestCase):
                         raise OSError("movement failed")
 
                 robot = NS(move_base=move, base_vel=lambda x, r: zeros.append(trial.phase),
-                           say=lambda text: self.fail("CONTINUE must not speak"))
+                           say=lambda text: self.fail("CONTINUE must not speak"),
+                           move_and_rotate_base=lambda *a, **kw: self.fail("CONTINUE must not approach"),
+                           rotate_base=lambda *a, **kw: self.fail("CONTINUE must not rotate"))
                 route = StraightRoute(robot, 0.5, 0.1, 0.2)
                 route.start()
                 # Complete the original route and accept the decision before the
@@ -604,6 +617,248 @@ class ClientTests(unittest.IsolatedAsyncioTestCase):
                     if outcome == "undecided":
                         self.assertEqual(trial.failure_reason, "ROUTE_FINISHED_WITHOUT_DECISION")
                 self.assertEqual(len(zeros), 1)
+
+    async def test_approach_geometry_and_timestamped_uid_association(self):
+        for x, y in ((2., 0.), (1.8, .5), (1.8, -.5), (1., .6), (.1, .8)):
+            plan = arc_plan(x, y)
+            theta = math.radians(plan['angle'])
+            gx = plan['distance'] if abs(theta) < 1e-9 else plan['distance']/theta*math.sin(theta)
+            gy = 0. if abs(theta) < 1e-9 else plan['distance']/theta*(1-math.cos(theta))
+            self.assertAlmostEqual(math.hypot(x-gx, y-gy), .7)
+            self.assertAlmostEqual(math.atan2(y-gy, x-gx), theta)
+            self.assertEqual(plan['speed'], min(.25, math.radians(70)*plan['distance']/max(abs(theta), 1e-9)))
+            self.assertEqual(plan['acceleration'], 1.)
+        self.assertIsNone(arc_plan(.75, 0.))
+        with self.assertRaises(ValueError):
+            arc_plan(5., 0.)
+        packet = NS(odometry=NS(position=NS(x=2., y=3.),
+                    orientation=NS(x=math.sin(.4), y=math.cos(.4), z=0., w=0.),
+                    velocity=NS(linear_x=0., linear_y=.3, angular_z=0.), time=1_000_000))
+        pose = read_pose(packet)
+        self.assertAlmostEqual(pose['yaw'], .8)
+        self.assertEqual(pose['w'], .3)
+        p = person(17, g_nose=[NS(sys=3, x=1., y=.2, z=.1)])
+        self.assertIsNone(nose_position(person(), ApproachConfig()))
+        calibrated = nose_position(p, ApproachConfig(head_x=.1, head_y=-.2, frame_yaw_deg=10.))
+        self.assertAlmostEqual(calibrated['x'], .1+math.cos(math.radians(10))-.2*math.sin(math.radians(10)))
+        self.assertAlmostEqual(calibrated['y'], -.2+math.sin(math.radians(10))+.2*math.cos(math.radians(10)))
+        self.assertIsNone(nose_position(p, ApproachConfig(frame_yaw_deg=90.)))
+        target = world_point(nose_position(p, ApproachConfig()), pose)
+        x, y = body_point(target, pose)
+        self.assertAlmostEqual(x, 1.)
+        self.assertAlmostEqual(y, .2)
+        rt = ApproachRuntime(BehaviourContext(object(), None, None, lambda: None))
+        rt.ingest_locomotion(packet)
+        rt.ingest_locomotion(packet)
+        self.assertEqual(len(rt.history), 1)
+        self.assertIsNone(rt.frame_pose(1_180_001))
+        rt.target = dict(target, seen_at=time.monotonic(), frame_seq=0)
+        p.uid = 18
+        rt.ingest_perception(NS(time=1_000_001, persons=[p]))
+        self.assertEqual(rt.target['uid'], 18)
+        rt.ingest_perception(NS(time=1_000_001, persons=[p]))
+        self.assertEqual(rt.frame_seq, 1)
+        previous = rt.target.copy()
+        rt.ingest_perception(NS(time=1_000_002, persons=[p, person(19, g_nose=p.g_nose)]))
+        self.assertEqual(rt.target, previous)
+        self.assertIsNone(associate([target, {**target, 'uid': 20}], target))
+        rt.target['seen_at'] -= 2.1
+        p.uid = 21
+        rt.ingest_perception(NS(time=1_000_003, persons=[p]))
+        self.assertEqual(rt.target['uid'], 18)
+        packet.odometry.orientation = NS(x=1., y=1., z=1., w=1.)
+        with self.assertRaises(ValueError):
+            read_pose(packet)
+        rt.ingest_locomotion(packet)
+        rt.ingest_perception(NS(time=1_000_004, persons=[p]))
+        errors = rt.errors.copy()
+        for stamp in range(1_000_005, 1_000_015):
+            rt.ingest_perception(NS(time=stamp, persons=[p]))
+        self.assertEqual(rt.errors, errors)  # Failed stream does not grow recursive diagnostics.
+        sampled = NS(target=None, check=lambda: None)
+
+        async def feed_samples():
+            for seq, offset in enumerate((0., .5, .01, .02, .03, .04, .05), 1):
+                sampled.target = dict(wx=1.+offset, wy=0., frame_seq=seq, seen_at=time.monotonic())
+                await asyncio.sleep(.025)
+
+        feeder = asyncio.create_task(feed_samples())
+        try:
+            median = await sample_target(sampled, timeout=.4)
+            self.assertIsNotNone(median)
+            self.assertAlmostEqual(median['wx'], 1.03)
+            self.assertEqual(median['frame_seq'], 7)  # Outlier prevented earlier acceptance.
+        finally:
+            await feeder
+
+    async def test_approach_bounded_corrections_and_unsuccessful_results(self):
+        target = dict(wx=1.5, wy=.3, uid=18, seen_at=time.monotonic(), frame_seq=1)
+        for fresh, status in ((True, 'OUTSIDE_TOLERANCE'), (False, 'APPROACHED_UNVERIFIED')):
+            with self.subTest(status=status):
+                rt = NS(target=target, cfg=ApproachConfig(),
+                        pose=lambda: dict(x=0., y=0., yaw=0.), log=NS(emit=lambda *a, **kw: None))
+                with patch('robot.navel_client.approach.sample_target', new=AsyncMock(return_value=target if fresh else None)), \
+                        patch('robot.navel_client.approach.run_arc', new=AsyncMock()) as arcs, \
+                        patch('robot.navel_client.approach.turn_to_target', new=AsyncMock()) as turns:
+                    result = await approach_human(rt)
+                self.assertEqual(result.status, status)
+                self.assertEqual(arcs.await_count, 2 if fresh else 1)
+                self.assertEqual(turns.await_count, 2 if fresh else 1)
+                observation = frame()
+                trial = SingleTrial(monotonic_us=lambda: observation['timestamp'])
+                payload = response_for(observation, 1, 'APPROACH')
+                payload['final_decision'] = {'action': 'APPROACH', 'reason': 'Approach.'}
+                trial.accept_rule_response(payload, observation)
+                robot = NS(base_vel=lambda *a: None, say=lambda text: self.fail('Unverified arrival spoke'))
+                dispatcher = BehaviourDispatcher(trial, robot)
+                with patch.object(dispatcher.context.approach, 'wait_ready', new=AsyncMock()), \
+                        patch.object(dispatcher.context.approach, 'settle', new=AsyncMock()), \
+                        patch('robot.navel_client.behaviour_dispatch.approach_human', new=AsyncMock(return_value=result)):
+                    self.assertFalse(await dispatcher.dispatch())
+                self.assertEqual((trial.phase, trial.failure_reason), ('FAILED', status))
+                self.assertEqual(trial.approach_result, vars(result))
+                self.assertEqual(trial.decision['action'], 'APPROACH')
+
+    async def test_production_approach_on_shared_readers_and_cancellation(self):
+        # Accelerated SDK-shaped motion; geometry follows the reference demo.
+        for outcome in ('verified', 'cancel_during_braking', 'stale', 'speech_failure'):
+            with self.subTest(outcome=outcome):
+                calls, readers = [], {'perception': set(), 'odometry': set()}
+                arc_started, braking = asyncio.Event(), asyncio.Event()
+
+                class Robot:
+                    x = y = yaw = v = w = 0.
+                    active = seq = arcs = 0
+                    odometry_on = True
+
+                    async def next_locomotion(self, timeout):
+                        readers['odometry'].add(asyncio.current_task())
+                        await asyncio.sleep(.015)
+                        if not self.odometry_on:
+                            raise TimeoutError
+                        return NS(odometry=NS(position=NS(x=self.x, y=self.y),
+                            orientation=NS(x=math.sin(self.yaw/2), y=math.cos(self.yaw/2), z=0., w=0.),
+                            velocity=NS(linear_x=self.v, linear_y=self.w, angular_z=0.),
+                            time=int(time.monotonic()*1e6)))
+
+                    async def next_frame(self, timeout):
+                        readers['perception'].add(asyncio.current_task())
+                        await asyncio.sleep(.04)
+                        self.seq += 1
+                        dx, dy = 1.4-self.x, .3-self.y
+                        c, s = math.cos(self.yaw), math.sin(self.yaw)
+                        p = person(100+self.seq % 3, g_nose=[NS(sys=3, x=c*dx+s*dy, y=-s*dx+c*dy, z=.1)])
+                        return NS(time=int(time.monotonic()*1e6), persons=[p])
+
+                    async def look_at_person(self, uid, head):
+                        calls.append(('head', uid))
+
+                    def send_motion(self, name, distance, angle, speed, acceleration):
+                        calls.append((name, distance, angle, speed, acceleration))
+
+                        async def sender():
+                            self.active += 1
+                            assert self.active == 1, 'overlapping SDK senders'
+                            try:
+                                if name == 'baseline':
+                                    await asyncio.Event().wait()
+                                else:
+                                    if name == 'arc':
+                                        self.arcs += 1
+                                        arc_started.set()
+                                    duration = abs(distance)/speed if distance else abs(angle)/speed
+                                    elapsed = 0.
+                                    while elapsed < duration:
+                                        dt = min(.02, duration-elapsed)
+                                        da = math.radians(angle)*dt/duration*.8
+                                        ds = distance*dt/duration
+                                        self.x += ds*math.cos(self.yaw+da/2)
+                                        self.y += ds*math.sin(self.yaw+da/2)
+                                        self.yaw += da
+                                        self.v, self.w = ds/dt, da/dt
+                                        elapsed += dt
+                                        await asyncio.sleep(.005)
+                            finally:
+                                if name == 'arc':
+                                    braking.set()
+                                await asyncio.sleep(.08)
+                                self.active -= 1
+                                self.v = self.w = 0.
+                                calls.append((name+'_settled',))
+                        return asyncio.create_task(sender())
+
+                    def move_base(self, distance, *, speed, acceleration):
+                        return self.send_motion('baseline', distance, 0., speed, acceleration)
+
+                    def move_and_rotate_base(self, distance, angle, *, speed, acceleration):
+                        return self.send_motion('arc', distance, angle, speed, acceleration)
+
+                    def rotate_base(self, angle, *, speed, acceleration):
+                        return self.send_motion('turn', 0., angle, speed, acceleration)
+
+                    def base_vel(self, x, r):
+                        assert self.active == 0, 'zero before sender settled'
+                        calls.append(('zero',))
+
+                    def say(self, text):
+                        assert self.active == 0
+                        calls.append(('say', text))
+
+                        async def speech():
+                            before = self.seq
+                            await asyncio.sleep(.09)
+                            assert self.seq > before, 'sensor collection stopped during speech'
+                            if outcome == 'speech_failure':
+                                raise OSError('speech failed')
+                            calls.append(('speech_finished',))
+                        return asyncio.create_task(speech())
+
+                robot = Robot()
+
+                def send(observation):
+                    payload = response_for(observation, 1, 'APPROACH')
+                    uid = observation['people'][0]['uid']
+                    payload['social_state']['people'][0]['uid'] = uid
+                    payload['policy_decision']['target_uid'] = uid
+                    payload['final_decision'] = {'action': 'APPROACH', 'reason': 'Approach.'}
+                    return ObservationResponse(200, payload)
+
+                args = parse_args(['--single-trial', '--single-trial-execute', '--route-trial',
+                                   '--minimum-send-interval', '0'])
+                with patch.object(ObservationTransport, 'send', side_effect=send), \
+                        contextlib.redirect_stdout(io.StringIO()):
+                    task = asyncio.create_task(collect_and_stream(robot, args))
+                    await asyncio.wait_for(arc_started.wait(), 3)
+                    if outcome == 'cancel_during_braking':
+                        await asyncio.wait_for(braking.wait(), 3)
+                        task.cancel()
+                        with self.assertRaises(asyncio.CancelledError):
+                            await asyncio.wait_for(task, 3)
+                    else:
+                        if outcome == 'stale':
+                            robot.odometry_on = False
+                        trial = await asyncio.wait_for(task, 8)
+                        self.assertEqual(trial.phase, 'COMPLETED' if outcome == 'verified' else 'FAILED')
+                        if outcome != 'stale':
+                            self.assertEqual(trial.approach_result['status'], 'APPROACHED_VERIFIED')
+                            self.assertLessEqual(abs(trial.approach_result['distance_m']-.7), .1)
+                            self.assertLessEqual(abs(trial.approach_result['heading_error_deg']), 4.)
+                self.assertEqual(robot.active, 0)
+                self.assertEqual([len(value) for value in readers.values()], [1, 1])
+                self.assertEqual(sum(c[0] == 'baseline' for c in calls), 1)
+                self.assertLess(calls.index(('baseline_settled',)), next(i for i, c in enumerate(calls) if c[0] == 'arc'))
+                self.assertEqual([c for c in calls if c[0] == 'say'],
+                                 [('say', 'Approach complete!')] if outcome in ('verified', 'speech_failure') else [])
+                self.assertLessEqual(sum(c[0] == 'arc' for c in calls), 2)
+                self.assertLessEqual(sum(c[0] == 'turn' for c in calls), 2)
+                for call in calls:
+                    if call[0] == 'arc':
+                        self.assertEqual(call[3], min(.25, math.radians(70)*call[1]/max(abs(math.radians(call[2])), 1e-9)))
+                        self.assertEqual(call[4], 1.)
+                    if call[0] == 'turn':
+                        self.assertEqual(call[3], min(70., math.sqrt(abs(call[2])*60.)))
+                        self.assertEqual(call[4], 60.)
+                self.assertEqual(calls[-1], ('zero',))
 
 
 

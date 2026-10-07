@@ -30,6 +30,7 @@ class SingleTrial:
         self.policy = policy
         self.phase = "OBSERVING"
         self.failure_reason = None
+        self.approach_result = None
         self.ready = False
         self.session_id = None
         self._decision = self._source = self._latest_source = None

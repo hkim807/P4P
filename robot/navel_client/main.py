@@ -60,7 +60,7 @@ def _replace_queued(queue: asyncio.Queue[QueuedObservation], observation: Queued
 
 
 async def _collect_locomotion(robot: Any, latest: LatestLocomotion,
-                              sdk_capture: SdkCapture | None = None) -> None:
+                              sdk_capture: SdkCapture | None = None, approach=None) -> None:
     while True:
         try:
             packet = await robot.next_locomotion(timeout=1.0)
@@ -69,6 +69,8 @@ async def _collect_locomotion(robot: Any, latest: LatestLocomotion,
         if sdk_capture is not None:
             sdk_capture.record("locomotion", packet)
         latest.packet = (packet, time.monotonic())
+        if approach is not None:
+            approach.ingest_locomotion(packet)
 
 
 async def _collect_perception(
@@ -84,6 +86,7 @@ async def _collect_perception(
     model_provenance: bool = False,
     perception_loss_timeout_s: float | None = None,
     trial: SingleTrial | None = None,
+    approach=None,
 ) -> None:
     if model_provenance and sdk_capture is None:
         raise ValueError("model provenance requires SDK capture")
@@ -99,6 +102,8 @@ async def _collect_perception(
                 raise RuntimeError("No perception frames for 5 seconds")
             continue
         last_frame_at = time.monotonic()
+        if approach is not None:
+            approach.ingest_perception(perception)
         captured = sdk_capture.record("perception", perception) if sdk_capture is not None else None
         if head_focus is not None and (physical_executor is None or physical_executor.active is None):
             command = head_focus.observe(perception)
@@ -374,7 +379,8 @@ async def collect_and_stream(robot: Any, args: argparse.Namespace,
         hook_timeout_s=args.hook_timeout, stop_timeout_s=args.stop_timeout)
         if args.physical_executor else None)
     collectors = [
-        asyncio.create_task(_collect_locomotion(robot, latest, sdk_capture)),
+        asyncio.create_task(_collect_locomotion(robot, latest, sdk_capture,
+            approach=behaviour_dispatcher.context.approach if behaviour_dispatcher else None)),
         asyncio.create_task(_collect_perception(
             robot, adapter, latest, queue, max_locomotion_age_s=args.max_locomotion_age,
             head_focus=head_focus, physical_executor=physical_executor,
@@ -382,6 +388,7 @@ async def collect_and_stream(robot: Any, args: argparse.Namespace,
             model_provenance=args.model_provenance,
             perception_loss_timeout_s=5.0 if route else None,
             trial=trial,
+            approach=behaviour_dispatcher.context.approach if behaviour_dispatcher else None,
         )),
     ]
     if camera_capture is not None:
@@ -450,8 +457,11 @@ async def collect_and_stream(robot: Any, args: argparse.Namespace,
     finally:
         if trial is not None and not trial.terminal and trial.phase != "DECIDED":
             trial.fail("CLIENT_STOPPED")
-        for task in collectors:
-            task.cancel()
+        keep_approach_sensors = (behaviour_dispatcher is not None and trial.decision is not None
+                                 and trial.decision["action"] == "APPROACH")
+        if not keep_approach_sensors:
+            for task in collectors:
+                task.cancel()
         if behaviour_dispatcher is not None or route is not None:
             # Stop locally before waiting for head, capture queues or HTTP.
             cleanup = asyncio.create_task(behaviour_dispatcher.close() if behaviour_dispatcher else route.stop())
@@ -465,6 +475,10 @@ async def collect_and_stream(robot: Any, args: argparse.Namespace,
                 logger.exception("single_trial stop_failed physical_stop_verified=false")
             if head_focus is not None:
                 head_focus.suspend()
+        # APPROACH needs the shared odometry reader during measured stopping.
+        if keep_approach_sensors:
+            for task in collectors:
+                task.cancel()
         if model_trial:
             for task in tasks:
                 if task not in collectors:
@@ -602,7 +616,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--single-trial", action="store_true",
                         help="Latch one final decision; requires decision dry-run or single-trial execution")
     parser.add_argument("--single-trial-execute", action="store_true",
-                        help="Execute CONTINUE or ENGAGE on the shared SDK connection; requires --route-trial")
+                        help="Execute CONTINUE, APPROACH or ENGAGE on the shared SDK connection; requires --route-trial")
     parser.add_argument("--behaviour-timeout", type=float, default=120.0,
                         help="Maximum handler duration in seconds (default: 120; max: 3600)")
     parser.add_argument("--single-trial-policy", choices=("rules", "llm", "vlm"), default="rules")

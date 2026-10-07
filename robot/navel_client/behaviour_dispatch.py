@@ -1,12 +1,13 @@
 """One SingleTrial behaviour on the existing SDK connection."""
 
 import asyncio
-from dataclasses import dataclass, field
+from dataclasses import asdict, dataclass, field
 import inspect
 import logging
 import math
 
 from robot.navel_client.decision_dispatch import DECISIONS
+from robot.navel_client.approach import ApproachNotVerified, ApproachRuntime, approach_human
 
 logger = logging.getLogger(__name__)
 
@@ -22,7 +23,18 @@ async def continue_route(context):
 
 
 async def approach_person(context):
-    raise BehaviourNotImplemented("APPROACH")
+    runtime = context.approach
+    if runtime is None:
+        raise RuntimeError("APPROACH requires local sensor state")
+    await runtime.wait_ready()
+    await runtime.settle()
+    observation = context.current_observation()
+    people = observation.get("people", []) if observation else []
+    uid = people[0]["uid"] if len(people) == 1 else None
+    result = context.approach_result = await approach_human(runtime, uid)
+    if result.status != "APPROACHED_VERIFIED":
+        raise ApproachNotVerified(result.status)
+    await context.own_task(context.robot.say("Approach complete!"))
 
 
 async def engage_person(context):
@@ -36,7 +48,7 @@ async def yield_space(context):
 
 HANDLERS = {"CONTINUE": continue_route, "APPROACH": approach_person,
             "ENGAGE": engage_person, "YIELD": yield_space}
-_UNIMPLEMENTED = frozenset({approach_person, yield_space})
+_UNIMPLEMENTED = frozenset({yield_space})
 
 
 @dataclass
@@ -47,6 +59,8 @@ class BehaviourContext:
     current_observation: object
     route: object = None
     head: object = None
+    approach: object = None
+    approach_result: object = None
     _tasks: set = field(default_factory=set, init=False, repr=False)
     _closing: bool = field(default=False, init=False, repr=False)
 
@@ -70,6 +84,8 @@ class BehaviourDispatcher:
             raise ValueError("behaviour handlers must map the four actions to async functions")
         self.trial, self.timeout_s = trial, timeout_s
         self.context = BehaviourContext(robot, None, None, lambda: trial.current_observation, route, head)
+        if self.handlers["APPROACH"] is approach_person:
+            self.context.approach = ApproachRuntime(self.context)
         self._dispatched = self._cleaned = False
         self._handler_task = None
         self._cleanup_lock = asyncio.Lock()
@@ -86,6 +102,10 @@ class BehaviourDispatcher:
                 raise ValueError("CONTINUE execution requires SDK robot.move_base")
         if self.handlers["ENGAGE"] is engage_person and not callable(getattr(self.context.robot, "say", None)):
             raise ValueError("ENGAGE execution requires SDK robot.say")
+        if self.handlers["APPROACH"] is approach_person:
+            for method in ("move_and_rotate_base", "rotate_base", "say"):
+                if not callable(getattr(self.context.robot, method, None)):
+                    raise ValueError(f"APPROACH execution requires SDK robot.{method}")
 
     async def dispatch(self):
         if self._dispatched or self.trial.phase != "DECIDED":
@@ -129,6 +149,8 @@ class BehaviourDispatcher:
                 succeeded = task.result()
         except BehaviourNotImplemented:
             self.trial.fail("BEHAVIOUR_NOT_IMPLEMENTED")
+        except ApproachNotVerified as exc:
+            self.trial.fail(str(exc))
         except asyncio.CancelledError:
             self.trial.fail("BEHAVIOUR_CANCELLED")
             if asyncio.current_task().cancelling():
@@ -137,6 +159,8 @@ class BehaviourDispatcher:
             self.trial.fail("BEHAVIOUR_FAILED")
             logger.exception("single_trial behaviour_failed action=%s", action)
         finally:
+            if context.approach_result is not None:
+                self.trial.approach_result = asdict(context.approach_result)
             await self.close()
         if succeeded:
             self.trial.complete_execution()
@@ -165,7 +189,10 @@ class BehaviourDispatcher:
                     task.cancel()
             try:
                 if context._tasks:
-                    await asyncio.wait(context._tasks, timeout=2.0)
+                    # APPROACH's cancellation includes up to 2 s sender settling
+                    # plus the reference's 3 s measured stop confirmation.
+                    cleanup_timeout = 6.0 if context.approach is not None and context.approach.motion_active else 2.0
+                    await asyncio.wait(context._tasks, timeout=cleanup_timeout)
                     if any(not task.done() for task in context._tasks):
                         raise RuntimeError("behaviour sender did not settle; stop unconfirmed")
                     await asyncio.gather(*context._tasks, return_exceptions=True)
