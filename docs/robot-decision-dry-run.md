@@ -78,28 +78,33 @@ and uses the existing bounded loss grace without requiring a policy lock.
 No perception frames for 5 seconds ends the route. Distance is an SDK request,
 not verified travel; this adds no obstacle avoidance.
 
-Temporarily, an accepted decision stops the route and exits at `DECIDED` without
+In decision dry-run, an accepted decision stops the route and exits at `DECIDED` without
 executing the selected behaviour. Route completion first fails with
 `ROUTE_FINISHED_WITHOUT_DECISION`. Timeout, transport invalidation, interruption
 and task failures also stop it. Cleanup cancels and settles the movement sender
 before `base_vel(0.0, 0.0)`, independently of HTTP/head completion. Sender settling
 has a two-second bound; failure or a rejected zero command is logged as an
 unconfirmed stop. No software cancellation or zero request proves physical
-stopping. Hardware verification is still required. Later behaviour integration
-will retain this route for CONTINUE and transfer control for other actions.
+stopping. Hardware verification is still required.
 
 The separate `--single-trial --single-trial-execute` option connects acceptance
 to [`BehaviourDispatcher`](../robot/navel_client/behaviour_dispatch.py). It
 excludes decision/command dry-run, the older script executor, SDK-only, and
-print-only modes. All four production handlers currently fail as
-`BEHAVIOUR_NOT_IMPLEMENTED`; execution preflight rejects the current all-missing
-configuration before baseline movement or head tracking starts. Dry-run remains
-at DECIDED and never calls this dispatcher.
+print-only modes. CONTINUE awaits the original route task with baseline head
+tracking active; it never starts another movement. ENGAGE cancels/settles/zeros
+the route and settles baseline head commands, then says exactly once:
+"Hello! Do you need any guidance in the lab?" It owns and awaits `robot.say()`'s
+asyncio task. The [SDK documentation](https://doc.navelrobotics.com/getting_started.html#creating-your-own-scripts)
+defines awaiting this task as waiting for speech to finish. APPROACH/YIELD remain
+possible policy outputs; acceptance fails with `BEHAVIOUR_NOT_IMPLEMENTED` and
+stops locally, without a substitute action. Preflight requires `--route-trial`
+and the SDK movement, stopping and speech methods before motion starts.
+Dry-run remains at DECIDED and never calls this dispatcher.
 
-Future handlers are asynchronous functions receiving the frozen decision/source,
+Handlers are asynchronous functions receiving the frozen decision/source,
 shared robot, `current_observation()` getter, existing `route`/`head` controls,
 and `own_task(awaitable)` for SDK tasks. Handlers must register and await their
-SDK movement/head tasks; they must not launch detached senders. CONTINUE retains
+SDK tasks; they must not launch detached senders. CONTINUE retains
 `route.task` and baseline tracking. APPROACH, ENGAGE, and YIELD suspend/settle
 baseline head commands and cancel/settle/zero the route before handler startup.
 APPROACH/ENGAGE recheck one fresh local person then, without tying it to the
@@ -112,6 +117,28 @@ produces FAILED, with no restart or resumption. The decision-wait deadline appli
 only while observing. Cleanup settles registered SDK senders before zero velocity
 and precedes server/model acknowledgements. An unsettled sender is reported as
 an unconfirmed stop; physical stopping has not been hardware-verified.
+
+For execution, start the computer receiver with new recording paths:
+
+```bash
+.venv/bin/python -m app.server --host 0.0.0.0 --port 6060 \
+  --output var/recordings/execute-01.raw.jsonl \
+  --social-output var/temporal-validation/execute-01.social.jsonl
+```
+
+On Navel, using its SDK-enabled Python and the computer's LAN IP, explicitly
+enable the route (this performs real movement and ENGAGE speech):
+
+```bash
+python3 -m robot.navel_client.main --server http://COMPUTER_LAN_IP:6060 \
+  --single-trial --single-trial-execute --single-trial-policy rules --route-trial \
+  --route-distance 0.5 --route-speed 0.1 --route-acceleration 0.2 \
+  --behaviour-timeout 120
+```
+
+Normal route completion after CONTINUE succeeds; completion before any accepted
+decision still fails with `ROUTE_FINISHED_WITHOUT_DECISION`. These handlers have
+only been verified with mocks, not real robot motion or speech.
 
 Accepted raw frames still print to stdout. On stderr, a first valid decision
 or a changed decision/target produces a line such as:

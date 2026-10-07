@@ -1,4 +1,4 @@
-"""One SingleTrial behaviour on the existing SDK connection; no behaviours yet."""
+"""One SingleTrial behaviour on the existing SDK connection."""
 
 import asyncio
 from dataclasses import dataclass, field
@@ -16,7 +16,9 @@ class BehaviourNotImplemented(RuntimeError):
 
 
 async def continue_route(context):
-    raise BehaviourNotImplemented("CONTINUE")
+    if context.route is None or context.route.task is None or context.route.stopped:
+        raise RuntimeError("CONTINUE requires the retained baseline route task")
+    await context.route.task
 
 
 async def approach_person(context):
@@ -24,7 +26,8 @@ async def approach_person(context):
 
 
 async def engage_person(context):
-    raise BehaviourNotImplemented("ENGAGE")
+    # Navel returns an asyncio Task; awaiting say waits for speech to finish.
+    await context.own_task(context.robot.say("Hello! Do you need any guidance in the lab?"))
 
 
 async def yield_space(context):
@@ -33,7 +36,7 @@ async def yield_space(context):
 
 HANDLERS = {"CONTINUE": continue_route, "APPROACH": approach_person,
             "ENGAGE": engage_person, "YIELD": yield_space}
-_UNIMPLEMENTED = frozenset(HANDLERS.values())
+_UNIMPLEMENTED = frozenset({approach_person, yield_space})
 
 
 @dataclass
@@ -48,7 +51,7 @@ class BehaviourContext:
     _closing: bool = field(default=False, init=False, repr=False)
 
     def own_task(self, awaitable):
-        """Register SDK movement/head tasks so cancellation settles before zero."""
+        """Register SDK tasks so cancellation settles before local cleanup."""
         task = asyncio.ensure_future(awaitable)
         self._tasks.add(task)
         if self._closing:
@@ -74,6 +77,15 @@ class BehaviourDispatcher:
     def preflight(self):
         if all(handler in _UNIMPLEMENTED for handler in self.handlers.values()):
             raise BehaviourNotImplemented("BEHAVIOUR_NOT_IMPLEMENTED: no execution handlers available")
+        if not callable(getattr(self.context.robot, "base_vel", None)):
+            raise ValueError("execution requires SDK robot.base_vel for local stopping")
+        if self.handlers["CONTINUE"] is continue_route:
+            if self.context.route is None:
+                raise ValueError("CONTINUE execution requires --route-trial")
+            if not callable(getattr(self.context.robot, "move_base", None)):
+                raise ValueError("CONTINUE execution requires SDK robot.move_base")
+        if self.handlers["ENGAGE"] is engage_person and not callable(getattr(self.context.robot, "say", None)):
+            raise ValueError("ENGAGE execution requires SDK robot.say")
 
     async def dispatch(self):
         if self._dispatched or self.trial.phase != "DECIDED":

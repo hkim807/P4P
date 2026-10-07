@@ -15,12 +15,13 @@ from unittest.mock import patch
 
 from robot.navel_client.main import (
     LatestLocomotion, _collect_perception, _replace_queued, _send_observations,
-    collect_and_stream, parse_args,
+    _execute_trial, collect_and_stream, parse_args,
 )
 from robot.navel_client.adapter import NavelObservationAdapter
 from robot.navel_client.transport import ObservationResponse, ObservationTransport, TransportError
 from robot.navel_client.single_trial import SingleTrial
 from robot.navel_client.behaviour_dispatch import BehaviourDispatcher, HANDLERS
+from robot.navel_client.straight_route import StraightRoute
 from tests.test_decision_dispatch import response_for
 from tests.fixtures import frame, locomotion, perception, person
 
@@ -364,14 +365,22 @@ class ClientTests(unittest.IsolatedAsyncioTestCase):
     async def test_execution_preflight_and_current_person_fail_honestly(self):
         args = parse_args(["--single-trial", "--single-trial-execute", "--route-trial"])
         # No SDK call (including baseline movement) is possible before preflight.
-        result = await collect_and_stream(object(), args)
-        self.assertEqual((result.phase, result.failure_reason), ("FAILED", "BEHAVIOUR_NOT_IMPLEMENTED"))
+        with self.assertRaisesRegex(ValueError, "base_vel"):
+            await collect_and_stream(object(), args)
+        robot = NS(base_vel=lambda x, r: self.fail("preflight moved the base"),
+                   move_base=lambda *a, **kw: self.fail("preflight started the route"))
+        with self.assertRaisesRegex(ValueError, "robot.say"):
+            await collect_and_stream(robot, args)
+        args.route_trial = False
+        with self.assertRaisesRegex(ValueError, "--route-trial"):
+            await collect_and_stream(robot, args)
         observation = frame()
         for scene in ("missing_handler", "absent", "ambiguous", "stale"):
             with self.subTest(scene=scene):
                 trial = SingleTrial(monotonic_us=lambda: observation["timestamp"])
-                payload = response_for(observation, 1, "ENGAGE")
-                payload["final_decision"] = {"action": "ENGAGE", "reason": "Test decision."}
+                action = "APPROACH" if scene == "missing_handler" else "ENGAGE"
+                payload = response_for(observation, 1, action)
+                payload["final_decision"] = {"action": action, "reason": "Test decision."}
                 self.assertTrue(trial.accept_rule_response(payload, observation))
                 if scene != "missing_handler":
                     current = {**observation, "people": [] if scene == "absent" else observation["people"] * 2}
@@ -394,7 +403,9 @@ class ClientTests(unittest.IsolatedAsyncioTestCase):
     async def test_behaviour_handoff_and_failure_cleanup_on_shared_client(self):
         for outcome, action in (("success", "CONTINUE"), ("success", "ENGAGE"),
                                 ("error", "APPROACH"), ("timeout", "YIELD"),
-                                ("cancel", "ENGAGE"), ("collector", "CONTINUE")):
+                                ("cancel", "ENGAGE"), ("collector", "CONTINUE"),
+                                ("timeout", "ENGAGE"), ("cancel", "CONTINUE"),
+                                ("unsupported", "APPROACH"), ("unsupported", "YIELD")):
             with self.subTest(outcome=outcome, action=action):
                 events, readers = [], set()
                 baseline_started, handler_started = asyncio.Event(), asyncio.Event()
@@ -403,10 +414,12 @@ class ClientTests(unittest.IsolatedAsyncioTestCase):
                 reads = 0
                 clock = [0.0]
                 trial = SingleTrial(monotonic=lambda: clock[0])
+                production_handler = HANDLERS[action]
 
                 class Robot:
                     def move_base(self, distance, *, speed, acceleration):
                         events.append("baseline_start")
+                        events.append(("move", distance, speed, acceleration))
 
                         async def sender():
                             nonlocal active_route
@@ -426,6 +439,21 @@ class ClientTests(unittest.IsolatedAsyncioTestCase):
 
                     async def look_at_person(self, uid, head):
                         events.append("baseline_head")
+
+                    def say(self, text):
+                        assert not active_route, "speech before baseline settled"
+                        events.append(("say", text))
+
+                        async def speech():
+                            nonlocal active_behaviour
+                            active_behaviour = True
+                            try:
+                                await finish_handler.wait()
+                            finally:
+                                await asyncio.sleep(0)
+                                active_behaviour = False
+                                events.append("behaviour_settled")
+                        return asyncio.create_task(speech())
 
                     async def next_frame(self, timeout):
                         nonlocal reads
@@ -456,12 +484,21 @@ class ClientTests(unittest.IsolatedAsyncioTestCase):
                         self.assertFalse(context.route.stopped)
                         self.assertFalse(context.head.suspended)
                         handler_started.set()
-                        await context.route.task
+                        retained_task = context.route.task
+                        await production_handler(context)
+                        self.assertIs(context.route.task, retained_task)
+                        self.assertFalse(context.head.suspended)
                     else:
                         self.assertTrue(context.route.stopped)
                         self.assertTrue(context.route.task.done())
                         self.assertTrue(context.head.suspended)
                         self.assertLess(events.index("baseline_settled"), events.index("handler_start"))
+
+                        if action == "ENGAGE":
+                            handler_started.set()
+                            await production_handler(context)
+                            events.append("handler_finish")
+                            return
 
                         async def owned_sender():
                             nonlocal active_behaviour
@@ -487,14 +524,17 @@ class ClientTests(unittest.IsolatedAsyncioTestCase):
 
                 args = parse_args(["--single-trial", "--single-trial-execute", "--route-trial",
                                    "--behaviour-timeout", "0.04", "--minimum-send-interval", "0"])
-                with patch.dict(HANDLERS, {action: handler}), \
+                with patch.dict(HANDLERS, {} if outcome == "unsupported" else {action: handler}), \
                         patch("robot.navel_client.main.SingleTrial", return_value=trial), \
                         patch.object(ObservationTransport, "send", side_effect=send), \
                         contextlib.redirect_stdout(io.StringIO()):
                     task = asyncio.create_task(collect_and_stream(robot, args))
-                    await asyncio.wait_for(handler_started.wait(), 1)
+                    if outcome != "unsupported":
+                        await asyncio.wait_for(handler_started.wait(), 1)
                     if outcome == "success":
                         await asyncio.sleep(0.015)
+                        self.assertEqual(trial.phase, "EXECUTING")
+                        self.assertNotIn("handler_finish", events)
                         self.assertGreater(reads, 1)
                         (finish_route if action == "CONTINUE" else finish_handler).set()
                     elif outcome == "cancel":
@@ -505,7 +545,11 @@ class ClientTests(unittest.IsolatedAsyncioTestCase):
                     else:
                         self.assertIs(await asyncio.wait_for(task, 1), trial)
                 self.assertEqual(events.count("baseline_start"), 1)
-                self.assertEqual(events.count("handler_start"), 1)
+                self.assertEqual([e for e in events if isinstance(e, tuple) and e[0] == "move"],
+                                 [("move", 10.0, 0.1, 0.2)])
+                self.assertEqual(events.count("handler_start"), 0 if outcome == "unsupported" else 1)
+                self.assertEqual([e for e in events if isinstance(e, tuple) and e[0] == "say"],
+                                 [("say", "Hello! Do you need any guidance in the lab?")] if action == "ENGAGE" else [])
                 self.assertEqual(len(readers), 1)
                 self.assertEqual(events[-1][0], "zero")
                 self.assertEqual(trial.phase, "COMPLETED" if outcome == "success" else "FAILED")
@@ -513,6 +557,53 @@ class ClientTests(unittest.IsolatedAsyncioTestCase):
                     self.assertEqual(trial.failure_reason, "BEHAVIOUR_TIMEOUT")
                 if outcome == "error":
                     self.assertEqual(trial.failure_reason, "BEHAVIOUR_FAILED")
+                if outcome == "unsupported":
+                    self.assertEqual(trial.failure_reason, "BEHAVIOUR_NOT_IMPLEMENTED")
+
+    async def test_continue_route_completion_race_and_failure(self):
+        for outcome in ("accepted", "undecided", "failed", "handler_failed"):
+            with self.subTest(outcome=outcome):
+                observation = frame()
+                trial = SingleTrial(monotonic_us=lambda: observation["timestamp"])
+                zeros = []
+
+                async def move(distance, *, speed, acceleration):
+                    if outcome in ("failed", "handler_failed"):
+                        raise OSError("movement failed")
+
+                robot = NS(move_base=move, base_vel=lambda x, r: zeros.append(trial.phase),
+                           say=lambda text: self.fail("CONTINUE must not speak"))
+                route = StraightRoute(robot, 0.5, 0.1, 0.2)
+                route.start()
+                # Complete the original route and accept the decision before the
+                # supervisor observes either, exercising the completion race.
+                await asyncio.wait([route.task])
+                if outcome != "undecided":
+                    payload = response_for(observation, 1, "CONTINUE", False)
+                    payload["final_decision"] = {"action": "CONTINUE", "reason": "Keep going."}
+                    self.assertTrue(trial.accept_rule_response(payload, observation))
+                dispatcher = BehaviourDispatcher(trial, robot, route=route)
+                dispatcher.preflight()
+                tasks = [route.task]
+                if outcome == "failed":
+                    with self.assertRaisesRegex(OSError, "movement failed"):
+                        await _execute_trial(trial, dispatcher, tasks, [], route)
+                    trial.fail("CLIENT_ERROR")  # collect_and_stream's failure path
+                    self.assertFalse(await dispatcher.dispatch())
+                elif outcome == "handler_failed":
+                    self.assertFalse(await dispatcher.dispatch())
+                    self.assertEqual(trial.failure_reason, "BEHAVIOUR_FAILED")
+                else:
+                    await _execute_trial(trial, dispatcher, tasks, [], route)
+                await dispatcher.close()
+                if outcome == "accepted":
+                    self.assertEqual((trial.phase, zeros), ("COMPLETED", ["EXECUTING"]))
+                    self.assertFalse(await dispatcher.dispatch())
+                else:
+                    self.assertEqual(trial.phase, "FAILED")
+                    if outcome == "undecided":
+                        self.assertEqual(trial.failure_reason, "ROUTE_FINISHED_WITHOUT_DECISION")
+                self.assertEqual(len(zeros), 1)
 
 
 

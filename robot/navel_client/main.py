@@ -602,7 +602,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--single-trial", action="store_true",
                         help="Latch one final decision; requires decision dry-run or single-trial execution")
     parser.add_argument("--single-trial-execute", action="store_true",
-                        help="Execute one implemented behaviour on the shared SDK connection; currently unavailable")
+                        help="Execute CONTINUE or ENGAGE on the shared SDK connection; requires --route-trial")
     parser.add_argument("--behaviour-timeout", type=float, default=120.0,
                         help="Maximum handler duration in seconds (default: 120; max: 3600)")
     parser.add_argument("--single-trial-policy", choices=("rules", "llm", "vlm"), default="rules")
