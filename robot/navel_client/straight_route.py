@@ -30,13 +30,14 @@ class StraightRoute:
     async def stop(self):
         if self.stopped:
             return
-        self.stopped = True
         if self.task is not None:
-            self.task.cancel()
+            if not self.task.done() and not getattr(self.task, "cancelling", lambda: 0)():
+                self.task.cancel()
             done, _ = await asyncio.wait([self.task], timeout=2.0)
             if not done:
                 # Sending zero while this sender survives can be overwritten.
                 raise RuntimeError("movement sender did not settle; physical stop unconfirmed")
             await asyncio.gather(self.task, return_exceptions=True)
         self.robot.base_vel(0.0, 0.0)
+        self.stopped = True
         logger.info("route_trial sender_settled=true zero_velocity_sent=true physical_stop_verified=false")

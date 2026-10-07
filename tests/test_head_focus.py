@@ -143,6 +143,48 @@ class HeadFocusTests(unittest.TestCase):
 
 
 class CollectorFocusTests(unittest.IsolatedAsyncioTestCase):
+    async def test_head_handoff_settles_command_without_stopping_shared_reader(self):
+        started, second_frame = asyncio.Event(), asyncio.Event()
+        commands, settled = [], []
+        reads = 0
+
+        class Robot:
+            async def look_at_person(self, uid, head):
+                commands.append(uid)
+                started.set()
+                try:
+                    await asyncio.Event().wait()
+                finally:
+                    await asyncio.sleep(0)
+                    settled.append(uid)
+
+            async def next_frame(self, timeout):
+                nonlocal reads
+                reads += 1
+                if reads == 1:
+                    return perception(person(17))
+                if reads == 2:
+                    second_frame.set()
+                    return perception(person(18))
+                await asyncio.Event().wait()
+
+        robot = Robot()
+        focus = HeadFocusController(robot)
+        queue = asyncio.Queue(maxsize=1)
+        collector = asyncio.create_task(_collect_perception(robot, NavelObservationAdapter(),
+            LatestLocomotion(), queue, max_locomotion_age_s=1, head_focus=focus))
+        try:
+            await asyncio.wait_for(started.wait(), 1)
+            await asyncio.wait_for(focus.suspend_and_settle(), 1)
+            await asyncio.wait_for(second_frame.wait(), 1)
+            self.assertEqual((commands, settled), ([17], [17]))
+            self.assertFalse(collector.done())
+            self.assertEqual(queue.get_nowait()["people"][0]["uid"], 18)
+            queue.task_done()
+        finally:
+            collector.cancel()
+            await asyncio.gather(collector, return_exceptions=True)
+
     async def test_focus_command_precedes_conversion_and_http_queue(self):
         robot = FakeRobot()
 

@@ -20,6 +20,8 @@ from robot.navel_client.main import (
 from robot.navel_client.adapter import NavelObservationAdapter
 from robot.navel_client.transport import ObservationResponse, ObservationTransport, TransportError
 from robot.navel_client.single_trial import SingleTrial
+from robot.navel_client.behaviour_dispatch import BehaviourDispatcher, HANDLERS
+from tests.test_decision_dispatch import response_for
 from tests.fixtures import frame, locomotion, perception, person
 
 
@@ -285,6 +287,7 @@ class ClientTests(unittest.IsolatedAsyncioTestCase):
                                    "--route-distance", "0.5", "--minimum-send-interval", "0"])
                 args.single_trial_policy = trial.policy
                 with patch("robot.navel_client.main.SingleTrial", return_value=trial), \
+                        patch.object(BehaviourDispatcher, "dispatch", side_effect=AssertionError("dry-run dispatched behaviour")), \
                         patch.object(ObservationTransport, "open_model_trial", return_value=ObservationResponse(200,
                             {"accepted": True, "trial_id": trial.trial_id, "session_id": "session-a", "policy": trial.policy})), \
                         patch.object(ObservationTransport, "send_trial_observation", side_effect=send_trial), \
@@ -317,6 +320,200 @@ class ClientTests(unittest.IsolatedAsyncioTestCase):
                         self.assertEqual(trial.failure_reason, "ROUTE_FINISHED_WITHOUT_DECISION")
                 if outcome not in ("collector", "interrupt"):
                     self.assertIn(("head", 17, 1.0), events)
+
+    async def test_behaviour_dispatch_calls_selected_handler_once_and_freezes_lifecycle(self):
+        for action in HANDLERS:
+            with self.subTest(action=action):
+                observation = frame()
+                trial = SingleTrial(monotonic_us=lambda: observation["timestamp"])
+                payload = response_for(observation, 1, action, action in ("APPROACH", "ENGAGE"))
+                payload["final_decision"] = {"action": action, "reason": "Test decision."}
+                self.assertTrue(trial.accept_rule_response(payload, observation))
+                self.assertFalse(trial.accept_rule_response(payload, observation))
+                calls, zeros = [], []
+                started, finish = asyncio.Event(), asyncio.Event()
+                robot = NS(base_vel=lambda x, r: zeros.append(trial.phase))
+
+                async def selected(context):
+                    calls.append(context.decision["action"])
+                    self.assertEqual(trial.phase, "EXECUTING")
+                    self.assertIs(context.robot, robot)
+                    self.assertIs(context.decision, trial.decision)
+                    self.assertIs(context.source, trial.source)
+                    self.assertEqual(context.current_observation()["people"][0]["uid"], 18)
+                    started.set()
+                    await finish.wait()
+
+                async def wrong(context):
+                    self.fail("Dispatcher called another action")
+
+                # Current UID can change; the frozen policy source stays UID 17.
+                trial.note_observation({**observation, "people": [{**observation["people"][0], "uid": 18}]})
+                dispatcher = BehaviourDispatcher(trial, robot,
+                    handlers={key: selected if key == action else wrong for key in HANDLERS})
+                execution = asyncio.create_task(dispatcher.dispatch())
+                await asyncio.wait_for(started.wait(), 1)
+                self.assertFalse(await dispatcher.dispatch())
+                self.assertEqual(trial.phase, "EXECUTING")
+                self.assertEqual(zeros, [])
+                finish.set()
+                self.assertTrue(await asyncio.wait_for(execution, 1))
+                self.assertEqual((trial.phase, calls, zeros), ("COMPLETED", [action], ["EXECUTING"]))
+                self.assertFalse(await dispatcher.dispatch())
+
+    async def test_execution_preflight_and_current_person_fail_honestly(self):
+        args = parse_args(["--single-trial", "--single-trial-execute", "--route-trial"])
+        # No SDK call (including baseline movement) is possible before preflight.
+        result = await collect_and_stream(object(), args)
+        self.assertEqual((result.phase, result.failure_reason), ("FAILED", "BEHAVIOUR_NOT_IMPLEMENTED"))
+        observation = frame()
+        for scene in ("missing_handler", "absent", "ambiguous", "stale"):
+            with self.subTest(scene=scene):
+                trial = SingleTrial(monotonic_us=lambda: observation["timestamp"])
+                payload = response_for(observation, 1, "ENGAGE")
+                payload["final_decision"] = {"action": "ENGAGE", "reason": "Test decision."}
+                self.assertTrue(trial.accept_rule_response(payload, observation))
+                if scene != "missing_handler":
+                    current = {**observation, "people": [] if scene == "absent" else observation["people"] * 2}
+                    if scene == "stale":
+                        current = {**observation, "timestamp": 0}
+                        trial.monotonic_us = lambda: 2_000_000
+                    trial.note_observation(current)
+
+                async def unexpected(context):
+                    self.fail("Unavailable execution must not call a handler")
+
+                dispatcher = BehaviourDispatcher(trial, NS(base_vel=lambda x, r: None),
+                    handlers={} if scene == "missing_handler" else {"ENGAGE": unexpected})
+                self.assertFalse(await dispatcher.dispatch())
+                self.assertEqual(trial.failure_reason, "BEHAVIOUR_NOT_IMPLEMENTED" if scene == "missing_handler"
+                                 else "CURRENT_PERSON_UNAVAILABLE")
+                self.assertIsNotNone(trial.decision)
+                self.assertEqual(trial.phase, "FAILED")
+
+    async def test_behaviour_handoff_and_failure_cleanup_on_shared_client(self):
+        for outcome, action in (("success", "CONTINUE"), ("success", "ENGAGE"),
+                                ("error", "APPROACH"), ("timeout", "YIELD"),
+                                ("cancel", "ENGAGE"), ("collector", "CONTINUE")):
+            with self.subTest(outcome=outcome, action=action):
+                events, readers = [], set()
+                baseline_started, handler_started = asyncio.Event(), asyncio.Event()
+                finish_route, finish_handler = asyncio.Event(), asyncio.Event()
+                active_route = active_behaviour = False
+                reads = 0
+                clock = [0.0]
+                trial = SingleTrial(monotonic=lambda: clock[0])
+
+                class Robot:
+                    def move_base(self, distance, *, speed, acceleration):
+                        events.append("baseline_start")
+
+                        async def sender():
+                            nonlocal active_route
+                            active_route = True
+                            baseline_started.set()
+                            try:
+                                await finish_route.wait()
+                            finally:
+                                await asyncio.sleep(0)
+                                active_route = False
+                                events.append("baseline_settled")
+                        return asyncio.create_task(sender())
+
+                    def base_vel(self, x, r):
+                        assert not active_route and not active_behaviour, "zero before senders settled"
+                        events.append(("zero", trial.phase))
+
+                    async def look_at_person(self, uid, head):
+                        events.append("baseline_head")
+
+                    async def next_frame(self, timeout):
+                        nonlocal reads
+                        readers.add(asyncio.current_task())
+                        await baseline_started.wait()
+                        if reads:
+                            await handler_started.wait()
+                            await asyncio.sleep(0.005)
+                            if outcome == "collector":
+                                raise ConnectionAbortedError("collector failed during execution")
+                        reads += 1
+                        return perception(person(17 if reads == 1 else 18))
+
+                    async def next_locomotion(self, timeout):
+                        await asyncio.Event().wait()
+
+                robot = Robot()
+
+                async def handler(context):
+                    nonlocal active_behaviour
+                    self.assertIs(context.robot, robot)
+                    self.assertEqual(trial.phase, "EXECUTING")
+                    events.append("handler_start")
+                    clock[0] = 100.0  # Decision deadline cannot expire execution.
+                    trial.tick()
+                    self.assertEqual(trial.phase, "EXECUTING")
+                    if action == "CONTINUE":
+                        self.assertFalse(context.route.stopped)
+                        self.assertFalse(context.head.suspended)
+                        handler_started.set()
+                        await context.route.task
+                    else:
+                        self.assertTrue(context.route.stopped)
+                        self.assertTrue(context.route.task.done())
+                        self.assertTrue(context.head.suspended)
+                        self.assertLess(events.index("baseline_settled"), events.index("handler_start"))
+
+                        async def owned_sender():
+                            nonlocal active_behaviour
+                            active_behaviour = True
+                            try:
+                                await finish_handler.wait()
+                            finally:
+                                await asyncio.sleep(0)
+                                active_behaviour = False
+                                events.append("behaviour_settled")
+                        sender = context.own_task(owned_sender())
+                        await asyncio.sleep(0)
+                        handler_started.set()
+                        if outcome == "error":
+                            raise RuntimeError("mock handler failed")
+                        await sender
+                    events.append("handler_finish")
+
+                def send(observation):
+                    payload = response_for(observation, 1, action, action in ("APPROACH", "ENGAGE"))
+                    payload["final_decision"] = {"action": action, "reason": "Test decision."}
+                    return ObservationResponse(200, payload)
+
+                args = parse_args(["--single-trial", "--single-trial-execute", "--route-trial",
+                                   "--behaviour-timeout", "0.04", "--minimum-send-interval", "0"])
+                with patch.dict(HANDLERS, {action: handler}), \
+                        patch("robot.navel_client.main.SingleTrial", return_value=trial), \
+                        patch.object(ObservationTransport, "send", side_effect=send), \
+                        contextlib.redirect_stdout(io.StringIO()):
+                    task = asyncio.create_task(collect_and_stream(robot, args))
+                    await asyncio.wait_for(handler_started.wait(), 1)
+                    if outcome == "success":
+                        await asyncio.sleep(0.015)
+                        self.assertGreater(reads, 1)
+                        (finish_route if action == "CONTINUE" else finish_handler).set()
+                    elif outcome == "cancel":
+                        task.cancel()
+                    if outcome in ("cancel", "collector"):
+                        with self.assertRaises(asyncio.CancelledError if outcome == "cancel" else OSError):
+                            await asyncio.wait_for(task, 1)
+                    else:
+                        self.assertIs(await asyncio.wait_for(task, 1), trial)
+                self.assertEqual(events.count("baseline_start"), 1)
+                self.assertEqual(events.count("handler_start"), 1)
+                self.assertEqual(len(readers), 1)
+                self.assertEqual(events[-1][0], "zero")
+                self.assertEqual(trial.phase, "COMPLETED" if outcome == "success" else "FAILED")
+                if outcome == "timeout":
+                    self.assertEqual(trial.failure_reason, "BEHAVIOUR_TIMEOUT")
+                if outcome == "error":
+                    self.assertEqual(trial.failure_reason, "BEHAVIOUR_FAILED")
+
 
 
 class TransportTests(unittest.TestCase):
@@ -359,7 +556,7 @@ import robot.navel_client.main
         self.assertEqual(result.returncode, 0, result.stderr)
 
     def test_nonfinite_cli_settings_are_rejected(self):
-        for option in ["--request-timeout", "--max-locomotion-age", "--minimum-send-interval", "--decision-wait-timeout"]:
+        for option in ["--request-timeout", "--max-locomotion-age", "--minimum-send-interval", "--decision-wait-timeout", "--behaviour-timeout"]:
             with contextlib.redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
                 parse_args([option, "nan"])
 
@@ -368,7 +565,11 @@ import robot.navel_client.main
         for argv in (["--route-trial"], ["--single-trial", "--route-trial"],
                      ["--route-speed", "1.7"], ["--route-acceleration", "1.3"],
                      ["--route-distance", "0"], ["--route-speed", "nan"],
-                     ["--route-acceleration", "inf"]):
+                     ["--route-acceleration", "inf"], ["--single-trial-execute"],
+                     ["--single-trial", "--single-trial-execute", "--decision-dry-run"],
+                     ["--single-trial", "--single-trial-execute", "--command-dry-run"],
+                     ["--single-trial", "--single-trial-execute", "--physical-executor"],
+                     ["--behaviour-timeout", "0"], ["--behaviour-timeout", "3601"]):
             with self.subTest(argv=argv), contextlib.redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
                 parse_args(argv)
 

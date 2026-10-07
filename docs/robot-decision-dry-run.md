@@ -41,14 +41,14 @@ Acceptance requires exactly one currently observed person in the local frame
 and matching SocialState, fresh within `--max-decision-age`. Rules need `latest_distance_valid`, `gaze_valid` and a usable gaze category.
 LLM retains its existing gaze-or-distance-trend evidence check; these
 reuse the estimator's evidence minima, without requiring its full rolling window
-or stationary robot motion. VLM needs only the current single-person observation.
+or stationary robot motion. VLM needs the current single-person observation
+and a fresh matched head image.
 Null decisions keep observing; DEFER is rejected as an action. A result freezes at `DECIDED`, disables further
 acceptance, and keeps perception running until interruption or an explicit
 execution/completion/failure transition. No placeholder action is called in this
 mode; accepting a pure proposal does not authorise a command. Ctrl-C fails the
 trial with `INTERRUPTED` and uses existing cleanup.
-LLM/VLM selection has an acceptance entry point but no result delivery yet, so
-those CLI selections currently time out. Existing server audit processing can
+LLM/VLM results use the [selected live result delivery](live-model-inference.md#selected-singletrial-delivery) path. Existing server audit processing can
 continue; without `--route-trial` this mode never starts a route.
 
 `--route-trial` explicitly enables **real base movement**, even though selected
@@ -87,6 +87,31 @@ has a two-second bound; failure or a rejected zero command is logged as an
 unconfirmed stop. No software cancellation or zero request proves physical
 stopping. Hardware verification is still required. Later behaviour integration
 will retain this route for CONTINUE and transfer control for other actions.
+
+The separate `--single-trial --single-trial-execute` option connects acceptance
+to [`BehaviourDispatcher`](../robot/navel_client/behaviour_dispatch.py). It
+excludes decision/command dry-run, the older script executor, SDK-only, and
+print-only modes. All four production handlers currently fail as
+`BEHAVIOUR_NOT_IMPLEMENTED`; execution preflight rejects the current all-missing
+configuration before baseline movement or head tracking starts. Dry-run remains
+at DECIDED and never calls this dispatcher.
+
+Future handlers are asynchronous functions receiving the frozen decision/source,
+shared robot, `current_observation()` getter, existing `route`/`head` controls,
+and `own_task(awaitable)` for SDK tasks. Handlers must register and await their
+SDK movement/head tasks; they must not launch detached senders. CONTINUE retains
+`route.task` and baseline tracking. APPROACH, ENGAGE, and YIELD suspend/settle
+baseline head commands and cancel/settle/zero the route before handler startup.
+APPROACH/ENGAGE recheck one fresh local person then, without tying it to the
+source UID. The perception reader continues throughout execution.
+
+Execution is claimed once. EXECUTING begins inside the selected handler task;
+COMPLETED requires handler success and local task/head/base cleanup. Failure,
+cancellation, or `--behaviour-timeout` (default 120 seconds, maximum 3600)
+produces FAILED, with no restart or resumption. The decision-wait deadline applies
+only while observing. Cleanup settles registered SDK senders before zero velocity
+and precedes server/model acknowledgements. An unsettled sender is reported as
+an unconfirmed stop; physical stopping has not been hardware-verified.
 
 Accepted raw frames still print to stdout. On stderr, a first valid decision
 or a changed decision/target produces a line such as:

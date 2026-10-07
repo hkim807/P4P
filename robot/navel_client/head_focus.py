@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import asyncio
+import inspect
 import logging
 import time
 from collections.abc import Callable
@@ -42,6 +44,7 @@ class HeadFocusController:
         self.select_first_visible = select_first_visible
         self.last_command_at = -float("inf")
         self.suspended = False
+        self._command_task = None
         self.uid: int | None = None
         self.last_seen_at: float | None = None
         self.next_retry_at = 0.0
@@ -120,12 +123,27 @@ class HeadFocusController:
         self.last_seen_at = now
         self.last_command_at = now
         logger.info("head_focus=acquired uid=%s magnitude=%s", uid, self.magnitude)
+        if inspect.isawaitable(command):
+            self._command_task = asyncio.ensure_future(command)
+            return self._command_task
         return command
 
     def suspend(self) -> None:
         """Yield baseline head ownership to a future behaviour controller."""
         self.suspended = True
         self.stop()
+
+    async def suspend_and_settle(self) -> None:
+        """Prevent new baseline commands and settle an in-flight SDK command."""
+        self.suspend()
+        task = self._command_task
+        if task is not None:
+            if not task.done() and not getattr(task, "cancelling", lambda: 0)():
+                task.cancel()
+            done, _ = await asyncio.wait([task], timeout=2.0)
+            if not done:
+                raise RuntimeError("baseline head command did not settle")
+            await asyncio.gather(task, return_exceptions=True)
 
     def tick(self) -> None:
         """Expire local selection if perception stops delivering frames."""

@@ -47,6 +47,11 @@ class SingleTrial:
         return self._source
 
     @property
+    def current_observation(self):
+        """Latest robot-local frame, independent of the frozen decision source."""
+        return self._local_observation
+
+    @property
     def terminal(self):
         return self.phase in {"COMPLETED", "FAILED"}
 
