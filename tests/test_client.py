@@ -246,13 +246,13 @@ class ClientTests(unittest.IsolatedAsyncioTestCase):
                         "social_state": {
                             "state_id": state_id, "session_id": "session-a",
                             "robot_timestamp_us": observation["timestamp"],
-                            "people": [{"visibility": "OBSERVED", "evidence": {
+                            "people": [{"visibility": "OBSERVED", "gaze_state": "SUSTAINED", "evidence": {
                                 "latest_distance_valid": True, "gaze_valid": True}}]},
                         "policy_decision": {
-                            "decision_id": f"{state_id}:social-rules-v1", "source_state_id": state_id,
-                            "session_id": "session-a", "policy_version": "social-rules-v1",
-                            "decision": "CONTINUE" if outcome == "decision" else "DEFER",
-                            "reason_code": "TEST", "target_uid": None, "target_track_epoch": None},
+                            "decision_id": f"{state_id}:social-rules-v2", "source_state_id": state_id,
+                            "session_id": "session-a", "policy_version": "social-rules-v2",
+                            "decision": "CONTINUE",
+                            "reason_code": "TEST", "target_uid": None, "target_track_epoch": None} if outcome == "decision" else None,
                         "final_decision": ({"action": "CONTINUE", "reason": "Keep going."}
                                            if outcome == "decision" else None),
                     })

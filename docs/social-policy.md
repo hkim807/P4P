@@ -1,10 +1,10 @@
-# First rule policy
+# Four-action rule policy
 
-`app.policy.rules.decide` evaluates one SocialState and returns a `PolicyDecision`.
+`app.policy.rules.decide` classifies one eligible SocialState and returns a `PolicyDecision`.
 It is stateless and deterministic. The live receiver includes the decision under
 `policy_decision` in each successful social response. `python -m app.decide`
 applies the same function to a SocialState JSONL file and writes one decision
-per state. Neither path issues a robot command.
+or observation status per state. Neither path issues a robot command.
 
 The result includes `decision_id`, `source_state_id`, `session_id`,
 `policy_version`, `decision`, `reason_code`, and an optional target UID/epoch.
@@ -12,7 +12,7 @@ Only `APPROACH` and `ENGAGE` identify a target. The output contract is
 [`schemas/v1/policy-decision.schema.json`](../schemas/v1/policy-decision.schema.json).
 
 Final outputs share the strict `FinalDecision` model in
-`app.domain.model_decision`: `{"action":"CONTINUE","reason":"No person is visible."}`.
+`app.domain.model_decision`: `{"action":"CONTINUE","reason":"Usable gaze evidence does not show sustained attention."}`.
 The four actions are:
 
 - `CONTINUE`: complete the remaining fixed route without approaching or initiating interaction.
@@ -21,39 +21,40 @@ The four actions are:
 - `YIELD`: temporarily move aside and backwards to give room to pass, then remain stopped
   there without automatically returning to the route. Manoeuvre parameters remain for later work.
 
-`normalise_rule_decision` supplies an English reason. Live responses add
-`final_decision` beside the unchanged `policy_decision`; `app.decide` replay rows
-add it beside the existing rule fields. `DEFER` produces `final_decision: null`,
-with its reason code and provenance retained in those fields. LLM/VLM envelopes
-keep their existing `decision` field with the same action/reason shape. `STOP`
-and `DEFER` are rejected as final actions; errors never become fallback actions.
-Target-lock and command consumers continue to use their existing metadata.
+`normalise_rule_decision` supplies an English reason for every rule action;
+DEFER and STOP are rejected in both rule and final contracts. Live and
+`app.decide` replay results carry `policy_decision`, `final_decision`, and
+`policy_readiness`. An unready observation has status OBSERVING and a reason
+code, with both decisions null: the policy was not invoked. Processing errors
+and decision timeouts remain statuses. LLM/VLM outputs and inputs are unchanged.
 
-Rules run in this order:
+Readiness requires exactly one currently observed person, valid current distance
+and usable NONE/INTERMITTENT/SUSTAINED gaze with existing coverage and category
+dwell, plus valid processing and freshness. No person, multiple people, invalid
+distance or UNKNOWN gaze keep observing. No stationary-window, human-motion,
+identity-lock or distance-trend prerequisite is added.
 
-1. A failed processing status or stale state gives `DEFER`. Callers supply those
-   conditions to the pure function. The current live receiver only evaluates
-   freshly accepted states; a separate stream-loss watchdog remains to be built.
-2. More than one visible person gives `DEFER`. No visible person gives `CONTINUE`.
-   Temporarily missing tracks cannot become targets.
-3. A person in `TOO_CLOSE`, or without a valid current distance zone, gives
-   `DEFER`.
-4. Valid `NONE` gaze or valid `AWAY` human radial motion gives `CONTINUE`.
-5. `SUSTAINED` gaze with valid `TOWARD` or `STATIONARY` human radial motion gives
-   `ENGAGE` in `INTERACTION_RANGE`, or `APPROACH` in `APPROACHABLE`.
-6. Other cases give `DEFER`, including `UNKNOWN` human motion, intermittent or
-   unknown gaze, and a person in `FAR`.
+Eligible `social-rules-v2` observations use this order:
 
-The policy checks cue validity as well as category names. It never emits `YIELD`:
-the current SocialState has no verified route-conflict input. This initial rule
-does not lock a target, manage cooldown, or deduplicate repeated decisions.
-The [target lock layer](target-lock.md) binds a logical lock to one UID/epoch at
-a time and can hand off to a new UID under guarded short-gap evidence. It
-overrides unsafe transitions during loss or ambiguity. Completion feedback and
-speech deduplication remain separate work. Repeated `ENGAGE` decisions must
-not be interpreted as repeated speech commands.
+| Evidence | Action |
+| --- | --- |
+| TOO_CLOSE | YIELD |
+| Reliable AWAY motion (valid trend and stationary measurement window) | CONTINUE |
+| SUSTAINED gaze in INTERACTION_RANGE | ENGAGE |
+| SUSTAINED gaze in APPROACHABLE | APPROACH |
+| Other eligible cases, including NONE/INTERMITTENT or FAR | CONTINUE |
 
-Replay of the seven pilot recordings shows why these are provisional decisions:
+TOO_CLOSE uses the existing threshold/hysteresis. Its YIELD rule is a provisional
+study assumption to give space, not evidence of crossing or route obstruction.
+Relative closing while the robot moves leaves human motion UNKNOWN; gaze-based
+decisions still work. No ego-motion compensation or physical handler is added.
+The target-lock wire contract is `target-lock-v3`: identity/rebind/cooldown holds
+have `execution_status: HOLD`, a `hold_reason` and `effective_decision: null`;
+they never invent an action. Target availability and command checks remain.
+SingleTrial accepts fresh pure proposals independently of execution holds; route
+trials retain temporary stop-on-decision behaviour and finish at DECIDED.
+
+Historical replay under `social-rules-v1` shows why these are provisional decisions:
 recording 04 (named no gaze) produces 3 `APPROACH` frames; recording 05 (named
 eye-only intermittent gaze) produces 65 `ENGAGE` frames; recording 07 (named
 moving away) produces 5 `ENGAGE` frames. The filenames describe intended test

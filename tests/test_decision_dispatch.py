@@ -26,12 +26,13 @@ def response_for(observation, sequence, decision="APPROACH", target=True):
         "social_state": {
             "state_id": state_id, "session_id": "session-a",
             "robot_timestamp_us": observation["timestamp"],
-            "people": [{"uid": 17, "track_epoch": 1, "visibility": "OBSERVED"}],
+            "people": [{"uid": 17, "track_epoch": 1, "visibility": "OBSERVED",
+                        "gaze_state": "SUSTAINED", "evidence": {"latest_distance_valid": True, "gaze_valid": True}}],
         },
         "policy_decision": {
-            "decision_id": f"{state_id}:social-rules-v1",
+            "decision_id": f"{state_id}:social-rules-v2",
             "source_state_id": state_id, "session_id": "session-a",
-            "policy_version": "social-rules-v1", "decision": decision,
+            "policy_version": "social-rules-v2", "decision": decision,
             "reason_code": "TEST", "target_uid": uid, "target_track_epoch": epoch,
         },
     }
@@ -52,9 +53,6 @@ class RecordingHandlers(DryRunHandlers):
 
     async def yield_route(self, decision):
         self.calls.append(("YIELD", decision.target_uid))
-
-    async def observe(self, decision):
-        self.calls.append(("DEFER", decision.target_uid))
 
     async def cancel_active(self, decision, reason):
         self.calls.append(("CANCEL", reason))
@@ -86,8 +84,12 @@ class DecisionDispatchTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(self.handlers.calls[-2:], [("CANCEL", "decision_changed"), ("ENGAGE", 17)])
         fourth = sample(13)
         self.now_us = fourth["timestamp"] + 1000
-        self.assertTrue(await self.dispatcher.accept(response_for(fourth, 4, "DEFER", False), fourth))
-        self.assertEqual(self.handlers.calls[-2:], [("CANCEL", "decision_changed"), ("DEFER", None)])
+        held = response_for(fourth, 4, "CONTINUE", False)
+        held["policy_decision"] = None
+        self.assertFalse(await self.dispatcher.accept(held, fourth))
+        self.assertEqual(self.handlers.calls[-1], ("CANCEL", "observation_or_execution_hold"))
+        with self.assertRaises(DecisionRejected):
+            parse_decision(response_for(fourth, 4, "DEFER", False), fourth, self.now_us, 1_000_000)
 
     async def test_rejects_stale_mismatched_target_and_changed_session(self):
         observation = sample(10)
@@ -192,7 +194,7 @@ class DecisionDispatchTests(unittest.IsolatedAsyncioTestCase):
         payload["social_state"]["people"] = []
         self.assertFalse(trial.accept_rule_response(payload, {**observation, "people": []}))
         self.assertFalse(trial.ready)
-        payload["social_state"]["people"] = [{"visibility": "OBSERVED", "evidence": {
+        payload["social_state"]["people"] = [{"visibility": "OBSERVED", "gaze_state": "SUSTAINED", "evidence": {
             "latest_distance_valid": True, "gaze_valid": True, "distance_trend_valid": False}}]
         payload["policy_decision"]["decision"] = "DEFER"
         payload["final_decision"] = None
@@ -201,7 +203,7 @@ class DecisionDispatchTests(unittest.IsolatedAsyncioTestCase):
         source = {**payload["policy_decision"], "source_robot_timestamp_us": observation["timestamp"]}
         final = {"action": "CONTINUE", "reason": "No attention."}
         self.assertFalse(trial.accept_decision("llm", final, source))
-        for invalid in ({**final, "uid": 17}, {**final, "action": "STOP"}, {**final, "reason": " "}):
+        for invalid in ({**final, "uid": 17}, {**final, "action": "STOP"}, {**final, "action": "DEFER"}, {**final, "reason": " "}):
             self.assertFalse(trial.accept_decision("rules", invalid, source))
         payload["policy_decision"]["decision"] = "CONTINUE"
         payload["final_decision"] = final

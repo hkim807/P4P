@@ -13,7 +13,7 @@ from app.policy.rules import PolicyDecision
 from app.state.social_models import SocialState, StrictModel
 
 
-LOCK_VERSION = "target-lock-v2"
+LOCK_VERSION = "target-lock-v3"
 
 
 class LockConfig(StrictModel):
@@ -50,8 +50,8 @@ class EffectiveDecision(StrictModel):
     decision_id: str
     source_state_id: str
     session_id: str
-    policy_version: Literal["target-lock-v2"] = LOCK_VERSION
-    decision: Literal["CONTINUE", "APPROACH", "ENGAGE", "YIELD", "DEFER"]
+    policy_version: Literal["target-lock-v3"] = LOCK_VERSION
+    decision: Literal["CONTINUE", "APPROACH", "ENGAGE", "YIELD"]
     reason_code: str
     target_uid: int | None = Field(default=None, ge=0)
     target_track_epoch: int | None = Field(default=None, ge=1)
@@ -60,7 +60,7 @@ class EffectiveDecision(StrictModel):
 
 class TargetLockState(StrictModel):
     schema_version: int = 1
-    lock_version: Literal["target-lock-v2"] = LOCK_VERSION
+    lock_version: Literal["target-lock-v3"] = LOCK_VERSION
     config_version: str
     source_state_id: str
     session_id: str
@@ -75,7 +75,9 @@ class TargetLockState(StrictModel):
     bound_tracks: list[dict[str, int]]
     expires_at_us: int | None
     events: list[str]
-    effective_decision: EffectiveDecision
+    execution_status: Literal["READY", "HOLD"]
+    hold_reason: str | None
+    effective_decision: EffectiveDecision | None
 
 
 class TargetLockController:
@@ -131,10 +133,11 @@ class TargetLockController:
                      + self.config.rebind_max_relative_speed_mps * delta_us / 1_000_000)
         return abs(distance - previous) <= allowance
 
-    def update(self, state: SocialState | dict, proposal: PolicyDecision | dict) -> TargetLockState:
+    def update(self, state: SocialState | dict, proposal: PolicyDecision | dict | None,
+               *, hold_reason: str | None = None) -> TargetLockState:
         state = SocialState.model_validate(state)
-        proposal = PolicyDecision.model_validate(proposal)
-        if proposal.source_state_id != state.state_id or proposal.session_id != state.session_id:
+        proposal = PolicyDecision.model_validate(proposal) if proposal is not None else None
+        if proposal is not None and (proposal.source_state_id != state.state_id or proposal.session_id != state.session_id):
             raise ValueError("policy proposal does not match social state")
         if state.session_id != self.session_id:
             self.__init__(self.config)
@@ -150,8 +153,8 @@ class TargetLockController:
         self.pending_events = []
         candidate = None
         status = "UNLOCKED"
-        reason = proposal.reason_code
-        decision = proposal.decision
+        reason = proposal.reason_code if proposal is not None else hold_reason or "OBSERVATION_NOT_READY"
+        decision = proposal.decision if proposal is not None else None
         decision_target = None
         released_this_frame = False
 
@@ -159,7 +162,7 @@ class TargetLockController:
                 and now - previous_timestamp > round(self.config.missing_hold_s * 1_000_000)):
             self._release(now, events, "RELEASED_STREAM_GAP")
             released_this_frame = True
-            status, decision, reason = "COOLDOWN", "DEFER", "LOCK_COOLDOWN"
+            status, decision, reason = "COOLDOWN", None, "LOCK_COOLDOWN"
 
         if self.key is not None:
             if self.key in visible:
@@ -168,15 +171,17 @@ class TargetLockController:
                 self._clear_candidate()
                 self.gap_contaminated = len(visible) > 1
                 status = "LOCKED"
-                if proposal.decision == "CONTINUE" and proposal.reason_code in ("NO_ATTENTION", "PERSON_MOVING_AWAY"):
+                if proposal is not None and proposal.decision == "CONTINUE" and proposal.reason_code in ("NO_ATTENTION", "PERSON_MOVING_AWAY"):
                     self._release(now, events, "RELEASED_BY_POLICY")
                     released_this_frame = True
-                    status, decision, reason = "COOLDOWN", "DEFER", "LOCK_COOLDOWN"
-                elif (proposal.decision in ("APPROACH", "ENGAGE")
+                    status, decision, reason = "COOLDOWN", None, "LOCK_COOLDOWN"
+                elif (proposal is not None and proposal.decision in ("APPROACH", "ENGAGE")
                       and (proposal.target_uid, proposal.target_track_epoch) == self.key):
                     decision_target = self.key
+                elif proposal is not None and proposal.decision == "YIELD":
+                    pass
                 else:
-                    decision, reason = "DEFER", proposal.reason_code
+                    decision = None
             elif now - self.last_seen_us < round(self.config.missing_hold_s * 1_000_000):
                 if len(visible) == 1:
                     candidate = next(iter(visible))
@@ -235,7 +240,7 @@ class TargetLockController:
                             self.last_distance_m = person.latest_distance_m
                             self.bound_tracks.append({"uid": candidate[0], "track_epoch": candidate[1]})
                             self._clear_candidate()
-                            status, decision, reason = "LOCKED", "DEFER", "UID_REBOUND_OBSERVE"
+                            status, decision, reason = "LOCKED", None, "UID_REBOUND_OBSERVE"
                             events.append("REBOUND")
                             candidate = None
                 elif len(visible) > 1:
@@ -245,24 +250,24 @@ class TargetLockController:
                 else:
                     status, reason = "MISSING", "LOCKED_TARGET_MISSING"
                     self._clear_candidate()
-                decision = "DEFER"
+                decision = None
                 if status != "LOCKED" and status != self.status:
                     events.append(status)
             else:
                 self._release(now, events, "RELEASED_MISSING_TIMEOUT")
                 released_this_frame = True
-                status, decision, reason = "COOLDOWN", "DEFER", "LOCK_COOLDOWN"
+                status, decision, reason = "COOLDOWN", None, "LOCK_COOLDOWN"
 
         if self.key is None:
             if released_this_frame or (self.cooldown_until_us is not None and now < self.cooldown_until_us):
-                status, decision, reason = "COOLDOWN", "DEFER", "LOCK_COOLDOWN"
+                status, decision, reason = "COOLDOWN", None, "LOCK_COOLDOWN"
             else:
                 if self.cooldown_until_us is not None:
                     events.append("COOLDOWN_EXPIRED")
                     self.cooldown_until_us = None
                     self.lock_id = None
                     self.bound_tracks = []
-                if len(visible) == 1 and not (proposal.decision == "CONTINUE" and proposal.reason_code in ("NO_ATTENTION", "PERSON_MOVING_AWAY")):
+                if len(visible) == 1 and not (proposal is not None and proposal.decision == "CONTINUE" and proposal.reason_code in ("NO_ATTENTION", "PERSON_MOVING_AWAY")):
                     self.counter += 1
                     self.lock_id = f"{state.session_id}:lock:{self.counter}"
                     self.key = next(iter(visible))
@@ -273,11 +278,11 @@ class TargetLockController:
                     self._clear_candidate()
                     events.append("ACQUIRED")
                     status = "LOCKED"
-                    if (proposal.decision in ("APPROACH", "ENGAGE")
+                    if (proposal is not None and proposal.decision in ("APPROACH", "ENGAGE")
                             and (proposal.target_uid, proposal.target_track_epoch) == self.key):
                         decision_target = self.key
-                    else:
-                        decision, reason = "DEFER", proposal.reason_code
+                    elif proposal is None or proposal.decision != "YIELD":
+                        decision = None
                 elif status != "COOLDOWN":
                     status = "UNLOCKED"
 
@@ -294,7 +299,7 @@ class TargetLockController:
             target_uid=decision_target[0] if decision_target else None,
             target_track_epoch=decision_target[1] if decision_target else None,
             lock_id=self.lock_id,
-        )
+        ) if decision is not None else None
         self.status = status
         return TargetLockState(
             config_version=self.config.version, source_state_id=state.state_id,
@@ -302,6 +307,8 @@ class TargetLockController:
             status=status, lock_id=self.lock_id,
             target_uid=self.key[0] if self.key else None,
             target_track_epoch=self.key[1] if self.key else None,
+            execution_status="READY" if effective is not None else "HOLD",
+            hold_reason=reason if effective is None else None,
             candidate_uid=candidate[0] if candidate else None,
             candidate_track_epoch=candidate[1] if candidate else None,
             candidate_frames=self.candidate_frames,

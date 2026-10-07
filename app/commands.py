@@ -76,6 +76,8 @@ class CommandPlanner:
         elif self.session_id != state.session_id:
             raise ValueError("command planner cannot cross sessions")
         effective = lock["effective_decision"]
+        if effective is None or lock.get("execution_status") != "READY":
+            return None
         action = effective["decision"]
         if (lock["status"] != "LOCKED" or action not in ("APPROACH", "ENGAGE")
                 or lock["source_state_id"] != state.state_id

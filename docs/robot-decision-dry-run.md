@@ -38,11 +38,11 @@ Add `--single-trial` to latch one final result from `--single-trial-policy rules
 (the default). `--decision-wait-timeout 30` sets the provisional local monotonic
 deadline; expiry fails with `NO_DECISION_TIMEOUT` and exits with status 1.
 Acceptance requires exactly one currently observed person in the local frame
-and matching SocialState, fresh within `--max-decision-age`. Rules/LLM also need
-`latest_distance_valid` and either `gaze_valid` or `distance_trend_valid`; these
+and matching SocialState, fresh within `--max-decision-age`. Rules need `latest_distance_valid`, `gaze_valid` and a usable gaze category.
+LLM retains its existing gaze-or-distance-trend evidence check; these
 reuse the estimator's evidence minima, without requiring its full rolling window
 or stationary robot motion. VLM needs only the current single-person observation.
-`DEFER`/null keeps observing. A result freezes at `DECIDED`, disables further
+Null decisions keep observing; DEFER is rejected as an action. A result freezes at `DECIDED`, disables further
 acceptance, and keeps perception running until interruption or an explicit
 execution/completion/failure transition. No placeholder action is called in this
 mode; accepting a pure proposal does not authorise a command. Ctrl-C fails the

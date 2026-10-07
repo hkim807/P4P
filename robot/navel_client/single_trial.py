@@ -82,11 +82,14 @@ class SingleTrial:
         evidence = observed[0].get("evidence", {})
         if not isinstance(evidence, Mapping):
             return
+        gaze_ready = evidence.get("gaze_valid") is True
+        if self.policy == "rules":
+            gaze_ready = gaze_ready and observed[0].get("gaze_state") in ("NONE", "INTERMITTENT", "SUSTAINED")
+        cue_ready = gaze_ready if self.policy == "rules" else gaze_ready or evidence.get("distance_trend_valid") is True
         self.ready = (self.phase == "OBSERVING" and 0 <= self.monotonic_us() - timestamp <= self.max_age_us
                       and (self.policy == "vlm" or (
                           evidence.get("latest_distance_valid") is True
-                          and (evidence.get("gaze_valid") is True
-                               or evidence.get("distance_trend_valid") is True))))
+                          and cue_ready)))
 
     def accept_decision(self, policy, decision, source):
         """Later model delivery must supply the exact observed source metadata.
@@ -102,7 +105,7 @@ class SingleTrial:
                 or not 0 <= self.monotonic_us() - self._latest_source["source_robot_timestamp_us"] <= self.max_age_us):
             return False
         if (not isinstance(decision, Mapping) or set(decision) != {"action", "reason"}
-                or not isinstance(decision["action"], str) or decision["action"] not in DECISIONS - {"DEFER"}
+                or not isinstance(decision["action"], str) or decision["action"] not in DECISIONS
                 or not isinstance(decision["reason"], str) or not decision["reason"].strip()):
             return False
         metadata = {**self._latest_source, "policy": policy}
@@ -128,7 +131,7 @@ class SingleTrial:
         except DecisionRejected:
             return False
         final = payload.get("final_decision")
-        if not isinstance(final, Mapping) or final.get("action") != parsed.decision:
+        if parsed is None or not isinstance(final, Mapping) or final.get("action") != parsed.decision:
             return False
         return self.accept_decision("rules", final, {
             **payload["policy_decision"], "source_robot_timestamp_us": observation["timestamp"],

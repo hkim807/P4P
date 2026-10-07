@@ -3,7 +3,7 @@ from threading import Lock
 
 from app.commands import CommandConfig, CommandPlanner, ExecutionEvent
 from app.pipeline import TrackingPipeline, TrackTraceWriter, TrackingProcessingError
-from app.policy.rules import decide, normalise_rule_decision
+from app.policy.rules import decide, normalise_rule_decision, rule_readiness
 from app.policy.target_lock import LockConfig, TargetLockController
 from app.state.estimator import SocialStateEstimator
 from app.state.social_models import TemporalConfig
@@ -43,12 +43,15 @@ class SocialPipeline:
                 except Exception as error:
                     raise TrackingProcessingError("social_trace_write") from error
             try:
-                proposal = decide(state).model_dump(mode="json")
-                final_decision = normalise_rule_decision(proposal)
+                hold_reason = rule_readiness(state)
+                readiness = {"status": "OBSERVING" if hold_reason else "READY",
+                             "reason_code": hold_reason}
+                proposal = decide(state).model_dump(mode="json") if hold_reason is None else None
+                final_decision = normalise_rule_decision(proposal) if proposal is not None else None
             except Exception as error:
                 raise TrackingProcessingError("policy_decision") from error
             try:
-                target_lock = self.lock.update(state, proposal).model_dump(mode="json")
+                target_lock = self.lock.update(state, proposal, hold_reason=hold_reason).model_dump(mode="json")
             except Exception as error:
                 raise TrackingProcessingError("target_lock") from error
             if self.lock_trace is not None:
@@ -66,6 +69,7 @@ class SocialPipeline:
                 except Exception as error:
                     raise TrackingProcessingError("command_trace_write") from error
             return {**snapshot, "social_state": state, "policy_decision": proposal,
+                    "policy_readiness": readiness,
                     "final_decision": final_decision.model_dump(mode="json") if final_decision else None,
                     "target_lock": target_lock, "robot_command": command}
 

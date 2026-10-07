@@ -32,6 +32,8 @@ def parse_command(payload: Mapping[str, Any], observation: Mapping[str, Any],
     command = payload.get("robot_command")
     if command is None:
         return None
+    if decision is None:
+        raise CommandRejected("command_not_authorized_during_hold")
     if not isinstance(command, Mapping):
         raise CommandRejected("command_not_object")
     required_strings = ("command_id", "session_id", "lock_id", "source_state_id",
@@ -69,7 +71,7 @@ def parse_command(payload: Mapping[str, Any], observation: Mapping[str, Any],
         # The first response carrying a command may be lost; accept its later
         # retransmission only while the same lock still authorizes that action.
         if (command["source_state_id"] != f"{decision.session_id}:{command['source_frame_sequence']}"
-                or command["source_decision_id"] != f"{command['source_state_id']}:target-lock-v2"
+                or command["source_decision_id"] != f"{command['source_state_id']}:target-lock-v3"
                 or (command["source_frame_sequence"] == social["ingest_sequence"]
                     and command["source_robot_timestamp_us"] != observation["timestamp"])):
             raise CommandRejected("new_command_source_mismatch")
