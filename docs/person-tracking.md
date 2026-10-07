@@ -17,7 +17,7 @@ See the [generated validation report](results/person-tracking/report.md) and
 | --- | --- |
 | `app/state/tracks.py` | Pure UID history manager, validated configuration, acquisition/missing/reacquisition/loss events, bounded retention |
 | `app/pipeline.py` | Shared offline/live tracking entry point, ordered raw persistence and trace writing |
-| `app/track.py` | Replay one recording into an inspectable JSONL track trace; console summary on stderr |
+| `app/replay/track.py` | Replay one recording into an inspectable JSONL track trace; console summary on stderr |
 | `app/validate_tracking.py` | Audit source fidelity, lifecycle bounds, replay determinism, and grace-period sensitivity; generate reports and hashes |
 | `config/person-tracking.json` | Explicit development defaults, also embedded in every snapshot |
 | `app/server.py` | Optional tracking on the existing HTTP receiver via `--tracking-output` |

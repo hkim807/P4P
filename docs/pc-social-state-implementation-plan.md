@@ -37,7 +37,7 @@ On `feature/navel-raw-http-stream`, the current implementation contains:
 - `app/server.py`: HTTP ingestion and recording, with acceptance acknowledgements.
 - `app/recording.py`: ordered JSONL writing and validated streaming reading;
   duplicate/backward timestamps are rejected and existing files are not reused.
-- `app/replay.py`: local playback or optional HTTP replay, preserving sensor
+- `app/replay/__init__.py`: local playback or optional HTTP replay, preserving sensor
   timestamps and supporting original-speed, accelerated, or immediate playback.
 
 One recording/receiver run currently represents one robot session. Explicit
@@ -159,7 +159,7 @@ later experiment requiring reliable yaw and geometry.
 | 4. Interaction policy | Apply rule table, observation state, target lock, and cooldown | `SocialState` + policy context -> `BehaviorIntent` or defer | `app/policy/rules.py`, `app/policy/session.py` |
 | 5a. Intent/command validation | Check target, age, action requirements, mode, and capability; construct bounded commands | Intent + newest state -> command or rejection | `app/commands/validator.py`, `app/commands/service.py` |
 | 5b. Robot executor | Own route pause/resume, local checks, SDK actions, cancellation, and watchdog | Command -> execution events | `robot/navel_client/execution/` |
-| Recording/replay | Record correlated stages and replay through identical PC logic | Envelopes/events -> reproducible traces | Existing `app/recording.py`, `app/replay.py`; separate derived-trace writer |
+| Recording/replay | Record correlated stages and replay through identical PC logic | Envelopes/events -> reproducible traces | Existing `app/recording.py`, `app/replay/__init__.py`; separate derived-trace writer |
 
 Put thresholds and timing in a versioned PC configuration file such as
 `config/social-policy.json`. The sensor adapter should not gain gaze or engagement
@@ -334,7 +334,7 @@ not yet answer whether a person wants an interaction.
 Implemented files are `app/state/tracks.py`, `tests/test_tracks.py`, and the
 shared PC processing entry point `app/pipeline.py`. `app.track` emits replay
 snapshots; `app.validate_tracking` reproduces the seven-recording audit. The
-existing `app/recording.py` and `app/replay.py` remain the foundation. Tracking
+existing `app/recording.py` and `app/replay/__init__.py` remain the foundation. Tracking
 has no Flask, Navel SDK, or actuator dependency. See the design record for
 effective defaults and operation; the original acceptance contract follows.
 

@@ -1,0 +1,2559 @@
+{
+  "analysis_date": "2026-10-06",
+  "scope": "All 27 S1-S5 JSONL files; 517 raw frames. Person cue counts exclude UID 0 and temporarily missing tracks. Pure policy recomputed from recorded social states; effective decisions taken from lock traces.",
+  "scenarios": {
+    "S1-pass-by-01": {
+      "frames": 105,
+      "duration_s": 10.473,
+      "dt_s": {
+        "n": 104,
+        "min": 0.082,
+        "median": 0.0851,
+        "max": 0.1658
+      },
+      "gaps_gt_250ms": 0,
+      "empty_frames": 65,
+      "multi_person_frames": 0,
+      "uids": {
+        "0": {
+          "observations": 3,
+          "first_s": 2.794,
+          "last_s": 3.888,
+          "distance": {
+            "n": 3,
+            "min": 1.5849,
+            "median": 2.1292,
+            "max": 2.2861
+          },
+          "gaze": {
+            "n": 3,
+            "min": 0.9572,
+            "median": 0.9593,
+            "max": 0.9638
+          },
+          "gaze_null": 0,
+          "gaze_ge_08": 3
+        },
+        "1732459285": {
+          "observations": 8,
+          "first_s": 1.399,
+          "last_s": 2.708,
+          "distance": {
+            "n": 8,
+            "min": 2.2414,
+            "median": 2.4454,
+            "max": 2.6284
+          },
+          "gaze": {
+            "n": 8,
+            "min": 0.9202,
+            "median": 0.9367,
+            "max": 0.9529
+          },
+          "gaze_null": 0,
+          "gaze_ge_08": 8
+        },
+        "1920266662": {
+          "observations": 27,
+          "first_s": 0.0,
+          "last_s": 3.804,
+          "distance": {
+            "n": 27,
+            "min": 1.6703,
+            "median": 2.5215,
+            "max": 2.6884
+          },
+          "gaze": {
+            "n": 27,
+            "min": 0.9195,
+            "median": 0.9451,
+            "max": 0.9748
+          },
+          "gaze_null": 0,
+          "gaze_ge_08": 27
+        },
+        "2018089345": {
+          "observations": 2,
+          "first_s": 4.014,
+          "last_s": 4.099,
+          "distance": {
+            "n": 2,
+            "min": 1.4205,
+            "median": 1.5243,
+            "max": 1.6282
+          },
+          "gaze": {
+            "n": 2,
+            "min": 0.9306,
+            "median": 0.9407,
+            "max": 0.9509
+          },
+          "gaze_null": 0,
+          "gaze_ge_08": 2
+        }
+      },
+      "robot": {
+        "{'linear_velocity': 0.0, 'angular_velocity': 0.0}": 105
+      },
+      "position_observations": 0,
+      "lidar": {
+        "[0.459, 0.432]": 5,
+        "[0.461, 0.433]": 9,
+        "[0.46, 0.432]": 12,
+        "[0.461, 0.432]": 44,
+        "[0.462, 0.433]": 4,
+        "[0.458, 0.431]": 1,
+        "[0.462, 0.432]": 19,
+        "[0.46, 0.433]": 4,
+        "[0.457, 0.433]": 2,
+        "[0.458, 0.432]": 2,
+        "[0.461, 0.431]": 1,
+        "[0.457, 0.432]": 1,
+        "[0.459, 0.433]": 1
+      },
+      "sonar": {
+        "[0.0, 0.0, 0.0]": 105
+      },
+      "gaze_state": {
+        "UNKNOWN": 37
+      },
+      "distance_zone": {
+        "APPROACHABLE": 37
+      },
+      "human_radial_motion": {
+        "UNKNOWN": 34,
+        "STATIONARY": 3
+      },
+      "relative_distance_trend": {
+        "UNKNOWN": 34,
+        "STABLE": 3
+      },
+      "validity_flags": {
+        "INSUFFICIENT_GAZE_EVIDENCE": 30,
+        "INSUFFICIENT_DISTANCE_EVIDENCE": 34,
+        "GAZE_CATEGORY_PENDING_DWELL": 7
+      },
+      "distance_span": {
+        "n": 37,
+        "min": 0.0,
+        "median": 0.2957,
+        "max": 1.3145
+      },
+      "fit_residual": {
+        "n": 3,
+        "min": 0.0578,
+        "median": 0.06,
+        "max": 0.0601
+      },
+      "slope_valid": {
+        "n": 3,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 0.0
+      },
+      "tracking_events": {
+        "ACQUIRED": 5,
+        "MISSING": 10,
+        "REACQUIRED": 5,
+        "LOST": 5
+      },
+      "track_keys": [
+        [
+          0,
+          3
+        ],
+        [
+          1732459285,
+          2
+        ],
+        [
+          1920266662,
+          1
+        ],
+        [
+          1920266662,
+          4
+        ],
+        [
+          2018089345,
+          5
+        ]
+      ],
+      "policy": {
+        "('DEFER', 'GAZE_INSUFFICIENT_OR_INTERMITTENT')": 40,
+        "('CONTINUE', 'NO_VISIBLE_PERSON')": 65
+      },
+      "effective": {
+        "('DEFER', 'GAZE_INSUFFICIENT_OR_INTERMITTENT')": 18,
+        "('DEFER', 'IDENTITY_UNRESOLVED')": 1,
+        "('DEFER', 'LOCKED_TARGET_MISSING')": 2,
+        "('DEFER', 'RETURN_EVIDENCE_INSUFFICIENT')": 7,
+        "('DEFER', 'UID_ZERO_UNVERIFIED')": 3,
+        "('DEFER', 'RETURN_WINDOW_EXPIRED')": 9,
+        "('DEFER', 'LOCK_COOLDOWN')": 11,
+        "('CONTINUE', 'NO_VISIBLE_PERSON')": 54
+      },
+      "lock_status": {
+        "LOCKED": 18,
+        "TENTATIVE_RETURN": 20,
+        "MISSING": 2,
+        "COOLDOWN": 11,
+        "UNLOCKED": 54
+      },
+      "lock_events": {
+        "ACQUIRED": 1,
+        "TENTATIVE_RETURN": 2,
+        "MISSING": 1,
+        "REACQUIRED": 1,
+        "RELEASED_MISSING_TIMEOUT": 1,
+        "COOLDOWN_EXPIRED": 1
+      },
+      "commands": [],
+      "execution": [],
+      "sequences": [
+        1,
+        105
+      ],
+      "timeline": [
+        [
+          1,
+          11,
+          0.0,
+          0.98,
+          [
+            [
+              1920266662,
+              1,
+              "UNKNOWN",
+              "UNKNOWN"
+            ]
+          ]
+        ],
+        [
+          12,
+          14,
+          1.105,
+          1.314,
+          [
+            [
+              1920266662,
+              1,
+              "UNKNOWN",
+              "STATIONARY"
+            ]
+          ]
+        ],
+        [
+          15,
+          15,
+          1.399,
+          1.399,
+          [
+            [
+              1732459285,
+              2,
+              "UNKNOWN",
+              "UNKNOWN"
+            ]
+          ]
+        ],
+        [
+          16,
+          17,
+          1.483,
+          1.608,
+          []
+        ],
+        [
+          18,
+          21,
+          1.692,
+          1.988,
+          [
+            [
+              1920266662,
+              1,
+              "UNKNOWN",
+              "UNKNOWN"
+            ]
+          ]
+        ],
+        [
+          22,
+          28,
+          2.113,
+          2.708,
+          [
+            [
+              1732459285,
+              2,
+              "UNKNOWN",
+              "UNKNOWN"
+            ]
+          ]
+        ],
+        [
+          29,
+          29,
+          2.794,
+          2.794,
+          [
+            [
+              0,
+              3,
+              "UNKNOWN",
+              "UNKNOWN"
+            ]
+          ]
+        ],
+        [
+          30,
+          32,
+          2.879,
+          3.088,
+          [
+            [
+              1920266662,
+              4,
+              "UNKNOWN",
+              "UNKNOWN"
+            ]
+          ]
+        ],
+        [
+          33,
+          33,
+          3.212,
+          3.212,
+          [
+            [
+              0,
+              3,
+              "UNKNOWN",
+              "UNKNOWN"
+            ]
+          ]
+        ],
+        [
+          34,
+          39,
+          3.294,
+          3.804,
+          [
+            [
+              1920266662,
+              4,
+              "UNKNOWN",
+              "UNKNOWN"
+            ]
+          ]
+        ],
+        [
+          40,
+          40,
+          3.888,
+          3.888,
+          [
+            [
+              0,
+              3,
+              "UNKNOWN",
+              "UNKNOWN"
+            ]
+          ]
+        ],
+        [
+          41,
+          42,
+          4.014,
+          4.099,
+          [
+            [
+              2018089345,
+              5,
+              "UNKNOWN",
+              "UNKNOWN"
+            ]
+          ]
+        ],
+        [
+          43,
+          105,
+          4.183,
+          10.473,
+          []
+        ]
+      ],
+      "source_sha256": {
+        "command.jsonl": "98157d8572dea8b692594fb298e36f844bf97e76bdfe95c695d359df932cb018",
+        "lock.jsonl": "917c1b4a31e8cdc4ad829dd1f2759275b547f991ecde2ab9b1d800461e8a7b5f",
+        "raw.jsonl": "ffeccc4526b9edf92393774ae97913e6eb0db158d59ccb81b32c07aae9752a2f",
+        "social.jsonl": "05b37d36015e4174d2dc3aca0f4e6224c230fdb3116e95c76ba5858e728c9ebc",
+        "tracking.jsonl": "44bc24a7691c34bec8f71dd5fb07b5a5bf829f87274c5f11563c9f0ada261eef"
+      },
+      "verification": {
+        "schema_and_alignment_frames_checked": 105,
+        "social_replay_matches": true,
+        "social_replay_float_tolerance": 1e-12,
+        "commands_replayed_with_recorded_feedback": true,
+        "full_tracking_and_lock_replay_matches": true,
+        "full_replay_limitation": null
+      }
+    },
+    "S2-standing-gaze-01": {
+      "frames": 89,
+      "duration_s": 8.989,
+      "dt_s": {
+        "n": 88,
+        "min": 0.083,
+        "median": 0.0855,
+        "max": 0.1679
+      },
+      "gaps_gt_250ms": 0,
+      "empty_frames": 0,
+      "multi_person_frames": 12,
+      "uids": {
+        "0": {
+          "observations": 3,
+          "first_s": 2.995,
+          "last_s": 3.293,
+          "distance": {
+            "n": 3,
+            "min": 4.3765,
+            "median": 4.5566,
+            "max": 4.9161
+          },
+          "gaze": {
+            "n": 3,
+            "min": 0.9055,
+            "median": 0.9167,
+            "max": 0.9195
+          },
+          "gaze_null": 0,
+          "gaze_ge_08": 3
+        },
+        "121024494": {
+          "observations": 88,
+          "first_s": 0.0,
+          "last_s": 8.989,
+          "distance": {
+            "n": 88,
+            "min": 1.8988,
+            "median": 2.1091,
+            "max": 5.1399
+          },
+          "gaze": {
+            "n": 86,
+            "min": 0.9167,
+            "median": 0.9744,
+            "max": 0.9894
+          },
+          "gaze_null": 2,
+          "gaze_ge_08": 86
+        },
+        "601280211": {
+          "observations": 10,
+          "first_s": 1.396,
+          "last_s": 8.989,
+          "distance": {
+            "n": 10,
+            "min": 4.3765,
+            "median": 4.7056,
+            "max": 5.0875
+          },
+          "gaze": {
+            "n": 10,
+            "min": 0.8797,
+            "median": 0.9161,
+            "max": 0.9277
+          },
+          "gaze_null": 0,
+          "gaze_ge_08": 10
+        }
+      },
+      "robot": {
+        "{'linear_velocity': 0.0, 'angular_velocity': 0.0}": 89
+      },
+      "position_observations": 0,
+      "lidar": {
+        "[0.461, 0.432]": 39,
+        "[0.46, 0.433]": 2,
+        "[0.462, 0.432]": 25,
+        "[0.458, 0.432]": 1,
+        "[0.461, 0.433]": 6,
+        "[0.462, 0.433]": 4,
+        "[0.46, 0.432]": 4,
+        "[0.462, 0.431]": 1,
+        "[0.459, 0.433]": 1,
+        "[0.459, 0.432]": 5,
+        "[0.461, 0.431]": 1
+      },
+      "sonar": {
+        "[0.0, 0.0, 0.0]": 89
+      },
+      "gaze_state": {
+        "UNKNOWN": 34,
+        "SUSTAINED": 54,
+        "INTERMITTENT": 10
+      },
+      "distance_zone": {
+        "APPROACHABLE": 80,
+        "FAR": 9,
+        "UNKNOWN": 9
+      },
+      "human_radial_motion": {
+        "UNKNOWN": 61,
+        "STATIONARY": 37
+      },
+      "relative_distance_trend": {
+        "UNKNOWN": 61,
+        "STABLE": 37
+      },
+      "validity_flags": {
+        "INSUFFICIENT_GAZE_EVIDENCE": 22,
+        "INSUFFICIENT_DISTANCE_EVIDENCE": 61,
+        "GAZE_CATEGORY_PENDING_DWELL": 12,
+        "GAZE_UNAVAILABLE": 2,
+        "DISTANCE_UNAVAILABLE_OR_JUMP": 9,
+        "DISTANCE_SEGMENT_BROKEN_BY_JUMP": 42
+      },
+      "distance_span": {
+        "n": 98,
+        "min": 0.0,
+        "median": 0.6976,
+        "max": 1.9803
+      },
+      "fit_residual": {
+        "n": 37,
+        "min": 0.0301,
+        "median": 0.0707,
+        "max": 0.0999
+      },
+      "slope_valid": {
+        "n": 37,
+        "min": -0.0892,
+        "median": 0.0,
+        "max": 0.0515
+      },
+      "tracking_events": {
+        "LOST": 6,
+        "ACQUIRED": 6,
+        "MISSING": 11,
+        "REACQUIRED": 7
+      },
+      "track_keys": [
+        [
+          0,
+          7
+        ],
+        [
+          121024494,
+          5
+        ],
+        [
+          601280211,
+          6
+        ],
+        [
+          601280211,
+          8
+        ],
+        [
+          601280211,
+          9
+        ],
+        [
+          601280211,
+          10
+        ]
+      ],
+      "policy": {
+        "('DEFER', 'GAZE_INSUFFICIENT_OR_INTERMITTENT')": 30,
+        "('DEFER', 'MULTIPLE_VISIBLE_PEOPLE')": 12,
+        "('APPROACH', 'SUSTAINED_GAZE_IN_APPROACHABLE_RANGE')": 26,
+        "('DEFER', 'DISTANCE_UNKNOWN')": 6,
+        "('DEFER', 'HUMAN_MOTION_UNKNOWN')": 15
+      },
+      "effective": {
+        "('DEFER', 'LOCK_COOLDOWN')": 10,
+        "('DEFER', 'GAZE_INSUFFICIENT_OR_INTERMITTENT')": 19,
+        "('DEFER', 'MULTIPLE_VISIBLE_PEOPLE')": 12,
+        "('APPROACH', 'SUSTAINED_GAZE_IN_APPROACHABLE_RANGE')": 26,
+        "('DEFER', 'UID_ZERO_UNVERIFIED')": 1,
+        "('DEFER', 'DISTANCE_UNKNOWN')": 6,
+        "('DEFER', 'HUMAN_MOTION_UNKNOWN')": 15
+      },
+      "lock_status": {
+        "COOLDOWN": 10,
+        "LOCKED": 78,
+        "TENTATIVE_RETURN": 1
+      },
+      "lock_events": {
+        "RELEASED_STREAM_GAP": 1,
+        "COOLDOWN_EXPIRED": 1,
+        "ACQUIRED": 1,
+        "TENTATIVE_RETURN": 1,
+        "REACQUIRED": 1
+      },
+      "commands": [
+        {
+          "action": "APPROACH",
+          "command_id": "live-fdb92b88173348aa8c932e113299067e:lock:2:APPROACH:121024494:5",
+          "command_version": "robot-command-v1",
+          "execution_lease_us": 2000000,
+          "expires_at_robot_us": 15934415068,
+          "lock_id": "live-fdb92b88173348aa8c932e113299067e:lock:2",
+          "schema_version": 1,
+          "session_id": "live-fdb92b88173348aa8c932e113299067e",
+          "source_decision_id": "live-fdb92b88173348aa8c932e113299067e:142:target-lock-v2",
+          "source_frame_sequence": 142,
+          "source_robot_timestamp_us": 15933415068,
+          "source_state_id": "live-fdb92b88173348aa8c932e113299067e:142",
+          "target_track_epoch": 5,
+          "target_uid": 121024494
+        }
+      ],
+      "execution": [
+        {
+          "command_id": "live-fdb92b88173348aa8c932e113299067e:lock:2:APPROACH:121024494:5",
+          "event_id": "live-fdb92b88173348aa8c932e113299067e:lock:2:APPROACH:121024494:5:1",
+          "event_version": "execution-event-v1",
+          "lock_id": "live-fdb92b88173348aa8c932e113299067e:lock:2",
+          "reason": "COMMAND_VALIDATED",
+          "robot_timestamp_us": 15933480248,
+          "schema_version": 1,
+          "sequence": 1,
+          "session_id": "live-fdb92b88173348aa8c932e113299067e",
+          "source_state_id": "live-fdb92b88173348aa8c932e113299067e:142",
+          "status": "RECEIVED"
+        },
+        {
+          "command_id": "live-fdb92b88173348aa8c932e113299067e:lock:2:APPROACH:121024494:5",
+          "event_id": "live-fdb92b88173348aa8c932e113299067e:lock:2:APPROACH:121024494:5:2",
+          "event_version": "execution-event-v1",
+          "lock_id": "live-fdb92b88173348aa8c932e113299067e:lock:2",
+          "reason": "NO_PHYSICAL_ACTION",
+          "robot_timestamp_us": 15933480248,
+          "schema_version": 1,
+          "sequence": 2,
+          "session_id": "live-fdb92b88173348aa8c932e113299067e",
+          "source_state_id": "live-fdb92b88173348aa8c932e113299067e:142",
+          "status": "SIMULATED"
+        }
+      ],
+      "sequences": [
+        127,
+        215
+      ],
+      "timeline": [
+        [
+          1,
+          10,
+          0.0,
+          0.893,
+          [
+            [
+              121024494,
+              5,
+              "UNKNOWN",
+              "UNKNOWN"
+            ]
+          ]
+        ],
+        [
+          11,
+          14,
+          1.018,
+          1.311,
+          [
+            [
+              121024494,
+              5,
+              "UNKNOWN",
+              "STATIONARY"
+            ]
+          ]
+        ],
+        [
+          15,
+          15,
+          1.396,
+          1.396,
+          [
+            [
+              121024494,
+              5,
+              "SUSTAINED",
+              "STATIONARY"
+            ],
+            [
+              601280211,
+              6,
+              "UNKNOWN",
+              "UNKNOWN"
+            ]
+          ]
+        ],
+        [
+          16,
+          29,
+          1.521,
+          2.908,
+          [
+            [
+              121024494,
+              5,
+              "SUSTAINED",
+              "STATIONARY"
+            ]
+          ]
+        ],
+        [
+          30,
+          31,
+          2.995,
+          3.121,
+          [
+            [
+              0,
+              7,
+              "UNKNOWN",
+              "UNKNOWN"
+            ],
+            [
+              121024494,
+              5,
+              "SUSTAINED",
+              "STATIONARY"
+            ]
+          ]
+        ],
+        [
+          32,
+          32,
+          3.208,
+          3.208,
+          [
+            [
+              121024494,
+              5,
+              "SUSTAINED",
+              "STATIONARY"
+            ]
+          ]
+        ],
+        [
+          33,
+          33,
+          3.293,
+          3.293,
+          [
+            [
+              0,
+              7,
+              "UNKNOWN",
+              "UNKNOWN"
+            ]
+          ]
+        ],
+        [
+          34,
+          34,
+          3.424,
+          3.424,
+          [
+            [
+              121024494,
+              5,
+              "UNKNOWN",
+              "UNKNOWN"
+            ],
+            [
+              601280211,
+              8,
+              "UNKNOWN",
+              "UNKNOWN"
+            ]
+          ]
+        ],
+        [
+          35,
+          37,
+          3.509,
+          3.719,
+          [
+            [
+              121024494,
+              5,
+              "UNKNOWN",
+              "UNKNOWN"
+            ]
+          ]
+        ],
+        [
+          38,
+          40,
+          3.803,
+          4.011,
+          [
+            [
+              121024494,
+              5,
+              "INTERMITTENT",
+              "UNKNOWN"
+            ]
+          ]
+        ],
+        [
+          41,
+          41,
+          4.096,
+          4.096,
+          [
+            [
+              121024494,
+              5,
+              "INTERMITTENT",
+              "UNKNOWN"
+            ],
+            [
+              601280211,
+              8,
+              "UNKNOWN",
+              "UNKNOWN"
+            ]
+          ]
+        ],
+        [
+          42,
+          42,
+          4.221,
+          4.221,
+          [
+            [
+              121024494,
+              5,
+              "INTERMITTENT",
+              "UNKNOWN"
+            ]
+          ]
+        ],
+        [
+          43,
+          43,
+          4.306,
+          4.306,
+          [
+            [
+              121024494,
+              5,
+              "SUSTAINED",
+              "UNKNOWN"
+            ],
+            [
+              601280211,
+              8,
+              "UNKNOWN",
+              "UNKNOWN"
+            ]
+          ]
+        ],
+        [
+          44,
+          44,
+          4.39,
+          4.39,
+          [
+            [
+              121024494,
+              5,
+              "UNKNOWN",
+              "UNKNOWN"
+            ]
+          ]
+        ],
+        [
+          45,
+          48,
+          4.515,
+          4.811,
+          [
+            [
+              121024494,
+              5,
+              "UNKNOWN",
+              "STATIONARY"
+            ]
+          ]
+        ],
+        [
+          49,
+          49,
+          4.896,
+          4.896,
+          [
+            [
+              121024494,
+              5,
+              "UNKNOWN",
+              "UNKNOWN"
+            ]
+          ]
+        ],
+        [
+          50,
+          50,
+          5.024,
+          5.024,
+          [
+            [
+              121024494,
+              5,
+              "INTERMITTENT",
+              "UNKNOWN"
+            ],
+            [
+              601280211,
+              8,
+              "UNKNOWN",
+              "UNKNOWN"
+            ]
+          ]
+        ],
+        [
+          51,
+          51,
+          5.108,
+          5.108,
+          [
+            [
+              121024494,
+              5,
+              "INTERMITTENT",
+              "UNKNOWN"
+            ]
+          ]
+        ],
+        [
+          52,
+          52,
+          5.193,
+          5.193,
+          [
+            [
+              121024494,
+              5,
+              "INTERMITTENT",
+              "UNKNOWN"
+            ],
+            [
+              601280211,
+              8,
+              "UNKNOWN",
+              "UNKNOWN"
+            ]
+          ]
+        ],
+        [
+          53,
+          54,
+          5.32,
+          5.404,
+          [
+            [
+              121024494,
+              5,
+              "INTERMITTENT",
+              "UNKNOWN"
+            ]
+          ]
+        ],
+        [
+          55,
+          55,
+          5.49,
+          5.49,
+          [
+            [
+              121024494,
+              5,
+              "SUSTAINED",
+              "UNKNOWN"
+            ]
+          ]
+        ],
+        [
+          56,
+          57,
+          5.619,
+          5.704,
+          [
+            [
+              121024494,
+              5,
+              "SUSTAINED",
+              "UNKNOWN"
+            ],
+            [
+              601280211,
+              8,
+              "UNKNOWN",
+              "UNKNOWN"
+            ]
+          ]
+        ],
+        [
+          58,
+          60,
+          5.789,
+          5.999,
+          [
+            [
+              121024494,
+              5,
+              "SUSTAINED",
+              "UNKNOWN"
+            ]
+          ]
+        ],
+        [
+          61,
+          64,
+          6.123,
+          6.42,
+          [
+            [
+              121024494,
+              5,
+              "SUSTAINED",
+              "STATIONARY"
+            ]
+          ]
+        ],
+        [
+          65,
+          72,
+          6.506,
+          7.222,
+          [
+            [
+              121024494,
+              5,
+              "SUSTAINED",
+              "UNKNOWN"
+            ]
+          ]
+        ],
+        [
+          73,
+          73,
+          7.307,
+          7.307,
+          [
+            [
+              121024494,
+              5,
+              "SUSTAINED",
+              "UNKNOWN"
+            ],
+            [
+              601280211,
+              9,
+              "UNKNOWN",
+              "UNKNOWN"
+            ]
+          ]
+        ],
+        [
+          74,
+          80,
+          7.392,
+          8.022,
+          [
+            [
+              121024494,
+              5,
+              "SUSTAINED",
+              "UNKNOWN"
+            ]
+          ]
+        ],
+        [
+          81,
+          87,
+          8.189,
+          8.82,
+          [
+            [
+              121024494,
+              5,
+              "SUSTAINED",
+              "STATIONARY"
+            ]
+          ]
+        ],
+        [
+          88,
+          88,
+          8.904,
+          8.904,
+          [
+            [
+              121024494,
+              5,
+              "SUSTAINED",
+              "UNKNOWN"
+            ]
+          ]
+        ],
+        [
+          89,
+          89,
+          8.989,
+          8.989,
+          [
+            [
+              121024494,
+              5,
+              "SUSTAINED",
+              "UNKNOWN"
+            ],
+            [
+              601280211,
+              10,
+              "UNKNOWN",
+              "UNKNOWN"
+            ]
+          ]
+        ]
+      ],
+      "source_sha256": {
+        "command.jsonl": "3a245874cc56b5ca41ba345146cbd9683f8815ae69b1f5915796e52497efc1a6",
+        "execution.jsonl": "c3434778a39358f4f8af96c3bb745ffa8d666d609424206c9c74092096e48cb0",
+        "lock.jsonl": "31fbde61c2508a2c4adb5a1c3c3de6c4fc1f6c8de045c6ebd7b3f9e3e2bc6519",
+        "raw.jsonl": "a948def53c11eb0015dc8c2806f8f879697b9a8c280fa4f5f0051948663fa28c",
+        "social.jsonl": "e5c9d814c0d37b2796a6836abeb7163d7fe064546e1bfc689f28354c9c890e75",
+        "tracking.jsonl": "b016ebb28eacc53b1299be081e8fb33bc21c5b650a7c0aeae0f8f408e967a1f0"
+      },
+      "verification": {
+        "schema_and_alignment_frames_checked": 89,
+        "social_replay_matches": true,
+        "social_replay_float_tolerance": 1e-12,
+        "commands_replayed_with_recorded_feedback": true,
+        "full_tracking_and_lock_replay_matches": false,
+        "full_replay_limitation": "S2 begins at ingest sequence 127 with prior session state omitted"
+      }
+    },
+    "S3-close-gaze-01": {
+      "frames": 81,
+      "duration_s": 8.131,
+      "dt_s": {
+        "n": 80,
+        "min": 0.083,
+        "median": 0.086,
+        "max": 0.2105
+      },
+      "gaps_gt_250ms": 0,
+      "empty_frames": 0,
+      "multi_person_frames": 0,
+      "uids": {
+        "1920266662": {
+          "observations": 81,
+          "first_s": 0.0,
+          "last_s": 8.131,
+          "distance": {
+            "n": 81,
+            "min": 0.8819,
+            "median": 0.9275,
+            "max": 0.9572
+          },
+          "gaze": {
+            "n": 80,
+            "min": 0.9152,
+            "median": 0.9668,
+            "max": 0.983
+          },
+          "gaze_null": 1,
+          "gaze_ge_08": 80
+        }
+      },
+      "robot": {
+        "{'linear_velocity': None, 'angular_velocity': None}": 1,
+        "{'linear_velocity': 0.0, 'angular_velocity': 0.0}": 80
+      },
+      "position_observations": 0,
+      "lidar": {
+        "None": 1,
+        "[0.462, 0.432]": 18,
+        "[0.461, 0.432]": 23,
+        "[0.46, 0.432]": 8,
+        "[0.458, 0.432]": 2,
+        "[0.459, 0.432]": 5,
+        "[0.46, 0.433]": 2,
+        "[0.462, 0.433]": 9,
+        "[0.461, 0.433]": 10,
+        "[0.459, 0.433]": 3
+      },
+      "sonar": {
+        "None": 1,
+        "[0.0, 0.0, 0.0]": 80
+      },
+      "gaze_state": {
+        "UNKNOWN": 23,
+        "SUSTAINED": 58
+      },
+      "distance_zone": {
+        "INTERACTION_RANGE": 81
+      },
+      "human_radial_motion": {
+        "UNKNOWN": 21,
+        "STATIONARY": 60
+      },
+      "relative_distance_trend": {
+        "UNKNOWN": 10,
+        "STABLE": 71
+      },
+      "validity_flags": {
+        "INSUFFICIENT_GAZE_EVIDENCE": 11,
+        "INSUFFICIENT_DISTANCE_EVIDENCE": 10,
+        "STATIONARY_BASE_UNVERIFIED": 21,
+        "GAZE_CATEGORY_PENDING_DWELL": 12,
+        "GAZE_UNAVAILABLE": 1
+      },
+      "distance_span": {
+        "n": 81,
+        "min": 0.0,
+        "median": 1.9023,
+        "max": 1.9945
+      },
+      "fit_residual": {
+        "n": 71,
+        "min": 0.011,
+        "median": 0.0175,
+        "max": 0.0225
+      },
+      "slope_valid": {
+        "n": 71,
+        "min": -0.0235,
+        "median": 0.0013,
+        "max": 0.0195
+      },
+      "tracking_events": {
+        "ACQUIRED": 1
+      },
+      "track_keys": [
+        [
+          1920266662,
+          1
+        ]
+      ],
+      "policy": {
+        "('DEFER', 'GAZE_INSUFFICIENT_OR_INTERMITTENT')": 23,
+        "('DEFER', 'HUMAN_MOTION_UNKNOWN')": 7,
+        "('ENGAGE', 'SUSTAINED_GAZE_IN_INTERACTION_RANGE')": 51
+      },
+      "effective": {
+        "('DEFER', 'GAZE_INSUFFICIENT_OR_INTERMITTENT')": 23,
+        "('DEFER', 'HUMAN_MOTION_UNKNOWN')": 7,
+        "('ENGAGE', 'SUSTAINED_GAZE_IN_INTERACTION_RANGE')": 51
+      },
+      "lock_status": {
+        "LOCKED": 81
+      },
+      "lock_events": {
+        "ACQUIRED": 1
+      },
+      "commands": [
+        {
+          "action": "ENGAGE",
+          "command_id": "live-8301cebd3a3e40eda4793f363356fb0b:lock:1:ENGAGE",
+          "command_version": "robot-command-v1",
+          "execution_lease_us": 2000000,
+          "expires_at_robot_us": 16018965868,
+          "lock_id": "live-8301cebd3a3e40eda4793f363356fb0b:lock:1",
+          "schema_version": 1,
+          "session_id": "live-8301cebd3a3e40eda4793f363356fb0b",
+          "source_decision_id": "live-8301cebd3a3e40eda4793f363356fb0b:22:target-lock-v2",
+          "source_frame_sequence": 22,
+          "source_robot_timestamp_us": 16017965868,
+          "source_state_id": "live-8301cebd3a3e40eda4793f363356fb0b:22",
+          "target_track_epoch": 1,
+          "target_uid": 1920266662
+        }
+      ],
+      "execution": [
+        {
+          "command_id": "live-8301cebd3a3e40eda4793f363356fb0b:lock:1:ENGAGE",
+          "event_id": "live-8301cebd3a3e40eda4793f363356fb0b:lock:1:ENGAGE:1",
+          "event_version": "execution-event-v1",
+          "lock_id": "live-8301cebd3a3e40eda4793f363356fb0b:lock:1",
+          "reason": "COMMAND_VALIDATED",
+          "robot_timestamp_us": 16018021402,
+          "schema_version": 1,
+          "sequence": 1,
+          "session_id": "live-8301cebd3a3e40eda4793f363356fb0b",
+          "source_state_id": "live-8301cebd3a3e40eda4793f363356fb0b:22",
+          "status": "RECEIVED"
+        },
+        {
+          "command_id": "live-8301cebd3a3e40eda4793f363356fb0b:lock:1:ENGAGE",
+          "event_id": "live-8301cebd3a3e40eda4793f363356fb0b:lock:1:ENGAGE:2",
+          "event_version": "execution-event-v1",
+          "lock_id": "live-8301cebd3a3e40eda4793f363356fb0b:lock:1",
+          "reason": "NO_PHYSICAL_ACTION",
+          "robot_timestamp_us": 16018021402,
+          "schema_version": 1,
+          "sequence": 2,
+          "session_id": "live-8301cebd3a3e40eda4793f363356fb0b",
+          "source_state_id": "live-8301cebd3a3e40eda4793f363356fb0b:22",
+          "status": "SIMULATED"
+        }
+      ],
+      "sequences": [
+        1,
+        81
+      ],
+      "timeline": [
+        [
+          1,
+          14,
+          0.0,
+          1.318,
+          [
+            [
+              1920266662,
+              1,
+              "UNKNOWN",
+              "UNKNOWN"
+            ]
+          ]
+        ],
+        [
+          15,
+          21,
+          1.403,
+          1.995,
+          [
+            [
+              1920266662,
+              1,
+              "SUSTAINED",
+              "UNKNOWN"
+            ]
+          ]
+        ],
+        [
+          22,
+          36,
+          2.119,
+          3.601,
+          [
+            [
+              1920266662,
+              1,
+              "SUSTAINED",
+              "STATIONARY"
+            ]
+          ]
+        ],
+        [
+          37,
+          45,
+          3.726,
+          4.524,
+          [
+            [
+              1920266662,
+              1,
+              "UNKNOWN",
+              "STATIONARY"
+            ]
+          ]
+        ],
+        [
+          46,
+          81,
+          4.609,
+          8.131,
+          [
+            [
+              1920266662,
+              1,
+              "SUSTAINED",
+              "STATIONARY"
+            ]
+          ]
+        ]
+      ],
+      "source_sha256": {
+        "command.jsonl": "34eb06e4d6e8a3e1d927a0eb758da41770b8bbb32de9083ac3f92b12f3ebb349",
+        "execution.jsonl": "1e737fbd82a1de7ce6da7ef1f0cd96acd135a7637f78e744ccdce4817b498264",
+        "lock.jsonl": "6566ee4a2b951963d8f06632acde63622da94295d9bb52dc520358ec6e5b3ba0",
+        "raw.jsonl": "bbc9b02f9b8f533926aa4899f46f5d97a415d8e7acbc69f48b679d3e10e751e1",
+        "social.jsonl": "366c161dd0b635ddb93d2f335839033d6322a6f38500814e2cfa1fddd6c91370",
+        "tracking.jsonl": "62acc37dc505fb38368d41cc222a49cb0cbed6a68bb1fbfcb47c671e533c4fc0"
+      },
+      "verification": {
+        "schema_and_alignment_frames_checked": 81,
+        "social_replay_matches": true,
+        "social_replay_float_tolerance": 1e-12,
+        "commands_replayed_with_recorded_feedback": true,
+        "full_tracking_and_lock_replay_matches": true,
+        "full_replay_limitation": null
+      }
+    },
+    "S4-path-crossing-01": {
+      "frames": 82,
+      "duration_s": 8.163,
+      "dt_s": {
+        "n": 81,
+        "min": 0.0824,
+        "median": 0.0846,
+        "max": 0.1668
+      },
+      "gaps_gt_250ms": 0,
+      "empty_frames": 53,
+      "multi_person_frames": 0,
+      "uids": {
+        "0": {
+          "observations": 1,
+          "first_s": 3.571,
+          "last_s": 3.571,
+          "distance": {
+            "n": 1,
+            "min": 1.8172,
+            "median": 1.8172,
+            "max": 1.8172
+          },
+          "gaze": {
+            "n": 1,
+            "min": 0.9609,
+            "median": 0.9609,
+            "max": 0.9609
+          },
+          "gaze_null": 0,
+          "gaze_ge_08": 1
+        },
+        "549591076": {
+          "observations": 8,
+          "first_s": 3.275,
+          "last_s": 4.494,
+          "distance": {
+            "n": 8,
+            "min": 1.4378,
+            "median": 1.5943,
+            "max": 1.8988
+          },
+          "gaze": {
+            "n": 8,
+            "min": 0.9295,
+            "median": 0.9518,
+            "max": 0.9716
+          },
+          "gaze_null": 0,
+          "gaze_ge_08": 8
+        },
+        "1920266662": {
+          "observations": 20,
+          "first_s": 0.096,
+          "last_s": 4.077,
+          "distance": {
+            "n": 20,
+            "min": 1.6703,
+            "median": 2.2282,
+            "max": 2.4267
+          },
+          "gaze": {
+            "n": 19,
+            "min": 0.951,
+            "median": 0.9706,
+            "max": 0.9893
+          },
+          "gaze_null": 1,
+          "gaze_ge_08": 19
+        }
+      },
+      "robot": {
+        "{'linear_velocity': None, 'angular_velocity': None}": 1,
+        "{'linear_velocity': 0.0, 'angular_velocity': 0.0}": 81
+      },
+      "position_observations": 0,
+      "lidar": {
+        "None": 1,
+        "[0.462, 0.433]": 8,
+        "[0.461, 0.433]": 12,
+        "[0.462, 0.432]": 13,
+        "[0.459, 0.432]": 2,
+        "[0.46, 0.432]": 7,
+        "[0.461, 0.432]": 12,
+        "[0.46, 0.433]": 3,
+        "[0.365, 0.432]": 1,
+        "[0.254, 0.433]": 1,
+        "[0.248, 0.433]": 1,
+        "[0.257, 0.432]": 1,
+        "[0.256, 0.432]": 1,
+        "[0.253, 0.433]": 1,
+        "[0.149, 0.433]": 1,
+        "[0.1, 0.433]": 1,
+        "[0.092, 0.432]": 1,
+        "[0.211, 0.432]": 1,
+        "[0.249, 0.433]": 1,
+        "[0.233, 0.433]": 1,
+        "[0.218, 0.432]": 1,
+        "[0.218, 0.437]": 1,
+        "[0.244, 0.433]": 1,
+        "[0.255, 0.433]": 1,
+        "[0.266, 0.433]": 1,
+        "[0.27, 0.433]": 1,
+        "[0.307, 0.432]": 1,
+        "[0.301, 0.433]": 1,
+        "[0.293, 0.432]": 1,
+        "[0.293, 0.433]": 1,
+        "[0.313, 0.432]": 1,
+        "[0.313, 0.433]": 1
+      },
+      "sonar": {
+        "None": 1,
+        "[0.0, 0.0, 0.0]": 81
+      },
+      "gaze_state": {
+        "UNKNOWN": 28
+      },
+      "distance_zone": {
+        "APPROACHABLE": 28
+      },
+      "human_radial_motion": {
+        "UNKNOWN": 28
+      },
+      "relative_distance_trend": {
+        "UNKNOWN": 28
+      },
+      "validity_flags": {
+        "INSUFFICIENT_GAZE_EVIDENCE": 28,
+        "INSUFFICIENT_DISTANCE_EVIDENCE": 28,
+        "GAZE_UNAVAILABLE": 1
+      },
+      "distance_span": {
+        "n": 28,
+        "min": 0.0,
+        "median": 0.0842,
+        "max": 0.5047
+      },
+      "fit_residual": {
+        "n": 0
+      },
+      "slope_valid": {
+        "n": 0
+      },
+      "tracking_events": {
+        "ACQUIRED": 3,
+        "MISSING": 12,
+        "REACQUIRED": 9,
+        "LOST": 3
+      },
+      "track_keys": [
+        [
+          0,
+          3
+        ],
+        [
+          549591076,
+          2
+        ],
+        [
+          1920266662,
+          1
+        ]
+      ],
+      "policy": {
+        "('CONTINUE', 'NO_VISIBLE_PERSON')": 53,
+        "('DEFER', 'GAZE_INSUFFICIENT_OR_INTERMITTENT')": 29
+      },
+      "effective": {
+        "('CONTINUE', 'NO_VISIBLE_PERSON')": 12,
+        "('DEFER', 'GAZE_INSUFFICIENT_OR_INTERMITTENT')": 20,
+        "('DEFER', 'LOCKED_TARGET_MISSING')": 31,
+        "('DEFER', 'RETURN_EVIDENCE_INSUFFICIENT')": 8,
+        "('DEFER', 'UID_ZERO_UNVERIFIED')": 1,
+        "('DEFER', 'LOCK_COOLDOWN')": 10
+      },
+      "lock_status": {
+        "UNLOCKED": 12,
+        "LOCKED": 20,
+        "MISSING": 31,
+        "TENTATIVE_RETURN": 9,
+        "COOLDOWN": 10
+      },
+      "lock_events": {
+        "ACQUIRED": 1,
+        "MISSING": 6,
+        "REACQUIRED": 6,
+        "TENTATIVE_RETURN": 4,
+        "RELEASED_MISSING_TIMEOUT": 1,
+        "COOLDOWN_EXPIRED": 1
+      },
+      "commands": [],
+      "execution": [],
+      "sequences": [
+        1,
+        82
+      ],
+      "timeline": [
+        [
+          1,
+          1,
+          0.0,
+          0.0,
+          []
+        ],
+        [
+          2,
+          3,
+          0.096,
+          0.181,
+          [
+            [
+              1920266662,
+              1,
+              "UNKNOWN",
+              "UNKNOWN"
+            ]
+          ]
+        ],
+        [
+          4,
+          5,
+          0.306,
+          0.392,
+          []
+        ],
+        [
+          6,
+          11,
+          0.476,
+          0.981,
+          [
+            [
+              1920266662,
+              1,
+              "UNKNOWN",
+              "UNKNOWN"
+            ]
+          ]
+        ],
+        [
+          12,
+          12,
+          1.105,
+          1.105,
+          []
+        ],
+        [
+          13,
+          14,
+          1.188,
+          1.272,
+          [
+            [
+              1920266662,
+              1,
+              "UNKNOWN",
+              "UNKNOWN"
+            ]
+          ]
+        ],
+        [
+          15,
+          20,
+          1.396,
+          1.895,
+          []
+        ],
+        [
+          21,
+          25,
+          1.978,
+          2.396,
+          [
+            [
+              1920266662,
+              1,
+              "UNKNOWN",
+              "UNKNOWN"
+            ]
+          ]
+        ],
+        [
+          26,
+          31,
+          2.48,
+          2.981,
+          []
+        ],
+        [
+          32,
+          33,
+          3.065,
+          3.19,
+          [
+            [
+              1920266662,
+              1,
+              "UNKNOWN",
+              "UNKNOWN"
+            ]
+          ]
+        ],
+        [
+          34,
+          35,
+          3.275,
+          3.405,
+          [
+            [
+              549591076,
+              2,
+              "UNKNOWN",
+              "UNKNOWN"
+            ]
+          ]
+        ],
+        [
+          36,
+          36,
+          3.488,
+          3.488,
+          []
+        ],
+        [
+          37,
+          37,
+          3.571,
+          3.571,
+          [
+            [
+              0,
+              3,
+              "UNKNOWN",
+              "UNKNOWN"
+            ]
+          ]
+        ],
+        [
+          38,
+          38,
+          3.698,
+          3.698,
+          [
+            [
+              549591076,
+              2,
+              "UNKNOWN",
+              "UNKNOWN"
+            ]
+          ]
+        ],
+        [
+          39,
+          40,
+          3.783,
+          3.867,
+          [
+            [
+              1920266662,
+              1,
+              "UNKNOWN",
+              "UNKNOWN"
+            ]
+          ]
+        ],
+        [
+          41,
+          41,
+          3.992,
+          3.992,
+          [
+            [
+              549591076,
+              2,
+              "UNKNOWN",
+              "UNKNOWN"
+            ]
+          ]
+        ],
+        [
+          42,
+          42,
+          4.077,
+          4.077,
+          [
+            [
+              1920266662,
+              1,
+              "UNKNOWN",
+              "UNKNOWN"
+            ]
+          ]
+        ],
+        [
+          43,
+          46,
+          4.201,
+          4.494,
+          [
+            [
+              549591076,
+              2,
+              "UNKNOWN",
+              "UNKNOWN"
+            ]
+          ]
+        ],
+        [
+          47,
+          82,
+          4.579,
+          8.163,
+          []
+        ]
+      ],
+      "source_sha256": {
+        "command.jsonl": "6ee5097f9ef94ac50e6e30012f128c7af0a3ac729433ec2b0916439cc89b64c6",
+        "lock.jsonl": "b696f8fa0440252460a6adb2da58a06737249ab08c2e917282e8a7c1272b4ab4",
+        "raw.jsonl": "c2128bc7f191b6ef29dd4ef88a6fd466972c71f7f31b4954f83b7a13323d6a6c",
+        "social.jsonl": "9c7ef1bc3e4c504e08bef0ad1617fcfc3fb57fc8353588aff8af10a6b2f710c4",
+        "tracking.jsonl": "4bede1c54d521b5c610f82769bdd2753b9c2f09be6672505020466ac81839fd5"
+      },
+      "verification": {
+        "schema_and_alignment_frames_checked": 82,
+        "social_replay_matches": true,
+        "social_replay_float_tolerance": 1e-12,
+        "commands_replayed_with_recorded_feedback": true,
+        "full_tracking_and_lock_replay_matches": true,
+        "full_replay_limitation": null
+      }
+    },
+    "S5-walking-away-01": {
+      "frames": 160,
+      "duration_s": 16.126,
+      "dt_s": {
+        "n": 159,
+        "min": 0.0824,
+        "median": 0.0853,
+        "max": 0.1698
+      },
+      "gaps_gt_250ms": 0,
+      "empty_frames": 77,
+      "multi_person_frames": 0,
+      "uids": {
+        "74978662": {
+          "observations": 44,
+          "first_s": 8.808,
+          "last_s": 14.033,
+          "distance": {
+            "n": 44,
+            "min": 1.543,
+            "median": 2.0415,
+            "max": 2.57
+          },
+          "gaze": {
+            "n": 44,
+            "min": 0.5,
+            "median": 0.5,
+            "max": 0.9205
+          },
+          "gaze_null": 0,
+          "gaze_ge_08": 13
+        },
+        "903973132": {
+          "observations": 1,
+          "first_s": 15.501,
+          "last_s": 15.501,
+          "distance": {
+            "n": 1,
+            "min": 2.9439,
+            "median": 2.9439,
+            "max": 2.9439
+          },
+          "gaze": {
+            "n": 1,
+            "min": 0.9223,
+            "median": 0.9223,
+            "max": 0.9223
+          },
+          "gaze_null": 0,
+          "gaze_ge_08": 1
+        },
+        "1630296581": {
+          "observations": 21,
+          "first_s": 7.124,
+          "last_s": 13.907,
+          "distance": {
+            "n": 21,
+            "min": 1.1867,
+            "median": 1.37,
+            "max": 2.6284
+          },
+          "gaze": {
+            "n": 21,
+            "min": 0.5,
+            "median": 0.9037,
+            "max": 0.9467
+          },
+          "gaze_null": 0,
+          "gaze_ge_08": 13
+        },
+        "1641479808": {
+          "observations": 11,
+          "first_s": 14.41,
+          "last_s": 16.126,
+          "distance": {
+            "n": 11,
+            "min": 2.6809,
+            "median": 2.8717,
+            "max": 3.0793
+          },
+          "gaze": {
+            "n": 11,
+            "min": 0.5,
+            "median": 0.5,
+            "max": 0.951
+          },
+          "gaze_null": 0,
+          "gaze_ge_08": 5
+        },
+        "1732459285": {
+          "observations": 3,
+          "first_s": 14.117,
+          "last_s": 14.326,
+          "distance": {
+            "n": 3,
+            "min": 2.8017,
+            "median": 2.8017,
+            "max": 2.8717
+          },
+          "gaze": {
+            "n": 3,
+            "min": 0.5,
+            "median": 0.5,
+            "max": 0.5
+          },
+          "gaze_null": 0,
+          "gaze_ge_08": 0
+        },
+        "1920266662": {
+          "observations": 3,
+          "first_s": 6.623,
+          "last_s": 6.833,
+          "distance": {
+            "n": 3,
+            "min": 1.0715,
+            "median": 1.1318,
+            "max": 1.1725
+          },
+          "gaze": {
+            "n": 2,
+            "min": 0.9274,
+            "median": 0.9403,
+            "max": 0.9532
+          },
+          "gaze_null": 1,
+          "gaze_ge_08": 2
+        }
+      },
+      "robot": {
+        "{'linear_velocity': None, 'angular_velocity': None}": 1,
+        "{'linear_velocity': 0.0, 'angular_velocity': 0.0}": 159
+      },
+      "position_observations": 0,
+      "lidar": {
+        "None": 1,
+        "[0.458, 0.432]": 4,
+        "[0.462, 0.433]": 44,
+        "[0.461, 0.433]": 42,
+        "[0.46, 0.433]": 6,
+        "[0.459, 0.433]": 3,
+        "[0.462, 0.434]": 1,
+        "[0.459, 0.432]": 2,
+        "[0.461, 0.432]": 26,
+        "[0.46, 0.432]": 4,
+        "[0.462, 0.432]": 19,
+        "[0.458, 0.433]": 4,
+        "[0.459, 0.434]": 1,
+        "[0.463, 0.432]": 2,
+        "[0.46, 0.437]": 1
+      },
+      "sonar": {
+        "None": 1,
+        "[0.0, 0.0, 0.0]": 159
+      },
+      "gaze_state": {
+        "UNKNOWN": 64,
+        "INTERMITTENT": 17,
+        "NONE": 2
+      },
+      "distance_zone": {
+        "INTERACTION_RANGE": 16,
+        "APPROACHABLE": 67
+      },
+      "human_radial_motion": {
+        "UNKNOWN": 60,
+        "AWAY": 23
+      },
+      "relative_distance_trend": {
+        "UNKNOWN": 60,
+        "INCREASING": 23
+      },
+      "validity_flags": {
+        "INSUFFICIENT_GAZE_EVIDENCE": 59,
+        "INSUFFICIENT_DISTANCE_EVIDENCE": 60,
+        "GAZE_UNAVAILABLE": 1,
+        "GAZE_CATEGORY_PENDING_DWELL": 5
+      },
+      "distance_span": {
+        "n": 83,
+        "min": 0.0,
+        "median": 0.2987,
+        "max": 1.9843
+      },
+      "fit_residual": {
+        "n": 23,
+        "min": 0.0347,
+        "median": 0.0525,
+        "max": 0.0598
+      },
+      "slope_valid": {
+        "n": 23,
+        "min": 0.1203,
+        "median": 0.2481,
+        "max": 0.3525
+      },
+      "tracking_events": {
+        "ACQUIRED": 8,
+        "MISSING": 17,
+        "LOST": 6,
+        "REACQUIRED": 10
+      },
+      "track_keys": [
+        [
+          74978662,
+          3
+        ],
+        [
+          903973132,
+          8
+        ],
+        [
+          1630296581,
+          2
+        ],
+        [
+          1630296581,
+          4
+        ],
+        [
+          1630296581,
+          5
+        ],
+        [
+          1641479808,
+          7
+        ],
+        [
+          1732459285,
+          6
+        ],
+        [
+          1920266662,
+          1
+        ]
+      ],
+      "policy": {
+        "('CONTINUE', 'NO_VISIBLE_PERSON')": 77,
+        "('DEFER', 'GAZE_INSUFFICIENT_OR_INTERMITTENT')": 60,
+        "('CONTINUE', 'PERSON_MOVING_AWAY')": 21,
+        "('CONTINUE', 'NO_ATTENTION')": 2
+      },
+      "effective": {
+        "('CONTINUE', 'NO_VISIBLE_PERSON')": 66,
+        "('DEFER', 'GAZE_INSUFFICIENT_OR_INTERMITTENT')": 29,
+        "('DEFER', 'LOCKED_TARGET_MISSING')": 8,
+        "('DEFER', 'IDENTITY_UNRESOLVED')": 4,
+        "('DEFER', 'UID_REBOUND_OBSERVE')": 2,
+        "('DEFER', 'LOCK_COOLDOWN')": 21,
+        "('CONTINUE', 'PERSON_MOVING_AWAY')": 11,
+        "('CONTINUE', 'NO_ATTENTION')": 2,
+        "('DEFER', 'RETURN_EVIDENCE_INSUFFICIENT')": 8,
+        "('DEFER', 'RETURN_WINDOW_EXPIRED')": 9
+      },
+      "lock_status": {
+        "UNLOCKED": 79,
+        "LOCKED": 31,
+        "MISSING": 8,
+        "TENTATIVE_RETURN": 21,
+        "COOLDOWN": 21
+      },
+      "lock_events": {
+        "ACQUIRED": 3,
+        "MISSING": 6,
+        "TENTATIVE_RETURN": 5,
+        "REBOUND": 2,
+        "REACQUIRED": 5,
+        "RELEASED_BY_POLICY": 1,
+        "COOLDOWN_EXPIRED": 2,
+        "RELEASED_MISSING_TIMEOUT": 1
+      },
+      "commands": [],
+      "execution": [],
+      "sequences": [
+        1,
+        160
+      ],
+      "timeline": [
+        [
+          1,
+          66,
+          0.0,
+          6.535,
+          []
+        ],
+        [
+          67,
+          69,
+          6.623,
+          6.833,
+          [
+            [
+              1920266662,
+              1,
+              "UNKNOWN",
+              "UNKNOWN"
+            ]
+          ]
+        ],
+        [
+          70,
+          70,
+          6.999,
+          6.999,
+          []
+        ],
+        [
+          71,
+          74,
+          7.124,
+          7.421,
+          [
+            [
+              1630296581,
+              2,
+              "UNKNOWN",
+              "UNKNOWN"
+            ]
+          ]
+        ],
+        [
+          75,
+          76,
+          7.504,
+          7.587,
+          []
+        ],
+        [
+          77,
+          77,
+          7.712,
+          7.712,
+          [
+            [
+              1630296581,
+              2,
+              "UNKNOWN",
+              "UNKNOWN"
+            ]
+          ]
+        ],
+        [
+          78,
+          78,
+          7.796,
+          7.796,
+          []
+        ],
+        [
+          79,
+          81,
+          7.92,
+          8.13,
+          [
+            [
+              1630296581,
+              2,
+              "UNKNOWN",
+              "UNKNOWN"
+            ]
+          ]
+        ],
+        [
+          82,
+          82,
+          8.214,
+          8.214,
+          []
+        ],
+        [
+          83,
+          87,
+          8.298,
+          8.723,
+          [
+            [
+              1630296581,
+              2,
+              "UNKNOWN",
+              "UNKNOWN"
+            ]
+          ]
+        ],
+        [
+          88,
+          97,
+          8.808,
+          9.697,
+          [
+            [
+              74978662,
+              3,
+              "UNKNOWN",
+              "UNKNOWN"
+            ]
+          ]
+        ],
+        [
+          98,
+          101,
+          9.824,
+          10.116,
+          [
+            [
+              74978662,
+              3,
+              "UNKNOWN",
+              "AWAY"
+            ]
+          ]
+        ],
+        [
+          102,
+          118,
+          10.199,
+          11.801,
+          [
+            [
+              74978662,
+              3,
+              "INTERMITTENT",
+              "AWAY"
+            ]
+          ]
+        ],
+        [
+          119,
+          120,
+          11.927,
+          12.012,
+          [
+            [
+              74978662,
+              3,
+              "NONE",
+              "AWAY"
+            ]
+          ]
+        ],
+        [
+          121,
+          122,
+          12.096,
+          12.223,
+          [
+            [
+              1630296581,
+              4,
+              "UNKNOWN",
+              "UNKNOWN"
+            ]
+          ]
+        ],
+        [
+          123,
+          123,
+          12.307,
+          12.307,
+          [
+            [
+              74978662,
+              3,
+              "UNKNOWN",
+              "UNKNOWN"
+            ]
+          ]
+        ],
+        [
+          124,
+          128,
+          12.433,
+          12.813,
+          [
+            [
+              1630296581,
+              4,
+              "UNKNOWN",
+              "UNKNOWN"
+            ]
+          ]
+        ],
+        [
+          129,
+          137,
+          12.898,
+          13.821,
+          [
+            [
+              74978662,
+              3,
+              "UNKNOWN",
+              "UNKNOWN"
+            ]
+          ]
+        ],
+        [
+          138,
+          138,
+          13.907,
+          13.907,
+          [
+            [
+              1630296581,
+              5,
+              "UNKNOWN",
+              "UNKNOWN"
+            ]
+          ]
+        ],
+        [
+          139,
+          139,
+          14.033,
+          14.033,
+          [
+            [
+              74978662,
+              3,
+              "UNKNOWN",
+              "UNKNOWN"
+            ]
+          ]
+        ],
+        [
+          140,
+          142,
+          14.117,
+          14.326,
+          [
+            [
+              1732459285,
+              6,
+              "UNKNOWN",
+              "UNKNOWN"
+            ]
+          ]
+        ],
+        [
+          143,
+          143,
+          14.41,
+          14.41,
+          [
+            [
+              1641479808,
+              7,
+              "UNKNOWN",
+              "UNKNOWN"
+            ]
+          ]
+        ],
+        [
+          144,
+          145,
+          14.493,
+          14.617,
+          []
+        ],
+        [
+          146,
+          152,
+          14.701,
+          15.294,
+          [
+            [
+              1641479808,
+              7,
+              "UNKNOWN",
+              "UNKNOWN"
+            ]
+          ]
+        ],
+        [
+          153,
+          153,
+          15.418,
+          15.418,
+          []
+        ],
+        [
+          154,
+          154,
+          15.501,
+          15.501,
+          [
+            [
+              903973132,
+              8,
+              "UNKNOWN",
+              "UNKNOWN"
+            ]
+          ]
+        ],
+        [
+          155,
+          156,
+          15.625,
+          15.709,
+          []
+        ],
+        [
+          157,
+          158,
+          15.793,
+          15.917,
+          [
+            [
+              1641479808,
+              7,
+              "UNKNOWN",
+              "UNKNOWN"
+            ]
+          ]
+        ],
+        [
+          159,
+          159,
+          16.001,
+          16.001,
+          []
+        ],
+        [
+          160,
+          160,
+          16.126,
+          16.126,
+          [
+            [
+              1641479808,
+              7,
+              "UNKNOWN",
+              "UNKNOWN"
+            ]
+          ]
+        ]
+      ],
+      "source_sha256": {
+        "command.jsonl": "ee1669f344acd2ca582d7c3a9050d4983d24bc1cd82819c1a0295d2629ae5bdf",
+        "lock.jsonl": "0d2fcd45508e7968dbb35e12d47789caa4e489d5efd62af0cb98b73d59cfd565",
+        "raw.jsonl": "af85b77cf8745993aa63b7dcf4c25d5bea6d86443f59b176058e4b0c7500e41a",
+        "social.jsonl": "96413363dd88ef27fe4d1aeb86e7ff29ef21be2f84718c075cdaec62081a7111",
+        "tracking.jsonl": "44daedf9769d0146a4d8770345cccfab07b0b3bb73e62b9a33cb4c5a40054a03"
+      },
+      "verification": {
+        "schema_and_alignment_frames_checked": 160,
+        "social_replay_matches": true,
+        "social_replay_float_tolerance": 1e-12,
+        "commands_replayed_with_recorded_feedback": true,
+        "full_tracking_and_lock_replay_matches": true,
+        "full_replay_limitation": null
+      }
+    }
+  },
+  "parameter_sensitivity": {
+    "method": "Recompute SocialState from recorded tracking snapshots and apply pure policy; no production configuration changes.",
+    "default": {
+      "S1": {
+        "APPROACH": 0
+      },
+      "S2": {
+        "APPROACH": 26
+      },
+      "S3": {
+        "ENGAGE": 51
+      },
+      "S4": {
+        "APPROACH": 0
+      },
+      "S5": {
+        "APPROACH": 0
+      }
+    },
+    "min_span_s_0_5": {
+      "S1": {
+        "APPROACH": 2
+      },
+      "S2": {
+        "APPROACH": 36
+      },
+      "S3": {
+        "ENGAGE": 51
+      },
+      "S4": {
+        "APPROACH": 0
+      },
+      "S5": {
+        "APPROACH": 0
+      }
+    },
+    "looking_enter_0_95_exit_0_93": {
+      "S1": {
+        "APPROACH": 0
+      },
+      "S2": {
+        "APPROACH": 26
+      },
+      "S3": {
+        "ENGAGE": 45
+      },
+      "S4": {
+        "APPROACH": 0
+      },
+      "S5": {
+        "APPROACH": 0
+      }
+    },
+    "looking_enter_0_98_exit_0_96": {
+      "S1": {
+        "APPROACH": 0
+      },
+      "S2": {
+        "APPROACH": 0
+      },
+      "S3": {
+        "ENGAGE": 0
+      },
+      "S4": {
+        "APPROACH": 0
+      },
+      "S5": {
+        "APPROACH": 0
+      }
+    }
+  }
+}

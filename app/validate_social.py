@@ -9,7 +9,7 @@ import sys
 from app.pipeline import trace_line
 from app.recording import read_frames
 from app.replay import replay
-from app.social import recording_session
+from app.replay.social import recording_session
 from app.social_pipeline import SocialPipeline
 from app.social_scenarios import controlled_scenarios
 from app.state.social_models import SocialState, TemporalConfig
@@ -150,8 +150,8 @@ def main(argv=None):
                 checks.append({"frame_index": index, "time_s": index/10, "expected": expected, "actual": actual})
         root = Path(__file__).resolve().parents[1]
         names = ["app/state/social_models.py", "app/state/features.py", "app/state/estimator.py",
-                 "app/social_pipeline.py", "app/social.py", "app/social_scenarios.py", "app/validate_social.py",
-                 "app/state/tracks.py", "app/pipeline.py", "app/recording.py", "app/replay.py", "app/server.py"]
+                 "app/social_pipeline.py", "app/replay/social.py", "app/social_scenarios.py", "app/validate_social.py",
+                 "app/state/tracks.py", "app/pipeline.py", "app/recording.py", "app/replay/__init__.py", "app/server.py"]
         report = {"config_version": config.version, "config": config.model_dump(), "tracking_config": tracks.__dict__,
                   "recordings": results, "synthetic": synthetic, "controlled_checkpoints": checks,
                   "synthetic_template_file": inputs[0][0].name, "synthetic_template_sha256": inputs[0][2],

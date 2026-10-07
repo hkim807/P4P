@@ -13,12 +13,14 @@ from dataclasses import dataclass
 from typing import Any
 
 from robot.navel_client.adapter import NavelObservationAdapter
+from robot.navel_client.camera_capture import CameraCapture
 from robot.navel_client.command_dispatch import CommandRejected, FakeCommandExecutor
 from robot.navel_client.decision_dispatch import (
     DecisionDispatcher, DecisionRejected, DryRunHandlers, parse_decision,
 )
 from robot.navel_client.head_focus import HeadFocusController
 from robot.navel_client.physical_executor import PhysicalCommandExecutor, ScriptPaths
+from robot.navel_client.sdk_capture import SdkCapture
 from robot.navel_client.transport import ObservationTransport, TransportError
 
 
@@ -35,19 +37,33 @@ class LatestLocomotion:
         return self.packet[0]
 
 
-def _replace_queued(queue: asyncio.Queue[dict[str, Any]], observation: dict[str, Any]) -> None:
+@dataclass(frozen=True)
+class ModelObservation:
+    """Keep one raw observation paired with its exact captured perception."""
+
+    observation: dict[str, Any]
+    capture: dict[str, Any]
+
+
+QueuedObservation = dict[str, Any] | ModelObservation
+
+
+def _replace_queued(queue: asyncio.Queue[QueuedObservation], observation: QueuedObservation) -> None:
     if queue.full():
         queue.get_nowait()
         queue.task_done()
     queue.put_nowait(observation)
 
 
-async def _collect_locomotion(robot: Any, latest: LatestLocomotion) -> None:
+async def _collect_locomotion(robot: Any, latest: LatestLocomotion,
+                              sdk_capture: SdkCapture | None = None) -> None:
     while True:
         try:
             packet = await robot.next_locomotion(timeout=1.0)
         except TimeoutError:
             continue
+        if sdk_capture is not None:
+            sdk_capture.record("locomotion", packet)
         latest.packet = (packet, time.monotonic())
 
 
@@ -55,12 +71,16 @@ async def _collect_perception(
     robot: Any,
     adapter: NavelObservationAdapter,
     latest: LatestLocomotion,
-    queue: asyncio.Queue[dict[str, Any]],
+    queue: asyncio.Queue[QueuedObservation],
     *,
     max_locomotion_age_s: float,
     head_focus: HeadFocusController | None = None,
     physical_executor: PhysicalCommandExecutor | None = None,
+    sdk_capture: SdkCapture | None = None,
+    model_provenance: bool = False,
 ) -> None:
+    if model_provenance and sdk_capture is None:
+        raise ValueError("model provenance requires SDK capture")
     while True:
         try:
             perception = await robot.next_frame(timeout=1.0)
@@ -68,14 +88,16 @@ async def _collect_perception(
             if head_focus is not None:
                 head_focus.tick()
             continue
+        captured = sdk_capture.record("perception", perception) if sdk_capture is not None else None
         if head_focus is not None and (physical_executor is None or physical_executor.active is None):
             head_focus.observe(perception)
         observation = adapter.convert(perception, latest.fresh_value(max_locomotion_age_s))
-        _replace_queued(queue, observation)
+        _replace_queued(queue, ModelObservation(observation, captured)
+                        if model_provenance else observation)
 
 
 async def _send_observations(
-    queue: asyncio.Queue[dict[str, Any]],
+    queue: asyncio.Queue[QueuedObservation],
     transport: ObservationTransport,
     *,
     minimum_send_interval_s: float,
@@ -88,20 +110,24 @@ async def _send_observations(
 ) -> None:
     last_sent_at = -math.inf
     while True:
-        observation = await queue.get()
+        queued = await queue.get()
         try:
             delay = minimum_send_interval_s - (time.monotonic() - last_sent_at)
             if delay > 0:
                 await asyncio.sleep(delay)
             while not queue.empty():
                 queue.task_done()
-                observation = queue.get_nowait()
+                queued = queue.get_nowait()
+            observation = queued.observation if isinstance(queued, ModelObservation) else queued
             last_sent_at = time.monotonic()
             if print_only:
                 print(json.dumps(observation, allow_nan=False, separators=(",", ":")), flush=True)
                 continue
             try:
-                response = await asyncio.to_thread(transport.send, observation)
+                response = (await asyncio.to_thread(transport.send_model_observation,
+                                                     observation, queued.capture)
+                            if isinstance(queued, ModelObservation)
+                            else await asyncio.to_thread(transport.send, observation))
             except TransportError as error:
                 logger.warning("timestamp=%s transport_error=%s", observation["timestamp"], error)
                 if decision_dispatcher is not None:
@@ -183,10 +209,14 @@ async def _send_execution_events(executor: PhysicalCommandExecutor,
             executor.event_queue.task_done()
 
 
-async def collect_and_stream(robot: Any, args: argparse.Namespace) -> None:
+async def collect_and_stream(robot: Any, args: argparse.Namespace,
+                             camera_types: dict[str, Any] | None = None) -> None:
     transport = ObservationTransport(args.server, timeout_seconds=args.request_timeout)
+    sdk_capture = SdkCapture(transport) if args.sdk_capture else None
+    camera_capture = (CameraCapture(transport, session_id=sdk_capture.session_id if sdk_capture else None)
+                      if args.camera_capture else None)
     adapter = NavelObservationAdapter()
-    queue: asyncio.Queue[dict[str, Any]] = asyncio.Queue(maxsize=1)
+    queue: asyncio.Queue[QueuedObservation] = asyncio.Queue(maxsize=1)
     latest = LatestLocomotion()
     head_focus = (HeadFocusController(robot, magnitude=args.head_focus_magnitude,
                                      grace_s=args.head_focus_grace)
@@ -203,12 +233,20 @@ async def collect_and_stream(robot: Any, args: argparse.Namespace) -> None:
         max_age_s=args.max_decision_age, response_timeout_s=args.response_timeout,
         hook_timeout_s=args.hook_timeout, stop_timeout_s=args.stop_timeout)
         if args.physical_executor else None)
-    tasks = [
-        asyncio.create_task(_collect_locomotion(robot, latest)),
+    collectors = [
+        asyncio.create_task(_collect_locomotion(robot, latest, sdk_capture)),
         asyncio.create_task(_collect_perception(
             robot, adapter, latest, queue, max_locomotion_age_s=args.max_locomotion_age,
             head_focus=head_focus, physical_executor=physical_executor,
+            sdk_capture=sdk_capture,
+            model_provenance=args.model_provenance,
         )),
+    ]
+    if camera_capture is not None:
+        collectors.extend(asyncio.create_task(camera_capture.collect(
+            name, (camera_types or {}).get(name), args.camera_interval))
+            for name in ("head", "chest"))
+    tasks = collectors + [
         asyncio.create_task(_send_observations(
             queue, transport,
             minimum_send_interval_s=args.minimum_send_interval,
@@ -220,14 +258,35 @@ async def collect_and_stream(robot: Any, args: argparse.Namespace) -> None:
             physical_executor=physical_executor,
         )),
     ]
+    sdk_sender = asyncio.create_task(sdk_capture.send()) if sdk_capture is not None else None
+    if sdk_sender is not None:
+        tasks.append(sdk_sender)
+    camera_sender = (asyncio.create_task(camera_capture.send())
+                     if camera_capture is not None else None)
+    if camera_sender is not None:
+        tasks.append(camera_sender)
     if decision_dispatcher is not None:
         tasks.append(asyncio.create_task(decision_dispatcher.watchdog()))
     if physical_executor is not None:
         tasks.append(asyncio.create_task(physical_executor.watchdog()))
         tasks.append(asyncio.create_task(_send_execution_events(physical_executor, transport)))
+    group = asyncio.gather(*tasks)
     try:
-        await asyncio.gather(*tasks)
+        await asyncio.shield(group)
     finally:
+        for task in collectors:
+            task.cancel()
+        await asyncio.gather(*collectors, return_exceptions=True)
+        if sdk_capture is not None and sdk_sender is not None and not sdk_sender.done():
+            try:
+                await asyncio.wait_for(sdk_capture.queue.join(), timeout=args.request_timeout)
+            except asyncio.TimeoutError:
+                logger.warning("sdk_capture_pending_on_shutdown=%s", sdk_capture.queue.qsize())
+        if camera_capture is not None and camera_sender is not None and not camera_sender.done():
+            try:
+                await asyncio.wait_for(camera_capture.queue.join(), timeout=args.request_timeout)
+            except asyncio.TimeoutError:
+                logger.warning("camera_capture_pending_on_shutdown=%s", camera_capture.queue.qsize())
         if physical_executor is not None:
             await physical_executor.close()
             try:
@@ -238,6 +297,8 @@ async def collect_and_stream(robot: Any, args: argparse.Namespace) -> None:
         for task in tasks:
             task.cancel()
         await asyncio.gather(*tasks, return_exceptions=True)
+        if group.done() and not group.cancelled():
+            group.exception()
         if decision_dispatcher is not None:
             await decision_dispatcher.invalidate("client_stopped")
         if head_focus is not None:
@@ -249,7 +310,73 @@ async def run(args: argparse.Namespace) -> None:
     import navel
 
     async with navel.Robot() as robot:
-        await collect_and_stream(robot, args)
+        camera_types = ({"head": getattr(navel, "HeadCamera", None),
+                         "chest": getattr(navel, "ChestCamera", None)}
+                        if args.camera_capture else None)
+        if args.sdk_capture_only:
+            await collect_sdk_only(robot, args, camera_types)
+        else:
+            await collect_and_stream(robot, args, camera_types)
+
+
+async def collect_sdk_only(robot: Any, args: argparse.Namespace,
+                           camera_types: dict[str, Any] | None = None) -> None:
+    """Probe SDK availability without running the observation policy pipeline."""
+    transport = ObservationTransport(args.server, timeout_seconds=args.request_timeout)
+    capture = SdkCapture(transport)
+    camera_capture = (CameraCapture(transport, session_id=capture.session_id)
+                      if args.camera_capture else None)
+
+    async def perception_packets() -> None:
+        while True:
+            try:
+                packet = await robot.next_frame(timeout=1.0)
+            except TimeoutError:
+                continue
+            capture.record("perception", packet)
+
+    async def locomotion_packets() -> None:
+        while True:
+            try:
+                packet = await robot.next_locomotion(timeout=1.0)
+            except TimeoutError:
+                continue
+            capture.record("locomotion", packet)
+
+    collectors = [
+        asyncio.create_task(locomotion_packets()),
+        asyncio.create_task(perception_packets()),
+    ]
+    if camera_capture is not None:
+        collectors.extend(asyncio.create_task(camera_capture.collect(
+            name, (camera_types or {}).get(name), args.camera_interval))
+            for name in ("head", "chest"))
+    sender = asyncio.create_task(capture.send())
+    camera_sender = (asyncio.create_task(camera_capture.send())
+                     if camera_capture is not None else None)
+    tasks = collectors + [sender] + ([camera_sender] if camera_sender is not None else [])
+    group = asyncio.gather(*tasks)
+    try:
+        await asyncio.shield(group)
+    finally:
+        for task in collectors:
+            task.cancel()
+        await asyncio.gather(*collectors, return_exceptions=True)
+        if not sender.done():
+            try:
+                await asyncio.wait_for(capture.queue.join(), timeout=args.request_timeout)
+            except asyncio.TimeoutError:
+                logger.warning("sdk_capture_pending_on_shutdown=%s", capture.queue.qsize())
+        if camera_capture is not None and camera_sender is not None and not camera_sender.done():
+            try:
+                await asyncio.wait_for(camera_capture.queue.join(), timeout=args.request_timeout)
+            except asyncio.TimeoutError:
+                logger.warning("camera_capture_pending_on_shutdown=%s", camera_capture.queue.qsize())
+        for task in tasks:
+            task.cancel()
+        await asyncio.gather(*tasks, return_exceptions=True)
+        if group.done() and not group.cancelled():
+            group.exception()
 
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
@@ -262,6 +389,16 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--max-locomotion-age", type=float, default=1.0,
                         help="Seconds before cached robot velocity/ranges become unavailable")
     parser.add_argument("--print-only", action="store_true", help="Print JSON frames without HTTP")
+    parser.add_argument("--sdk-capture", action="store_true",
+                        help="Also stream complete SDK perception and locomotion packets to --sdk-output on receiver")
+    parser.add_argument("--sdk-capture-only", action="store_true",
+                        help="Stream only SDK packets; no policy observations or robot commands")
+    parser.add_argument("--camera-capture", action="store_true",
+                        help="Also stream head and chest RGB frames; receiver needs --camera-output-dir")
+    parser.add_argument("--model-provenance", action="store_true",
+                        help="Attach captured perception provenance to observation POSTs; requires SDK and camera capture")
+    parser.add_argument("--camera-interval", type=float, default=1.0,
+                        help="Seconds between camera capture attempts (default: 1.0)")
     parser.add_argument("--decision-dry-run", action="store_true",
                         help="Log validated policy handler calls without executing policy actions")
     parser.add_argument("--command-dry-run", action="store_true",
@@ -288,6 +425,20 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--decision-timeout", type=float, default=2.0,
                         help="Expire a dry-run decision after this long without a valid response (seconds)")
     args = parser.parse_args(argv)
+    if args.model_provenance:
+        if args.sdk_capture_only:
+            parser.error("--model-provenance excludes --sdk-capture-only")
+        if not args.sdk_capture or not args.camera_capture:
+            parser.error("--model-provenance requires --sdk-capture and --camera-capture")
+    if args.sdk_capture_only:
+        args.sdk_capture = True
+        if (args.print_only or args.decision_dry_run or args.command_dry_run
+                or args.physical_executor or args.head_focus):
+            parser.error("--sdk-capture-only excludes print-only, policy modes, physical executor, and head focus")
+    if args.sdk_capture and args.print_only:
+        parser.error("--sdk-capture requires HTTP; remove --print-only")
+    if args.camera_capture and args.print_only:
+        parser.error("--camera-capture requires HTTP; remove --print-only")
     if args.print_only and args.decision_dry_run:
         parser.error("--decision-dry-run requires HTTP; remove --print-only")
     if args.print_only and args.command_dry_run:
@@ -315,6 +466,8 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
             parser.error("timeouts/maximum ages must be positive and finite; send interval may be zero")
     if not math.isfinite(args.head_focus_magnitude) or not 0 <= args.head_focus_magnitude <= 1:
         parser.error("--head-focus-magnitude must be finite and between 0 and 1")
+    if not math.isfinite(args.camera_interval) or args.camera_interval <= 0:
+        parser.error("--camera-interval must be positive and finite")
     try:
         ObservationTransport(args.server, timeout_seconds=args.request_timeout)
     except ValueError as error:

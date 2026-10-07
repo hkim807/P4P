@@ -25,7 +25,8 @@ logical target lock, a command protocol, and an opt-in physical script executor.
    Acknowledgement follows a successful write/close.
    The lock supports threads in one process; use one receiver process per output
    file. Closing a write is not an explicit fsync guarantee against power loss.
-7. `app/replay.py` reads/validates JSONL lazily and replays using timestamp gaps.
+7. `app/replay/__init__.py` and `app/replay/__main__.py` provide local playback
+   and its CLI. JSONL is read/validated lazily and replayed using timestamp gaps.
    It prints frames locally by default; optional `--server` sends them by HTTP.
 8. With social processing enabled, `app/social_pipeline.py` serializes tracking,
    SocialState, pure rules, target lock, and command proposal. The response
