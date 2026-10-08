@@ -1,0 +1,172 @@
+[
+  {
+    "condition": "No detected person",
+    "ollama": {
+      "condition": "No detected person",
+      "action": "CONTINUE",
+      "transport_decision": "CONTINUE",
+      "reason": "NO_VISIBLE_PERSON",
+      "status": "DECIDED"
+    },
+    "current": {
+      "condition": "No detected person",
+      "action": null,
+      "transport_decision": null,
+      "reason": "NO_VISIBLE_PERSON",
+      "status": "NOT_READY"
+    }
+  },
+  {
+    "condition": "Two people, explicit conflict on one",
+    "ollama": {
+      "condition": "Two people, explicit conflict on one",
+      "action": "YIELD",
+      "transport_decision": "YIELD",
+      "reason": "HUMAN_PATH_CONFLICT",
+      "status": "DECIDED"
+    },
+    "current": {
+      "condition": "Two people, explicit conflict on one",
+      "action": null,
+      "transport_decision": null,
+      "reason": "MULTIPLE_VISIBLE_PEOPLE",
+      "status": "NOT_READY"
+    }
+  },
+  {
+    "condition": "Too close, gaze unavailable",
+    "ollama": {
+      "condition": "Too close, gaze unavailable",
+      "action": null,
+      "transport_decision": "DEFER",
+      "reason": "PERSON_TOO_CLOSE",
+      "status": "NOT_READY"
+    },
+    "current": {
+      "condition": "Too close, gaze unavailable",
+      "action": "YIELD",
+      "transport_decision": "YIELD",
+      "reason": "PERSON_TOO_CLOSE",
+      "status": "DECIDED"
+    }
+  },
+  {
+    "condition": "Pass gesture, gaze unavailable",
+    "ollama": {
+      "condition": "Pass gesture, gaze unavailable",
+      "action": null,
+      "transport_decision": "DEFER",
+      "reason": "GAZE_NOT_READY",
+      "status": "NOT_READY"
+    },
+    "current": {
+      "condition": "Pass gesture, gaze unavailable",
+      "action": "CONTINUE",
+      "transport_decision": "CONTINUE",
+      "reason": "PASS_GESTURE",
+      "status": "DECIDED"
+    }
+  },
+  {
+    "condition": "Qualifying recurring attention nearby",
+    "ollama": {
+      "condition": "Qualifying recurring attention nearby",
+      "action": "CONTINUE",
+      "transport_decision": "CONTINUE",
+      "reason": "INCIDENTAL_ATTENTION",
+      "status": "DECIDED"
+    },
+    "current": {
+      "condition": "Qualifying recurring attention nearby",
+      "action": "ENGAGE",
+      "transport_decision": "ENGAGE",
+      "reason": "RECURRING_ATTENTION_IN_INTERACTION_RANGE",
+      "status": "DECIDED"
+    }
+  },
+  {
+    "condition": "Qualifying recurring attention in approach range",
+    "ollama": {
+      "condition": "Qualifying recurring attention in approach range",
+      "action": "CONTINUE",
+      "transport_decision": "CONTINUE",
+      "reason": "INCIDENTAL_ATTENTION",
+      "status": "DECIDED"
+    },
+    "current": {
+      "condition": "Qualifying recurring attention in approach range",
+      "action": "APPROACH",
+      "transport_decision": "APPROACH",
+      "reason": "RECURRING_ATTENTION_IN_APPROACHABLE_RANGE",
+      "status": "DECIDED"
+    }
+  },
+  {
+    "condition": "Attention ended, category still sustained",
+    "ollama": {
+      "condition": "Attention ended, category still sustained",
+      "action": "ENGAGE",
+      "transport_decision": "ENGAGE",
+      "reason": "SUSTAINED_GAZE_IN_INTERACTION_RANGE",
+      "status": "DECIDED"
+    },
+    "current": {
+      "condition": "Attention ended, category still sustained",
+      "action": "CONTINUE",
+      "transport_decision": "CONTINUE",
+      "reason": "ATTENTION_ENDED",
+      "status": "DECIDED"
+    }
+  },
+  {
+    "condition": "Looking resumed for only 0.2 seconds, category still sustained",
+    "ollama": {
+      "condition": "Looking resumed for only 0.2 seconds, category still sustained",
+      "action": "ENGAGE",
+      "transport_decision": "ENGAGE",
+      "reason": "SUSTAINED_GAZE_IN_INTERACTION_RANGE",
+      "status": "DECIDED"
+    },
+    "current": {
+      "condition": "Looking resumed for only 0.2 seconds, category still sustained",
+      "action": "CONTINUE",
+      "transport_decision": "CONTINUE",
+      "reason": "NO_INTERACTION_CUE",
+      "status": "DECIDED"
+    }
+  },
+  {
+    "condition": "Attentive nearby person moving away",
+    "ollama": {
+      "condition": "Attentive nearby person moving away",
+      "action": "CONTINUE",
+      "transport_decision": "CONTINUE",
+      "reason": "PERSON_MOVING_AWAY",
+      "status": "DECIDED"
+    },
+    "current": {
+      "condition": "Attentive nearby person moving away",
+      "action": "ENGAGE",
+      "transport_decision": "ENGAGE",
+      "reason": "SUSTAINED_GAZE_IN_INTERACTION_RANGE",
+      "status": "DECIDED"
+    }
+  },
+  {
+    "condition": "Attentive nearby person, increasing relative separation while robot moves",
+    "ollama": {
+      "condition": "Attentive nearby person, increasing relative separation while robot moves",
+      "action": "CONTINUE",
+      "transport_decision": "CONTINUE",
+      "reason": "RELATIVE_SEPARATION_INCREASING",
+      "status": "DECIDED"
+    },
+    "current": {
+      "condition": "Attentive nearby person, increasing relative separation while robot moves",
+      "action": "ENGAGE",
+      "transport_decision": "ENGAGE",
+      "reason": "SUSTAINED_GAZE_IN_INTERACTION_RANGE",
+      "status": "DECIDED"
+    }
+  }
+]

@@ -1,0 +1,270 @@
+[
+  {
+    "scenario_id": "S1",
+    "frames": 91,
+    "action_counts": {
+      "CONTINUE": 91
+    },
+    "first_action": {
+      "scenario_id": "S1",
+      "frame": 1,
+      "offset_s": 0.0,
+      "line_number": 2,
+      "source_sha256": "d334471b1995c3c8fd556266fc41a3e34a0ebc527396f71776deafa053a6ffe1",
+      "action": "CONTINUE",
+      "transport_decision": "CONTINUE",
+      "reason": "NO_VISIBLE_PERSON",
+      "status": "DECIDED"
+    },
+    "sdk_end": {
+      "scenario_id": "S1",
+      "frame": 91,
+      "offset_s": 9.001448,
+      "line_number": 181,
+      "source_sha256": "d334471b1995c3c8fd556266fc41a3e34a0ebc527396f71776deafa053a6ffe1",
+      "action": "CONTINUE",
+      "transport_decision": "CONTINUE",
+      "reason": "NO_VISIBLE_PERSON",
+      "status": "DECIDED"
+    }
+  },
+  {
+    "scenario_id": "S2",
+    "frames": 84,
+    "action_counts": {
+      "CONTINUE": 28,
+      "NO_ACTION": 56
+    },
+    "first_action": {
+      "scenario_id": "S2",
+      "frame": 1,
+      "offset_s": 0.0,
+      "line_number": 1,
+      "source_sha256": "018f091688c8fa0637ceaef053b79c62c7017c532f2cba33570d7f42e06603d9",
+      "action": "CONTINUE",
+      "transport_decision": "CONTINUE",
+      "reason": "NO_VISIBLE_PERSON",
+      "status": "DECIDED"
+    },
+    "sdk_end": {
+      "scenario_id": "S2",
+      "frame": 84,
+      "offset_s": 8.269501,
+      "line_number": 166,
+      "source_sha256": "018f091688c8fa0637ceaef053b79c62c7017c532f2cba33570d7f42e06603d9",
+      "action": null,
+      "transport_decision": "DEFER",
+      "reason": "GAZE_NOT_READY",
+      "status": "NOT_READY"
+    }
+  },
+  {
+    "scenario_id": "S3",
+    "frames": 115,
+    "action_counts": {
+      "NO_ACTION": 34,
+      "ENGAGE": 75,
+      "CONTINUE": 6
+    },
+    "first_action": {
+      "scenario_id": "S3",
+      "frame": 15,
+      "offset_s": 1.401296,
+      "line_number": 29,
+      "source_sha256": "f01522167bb74c2f91b5930beb80267d04268e00270e061cf1acb4e486babe58",
+      "action": "ENGAGE",
+      "transport_decision": "ENGAGE",
+      "reason": "SUSTAINED_GAZE_IN_INTERACTION_RANGE",
+      "status": "DECIDED"
+    },
+    "sdk_end": {
+      "scenario_id": "S3",
+      "frame": 115,
+      "offset_s": 11.379302,
+      "line_number": 229,
+      "source_sha256": "f01522167bb74c2f91b5930beb80267d04268e00270e061cf1acb4e486babe58",
+      "action": null,
+      "transport_decision": "DEFER",
+      "reason": "TRACK_TEMPORARILY_MISSING",
+      "status": "NOT_READY"
+    }
+  },
+  {
+    "scenario_id": "S4",
+    "frames": 55,
+    "action_counts": {
+      "CONTINUE": 55
+    },
+    "first_action": {
+      "scenario_id": "S4",
+      "frame": 1,
+      "offset_s": 0.0,
+      "line_number": 2,
+      "source_sha256": "4a517097a7b67f8b860e5dc8ef364d7a4578126a1f207767517630cf8d956341",
+      "action": "CONTINUE",
+      "transport_decision": "CONTINUE",
+      "reason": "NO_VISIBLE_PERSON",
+      "status": "DECIDED"
+    },
+    "sdk_end": {
+      "scenario_id": "S4",
+      "frame": 55,
+      "offset_s": 5.399181,
+      "line_number": 110,
+      "source_sha256": "4a517097a7b67f8b860e5dc8ef364d7a4578126a1f207767517630cf8d956341",
+      "action": "CONTINUE",
+      "transport_decision": "CONTINUE",
+      "reason": "NO_VISIBLE_PERSON",
+      "status": "DECIDED"
+    }
+  },
+  {
+    "scenario_id": "S5",
+    "frames": 40,
+    "action_counts": {
+      "CONTINUE": 40
+    },
+    "first_action": {
+      "scenario_id": "S5",
+      "frame": 1,
+      "offset_s": 0.0,
+      "line_number": 2,
+      "source_sha256": "f065d390e0af0e253fb715aa54d4378d0ef6141222409867e06de312af99526a",
+      "action": "CONTINUE",
+      "transport_decision": "CONTINUE",
+      "reason": "NO_VISIBLE_PERSON",
+      "status": "DECIDED"
+    },
+    "sdk_end": {
+      "scenario_id": "S5",
+      "frame": 40,
+      "offset_s": 3.869026,
+      "line_number": 79,
+      "source_sha256": "f065d390e0af0e253fb715aa54d4378d0ef6141222409867e06de312af99526a",
+      "action": "CONTINUE",
+      "transport_decision": "CONTINUE",
+      "reason": "NO_VISIBLE_PERSON",
+      "status": "DECIDED"
+    }
+  },
+  {
+    "scenario_id": "S6",
+    "frames": 77,
+    "action_counts": {
+      "CONTINUE": 69,
+      "NO_ACTION": 8
+    },
+    "first_action": {
+      "scenario_id": "S6",
+      "frame": 1,
+      "offset_s": 0.0,
+      "line_number": 2,
+      "source_sha256": "cc98d6355cd8a424151be36618a58da7649f39b76787e5791e91b88ec99c5ec3",
+      "action": "CONTINUE",
+      "transport_decision": "CONTINUE",
+      "reason": "NO_VISIBLE_PERSON",
+      "status": "DECIDED"
+    },
+    "sdk_end": {
+      "scenario_id": "S6",
+      "frame": 77,
+      "offset_s": 7.616715,
+      "line_number": 154,
+      "source_sha256": "cc98d6355cd8a424151be36618a58da7649f39b76787e5791e91b88ec99c5ec3",
+      "action": null,
+      "transport_decision": "DEFER",
+      "reason": "TRACK_TEMPORARILY_MISSING",
+      "status": "NOT_READY"
+    }
+  },
+  {
+    "scenario_id": "S7",
+    "frames": 29,
+    "action_counts": {
+      "CONTINUE": 29
+    },
+    "first_action": {
+      "scenario_id": "S7",
+      "frame": 1,
+      "offset_s": 0.0,
+      "line_number": 1,
+      "source_sha256": "14632cb1e500d408f21e2b55ded5727f42c46bb02a46178b991a34ef90340d8d",
+      "action": "CONTINUE",
+      "transport_decision": "CONTINUE",
+      "reason": "NO_VISIBLE_PERSON",
+      "status": "DECIDED"
+    },
+    "sdk_end": {
+      "scenario_id": "S7",
+      "frame": 29,
+      "offset_s": 2.766498,
+      "line_number": 57,
+      "source_sha256": "14632cb1e500d408f21e2b55ded5727f42c46bb02a46178b991a34ef90340d8d",
+      "action": "CONTINUE",
+      "transport_decision": "CONTINUE",
+      "reason": "NO_VISIBLE_PERSON",
+      "status": "DECIDED"
+    }
+  },
+  {
+    "scenario_id": "S8",
+    "frames": 117,
+    "action_counts": {
+      "CONTINUE": 72,
+      "NO_ACTION": 45
+    },
+    "first_action": {
+      "scenario_id": "S8",
+      "frame": 1,
+      "offset_s": 0.0,
+      "line_number": 2,
+      "source_sha256": "650d8ac08c5e3cba26722c3ebdfd0f5de4525fd35d639ec536d043a25bbf47bc",
+      "action": "CONTINUE",
+      "transport_decision": "CONTINUE",
+      "reason": "NO_VISIBLE_PERSON",
+      "status": "DECIDED"
+    },
+    "sdk_end": {
+      "scenario_id": "S8",
+      "frame": 117,
+      "offset_s": 11.583372,
+      "line_number": 234,
+      "source_sha256": "650d8ac08c5e3cba26722c3ebdfd0f5de4525fd35d639ec536d043a25bbf47bc",
+      "action": null,
+      "transport_decision": "DEFER",
+      "reason": "GAZE_NOT_READY",
+      "status": "NOT_READY"
+    }
+  },
+  {
+    "scenario_id": "S9",
+    "frames": 122,
+    "action_counts": {
+      "NO_ACTION": 45,
+      "APPROACH": 20,
+      "CONTINUE": 57
+    },
+    "first_action": {
+      "scenario_id": "S9",
+      "frame": 16,
+      "offset_s": 1.509459,
+      "line_number": 32,
+      "source_sha256": "37ccb101be89048ce1fe1f09fe0ef614488f2be60038e635c24f21cb54880eb7",
+      "action": "APPROACH",
+      "transport_decision": "APPROACH",
+      "reason": "SUSTAINED_GAZE_IN_APPROACHABLE_RANGE",
+      "status": "DECIDED"
+    },
+    "sdk_end": {
+      "scenario_id": "S9",
+      "frame": 122,
+      "offset_s": 12.088643,
+      "line_number": 243,
+      "source_sha256": "37ccb101be89048ce1fe1f09fe0ef614488f2be60038e635c24f21cb54880eb7",
+      "action": "CONTINUE",
+      "transport_decision": "CONTINUE",
+      "reason": "NO_VISIBLE_PERSON",
+      "status": "DECIDED"
+    }
+  }
+]
