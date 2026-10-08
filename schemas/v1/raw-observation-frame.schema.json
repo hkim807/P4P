@@ -39,6 +39,25 @@
           ],
           "default": null
         },
+        "pass_gesture": {
+          "default": "UNKNOWN",
+          "enum": [
+            "UNKNOWN",
+            "PASS"
+          ],
+          "title": "Pass Gesture",
+          "type": "string"
+        },
+        "path_relation": {
+          "default": "UNKNOWN",
+          "enum": [
+            "UNKNOWN",
+            "CLEAR",
+            "CONFLICT"
+          ],
+          "title": "Path Relation",
+          "type": "string"
+        },
         "uid": {
           "minimum": 0,
           "title": "Uid",

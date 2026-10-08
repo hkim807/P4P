@@ -1,0 +1,18 @@
+{
+  "action_version": "social-actions-v3",
+  "rule_version": "social-rules-v3",
+  "prompt_version": "social-state-llm-v6",
+  "temporal_config": "config/temporal-development-frozen.json",
+  "track_config": "config/person-tracking.json",
+  "evaluation_contract": "config/evaluation-contract.json",
+  "human_reference": "config/human-reference.json",
+  "model": "qwen2.5:7b",
+  "temperature": 0.0,
+  "seed": 42,
+  "num_ctx": 8192,
+  "num_predict": 192,
+  "timeout_seconds": 120.0,
+  "diagnostic_interval_s": 1.0,
+  "model_trial_max_age_s": 10.0,
+  "design": "development recordings; survey trims unresolved; no physical execution"
+}

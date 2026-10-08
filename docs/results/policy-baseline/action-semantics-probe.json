@@ -1,0 +1,6 @@
+{
+  "clarification": "\nAction semantics constraint: APPROACH is only for an interested person outside conversational distance (APPROACHABLE). If interaction is justified and distance_zone is INTERACTION_RANGE, choose ENGAGE, because no further approach is needed. Do not use APPROACH as a synonym for initiating conversation.\n",
+  "state_id": "replay-8f9030f65696dfa3909274bb:22",
+  "result": "{\n  \"action\": \"ENGAGE\",\n  \"reason\": \"Sustained gaze and interaction within conversational range (1.37m).\"\n}",
+  "ok": true
+}

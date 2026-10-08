@@ -102,12 +102,16 @@ class SocialStateEstimator:
             human = {"DECREASING": "TOWARD", "INCREASING": "AWAY", "STABLE": "STATIONARY"}.get(trend, "UNKNOWN")
             if not evidence.stationary_window_confirmed:
                 human = "UNKNOWN"
+                flags.append("EGO_MOTION_UNCOMPENSATED")
             person = PersonSocialState(
                 uid=key[0], track_epoch=key[1], visibility=track["visibility"],
                 track_age_s=track["track_age_s"], time_since_seen_s=track["time_since_seen_s"],
                 latest_distance_m=distance, gaze_state=gaze, distance_zone=zone,
                 relative_distance_trend=trend, human_radial_motion=human,
-                evidence=evidence, validity_flags=flags)
+                evidence=evidence, validity_flags=flags,
+                relative_head_position=latest.get("optional_relative_head_position") if latest else None,
+                path_relation=latest.get("path_relation", "UNKNOWN") if latest and track["visibility"] == "OBSERVED" else "UNKNOWN",
+                pass_gesture=latest.get("pass_gesture", "UNKNOWN") if latest and track["visibility"] == "OBSERVED" else "UNKNOWN")
             for cue in CUES:
                 value = getattr(person, cue)
                 previous = memory.previous.get(cue, "UNKNOWN")

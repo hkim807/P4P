@@ -86,6 +86,7 @@ class LiveReceiverTests(unittest.TestCase):
     def ready_trial_observation(self, client, identity, policy):
         for index in range(22):
             observation = {**frame(), "timestamp": 1_000_000 + index * 100_000}
+            observation["people"][0]["gaze_overlap"] = .95
             if policy == "vlm":
                 observation["people"][0]["gaze_overlap"] = None
             response = client.post("/api/v1/observations", json={"observation": observation,

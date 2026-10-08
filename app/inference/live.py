@@ -270,9 +270,9 @@ class LiveModelRunner:
         people = [person for person in state["people"] if person["visibility"] == "OBSERVED"]
         evidence = people[0]["evidence"] if len(people) == 1 else {}
         image_ready = job.frame is not None
-        ready = len(people) == 1 and (image_ready if identity["policy"] == "vlm" else (
-            evidence.get("latest_distance_valid") is True and (
-                evidence.get("gaze_valid") is True or evidence.get("distance_trend_valid") is True)))
+        from app.state.social_models import observation_hold_reason
+        ready = len(people) == 1 and (image_ready if identity["policy"] == "vlm" else
+                                     observation_hold_reason(SocialState.model_validate(state)) is None)
         with self._condition:
             trial = self._trial(identity)
             current = trial["result"]

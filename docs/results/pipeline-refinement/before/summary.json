@@ -1,0 +1,42 @@
+{
+  "camera_end_proxy": {
+    "rule": {
+      "encounters": 9,
+      "decided": 0,
+      "coverage": 0.0,
+      "mean_preference_support": null,
+      "mean_appropriateness": null,
+      "modal_agreement_count": 0,
+      "original_agreement_count": 0
+    },
+    "llm": {
+      "encounters": 9,
+      "decided": 0,
+      "coverage": 0.0,
+      "mean_preference_support": null,
+      "mean_appropriateness": null,
+      "modal_agreement_count": 0,
+      "original_agreement_count": 0
+    }
+  },
+  "sdk_end_diagnostic": {
+    "rule": {
+      "encounters": 9,
+      "decided": 0,
+      "coverage": 0.0,
+      "mean_preference_support": null,
+      "mean_appropriateness": null,
+      "modal_agreement_count": 0,
+      "original_agreement_count": 0
+    },
+    "llm": {
+      "encounters": 9,
+      "decided": 0,
+      "coverage": 0.0,
+      "mean_preference_support": null,
+      "mean_appropriateness": null,
+      "modal_agreement_count": 0,
+      "original_agreement_count": 0
+    }
+  }
+}

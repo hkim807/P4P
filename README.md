@@ -1,5 +1,14 @@
 # Navel raw sensor HTTP stream
 
+The refined development version is documented in
+[pipeline refinement](docs/pipeline-refinement.md), including the frozen
+configuration, verified human reference, causal evaluation contract and
+[before-and-after results](docs/results/pipeline-refinement/comparison.md).
+Work remains on `feature/end-to-end-pipeline-refinement`. Survey-video trim
+offsets are unavailable, so longer-recording diagnostics are reported separately
+from survey-end judgments. The sections below retain the earlier implementation
+milestones; use the refinement guide for current policy versions and study commands.
+
 This branch began with the Navel sensor collector and HTTP transport extracted
 from `main` at `af211ba`. The robot client reads SDK perception and locomotion
 packets, builds one `RawObservationFrame`, and sends it using HTTP POST. The

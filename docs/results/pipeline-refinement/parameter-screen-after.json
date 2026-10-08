@@ -1,0 +1,1910 @@
+[
+  {
+    "config": {
+      "window_s": 2.0,
+      "max_gap_s": 0.25,
+      "min_span_s": 1.0,
+      "min_samples": 5,
+      "min_gaze_coverage_s": 0.8,
+      "min_gaze_coverage_fraction": 0.6,
+      "looking_enter": 0.8,
+      "looking_exit": 0.7,
+      "sustained_enter": 0.8,
+      "sustained_exit": 0.65,
+      "none_enter": 0.2,
+      "none_exit": 0.35,
+      "category_dwell_s": 0.3,
+      "min_sustained_run_s": 0.4,
+      "recurring_min_looking_s": 1.0,
+      "recurring_min_fraction": 0.45,
+      "recurring_min_bouts": 2,
+      "distance_deadband_mps": 0.1,
+      "max_distance_speed_mps": 3.0,
+      "distance_jump_allowance_m": 0.05,
+      "max_fit_residual_m": 0.1,
+      "max_fit_samples": 32,
+      "too_close_m": 0.6,
+      "interaction_max_m": 1.5,
+      "approachable_max_m": 3.0,
+      "zone_hysteresis_m": 0.1,
+      "stationary_linear_tolerance_mps": 0.02,
+      "stationary_angular_tolerance_rps": 0.03
+    },
+    "config_version": "temporal-v1-4353bd6e06c3",
+    "sdk_end_diagnostic": {
+      "S1": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S2": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "GAZE_CATEGORY_NOT_READY",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S3": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S4": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S5": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S6": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S7": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S8": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "INSUFFICIENT_GAZE_EVIDENCE",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S9": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      }
+    },
+    "frame_diagnostics": {
+      "NOT_READY": 624,
+      "ENGAGE": 75,
+      "CONTINUE": 11,
+      "APPROACH": 20
+    },
+    "rationale": "Test redundant attention warmup delay while retaining current detection, gap reset, 60% coverage and 1-second distance fit."
+  },
+  {
+    "config": {
+      "window_s": 2.0,
+      "max_gap_s": 0.35,
+      "min_span_s": 1.0,
+      "min_samples": 5,
+      "min_gaze_coverage_s": 0.8,
+      "min_gaze_coverage_fraction": 0.6,
+      "looking_enter": 0.8,
+      "looking_exit": 0.7,
+      "sustained_enter": 0.8,
+      "sustained_exit": 0.65,
+      "none_enter": 0.2,
+      "none_exit": 0.35,
+      "category_dwell_s": 0.3,
+      "min_sustained_run_s": 0.4,
+      "recurring_min_looking_s": 1.0,
+      "recurring_min_fraction": 0.45,
+      "recurring_min_bouts": 2,
+      "distance_deadband_mps": 0.1,
+      "max_distance_speed_mps": 3.0,
+      "distance_jump_allowance_m": 0.05,
+      "max_fit_residual_m": 0.1,
+      "max_fit_samples": 32,
+      "too_close_m": 0.6,
+      "interaction_max_m": 1.5,
+      "approachable_max_m": 3.0,
+      "zone_hysteresis_m": 0.1,
+      "stationary_linear_tolerance_mps": 0.02,
+      "stationary_angular_tolerance_rps": 0.03
+    },
+    "config_version": "temporal-v1-d97a89ff427f",
+    "sdk_end_diagnostic": {
+      "S1": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S2": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "GAZE_CATEGORY_NOT_READY",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S3": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S4": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S5": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S6": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S7": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S8": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "INSUFFICIENT_GAZE_EVIDENCE",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S9": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      }
+    },
+    "frame_diagnostics": {
+      "NOT_READY": 624,
+      "ENGAGE": 75,
+      "CONTINUE": 11,
+      "APPROACH": 20
+    },
+    "rationale": "Test redundant attention warmup delay while retaining current detection, gap reset, 60% coverage and 1-second distance fit."
+  },
+  {
+    "config": {
+      "window_s": 2.0,
+      "max_gap_s": 0.25,
+      "min_span_s": 1.0,
+      "min_samples": 5,
+      "min_gaze_coverage_s": 0.8,
+      "min_gaze_coverage_fraction": 0.6,
+      "looking_enter": 0.8,
+      "looking_exit": 0.7,
+      "sustained_enter": 0.8,
+      "sustained_exit": 0.65,
+      "none_enter": 0.2,
+      "none_exit": 0.35,
+      "category_dwell_s": 0.2,
+      "min_sustained_run_s": 0.4,
+      "recurring_min_looking_s": 1.0,
+      "recurring_min_fraction": 0.45,
+      "recurring_min_bouts": 2,
+      "distance_deadband_mps": 0.1,
+      "max_distance_speed_mps": 3.0,
+      "distance_jump_allowance_m": 0.05,
+      "max_fit_residual_m": 0.1,
+      "max_fit_samples": 32,
+      "too_close_m": 0.6,
+      "interaction_max_m": 1.5,
+      "approachable_max_m": 3.0,
+      "zone_hysteresis_m": 0.1,
+      "stationary_linear_tolerance_mps": 0.02,
+      "stationary_angular_tolerance_rps": 0.03
+    },
+    "config_version": "temporal-v1-b09de70c7f15",
+    "sdk_end_diagnostic": {
+      "S1": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S2": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "GAZE_CATEGORY_NOT_READY",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S3": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S4": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S5": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S6": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S7": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S8": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "INSUFFICIENT_GAZE_EVIDENCE",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S9": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      }
+    },
+    "frame_diagnostics": {
+      "NOT_READY": 612,
+      "ENGAGE": 78,
+      "CONTINUE": 17,
+      "APPROACH": 23
+    },
+    "rationale": "Test redundant attention warmup delay while retaining current detection, gap reset, 60% coverage and 1-second distance fit."
+  },
+  {
+    "config": {
+      "window_s": 2.0,
+      "max_gap_s": 0.35,
+      "min_span_s": 1.0,
+      "min_samples": 5,
+      "min_gaze_coverage_s": 0.8,
+      "min_gaze_coverage_fraction": 0.6,
+      "looking_enter": 0.8,
+      "looking_exit": 0.7,
+      "sustained_enter": 0.8,
+      "sustained_exit": 0.65,
+      "none_enter": 0.2,
+      "none_exit": 0.35,
+      "category_dwell_s": 0.2,
+      "min_sustained_run_s": 0.4,
+      "recurring_min_looking_s": 1.0,
+      "recurring_min_fraction": 0.45,
+      "recurring_min_bouts": 2,
+      "distance_deadband_mps": 0.1,
+      "max_distance_speed_mps": 3.0,
+      "distance_jump_allowance_m": 0.05,
+      "max_fit_residual_m": 0.1,
+      "max_fit_samples": 32,
+      "too_close_m": 0.6,
+      "interaction_max_m": 1.5,
+      "approachable_max_m": 3.0,
+      "zone_hysteresis_m": 0.1,
+      "stationary_linear_tolerance_mps": 0.02,
+      "stationary_angular_tolerance_rps": 0.03
+    },
+    "config_version": "temporal-v1-f52544f889f8",
+    "sdk_end_diagnostic": {
+      "S1": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S2": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "GAZE_CATEGORY_NOT_READY",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S3": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S4": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S5": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S6": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S7": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S8": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "INSUFFICIENT_GAZE_EVIDENCE",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S9": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      }
+    },
+    "frame_diagnostics": {
+      "NOT_READY": 612,
+      "ENGAGE": 78,
+      "CONTINUE": 17,
+      "APPROACH": 23
+    },
+    "rationale": "Test redundant attention warmup delay while retaining current detection, gap reset, 60% coverage and 1-second distance fit."
+  },
+  {
+    "config": {
+      "window_s": 2.0,
+      "max_gap_s": 0.25,
+      "min_span_s": 1.0,
+      "min_samples": 5,
+      "min_gaze_coverage_s": 0.8,
+      "min_gaze_coverage_fraction": 0.6,
+      "looking_enter": 0.8,
+      "looking_exit": 0.7,
+      "sustained_enter": 0.8,
+      "sustained_exit": 0.65,
+      "none_enter": 0.2,
+      "none_exit": 0.35,
+      "category_dwell_s": 0.1,
+      "min_sustained_run_s": 0.4,
+      "recurring_min_looking_s": 1.0,
+      "recurring_min_fraction": 0.45,
+      "recurring_min_bouts": 2,
+      "distance_deadband_mps": 0.1,
+      "max_distance_speed_mps": 3.0,
+      "distance_jump_allowance_m": 0.05,
+      "max_fit_residual_m": 0.1,
+      "max_fit_samples": 32,
+      "too_close_m": 0.6,
+      "interaction_max_m": 1.5,
+      "approachable_max_m": 3.0,
+      "zone_hysteresis_m": 0.1,
+      "stationary_linear_tolerance_mps": 0.02,
+      "stationary_angular_tolerance_rps": 0.03
+    },
+    "config_version": "temporal-v1-5e68868c96d4",
+    "sdk_end_diagnostic": {
+      "S1": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S2": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "GAZE_CATEGORY_NOT_READY",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S3": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S4": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S5": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S6": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S7": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S8": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "INSUFFICIENT_GAZE_EVIDENCE",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S9": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      }
+    },
+    "frame_diagnostics": {
+      "NOT_READY": 606,
+      "ENGAGE": 81,
+      "CONTINUE": 18,
+      "APPROACH": 25
+    },
+    "rationale": "Test redundant attention warmup delay while retaining current detection, gap reset, 60% coverage and 1-second distance fit."
+  },
+  {
+    "config": {
+      "window_s": 2.0,
+      "max_gap_s": 0.35,
+      "min_span_s": 1.0,
+      "min_samples": 5,
+      "min_gaze_coverage_s": 0.8,
+      "min_gaze_coverage_fraction": 0.6,
+      "looking_enter": 0.8,
+      "looking_exit": 0.7,
+      "sustained_enter": 0.8,
+      "sustained_exit": 0.65,
+      "none_enter": 0.2,
+      "none_exit": 0.35,
+      "category_dwell_s": 0.1,
+      "min_sustained_run_s": 0.4,
+      "recurring_min_looking_s": 1.0,
+      "recurring_min_fraction": 0.45,
+      "recurring_min_bouts": 2,
+      "distance_deadband_mps": 0.1,
+      "max_distance_speed_mps": 3.0,
+      "distance_jump_allowance_m": 0.05,
+      "max_fit_residual_m": 0.1,
+      "max_fit_samples": 32,
+      "too_close_m": 0.6,
+      "interaction_max_m": 1.5,
+      "approachable_max_m": 3.0,
+      "zone_hysteresis_m": 0.1,
+      "stationary_linear_tolerance_mps": 0.02,
+      "stationary_angular_tolerance_rps": 0.03
+    },
+    "config_version": "temporal-v1-ab0d8708cb07",
+    "sdk_end_diagnostic": {
+      "S1": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S2": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "GAZE_CATEGORY_NOT_READY",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S3": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S4": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S5": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S6": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S7": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S8": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "INSUFFICIENT_GAZE_EVIDENCE",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S9": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      }
+    },
+    "frame_diagnostics": {
+      "NOT_READY": 606,
+      "ENGAGE": 81,
+      "CONTINUE": 18,
+      "APPROACH": 25
+    },
+    "rationale": "Test redundant attention warmup delay while retaining current detection, gap reset, 60% coverage and 1-second distance fit."
+  },
+  {
+    "config": {
+      "window_s": 2.0,
+      "max_gap_s": 0.25,
+      "min_span_s": 1.0,
+      "min_samples": 5,
+      "min_gaze_coverage_s": 0.6,
+      "min_gaze_coverage_fraction": 0.6,
+      "looking_enter": 0.8,
+      "looking_exit": 0.7,
+      "sustained_enter": 0.8,
+      "sustained_exit": 0.65,
+      "none_enter": 0.2,
+      "none_exit": 0.35,
+      "category_dwell_s": 0.3,
+      "min_sustained_run_s": 0.4,
+      "recurring_min_looking_s": 1.0,
+      "recurring_min_fraction": 0.45,
+      "recurring_min_bouts": 2,
+      "distance_deadband_mps": 0.1,
+      "max_distance_speed_mps": 3.0,
+      "distance_jump_allowance_m": 0.05,
+      "max_fit_residual_m": 0.1,
+      "max_fit_samples": 32,
+      "too_close_m": 0.6,
+      "interaction_max_m": 1.5,
+      "approachable_max_m": 3.0,
+      "zone_hysteresis_m": 0.1,
+      "stationary_linear_tolerance_mps": 0.02,
+      "stationary_angular_tolerance_rps": 0.03
+    },
+    "config_version": "temporal-v1-cbc42a5d2de3",
+    "sdk_end_diagnostic": {
+      "S1": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S2": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "GAZE_CATEGORY_NOT_READY",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S3": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S4": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S5": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S6": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S7": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S8": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "INSUFFICIENT_GAZE_EVIDENCE",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S9": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      }
+    },
+    "frame_diagnostics": {
+      "NOT_READY": 624,
+      "ENGAGE": 75,
+      "CONTINUE": 11,
+      "APPROACH": 20
+    },
+    "rationale": "Test redundant attention warmup delay while retaining current detection, gap reset, 60% coverage and 1-second distance fit."
+  },
+  {
+    "config": {
+      "window_s": 2.0,
+      "max_gap_s": 0.35,
+      "min_span_s": 1.0,
+      "min_samples": 5,
+      "min_gaze_coverage_s": 0.6,
+      "min_gaze_coverage_fraction": 0.6,
+      "looking_enter": 0.8,
+      "looking_exit": 0.7,
+      "sustained_enter": 0.8,
+      "sustained_exit": 0.65,
+      "none_enter": 0.2,
+      "none_exit": 0.35,
+      "category_dwell_s": 0.3,
+      "min_sustained_run_s": 0.4,
+      "recurring_min_looking_s": 1.0,
+      "recurring_min_fraction": 0.45,
+      "recurring_min_bouts": 2,
+      "distance_deadband_mps": 0.1,
+      "max_distance_speed_mps": 3.0,
+      "distance_jump_allowance_m": 0.05,
+      "max_fit_residual_m": 0.1,
+      "max_fit_samples": 32,
+      "too_close_m": 0.6,
+      "interaction_max_m": 1.5,
+      "approachable_max_m": 3.0,
+      "zone_hysteresis_m": 0.1,
+      "stationary_linear_tolerance_mps": 0.02,
+      "stationary_angular_tolerance_rps": 0.03
+    },
+    "config_version": "temporal-v1-208484c43bea",
+    "sdk_end_diagnostic": {
+      "S1": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S2": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "GAZE_CATEGORY_NOT_READY",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S3": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S4": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S5": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S6": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S7": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S8": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "INSUFFICIENT_GAZE_EVIDENCE",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S9": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      }
+    },
+    "frame_diagnostics": {
+      "NOT_READY": 624,
+      "ENGAGE": 75,
+      "CONTINUE": 11,
+      "APPROACH": 20
+    },
+    "rationale": "Test redundant attention warmup delay while retaining current detection, gap reset, 60% coverage and 1-second distance fit."
+  },
+  {
+    "config": {
+      "window_s": 2.0,
+      "max_gap_s": 0.25,
+      "min_span_s": 1.0,
+      "min_samples": 5,
+      "min_gaze_coverage_s": 0.6,
+      "min_gaze_coverage_fraction": 0.6,
+      "looking_enter": 0.8,
+      "looking_exit": 0.7,
+      "sustained_enter": 0.8,
+      "sustained_exit": 0.65,
+      "none_enter": 0.2,
+      "none_exit": 0.35,
+      "category_dwell_s": 0.2,
+      "min_sustained_run_s": 0.4,
+      "recurring_min_looking_s": 1.0,
+      "recurring_min_fraction": 0.45,
+      "recurring_min_bouts": 2,
+      "distance_deadband_mps": 0.1,
+      "max_distance_speed_mps": 3.0,
+      "distance_jump_allowance_m": 0.05,
+      "max_fit_residual_m": 0.1,
+      "max_fit_samples": 32,
+      "too_close_m": 0.6,
+      "interaction_max_m": 1.5,
+      "approachable_max_m": 3.0,
+      "zone_hysteresis_m": 0.1,
+      "stationary_linear_tolerance_mps": 0.02,
+      "stationary_angular_tolerance_rps": 0.03
+    },
+    "config_version": "temporal-v1-2d1354fe1e2a",
+    "sdk_end_diagnostic": {
+      "S1": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S2": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "GAZE_CATEGORY_NOT_READY",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S3": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S4": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S5": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S6": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S7": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S8": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "INSUFFICIENT_GAZE_EVIDENCE",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S9": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      }
+    },
+    "frame_diagnostics": {
+      "NOT_READY": 612,
+      "ENGAGE": 78,
+      "CONTINUE": 17,
+      "APPROACH": 23
+    },
+    "rationale": "Test redundant attention warmup delay while retaining current detection, gap reset, 60% coverage and 1-second distance fit."
+  },
+  {
+    "config": {
+      "window_s": 2.0,
+      "max_gap_s": 0.35,
+      "min_span_s": 1.0,
+      "min_samples": 5,
+      "min_gaze_coverage_s": 0.6,
+      "min_gaze_coverage_fraction": 0.6,
+      "looking_enter": 0.8,
+      "looking_exit": 0.7,
+      "sustained_enter": 0.8,
+      "sustained_exit": 0.65,
+      "none_enter": 0.2,
+      "none_exit": 0.35,
+      "category_dwell_s": 0.2,
+      "min_sustained_run_s": 0.4,
+      "recurring_min_looking_s": 1.0,
+      "recurring_min_fraction": 0.45,
+      "recurring_min_bouts": 2,
+      "distance_deadband_mps": 0.1,
+      "max_distance_speed_mps": 3.0,
+      "distance_jump_allowance_m": 0.05,
+      "max_fit_residual_m": 0.1,
+      "max_fit_samples": 32,
+      "too_close_m": 0.6,
+      "interaction_max_m": 1.5,
+      "approachable_max_m": 3.0,
+      "zone_hysteresis_m": 0.1,
+      "stationary_linear_tolerance_mps": 0.02,
+      "stationary_angular_tolerance_rps": 0.03
+    },
+    "config_version": "temporal-v1-c7e2d86b8008",
+    "sdk_end_diagnostic": {
+      "S1": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S2": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "GAZE_CATEGORY_NOT_READY",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S3": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S4": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S5": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S6": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S7": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S8": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "INSUFFICIENT_GAZE_EVIDENCE",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S9": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      }
+    },
+    "frame_diagnostics": {
+      "NOT_READY": 612,
+      "ENGAGE": 78,
+      "CONTINUE": 17,
+      "APPROACH": 23
+    },
+    "rationale": "Test redundant attention warmup delay while retaining current detection, gap reset, 60% coverage and 1-second distance fit."
+  },
+  {
+    "config": {
+      "window_s": 2.0,
+      "max_gap_s": 0.25,
+      "min_span_s": 1.0,
+      "min_samples": 5,
+      "min_gaze_coverage_s": 0.6,
+      "min_gaze_coverage_fraction": 0.6,
+      "looking_enter": 0.8,
+      "looking_exit": 0.7,
+      "sustained_enter": 0.8,
+      "sustained_exit": 0.65,
+      "none_enter": 0.2,
+      "none_exit": 0.35,
+      "category_dwell_s": 0.1,
+      "min_sustained_run_s": 0.4,
+      "recurring_min_looking_s": 1.0,
+      "recurring_min_fraction": 0.45,
+      "recurring_min_bouts": 2,
+      "distance_deadband_mps": 0.1,
+      "max_distance_speed_mps": 3.0,
+      "distance_jump_allowance_m": 0.05,
+      "max_fit_residual_m": 0.1,
+      "max_fit_samples": 32,
+      "too_close_m": 0.6,
+      "interaction_max_m": 1.5,
+      "approachable_max_m": 3.0,
+      "zone_hysteresis_m": 0.1,
+      "stationary_linear_tolerance_mps": 0.02,
+      "stationary_angular_tolerance_rps": 0.03
+    },
+    "config_version": "temporal-v1-689ecfd44bab",
+    "sdk_end_diagnostic": {
+      "S1": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S2": {
+        "status": "DECIDED",
+        "action": "ENGAGE",
+        "reason": null,
+        "conditional_human": {
+          "preferred_count": 11,
+          "preference_support": 0.2972972972972973,
+          "mean_appropriateness": 3.7777777777777777,
+          "rating_n": 36,
+          "modal_agreement": false,
+          "original_agreement": false
+        }
+      },
+      "S3": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S4": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S5": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S6": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S7": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S8": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "INSUFFICIENT_GAZE_EVIDENCE",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S9": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      }
+    },
+    "frame_diagnostics": {
+      "NOT_READY": 605,
+      "ENGAGE": 82,
+      "CONTINUE": 18,
+      "APPROACH": 25
+    },
+    "rationale": "Test redundant attention warmup delay while retaining current detection, gap reset, 60% coverage and 1-second distance fit."
+  },
+  {
+    "config": {
+      "window_s": 2.0,
+      "max_gap_s": 0.35,
+      "min_span_s": 1.0,
+      "min_samples": 5,
+      "min_gaze_coverage_s": 0.6,
+      "min_gaze_coverage_fraction": 0.6,
+      "looking_enter": 0.8,
+      "looking_exit": 0.7,
+      "sustained_enter": 0.8,
+      "sustained_exit": 0.65,
+      "none_enter": 0.2,
+      "none_exit": 0.35,
+      "category_dwell_s": 0.1,
+      "min_sustained_run_s": 0.4,
+      "recurring_min_looking_s": 1.0,
+      "recurring_min_fraction": 0.45,
+      "recurring_min_bouts": 2,
+      "distance_deadband_mps": 0.1,
+      "max_distance_speed_mps": 3.0,
+      "distance_jump_allowance_m": 0.05,
+      "max_fit_residual_m": 0.1,
+      "max_fit_samples": 32,
+      "too_close_m": 0.6,
+      "interaction_max_m": 1.5,
+      "approachable_max_m": 3.0,
+      "zone_hysteresis_m": 0.1,
+      "stationary_linear_tolerance_mps": 0.02,
+      "stationary_angular_tolerance_rps": 0.03
+    },
+    "config_version": "temporal-v1-67405938d235",
+    "sdk_end_diagnostic": {
+      "S1": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S2": {
+        "status": "DECIDED",
+        "action": "ENGAGE",
+        "reason": null,
+        "conditional_human": {
+          "preferred_count": 11,
+          "preference_support": 0.2972972972972973,
+          "mean_appropriateness": 3.7777777777777777,
+          "rating_n": 36,
+          "modal_agreement": false,
+          "original_agreement": false
+        }
+      },
+      "S3": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S4": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S5": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S6": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S7": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S8": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "INSUFFICIENT_GAZE_EVIDENCE",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      },
+      "S9": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON",
+        "conditional_human": {
+          "preferred_count": null,
+          "preference_support": null,
+          "mean_appropriateness": null,
+          "rating_n": null,
+          "modal_agreement": null,
+          "original_agreement": null
+        }
+      }
+    },
+    "frame_diagnostics": {
+      "NOT_READY": 605,
+      "ENGAGE": 82,
+      "CONTINUE": 18,
+      "APPROACH": 25
+    },
+    "rationale": "Test redundant attention warmup delay while retaining current detection, gap reset, 60% coverage and 1-second distance fit."
+  }
+]

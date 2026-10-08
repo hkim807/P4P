@@ -163,6 +163,11 @@ class SingleTrial:
         else:
             cue_ready = gaze_ready if self.policy == "rules" else gaze_ready or self._latest_trend_valid
             evidence_ready = evidence.get("latest_distance_valid") is True and cue_ready
+            # The server derives one shared rule/structured-LLM eligibility from
+            # the correlated state. This also permits conflict/proximity/pass
+            # observations before gaze history is ready.
+            if isinstance(readiness, Mapping):
+                evidence_ready = readiness.get("status") == "READY" and readiness.get("reason_code") is None
         self.ready = (self.phase == "OBSERVING" and evidence_ready
                       and 0 <= self.monotonic_us() - timestamp <= self.max_age_us)
 

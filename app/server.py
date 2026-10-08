@@ -363,6 +363,7 @@ def main(argv: list[str] | None = None) -> None:
         parser.add_argument(f"--{policy}-temperature", type=float, default=0.0)
         parser.add_argument(f"--{policy}-seed", type=int)
         parser.add_argument(f"--{policy}-num-predict", type=int)
+        parser.add_argument(f"--{policy}-num-ctx", type=int)
     args = parser.parse_args(argv)
     if not 1 <= args.port <= 65535:
         parser.error("port must be between 1 and 65535")
@@ -390,7 +391,8 @@ def main(argv: list[str] | None = None) -> None:
                 timeout_seconds=getattr(args, f"{policy}_timeout"),
                 temperature=getattr(args, f"{policy}_temperature"),
                 seed=getattr(args, f"{policy}_seed"),
-                num_predict=getattr(args, f"{policy}_num_predict"))
+                num_predict=getattr(args, f"{policy}_num_predict"),
+                num_ctx=getattr(args, f"{policy}_num_ctx"))
             policy_configs[f"{policy}_config"] = checked_config if selected else None
         model_config = LiveModelConfig(mode=args.model_inference,
             sample_interval_s=args.model_sample_interval,

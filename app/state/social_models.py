@@ -29,6 +29,9 @@ class TemporalConfig(StrictModel):
     none_exit: float = Field(default=0.35, ge=0, le=1)
     category_dwell_s: float = Field(default=0.3, ge=0)
     min_sustained_run_s: float = Field(default=0.4, ge=0)
+    recurring_min_looking_s: float = Field(default=1.0, gt=0)
+    recurring_min_fraction: float = Field(default=0.45, gt=0, le=1)
+    recurring_min_bouts: int = Field(default=2, ge=2)
     distance_deadband_mps: float = Field(default=0.1, gt=0)
     max_distance_speed_mps: float = Field(default=3.0, gt=0)
     distance_jump_allowance_m: float = Field(default=0.05, ge=0)
@@ -77,6 +80,10 @@ Trend = Literal["DECREASING", "STABLE", "INCREASING", "UNKNOWN"]
 
 class TemporalEvidence(StrictModel):
     window_span_s: float
+    mean_gaze_overlap: float | None = None
+    latest_gaze_looking: bool | None = None
+    looking_time_s: float = 0.0
+    looking_bouts: int = 0
     gaze_fraction: float | None
     gaze_valid_coverage_s: float
     gaze_coverage_fraction: float
@@ -107,6 +114,9 @@ class PersonSocialState(StrictModel):
     relative_distance_trend: Trend
     human_radial_motion: Literal["TOWARD", "STATIONARY", "AWAY", "UNKNOWN"]
     evidence: TemporalEvidence
+    path_relation: Literal["UNKNOWN", "CLEAR", "CONFLICT"] = "UNKNOWN"
+    pass_gesture: Literal["UNKNOWN", "PASS"] = "UNKNOWN"
+    relative_head_position: dict[str, str | float] | None = None
     validity_flags: list[str]
 
 
@@ -127,7 +137,9 @@ class CueChange(StrictModel):
 
 class SocialState(StrictModel):
     schema_version: Literal[1] = 1
-    estimator_version: Literal["temporal-social-v1"] = "temporal-social-v1"
+    estimator_version: Literal["temporal-social-v1", "temporal-social-v2"] = "temporal-social-v2"
+    observation_readiness: Literal["READY", "NOT_READY"] = "NOT_READY"
+    readiness_reason: str = "UNASSESSED"
     state_id: str
     session_id: str
     ingest_sequence: int
@@ -143,3 +155,36 @@ class SocialState(StrictModel):
     active_target_uid: None = None
     active_target_track_epoch: None = None
     range_data_status: Literal["UNKNOWN"] = "UNKNOWN"
+
+    @model_validator(mode="after")
+    def derive_readiness(self):
+        reason = observation_hold_reason(self)
+        self.observation_readiness = "NOT_READY" if reason else "READY"
+        self.readiness_reason = reason or "OBSERVATIONS_AVAILABLE"
+        return self
+
+
+def observation_hold_reason(state: SocialState) -> str | None:
+    """Identical eligibility for rules, structured LLM, production and replay.
+
+    Empty detections never establish that the encounter is socially clear.
+    Explicit conflict, measured proximity and pass cues need no gaze history.
+    """
+    visible = [p for p in state.people if p.visibility == "OBSERVED"]
+    if not visible:
+        return "NO_VISIBLE_PERSON"
+    if len(visible) != 1:
+        return "MULTIPLE_VISIBLE_PEOPLE"
+    person = visible[0]
+    if person.path_relation == "CONFLICT":
+        return None
+    if (not person.evidence.latest_distance_valid or person.latest_distance_m is None
+            or person.latest_distance_m < 0 or person.distance_zone == "UNKNOWN"):
+        return "DISTANCE_UNKNOWN"
+    if person.distance_zone == "TOO_CLOSE" or person.pass_gesture == "PASS":
+        return None
+    if not person.evidence.gaze_valid:
+        return "INSUFFICIENT_GAZE_EVIDENCE"
+    if person.gaze_state == "UNKNOWN":
+        return "GAZE_CATEGORY_NOT_READY"
+    return None
