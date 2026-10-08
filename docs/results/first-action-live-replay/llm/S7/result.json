@@ -1,0 +1,32 @@
+{
+  "scenario_id": "S7",
+  "policy": "llm",
+  "status": "RECORDING_ENDED_NO_ACTION",
+  "action": null,
+  "decision": null,
+  "accepted_by_live_client": null,
+  "acceptance_details": null,
+  "resolved_elapsed_s": null,
+  "stop_elapsed_s": 2.7714021671563387,
+  "frames_ingested": 29,
+  "ready_frames": 0,
+  "readiness_counts": {
+    "NO_VISIBLE_PERSON": 29
+  },
+  "recording_exhausted": true,
+  "last_ingested_source_offset_s": 2.766498,
+  "last_ingested_line": 57,
+  "decision_source_offset_s": null,
+  "max_dispatch_lag_s": 0.004197041969746351,
+  "model_failures": [],
+  "first_model_request": null,
+  "resolved_output": null,
+  "last_readiness": {
+    "reason_code": "NO_VISIBLE_PERSON",
+    "status": "OBSERVING"
+  },
+  "source_sha256": "14632cb1e500d408f21e2b55ded5727f42c46bb02a46178b991a34ef90340d8d",
+  "trial_id": "975d1c40339f4451b7dd998240b78939",
+  "clock_mapping": "original first perception receipt + real elapsed replay time",
+  "physical_execution": false
+}

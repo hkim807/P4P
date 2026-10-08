@@ -1,0 +1,92 @@
+{
+  "scenario_id": "S9",
+  "policy": "llm",
+  "status": "ACTION_RESOLVED",
+  "action": "CONTINUE",
+  "decision": {
+    "action": "CONTINUE",
+    "reason": "The person is in the APPROACHABLE distance zone, and the gaze state is SUSTAINED. However, the distance is outside the interaction range, and there is no measured path conflict or pass gesture. Therefore, the robot should continue along its existing route without approaching the person."
+  },
+  "accepted_by_live_client": false,
+  "acceptance_details": {
+    "current_readiness": false,
+    "latest_observation_age_s": 0.008361,
+    "model_source_age_s": 7.691449,
+    "trial_phase": "OBSERVING",
+    "failure_reason": null
+  },
+  "resolved_elapsed_s": 8.902881583198905,
+  "stop_elapsed_s": 8.902881583198905,
+  "frames_ingested": 90,
+  "ready_frames": 31,
+  "readiness_counts": {
+    "INSUFFICIENT_GAZE_EVIDENCE": 18,
+    "GAZE_CATEGORY_NOT_READY": 7,
+    "READY": 31,
+    "NO_VISIBLE_PERSON": 34
+  },
+  "recording_exhausted": false,
+  "last_ingested_source_offset_s": 8.894522,
+  "last_ingested_line": 180,
+  "decision_source_offset_s": 1.211434,
+  "max_dispatch_lag_s": 0.005340415984392166,
+  "model_failures": [],
+  "first_model_request": {
+    "decision": null,
+    "error": null,
+    "policy": "llm",
+    "request_id": "eefcc883897b458b8a7eb650d3e74b1d",
+    "session_id": "replay-f3f8a2043463495274336558",
+    "source_robot_timestamp_us": 14472633313,
+    "source_state_id": "replay-f3f8a2043463495274336558:13",
+    "status": "pending",
+    "trial_id": "35e19880d14b4138bfeb13a3f778dab4"
+  },
+  "resolved_output": {
+    "decision": {
+      "action": "CONTINUE",
+      "reason": "The person is in the APPROACHABLE distance zone, and the gaze state is SUSTAINED. However, the distance is outside the interaction range, and there is no measured path conflict or pass gesture. Therefore, the robot should continue along its existing route without approaching the person."
+    },
+    "error": null,
+    "policy": "llm",
+    "request_id": "eefcc883897b458b8a7eb650d3e74b1d",
+    "session_id": "replay-f3f8a2043463495274336558",
+    "source_robot_timestamp_us": 14472633313,
+    "source_state_id": "replay-f3f8a2043463495274336558:13",
+    "status": "succeeded",
+    "trial_id": "35e19880d14b4138bfeb13a3f778dab4",
+    "completed_at": "2026-10-08T08:42:00.552521+00:00",
+    "error_stage": null,
+    "ok": true,
+    "ollama_configuration": {
+      "base_url": "http://127.0.0.1:11434",
+      "generation_options": {
+        "num_ctx": 8192,
+        "num_predict": 192,
+        "seed": 42,
+        "temperature": 0.0
+      },
+      "model": "qwen2.5:7b",
+      "num_ctx": 8192,
+      "num_predict": 192,
+      "seed": 42,
+      "temperature": 0.0,
+      "timeout_seconds": 120.0
+    },
+    "prompt_version": "social-state-llm-v6",
+    "raw_content": "{\n  \"action\": \"CONTINUE\",\n  \"reason\": \"The person is in the APPROACHABLE distance zone, and the gaze state is SUSTAINED. However, the distance is outside the interaction range, and there is no measured path conflict or pass gesture. Therefore, the robot should continue along its existing route without approaching the person.\"\n}",
+    "request_duration_s": 7.652841166127473,
+    "requested_model": "qwen2.5:7b",
+    "returned_model": "qwen2.5:7b",
+    "delivery_status": "succeeded",
+    "delivery_error": null
+  },
+  "last_readiness": {
+    "reason_code": "NO_VISIBLE_PERSON",
+    "status": "OBSERVING"
+  },
+  "source_sha256": "37ccb101be89048ce1fe1f09fe0ef614488f2be60038e635c24f21cb54880eb7",
+  "trial_id": "35e19880d14b4138bfeb13a3f778dab4",
+  "clock_mapping": "original first perception receipt + real elapsed replay time",
+  "physical_execution": false
+}

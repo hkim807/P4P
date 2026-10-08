@@ -1,0 +1,50 @@
+{
+  "scenario_id": "S3",
+  "policy": "rules",
+  "status": "ACTION_RESOLVED",
+  "action": "ENGAGE",
+  "decision": {
+    "action": "ENGAGE",
+    "reason": "The person is looking steadily at the robot and is within conversation distance."
+  },
+  "accepted_by_live_client": true,
+  "acceptance_details": {
+    "current_readiness": true,
+    "latest_observation_age_s": 0.004608,
+    "model_source_age_s": 0.004608,
+    "trial_phase": "DECIDED",
+    "failure_reason": null
+  },
+  "resolved_elapsed_s": 1.1913504172116518,
+  "stop_elapsed_s": 1.1913504172116518,
+  "frames_ingested": 13,
+  "ready_frames": 1,
+  "readiness_counts": {
+    "INSUFFICIENT_GAZE_EVIDENCE": 10,
+    "GAZE_CATEGORY_NOT_READY": 2,
+    "READY": 1
+  },
+  "recording_exhausted": false,
+  "last_ingested_source_offset_s": 1.186746,
+  "last_ingested_line": 25,
+  "decision_source_offset_s": 1.186746,
+  "max_dispatch_lag_s": 0.00470962468534708,
+  "model_failures": [],
+  "first_model_request": null,
+  "resolved_output": {
+    "decision": {
+      "action": "ENGAGE",
+      "reason": "The person is looking steadily at the robot and is within conversation distance."
+    },
+    "source_robot_timestamp_us": 13767457164,
+    "source_state_id": "replay-8f9030f65696dfa3909274bb:13"
+  },
+  "last_readiness": {
+    "reason_code": null,
+    "status": "READY"
+  },
+  "source_sha256": "f01522167bb74c2f91b5930beb80267d04268e00270e061cf1acb4e486babe58",
+  "trial_id": "bf0fc0dba1974f9da0e88bfc3b560f34",
+  "clock_mapping": "original first perception receipt + real elapsed replay time",
+  "physical_execution": false
+}

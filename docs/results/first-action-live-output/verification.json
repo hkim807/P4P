@@ -1,0 +1,178 @@
+{
+  "encounter_runs": 18,
+  "checks": [
+    {
+      "scenario": "S1",
+      "policy": "rules",
+      "prefix_only": true,
+      "source_hash_unchanged": true,
+      "trace_frame_count": 91,
+      "model_calls": 0,
+      "identical_first_eligible_rule_llm_input": null
+    },
+    {
+      "scenario": "S2",
+      "policy": "rules",
+      "prefix_only": true,
+      "source_hash_unchanged": true,
+      "trace_frame_count": 84,
+      "model_calls": 0,
+      "identical_first_eligible_rule_llm_input": null
+    },
+    {
+      "scenario": "S3",
+      "policy": "rules",
+      "prefix_only": true,
+      "source_hash_unchanged": true,
+      "trace_frame_count": 13,
+      "model_calls": 0,
+      "identical_first_eligible_rule_llm_input": null
+    },
+    {
+      "scenario": "S4",
+      "policy": "rules",
+      "prefix_only": true,
+      "source_hash_unchanged": true,
+      "trace_frame_count": 55,
+      "model_calls": 0,
+      "identical_first_eligible_rule_llm_input": null
+    },
+    {
+      "scenario": "S5",
+      "policy": "rules",
+      "prefix_only": true,
+      "source_hash_unchanged": true,
+      "trace_frame_count": 40,
+      "model_calls": 0,
+      "identical_first_eligible_rule_llm_input": null
+    },
+    {
+      "scenario": "S6",
+      "policy": "rules",
+      "prefix_only": true,
+      "source_hash_unchanged": true,
+      "trace_frame_count": 77,
+      "model_calls": 0,
+      "identical_first_eligible_rule_llm_input": null
+    },
+    {
+      "scenario": "S7",
+      "policy": "rules",
+      "prefix_only": true,
+      "source_hash_unchanged": true,
+      "trace_frame_count": 29,
+      "model_calls": 0,
+      "identical_first_eligible_rule_llm_input": null
+    },
+    {
+      "scenario": "S8",
+      "policy": "rules",
+      "prefix_only": true,
+      "source_hash_unchanged": true,
+      "trace_frame_count": 117,
+      "model_calls": 0,
+      "identical_first_eligible_rule_llm_input": null
+    },
+    {
+      "scenario": "S9",
+      "policy": "rules",
+      "prefix_only": true,
+      "source_hash_unchanged": true,
+      "trace_frame_count": 13,
+      "model_calls": 0,
+      "identical_first_eligible_rule_llm_input": null
+    },
+    {
+      "scenario": "S1",
+      "policy": "llm",
+      "prefix_only": true,
+      "source_hash_unchanged": true,
+      "trace_frame_count": 91,
+      "model_calls": 0,
+      "identical_first_eligible_rule_llm_input": null
+    },
+    {
+      "scenario": "S2",
+      "policy": "llm",
+      "prefix_only": true,
+      "source_hash_unchanged": true,
+      "trace_frame_count": 84,
+      "model_calls": 1,
+      "identical_first_eligible_rule_llm_input": true
+    },
+    {
+      "scenario": "S3",
+      "policy": "llm",
+      "prefix_only": true,
+      "source_hash_unchanged": true,
+      "trace_frame_count": 65,
+      "model_calls": 1,
+      "identical_first_eligible_rule_llm_input": true
+    },
+    {
+      "scenario": "S4",
+      "policy": "llm",
+      "prefix_only": true,
+      "source_hash_unchanged": true,
+      "trace_frame_count": 55,
+      "model_calls": 0,
+      "identical_first_eligible_rule_llm_input": null
+    },
+    {
+      "scenario": "S5",
+      "policy": "llm",
+      "prefix_only": true,
+      "source_hash_unchanged": true,
+      "trace_frame_count": 40,
+      "model_calls": 0,
+      "identical_first_eligible_rule_llm_input": null
+    },
+    {
+      "scenario": "S6",
+      "policy": "llm",
+      "prefix_only": true,
+      "source_hash_unchanged": true,
+      "trace_frame_count": 77,
+      "model_calls": 0,
+      "identical_first_eligible_rule_llm_input": null
+    },
+    {
+      "scenario": "S7",
+      "policy": "llm",
+      "prefix_only": true,
+      "source_hash_unchanged": true,
+      "trace_frame_count": 29,
+      "model_calls": 0,
+      "identical_first_eligible_rule_llm_input": null
+    },
+    {
+      "scenario": "S8",
+      "policy": "llm",
+      "prefix_only": true,
+      "source_hash_unchanged": true,
+      "trace_frame_count": 117,
+      "model_calls": 0,
+      "identical_first_eligible_rule_llm_input": null
+    },
+    {
+      "scenario": "S9",
+      "policy": "llm",
+      "prefix_only": true,
+      "source_hash_unchanged": true,
+      "trace_frame_count": 90,
+      "model_calls": 1,
+      "identical_first_eligible_rule_llm_input": true
+    }
+  ],
+  "max_dispatch_lag_s": 0.00886462489143014,
+  "runner_sha256_matches_manifest": true,
+  "source_clock_pacing": 1.0,
+  "physical_execution": false,
+  "tests": {
+    "new_replay_tests": 5,
+    "targeted_regression_tests": 79,
+    "final_status": "passed",
+    "initial_regression_failure": "Existing route shutdown poll_stall test failed during concurrent inference; same unchanged test suite passed after replay finished.",
+    "freeze_verification": "all existing frozen production/evaluation/configuration hashes match"
+  }
+}
