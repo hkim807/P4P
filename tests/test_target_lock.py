@@ -199,7 +199,7 @@ class TargetLockTests(unittest.TestCase):
 
             missing = no_person(21)
             response = client.post("/api/v1/observations", json=missing)
-            self.assertEqual(response.json["policy_decision"]["decision"], "CONTINUE")
+            self.assertEqual(response.json["policy_decision"]["decision"], "DEFER")
             parsed = parse_decision(response.json, missing, missing["timestamp"] + 1000, 1_000_000)
             self.assertEqual((parsed.decision, parsed.reason_code), ("DEFER", "LOCKED_TARGET_MISSING"))
 

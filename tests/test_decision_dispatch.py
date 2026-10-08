@@ -27,9 +27,9 @@ def response_for(observation, sequence, decision="APPROACH", target=True):
             "people": [{"uid": 17, "track_epoch": 1, "visibility": "OBSERVED"}],
         },
         "policy_decision": {
-            "decision_id": f"{state_id}:social-rules-v1",
+            "decision_id": f"{state_id}:social-rules-v2",
             "source_state_id": state_id, "session_id": "session-a",
-            "policy_version": "social-rules-v1", "decision": decision,
+            "policy_version": "social-rules-v2", "decision": decision,
             "reason_code": "TEST", "target_uid": uid, "target_track_epoch": epoch,
         },
     }

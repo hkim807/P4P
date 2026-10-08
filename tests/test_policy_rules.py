@@ -34,14 +34,15 @@ class PolicyRulesTests(unittest.TestCase):
                 self.assertEqual((decision.target_uid, decision.target_track_epoch), (17, 1))
                 self.assertEqual(decision.source_state_id, state["state_id"])
 
-    def test_unknown_motion_blocks_approach_and_engage(self):
+    def test_unknown_motion_does_not_invent_human_motion_or_block_attention(self):
         for distance in (1.0, 2.0):
             state = ready_state(distance)
             state["people"][0]["human_radial_motion"] = "UNKNOWN"
             decision = decide(state)
             self.assertEqual((decision.decision, decision.reason_code),
-                             ("DEFER", "HUMAN_MOTION_UNKNOWN"))
-            self.assertIsNone(decision.target_uid)
+                             ("ENGAGE" if distance == 1.0 else "APPROACH",
+                              "SUSTAINED_GAZE_IN_INTERACTION_RANGE" if distance == 1.0 else "SUSTAINED_GAZE_IN_APPROACHABLE_RANGE"))
+            self.assertEqual(decision.target_uid, 17)
 
     def test_precedence_and_clear_non_engagement(self):
         state = ready_state()
@@ -70,7 +71,7 @@ class PolicyRulesTests(unittest.TestCase):
         self.assertEqual(decide(state).reason_code, "PERSON_MOVING_AWAY")
         person["human_radial_motion"] = "STATIONARY"
         person["gaze_state"] = "INTERMITTENT"
-        self.assertEqual(decide(state).reason_code, "GAZE_INSUFFICIENT_OR_INTERMITTENT")
+        self.assertEqual(decide(state).reason_code, "INCIDENTAL_ATTENTION")
         person["gaze_state"] = "SUSTAINED"
         person["distance_zone"] = "FAR"
         self.assertEqual(decide(state).reason_code, "PERSON_FAR")
@@ -81,7 +82,7 @@ class PolicyRulesTests(unittest.TestCase):
         self.assertEqual(decide(state).decision, "DEFER")
         state = ready_state()
         state["people"][0]["evidence"]["stationary_window_confirmed"] = False
-        self.assertEqual(decide(state).reason_code, "HUMAN_MOTION_UNKNOWN")
+        self.assertEqual(decide(state).decision, "APPROACH")
 
     def test_live_response_matches_decision_replay(self):
         with tempfile.TemporaryDirectory() as directory:

@@ -77,6 +77,7 @@ Trend = Literal["DECREASING", "STABLE", "INCREASING", "UNKNOWN"]
 
 class TemporalEvidence(StrictModel):
     window_span_s: float
+    mean_gaze_overlap: float | None = None
     gaze_fraction: float | None
     gaze_valid_coverage_s: float
     gaze_coverage_fraction: float
@@ -107,6 +108,9 @@ class PersonSocialState(StrictModel):
     relative_distance_trend: Trend
     human_radial_motion: Literal["TOWARD", "STATIONARY", "AWAY", "UNKNOWN"]
     evidence: TemporalEvidence
+    path_relation: Literal["UNKNOWN", "CLEAR", "CONFLICT"] = "UNKNOWN"
+    pass_gesture: Literal["UNKNOWN", "PASS"] = "UNKNOWN"
+    relative_head_position: dict[str, str | float] | None = None
     validity_flags: list[str]
 
 
@@ -127,7 +131,9 @@ class CueChange(StrictModel):
 
 class SocialState(StrictModel):
     schema_version: Literal[1] = 1
-    estimator_version: Literal["temporal-social-v1"] = "temporal-social-v1"
+    estimator_version: Literal["temporal-social-v2"] = "temporal-social-v2"
+    observation_readiness: Literal["READY", "NOT_READY"] = "NOT_READY"
+    readiness_reason: str = "UNASSESSED"
     state_id: str
     session_id: str
     ingest_sequence: int
@@ -143,3 +149,30 @@ class SocialState(StrictModel):
     active_target_uid: None = None
     active_target_track_epoch: None = None
     range_data_status: Literal["UNKNOWN"] = "UNKNOWN"
+
+
+    @model_validator(mode="after")
+    def derive_readiness(self):
+        self.observation_readiness, self.readiness_reason = readiness(self)
+        return self
+
+
+def readiness(state: SocialState) -> tuple[str, str]:
+    """Shared eligibility, before either classifier; no policy outcome is used."""
+    visible = [p for p in state.people if p.visibility == "OBSERVED"]
+    if any(p.path_relation == "CONFLICT" for p in visible):
+        return "READY", "PATH_CONFLICT_AVAILABLE"
+    if not visible:
+        if state.people:
+            return "NOT_READY", "TRACK_TEMPORARILY_MISSING"
+        return "READY", "NO_VISIBLE_PERSON"
+    if len(visible) != 1:
+        return "NOT_READY", "MULTIPLE_VISIBLE_PEOPLE"
+    p = visible[0]
+    if not p.evidence.latest_distance_valid or p.distance_zone == "UNKNOWN":
+        return "NOT_READY", "DISTANCE_UNKNOWN"
+    if p.distance_zone == "TOO_CLOSE":
+        return "NOT_READY", "PERSON_TOO_CLOSE"
+    if not p.evidence.gaze_valid or p.gaze_state == "UNKNOWN":
+        return "NOT_READY", "GAZE_NOT_READY"
+    return "READY", "TEMPORAL_ATTENTION_AVAILABLE"

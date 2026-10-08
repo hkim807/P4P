@@ -14,21 +14,28 @@
       "type": "string"
     },
     "policy_version": {
-      "const": "social-rules-v1",
-      "default": "social-rules-v1",
+      "const": "social-rules-v2",
+      "default": "social-rules-v2",
       "title": "Policy Version",
       "type": "string"
     },
     "decision": {
-      "enum": [
-        "CONTINUE",
-        "APPROACH",
-        "ENGAGE",
-        "YIELD",
-        "DEFER"
+      "anyOf": [
+        {
+          "enum": [
+            "CONTINUE",
+            "YIELD",
+            "APPROACH",
+            "ENGAGE"
+          ],
+          "type": "string"
+        },
+        {
+          "const": "DEFER",
+          "type": "string"
+        }
       ],
-      "title": "Decision",
-      "type": "string"
+      "title": "Decision"
     },
     "reason_code": {
       "title": "Reason Code",

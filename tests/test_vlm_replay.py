@@ -137,7 +137,7 @@ class VLMReplayRunnerTests(unittest.TestCase):
             self.assertEqual(actual["social_state_json"], original["social_state_json"])
 
     def test_all_four_actions_preserve_rows_order_and_independent_source_correlation(self):
-        actions = ["STOP", "CONTINUE", "APPROACH", "ENGAGE"]
+        actions = ["YIELD", "CONTINUE", "APPROACH", "ENGAGE"]
         self.responses = [self.success(action) for action in actions]
         status, summary, rows, stderr, _ = self.run_main()
         self.assertEqual(status, 0, stderr)
@@ -223,8 +223,8 @@ class VLMReplayRunnerTests(unittest.TestCase):
     def test_existing_llm_decisions_errors_and_preparation_fields_are_unchanged(self):
         rows = deepcopy(self.originals)
         rows[0].update(status="succeeded", ok=True,
-                       decision={"action": "STOP", "reason": "Existing LLM evidence."},
-                       raw_content='{"action":"STOP","reason":"Existing LLM evidence."}',
+                       decision={"action": "YIELD", "reason": "Existing LLM evidence."},
+                       raw_content='{"action":"YIELD","reason":"Existing LLM evidence."}',
                        returned_model="original-llm-model", request_duration_s=.5)
         rows[1].update(status="failed", ok=False, decision=None,
                        error={"category": "timeout", "message": "Prior request timed out.", "http_status": None},
@@ -233,7 +233,7 @@ class VLMReplayRunnerTests(unittest.TestCase):
         status, _, actual, stderr, _ = self.run_main()
         self.assertEqual(status, 0, stderr)
         self.assert_preserved(actual, rows)
-        self.assertEqual(actual[0]["decision"]["action"], "STOP")
+        self.assertEqual(actual[0]["decision"]["action"], "YIELD")
         self.assertEqual(actual[0]["vlm_inference"]["decision"]["action"], "CONTINUE")
         self.assertFalse(actual[1]["ok"])
         self.assertTrue(actual[1]["vlm_inference"]["ok"])

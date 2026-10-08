@@ -2,7 +2,8 @@
 from __future__ import annotations
 
 import json
-from typing import Any, Literal
+from typing import Any
+from app.domain.actions import Action
 
 from pydantic import BaseModel, ConfigDict, Field, ValidationError
 
@@ -18,7 +19,7 @@ NON_WHITESPACE_PATTERN = (
 class ModelDecision(BaseModel):
     model_config = ConfigDict(extra="forbid", strict=True, allow_inf_nan=False, frozen=True)
 
-    action: Literal["STOP", "CONTINUE", "APPROACH", "ENGAGE"]
+    action: Action
     reason: str = Field(min_length=1, pattern=NON_WHITESPACE_PATTERN)
 
 

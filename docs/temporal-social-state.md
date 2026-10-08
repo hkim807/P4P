@@ -1,5 +1,9 @@
 # Temporal features and SocialState
 
+Current estimator: `temporal-social-v2`. See the [baseline report](policy_comparison_baseline.md#c-shared-socialstate-and-temporal-calculation) for added readiness,
+mean gaze, explicit unknown path/gesture and position evidence. Original temporal
+thresholds below remain unchanged. Historical result counts describe their original version.
+
 Layers 3a and 3b now transform recorded or live `RawObservationFrame` streams into
 measured temporal evidence and categorical SocialState. The original files stay
 unchanged. Derived JSONL contains estimates, configuration, validity reasons,

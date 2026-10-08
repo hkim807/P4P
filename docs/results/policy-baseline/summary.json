@@ -1,0 +1,1068 @@
+{
+  "scenario-01": {
+    "raw": {
+      "perception_frames": 91,
+      "locomotion_frames": 90,
+      "person_frames": 0,
+      "person_instances": 0,
+      "uids": [],
+      "nonempty_person_fields": {},
+      "gaze_min": null,
+      "gaze_max": null,
+      "distance_min_m": null,
+      "distance_max_m": null,
+      "linear_velocity_range_mps": [
+        0.0,
+        0.212
+      ],
+      "odometry_displacement_m": 0.31679226887662504,
+      "camera_records": 23,
+      "camera_events": {
+        "unavailable": 1,
+        "frame": 22
+      },
+      "camera_streams": {
+        "chest": 1,
+        "head": 22
+      },
+      "sdk_perception_span_s": 9.001448,
+      "camera_coverage": {
+        "chest": {
+          "frames": 0,
+          "same_session": false,
+          "span_s": null,
+          "start_relative_to_sdk_s": null,
+          "end_after_sdk_s": null,
+          "within_sdk_window_sequences": [],
+          "unavailable_reasons": [
+            "camera class is absent from installed Navel SDK"
+          ]
+        },
+        "head": {
+          "frames": 22,
+          "same_session": true,
+          "span_s": 21.498207,
+          "start_relative_to_sdk_s": -0.080289,
+          "end_after_sdk_s": 12.41647,
+          "within_sdk_window_sequences": [
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9
+          ],
+          "unavailable_reasons": []
+        }
+      },
+      "coverage_warning": "Compare only overlapping receipt-time windows; same filenames do not establish equal capture duration. A missing tail cannot be diagnosed from contiguous saved sequence numbers alone."
+    },
+    "frames": 91,
+    "sampled_frames": 9,
+    "not_ready_rate": 0.0,
+    "not_ready_reasons": {},
+    "gaze_states": {},
+    "motion_states": {},
+    "distance_zones": {},
+    "rule": {
+      "all_frame_actions": {
+        "CONTINUE": 91
+      },
+      "last_valid_action": "CONTINUE",
+      "end_status": "DECIDED",
+      "end_action": "CONTINUE",
+      "first_decision_delay_s": null,
+      "first_interaction_delay_s": null
+    },
+    "llm": {
+      "attempts": 27,
+      "valid": 27,
+      "errors": {},
+      "not_ready": 0,
+      "action_distribution": {
+        "CONTINUE": 27
+      },
+      "last_valid_action_per_repeat": {
+        "1": "CONTINUE",
+        "2": "CONTINUE",
+        "3": "CONTINUE"
+      },
+      "structured_success_rate": 1.0,
+      "mean_latency_s": 1.9492477500224832,
+      "repeat_modal_consistency": 1.0,
+      "first_decision_delay_s": null,
+      "first_interaction_delay_s": null
+    },
+    "agreement": 1.0,
+    "agreement_pairs": 27,
+    "detected_person_agreement": null,
+    "human": null,
+    "human_scores": null
+  },
+  "scenario-02": {
+    "raw": {
+      "perception_frames": 84,
+      "locomotion_frames": 82,
+      "person_frames": 27,
+      "person_instances": 27,
+      "uids": [
+        0,
+        1237533383,
+        1732459285,
+        1920266662
+      ],
+      "nonempty_person_fields": {
+        "id_score": 23,
+        "uid": 27,
+        "face": 27,
+        "landmarks": 27,
+        "head_position": 27,
+        "gaze": 26,
+        "facial_expression": 27,
+        "dist_mm": 27,
+        "gaze_overlap": 26,
+        "g_eye_left": 27,
+        "g_eye_right": 27,
+        "g_nose": 27,
+        "g_gaze": 26
+      },
+      "gaze_min": 0.8841193914413452,
+      "gaze_max": 0.9525421857833862,
+      "distance_min_m": 1.035796630859375,
+      "distance_max_m": 1.5225384521484375,
+      "linear_velocity_range_mps": [
+        0.0,
+        0.209
+      ],
+      "odometry_displacement_m": 0.7846817179755118,
+      "camera_records": 26,
+      "camera_events": {
+        "unavailable": 1,
+        "frame": 25
+      },
+      "camera_streams": {
+        "chest": 1,
+        "head": 25
+      },
+      "sdk_perception_span_s": 8.269501,
+      "camera_coverage": {
+        "chest": {
+          "frames": 0,
+          "same_session": false,
+          "span_s": null,
+          "start_relative_to_sdk_s": null,
+          "end_after_sdk_s": null,
+          "within_sdk_window_sequences": [],
+          "unavailable_reasons": [
+            "camera class is absent from installed Navel SDK"
+          ]
+        },
+        "head": {
+          "frames": 25,
+          "same_session": true,
+          "span_s": 24.570891,
+          "start_relative_to_sdk_s": -0.028989,
+          "end_after_sdk_s": 16.272401,
+          "within_sdk_window_sequences": [
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9
+          ],
+          "unavailable_reasons": []
+        }
+      },
+      "coverage_warning": "Compare only overlapping receipt-time windows; same filenames do not establish equal capture duration. A missing tail cannot be diagnosed from contiguous saved sequence numbers alone."
+    },
+    "frames": 84,
+    "sampled_frames": 8,
+    "not_ready_rate": 0.6666666666666666,
+    "not_ready_reasons": {
+      "GAZE_NOT_READY": 27,
+      "TRACK_TEMPORARILY_MISSING": 29
+    },
+    "gaze_states": {
+      "UNKNOWN": 27
+    },
+    "motion_states": {
+      "UNKNOWN": 27
+    },
+    "distance_zones": {
+      "INTERACTION_RANGE": 26,
+      "APPROACHABLE": 1
+    },
+    "rule": {
+      "all_frame_actions": {
+        "CONTINUE": 28,
+        "NOT_READY": 56
+      },
+      "last_valid_action": "CONTINUE",
+      "end_status": "NOT_READY",
+      "end_action": null,
+      "first_decision_delay_s": 1.427912,
+      "first_interaction_delay_s": null
+    },
+    "llm": {
+      "attempts": 9,
+      "valid": 9,
+      "errors": {},
+      "not_ready": 15,
+      "action_distribution": {
+        "CONTINUE": 9
+      },
+      "last_valid_action_per_repeat": {
+        "1": "CONTINUE",
+        "2": "CONTINUE",
+        "3": "CONTINUE"
+      },
+      "structured_success_rate": 1.0,
+      "mean_latency_s": 1.8723048566219707,
+      "repeat_modal_consistency": 1.0,
+      "first_decision_delay_s": 4.411004,
+      "first_interaction_delay_s": null
+    },
+    "agreement": 1.0,
+    "agreement_pairs": 9,
+    "detected_person_agreement": null,
+    "human": null,
+    "human_scores": null
+  },
+  "scenario-03": {
+    "raw": {
+      "perception_frames": 115,
+      "locomotion_frames": 114,
+      "person_frames": 110,
+      "person_instances": 111,
+      "uids": [
+        1732459285,
+        1920266662
+      ],
+      "nonempty_person_fields": {
+        "id_score": 106,
+        "uid": 111,
+        "face": 111,
+        "landmarks": 111,
+        "head_position": 111,
+        "gaze": 110,
+        "facial_expression": 111,
+        "dist_mm": 111,
+        "gaze_overlap": 110,
+        "g_eye_left": 111,
+        "g_eye_right": 111,
+        "g_nose": 111,
+        "g_gaze": 110
+      },
+      "gaze_min": 0.9314332008361816,
+      "gaze_max": 0.9876241683959961,
+      "distance_min_m": 0.5980872802734375,
+      "distance_max_m": 1.453784423828125,
+      "linear_velocity_range_mps": [
+        -0.022,
+        0.212
+      ],
+      "odometry_displacement_m": 1.4963977478347803,
+      "camera_records": 21,
+      "camera_events": {
+        "unavailable": 1,
+        "frame": 20
+      },
+      "camera_streams": {
+        "chest": 1,
+        "head": 20
+      },
+      "sdk_perception_span_s": 11.379302,
+      "camera_coverage": {
+        "chest": {
+          "frames": 0,
+          "same_session": false,
+          "span_s": null,
+          "start_relative_to_sdk_s": null,
+          "end_after_sdk_s": null,
+          "within_sdk_window_sequences": [],
+          "unavailable_reasons": [
+            "camera class is absent from installed Navel SDK"
+          ]
+        },
+        "head": {
+          "frames": 20,
+          "same_session": true,
+          "span_s": 19.472474,
+          "start_relative_to_sdk_s": -0.037371,
+          "end_after_sdk_s": 8.055801,
+          "within_sdk_window_sequences": [
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12
+          ],
+          "unavailable_reasons": []
+        }
+      },
+      "coverage_warning": "Compare only overlapping receipt-time windows; same filenames do not establish equal capture duration. A missing tail cannot be diagnosed from contiguous saved sequence numbers alone."
+    },
+    "frames": 115,
+    "sampled_frames": 11,
+    "not_ready_rate": 0.2956521739130435,
+    "not_ready_reasons": {
+      "GAZE_NOT_READY": 29,
+      "TRACK_TEMPORARILY_MISSING": 5
+    },
+    "gaze_states": {
+      "UNKNOWN": 29,
+      "SUSTAINED": 75,
+      "INTERMITTENT": 6
+    },
+    "motion_states": {
+      "UNKNOWN": 99,
+      "STATIONARY": 11
+    },
+    "distance_zones": {
+      "INTERACTION_RANGE": 110
+    },
+    "rule": {
+      "all_frame_actions": {
+        "NOT_READY": 34,
+        "ENGAGE": 75,
+        "CONTINUE": 6
+      },
+      "last_valid_action": "ENGAGE",
+      "end_status": "NOT_READY",
+      "end_action": null,
+      "first_decision_delay_s": 1.401296,
+      "first_interaction_delay_s": 1.401296
+    },
+    "llm": {
+      "attempts": 24,
+      "valid": 24,
+      "errors": {},
+      "not_ready": 9,
+      "action_distribution": {
+        "ENGAGE": 18,
+        "CONTINUE": 3,
+        "APPROACH": 3
+      },
+      "last_valid_action_per_repeat": {
+        "1": "APPROACH",
+        "2": "APPROACH",
+        "3": "APPROACH"
+      },
+      "structured_success_rate": 1.0,
+      "mean_latency_s": 3.091742583317682,
+      "repeat_modal_consistency": 1.0,
+      "first_decision_delay_s": 2.096264,
+      "first_interaction_delay_s": 2.096264
+    },
+    "agreement": 0.875,
+    "agreement_pairs": 24,
+    "detected_person_agreement": 0.875,
+    "human": null,
+    "human_scores": null
+  },
+  "scenario-04": {
+    "raw": {
+      "perception_frames": 55,
+      "locomotion_frames": 56,
+      "person_frames": 0,
+      "person_instances": 0,
+      "uids": [],
+      "nonempty_person_fields": {},
+      "gaze_min": null,
+      "gaze_max": null,
+      "distance_min_m": null,
+      "distance_max_m": null,
+      "linear_velocity_range_mps": [
+        0.0,
+        0.20600000000000002
+      ],
+      "odometry_displacement_m": 0.2705227218737833,
+      "camera_records": 15,
+      "camera_events": {
+        "unavailable": 1,
+        "frame": 14
+      },
+      "camera_streams": {
+        "chest": 1,
+        "head": 14
+      },
+      "sdk_perception_span_s": 5.399181,
+      "camera_coverage": {
+        "chest": {
+          "frames": 0,
+          "same_session": false,
+          "span_s": null,
+          "start_relative_to_sdk_s": null,
+          "end_after_sdk_s": null,
+          "within_sdk_window_sequences": [],
+          "unavailable_reasons": [
+            "camera class is absent from installed Navel SDK"
+          ]
+        },
+        "head": {
+          "frames": 14,
+          "same_session": true,
+          "span_s": 13.284747,
+          "start_relative_to_sdk_s": -0.078721,
+          "end_after_sdk_s": 7.806845,
+          "within_sdk_window_sequences": [
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "unavailable_reasons": []
+        }
+      },
+      "coverage_warning": "Compare only overlapping receipt-time windows; same filenames do not establish equal capture duration. A missing tail cannot be diagnosed from contiguous saved sequence numbers alone."
+    },
+    "frames": 55,
+    "sampled_frames": 6,
+    "not_ready_rate": 0.0,
+    "not_ready_reasons": {},
+    "gaze_states": {},
+    "motion_states": {},
+    "distance_zones": {},
+    "rule": {
+      "all_frame_actions": {
+        "CONTINUE": 55
+      },
+      "last_valid_action": "CONTINUE",
+      "end_status": "DECIDED",
+      "end_action": "CONTINUE",
+      "first_decision_delay_s": null,
+      "first_interaction_delay_s": null
+    },
+    "llm": {
+      "attempts": 18,
+      "valid": 18,
+      "errors": {},
+      "not_ready": 0,
+      "action_distribution": {
+        "CONTINUE": 18
+      },
+      "last_valid_action_per_repeat": {
+        "1": "CONTINUE",
+        "2": "CONTINUE",
+        "3": "CONTINUE"
+      },
+      "structured_success_rate": 1.0,
+      "mean_latency_s": 1.8600914768564205,
+      "repeat_modal_consistency": 1.0,
+      "first_decision_delay_s": null,
+      "first_interaction_delay_s": null
+    },
+    "agreement": 1.0,
+    "agreement_pairs": 18,
+    "detected_person_agreement": null,
+    "human": null,
+    "human_scores": null
+  },
+  "scenario-05": {
+    "raw": {
+      "perception_frames": 40,
+      "locomotion_frames": 41,
+      "person_frames": 0,
+      "person_instances": 0,
+      "uids": [],
+      "nonempty_person_fields": {},
+      "gaze_min": null,
+      "gaze_max": null,
+      "distance_min_m": null,
+      "distance_max_m": null,
+      "linear_velocity_range_mps": [
+        0.0,
+        0.008
+      ],
+      "odometry_displacement_m": 0.0004341393785395307,
+      "camera_records": 15,
+      "camera_events": {
+        "unavailable": 1,
+        "frame": 14
+      },
+      "camera_streams": {
+        "chest": 1,
+        "head": 14
+      },
+      "sdk_perception_span_s": 3.869026,
+      "camera_coverage": {
+        "chest": {
+          "frames": 0,
+          "same_session": false,
+          "span_s": null,
+          "start_relative_to_sdk_s": null,
+          "end_after_sdk_s": null,
+          "within_sdk_window_sequences": [],
+          "unavailable_reasons": [
+            "camera class is absent from installed Navel SDK"
+          ]
+        },
+        "head": {
+          "frames": 14,
+          "same_session": true,
+          "span_s": 13.358804,
+          "start_relative_to_sdk_s": -0.029463,
+          "end_after_sdk_s": 9.460315,
+          "within_sdk_window_sequences": [
+            2,
+            3,
+            4
+          ],
+          "unavailable_reasons": []
+        }
+      },
+      "coverage_warning": "Compare only overlapping receipt-time windows; same filenames do not establish equal capture duration. A missing tail cannot be diagnosed from contiguous saved sequence numbers alone."
+    },
+    "frames": 40,
+    "sampled_frames": 4,
+    "not_ready_rate": 0.0,
+    "not_ready_reasons": {},
+    "gaze_states": {},
+    "motion_states": {},
+    "distance_zones": {},
+    "rule": {
+      "all_frame_actions": {
+        "CONTINUE": 40
+      },
+      "last_valid_action": "CONTINUE",
+      "end_status": "DECIDED",
+      "end_action": "CONTINUE",
+      "first_decision_delay_s": null,
+      "first_interaction_delay_s": null
+    },
+    "llm": {
+      "attempts": 12,
+      "valid": 12,
+      "errors": {},
+      "not_ready": 0,
+      "action_distribution": {
+        "CONTINUE": 12
+      },
+      "last_valid_action_per_repeat": {
+        "1": "CONTINUE",
+        "2": "CONTINUE",
+        "3": "CONTINUE"
+      },
+      "structured_success_rate": 1.0,
+      "mean_latency_s": 1.85814910424718,
+      "repeat_modal_consistency": 1.0,
+      "first_decision_delay_s": null,
+      "first_interaction_delay_s": null
+    },
+    "agreement": 1.0,
+    "agreement_pairs": 12,
+    "detected_person_agreement": null,
+    "human": null,
+    "human_scores": null
+  },
+  "scenario-06": {
+    "raw": {
+      "perception_frames": 77,
+      "locomotion_frames": 77,
+      "person_frames": 4,
+      "person_instances": 4,
+      "uids": [
+        1625849556,
+        1732459285,
+        1920266662
+      ],
+      "nonempty_person_fields": {
+        "id_score": 4,
+        "uid": 4,
+        "face": 4,
+        "landmarks": 4,
+        "head_position": 4,
+        "gaze": 4,
+        "facial_expression": 4,
+        "dist_mm": 4,
+        "gaze_overlap": 4,
+        "g_eye_left": 4,
+        "g_eye_right": 4,
+        "g_nose": 4,
+        "g_gaze": 4
+      },
+      "gaze_min": 0.9207947850227356,
+      "gaze_max": 0.989955723285675,
+      "distance_min_m": 3.011103271484375,
+      "distance_max_m": 3.172938720703125,
+      "linear_velocity_range_mps": [
+        0.0,
+        0.209
+      ],
+      "odometry_displacement_m": 0.8669461059904464,
+      "camera_records": 19,
+      "camera_events": {
+        "unavailable": 1,
+        "frame": 18
+      },
+      "camera_streams": {
+        "chest": 1,
+        "head": 18
+      },
+      "sdk_perception_span_s": 7.616715,
+      "camera_coverage": {
+        "chest": {
+          "frames": 0,
+          "same_session": false,
+          "span_s": null,
+          "start_relative_to_sdk_s": null,
+          "end_after_sdk_s": null,
+          "within_sdk_window_sequences": [],
+          "unavailable_reasons": [
+            "camera class is absent from installed Navel SDK"
+          ]
+        },
+        "head": {
+          "frames": 18,
+          "same_session": true,
+          "span_s": 17.411062,
+          "start_relative_to_sdk_s": -0.070566,
+          "end_after_sdk_s": 9.723781,
+          "within_sdk_window_sequences": [
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          "unavailable_reasons": []
+        }
+      },
+      "coverage_warning": "Compare only overlapping receipt-time windows; same filenames do not establish equal capture duration. A missing tail cannot be diagnosed from contiguous saved sequence numbers alone."
+    },
+    "frames": 77,
+    "sampled_frames": 8,
+    "not_ready_rate": 0.1038961038961039,
+    "not_ready_reasons": {
+      "GAZE_NOT_READY": 4,
+      "TRACK_TEMPORARILY_MISSING": 4
+    },
+    "gaze_states": {
+      "UNKNOWN": 4
+    },
+    "motion_states": {
+      "UNKNOWN": 4
+    },
+    "distance_zones": {
+      "FAR": 4
+    },
+    "rule": {
+      "all_frame_actions": {
+        "CONTINUE": 69,
+        "NOT_READY": 8
+      },
+      "last_valid_action": "CONTINUE",
+      "end_status": "NOT_READY",
+      "end_action": null,
+      "first_decision_delay_s": null,
+      "first_interaction_delay_s": null
+    },
+    "llm": {
+      "attempts": 21,
+      "valid": 21,
+      "errors": {},
+      "not_ready": 3,
+      "action_distribution": {
+        "CONTINUE": 21
+      },
+      "last_valid_action_per_repeat": {
+        "1": "CONTINUE",
+        "2": "CONTINUE",
+        "3": "CONTINUE"
+      },
+      "structured_success_rate": 1.0,
+      "mean_latency_s": 1.8631781469143571,
+      "repeat_modal_consistency": 1.0,
+      "first_decision_delay_s": null,
+      "first_interaction_delay_s": null
+    },
+    "agreement": 1.0,
+    "agreement_pairs": 21,
+    "detected_person_agreement": null,
+    "human": null,
+    "human_scores": null
+  },
+  "scenario-07": {
+    "raw": {
+      "perception_frames": 29,
+      "locomotion_frames": 28,
+      "person_frames": 0,
+      "person_instances": 0,
+      "uids": [],
+      "nonempty_person_fields": {},
+      "gaze_min": null,
+      "gaze_max": null,
+      "distance_min_m": null,
+      "distance_max_m": null,
+      "linear_velocity_range_mps": [
+        0.0,
+        0.0
+      ],
+      "odometry_displacement_m": 0.0,
+      "camera_records": 24,
+      "camera_events": {
+        "unavailable": 1,
+        "frame": 23
+      },
+      "camera_streams": {
+        "chest": 1,
+        "head": 23
+      },
+      "sdk_perception_span_s": 2.766498,
+      "camera_coverage": {
+        "chest": {
+          "frames": 0,
+          "same_session": false,
+          "span_s": null,
+          "start_relative_to_sdk_s": null,
+          "end_after_sdk_s": null,
+          "within_sdk_window_sequences": [],
+          "unavailable_reasons": [
+            "camera class is absent from installed Navel SDK"
+          ]
+        },
+        "head": {
+          "frames": 23,
+          "same_session": true,
+          "span_s": 22.435495,
+          "start_relative_to_sdk_s": -0.039763,
+          "end_after_sdk_s": 19.629234,
+          "within_sdk_window_sequences": [
+            2,
+            3
+          ],
+          "unavailable_reasons": []
+        }
+      },
+      "coverage_warning": "Compare only overlapping receipt-time windows; same filenames do not establish equal capture duration. A missing tail cannot be diagnosed from contiguous saved sequence numbers alone."
+    },
+    "frames": 29,
+    "sampled_frames": 3,
+    "not_ready_rate": 0.0,
+    "not_ready_reasons": {},
+    "gaze_states": {},
+    "motion_states": {},
+    "distance_zones": {},
+    "rule": {
+      "all_frame_actions": {
+        "CONTINUE": 29
+      },
+      "last_valid_action": "CONTINUE",
+      "end_status": "DECIDED",
+      "end_action": "CONTINUE",
+      "first_decision_delay_s": null,
+      "first_interaction_delay_s": null
+    },
+    "llm": {
+      "attempts": 9,
+      "valid": 9,
+      "errors": {},
+      "not_ready": 0,
+      "action_distribution": {
+        "CONTINUE": 9
+      },
+      "last_valid_action_per_repeat": {
+        "1": "CONTINUE",
+        "2": "CONTINUE",
+        "3": "CONTINUE"
+      },
+      "structured_success_rate": 1.0,
+      "mean_latency_s": 1.8467017870603337,
+      "repeat_modal_consistency": 1.0,
+      "first_decision_delay_s": null,
+      "first_interaction_delay_s": null
+    },
+    "agreement": 1.0,
+    "agreement_pairs": 9,
+    "detected_person_agreement": null,
+    "human": null,
+    "human_scores": null
+  },
+  "scenario-08": {
+    "raw": {
+      "perception_frames": 117,
+      "locomotion_frames": 118,
+      "person_frames": 32,
+      "person_instances": 32,
+      "uids": [
+        0,
+        389381214,
+        528263967,
+        781013082,
+        1920266662
+      ],
+      "nonempty_person_fields": {
+        "id_score": 29,
+        "uid": 32,
+        "face": 32,
+        "landmarks": 32,
+        "head_position": 32,
+        "gaze": 31,
+        "facial_expression": 32,
+        "dist_mm": 32,
+        "gaze_overlap": 31,
+        "g_eye_left": 32,
+        "g_eye_right": 32,
+        "g_nose": 32,
+        "g_gaze": 17
+      },
+      "gaze_min": 0.5,
+      "gaze_max": 0.9634483456611633,
+      "distance_min_m": 0.8620763549804688,
+      "distance_max_m": 1.898779541015625,
+      "linear_velocity_range_mps": [
+        0.0,
+        0.215
+      ],
+      "odometry_displacement_m": 1.700061354155195,
+      "camera_records": 24,
+      "camera_events": {
+        "unavailable": 1,
+        "frame": 23
+      },
+      "camera_streams": {
+        "chest": 1,
+        "head": 23
+      },
+      "sdk_perception_span_s": 11.583372,
+      "camera_coverage": {
+        "chest": {
+          "frames": 0,
+          "same_session": false,
+          "span_s": null,
+          "start_relative_to_sdk_s": null,
+          "end_after_sdk_s": null,
+          "within_sdk_window_sequences": [],
+          "unavailable_reasons": [
+            "camera class is absent from installed Navel SDK"
+          ]
+        },
+        "head": {
+          "frames": 23,
+          "same_session": true,
+          "span_s": 22.568575,
+          "start_relative_to_sdk_s": -0.035266,
+          "end_after_sdk_s": 10.949937,
+          "within_sdk_window_sequences": [
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12
+          ],
+          "unavailable_reasons": []
+        }
+      },
+      "coverage_warning": "Compare only overlapping receipt-time windows; same filenames do not establish equal capture duration. A missing tail cannot be diagnosed from contiguous saved sequence numbers alone."
+    },
+    "frames": 117,
+    "sampled_frames": 12,
+    "not_ready_rate": 0.38461538461538464,
+    "not_ready_reasons": {
+      "GAZE_NOT_READY": 32,
+      "TRACK_TEMPORARILY_MISSING": 13
+    },
+    "gaze_states": {
+      "UNKNOWN": 32
+    },
+    "motion_states": {
+      "UNKNOWN": 32
+    },
+    "distance_zones": {
+      "INTERACTION_RANGE": 16,
+      "APPROACHABLE": 16
+    },
+    "rule": {
+      "all_frame_actions": {
+        "CONTINUE": 72,
+        "NOT_READY": 45
+      },
+      "last_valid_action": "CONTINUE",
+      "end_status": "NOT_READY",
+      "end_action": null,
+      "first_decision_delay_s": null,
+      "first_interaction_delay_s": null
+    },
+    "llm": {
+      "attempts": 21,
+      "valid": 21,
+      "errors": {},
+      "not_ready": 15,
+      "action_distribution": {
+        "CONTINUE": 21
+      },
+      "last_valid_action_per_repeat": {
+        "1": "CONTINUE",
+        "2": "CONTINUE",
+        "3": "CONTINUE"
+      },
+      "structured_success_rate": 1.0,
+      "mean_latency_s": 1.800961892807945,
+      "repeat_modal_consistency": 1.0,
+      "first_decision_delay_s": null,
+      "first_interaction_delay_s": null
+    },
+    "agreement": 1.0,
+    "agreement_pairs": 21,
+    "detected_person_agreement": null,
+    "human": null,
+    "human_scores": null
+  },
+  "scenario-09": {
+    "raw": {
+      "perception_frames": 122,
+      "locomotion_frames": 121,
+      "person_frames": 56,
+      "person_instances": 56,
+      "uids": [
+        1920266662
+      ],
+      "nonempty_person_fields": {
+        "uid": 56,
+        "face": 56,
+        "landmarks": 56,
+        "head_position": 56,
+        "gaze": 54,
+        "facial_expression": 56,
+        "dist_mm": 56,
+        "gaze_overlap": 54,
+        "g_eye_left": 56,
+        "g_eye_right": 56,
+        "g_nose": 56,
+        "g_gaze": 54,
+        "id_score": 50
+      },
+      "gaze_min": 0.8715596199035645,
+      "gaze_max": 0.9536606073379517,
+      "distance_min_m": 1.2869189453125,
+      "distance_max_m": 1.7391474609375,
+      "linear_velocity_range_mps": [
+        0.0,
+        0.215
+      ],
+      "odometry_displacement_m": 1.581518380304509,
+      "camera_records": 21,
+      "camera_events": {
+        "unavailable": 1,
+        "frame": 20
+      },
+      "camera_streams": {
+        "chest": 1,
+        "head": 20
+      },
+      "sdk_perception_span_s": 12.088643,
+      "camera_coverage": {
+        "chest": {
+          "frames": 0,
+          "same_session": false,
+          "span_s": null,
+          "start_relative_to_sdk_s": null,
+          "end_after_sdk_s": null,
+          "within_sdk_window_sequences": [],
+          "unavailable_reasons": [
+            "camera class is absent from installed Navel SDK"
+          ]
+        },
+        "head": {
+          "frames": 20,
+          "same_session": true,
+          "span_s": 19.393172,
+          "start_relative_to_sdk_s": -0.078834,
+          "end_after_sdk_s": 7.225695,
+          "within_sdk_window_sequences": [
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12
+          ],
+          "unavailable_reasons": []
+        }
+      },
+      "coverage_warning": "Compare only overlapping receipt-time windows; same filenames do not establish equal capture duration. A missing tail cannot be diagnosed from contiguous saved sequence numbers alone."
+    },
+    "frames": 122,
+    "sampled_frames": 12,
+    "not_ready_rate": 0.36885245901639346,
+    "not_ready_reasons": {
+      "GAZE_NOT_READY": 31,
+      "TRACK_TEMPORARILY_MISSING": 14
+    },
+    "gaze_states": {
+      "UNKNOWN": 31,
+      "SUSTAINED": 20,
+      "INTERMITTENT": 5
+    },
+    "motion_states": {
+      "UNKNOWN": 28,
+      "STATIONARY": 28
+    },
+    "distance_zones": {
+      "INTERACTION_RANGE": 8,
+      "APPROACHABLE": 48
+    },
+    "rule": {
+      "all_frame_actions": {
+        "NOT_READY": 45,
+        "APPROACH": 20,
+        "CONTINUE": 57
+      },
+      "last_valid_action": "CONTINUE",
+      "end_status": "DECIDED",
+      "end_action": "CONTINUE",
+      "first_decision_delay_s": 1.509459,
+      "first_interaction_delay_s": 1.509459
+    },
+    "llm": {
+      "attempts": 21,
+      "valid": 21,
+      "errors": {},
+      "not_ready": 15,
+      "action_distribution": {
+        "APPROACH": 6,
+        "CONTINUE": 15
+      },
+      "last_valid_action_per_repeat": {
+        "1": "CONTINUE",
+        "2": "CONTINUE",
+        "3": "CONTINUE"
+      },
+      "structured_success_rate": 1.0,
+      "mean_latency_s": 2.118075948252919,
+      "repeat_modal_consistency": 1.0,
+      "first_decision_delay_s": 2.200196,
+      "first_interaction_delay_s": 2.200196
+    },
+    "agreement": 1.0,
+    "agreement_pairs": 21,
+    "detected_person_agreement": 1.0,
+    "human": null,
+    "human_scores": null
+  }
+}

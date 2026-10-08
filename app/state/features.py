@@ -127,7 +127,10 @@ def extract_features(track: dict, now: int, config: TemporalConfig,
     if not stationary_segment:
         flags.append("STATIONARY_BASE_UNVERIFIED")
     return TemporalEvidence(
-        window_span_s=span, gaze_fraction=fraction, gaze_valid_coverage_s=coverage,
+        window_span_s=span, gaze_fraction=fraction,
+        mean_gaze_overlap=(sum(s["gaze_overlap"] for s in samples if s["gaze_overlap"] is not None) /
+                           sum(s["gaze_overlap"] is not None for s in samples)
+                           if any(s["gaze_overlap"] is not None for s in samples) else None), gaze_valid_coverage_s=coverage,
         gaze_coverage_fraction=coverage_fraction, gaze_valid_samples=valid_gaze_samples,
         sustained_gaze_s=sustained if observed else 0.0, distance_slope_mps=slope,
         distance_valid_span_s=distance_span, distance_fit_residual_m=residual,

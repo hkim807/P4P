@@ -6,21 +6,19 @@ import binascii
 from dataclasses import dataclass
 from typing import Any
 
+from app.domain.actions import ACTION_DEFINITIONS
 from app.inference.ollama import OllamaClient, OllamaMessage, OllamaResult
 
 
-PROMPT_VERSION = "image-only-vlm-v1"
+PROMPT_VERSION = "image-only-vlm-v2"
 SYSTEM_PROMPT = """A robot is assigned to travel along a fixed route inside a laboratory. It must choose its next behaviour around people.
 
 Choose the most appropriate next action using only the attached image:
-- CONTINUE: Continue along the existing fixed route without initiating an interaction or diverting towards the person.
-- STOP: Stop the robot's base movement and remain in place for now.
-- APPROACH: Leave the existing route to move towards the person and stop at a suitable distance for conversation.
-- ENGAGE: The person is already at a suitable interaction distance. Remain in place and initiate an interaction, such as a greeting.
+""" + "\n".join(f"- {a}: {d}" for a, d in ACTION_DEFINITIONS.items()) + """
 
 One image cannot establish movement over time or sustained gaze. Do not invent measured distances, durations or velocities. Give a brief explanation grounded in visible evidence.
 
-Select exactly one of the four actions. Return exactly one JSON object with only the required fields action and reason. action must be exactly STOP, CONTINUE, APPROACH or ENGAGE; reason must be a string containing non-whitespace text. Do not return prose, code fences or additional fields."""
+Select exactly one of the four actions. Return exactly one JSON object with only the required fields action and reason. action must be exactly CONTINUE, YIELD, APPROACH or ENGAGE; reason must be a string containing non-whitespace text. Do not return prose, code fences or additional fields."""
 USER_PROMPT = "Choose one action based only on the attached image."
 _PNG_SIGNATURE = b"\x89PNG\r\n\x1a\n"
 

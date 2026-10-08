@@ -12,7 +12,7 @@ from typing import Any, Callable
 
 
 logger = logging.getLogger(__name__)
-POLICY_VERSION = "social-rules-v1"
+POLICY_VERSION = "social-rules-v2"
 DECISIONS = {"CONTINUE", "APPROACH", "ENGAGE", "YIELD", "DEFER"}
 
 

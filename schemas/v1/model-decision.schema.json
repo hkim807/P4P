@@ -3,8 +3,8 @@
   "properties": {
     "action": {
       "enum": [
-        "STOP",
         "CONTINUE",
+        "YIELD",
         "APPROACH",
         "ENGAGE"
       ],

@@ -1,53 +1,32 @@
-# First rule policy
+# Canonical social rule policy (v2)
 
-`app.policy.rules.decide` evaluates one SocialState and returns a `PolicyDecision`.
-It is stateless and deterministic. The live receiver includes the decision under
-`policy_decision` in each successful social response. `python -m app.decide`
-applies the same function to a SocialState JSONL file and writes one decision
-per state. Neither path issues a robot command.
+The authoritative decision table, thresholds, interpretation limits and complete
+840-row matrix are documented in [the policy-comparison baseline](policy_comparison_baseline.md#e-transparent-rule-baseline).
 
-The result includes `decision_id`, `source_state_id`, `session_id`,
-`policy_version`, `decision`, `reason_code`, and an optional target UID/epoch.
-Only `APPROACH` and `ENGAGE` identify a target. The output contract is
-[`schemas/v1/policy-decision.schema.json`](../schemas/v1/policy-decision.schema.json).
+`app.policy.rules.decide` consumes the same SocialState as the LLM comparison.
+Its canonical `.action` is CONTINUE, YIELD, APPROACH, ENGAGE or null when not ready;
+`.status` distinguishes DECIDED and NOT_READY. The existing controller transport
+retains `decision="DEFER"` for null-action periods. DEFER is not an experimental
+social action. Reasons, source IDs and optional target UID/epoch remain audited.
 
-Rules run in this order:
+Compared with v1, intermittent attention and FAR deliberately continue the route,
+missing retained tracks defer, moving-base UNKNOWN human motion no longer blocks
+otherwise supported interaction, increasing separation discourages pursuit, and
+measured path conflict / pass gesture have explicit precedence. These last two
+cues are UNKNOWN in the present production estimator; their positive conditions
+are covered by synthetic tests, not claimed as working perception.
 
-1. A failed processing status or stale state gives `DEFER`. Callers supply those
-   conditions to the pure function. The current live receiver only evaluates
-   freshly accepted states; a separate stream-loss watchdog remains to be built.
-2. More than one visible person gives `DEFER`. No visible person gives `CONTINUE`.
-   Temporarily missing tracks cannot become targets.
-3. A person in `TOO_CLOSE`, or without a valid current distance zone, gives
-   `DEFER`.
-4. Valid `NONE` gaze or valid `AWAY` human radial motion gives `CONTINUE`.
-5. `SUSTAINED` gaze with valid `TOWARD` or `STATIONARY` human radial motion gives
-   `ENGAGE` in `INTERACTION_RANGE`, or `APPROACH` in `APPROACHABLE`.
-6. Other cases give `DEFER`, including `UNKNOWN` human motion, intermittent or
-   unknown gaze, and a person in `FAR`.
+The [target lock](target-lock.md), [command planner](command-feedback.md) and
+[physical executor](physical-executor.md) remain separate. Repeated policy ENGAGE
+outputs must not become repeated greetings. The model does not control the robot.
 
-The policy checks cue validity as well as category names. It never emits `YIELD`:
-the current SocialState has no verified route-conflict input. This initial rule
-does not lock a target, manage cooldown, or deduplicate repeated decisions.
-The [target lock layer](target-lock.md) binds a logical lock to one UID/epoch at
-a time and can hand off to a new UID under guarded short-gap evidence. It
-overrides unsafe transitions during loss or ambiguity. Completion feedback and
-speech deduplication remain separate work. Repeated `ENGAGE` decisions must
-not be interpreted as repeated speech commands.
-
-Replay of the seven pilot recordings shows why these are provisional decisions:
-recording 04 (named no gaze) produces 3 `APPROACH` frames; recording 05 (named
-eye-only intermittent gaze) produces 65 `ENGAGE` frames; recording 07 (named
-moving away) produces 5 `ENGAGE` frames. The filenames describe intended test
-conditions, not verified frame labels. Annotated behavior intervals and sensor
-calibration are needed before physical execution.
-
-Try a recorded SocialState trace:
+Replay new states with:
 
 ```bash
-.venv/bin/python -m app.decide var/temporal-validation/01-velocity-social.jsonl \
-  --output var/temporal-validation/01-decisions.jsonl
+.venv/bin/python -m app.decide path/to/social.jsonl --output path/to/new-decisions.jsonl
+.venv/bin/python -m evaluation.run_scenarios --output var/evaluation/rules-new
 ```
 
-The output is JSONL. Use `jq . var/temporal-validation/01-decisions.jsonl | less`
-to inspect it. As with social replay, the output filename must be new.
+Historical v1 decisions/STOP model labels and original pilot reports are historical
+artifacts, not measurements of the v2 rule policy. Rebuild states from raw data
+when migrating the estimator version.

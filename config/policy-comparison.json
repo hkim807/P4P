@@ -1,0 +1,16 @@
+{
+  "action_version": "social-actions-v2",
+  "rule_version": "social-rules-v2",
+  "prompt_version": "social-state-llm-v4",
+  "model": "qwen2.5:7b",
+  "temperature": 0.0,
+  "seed": 42,
+  "num_ctx": 8192,
+  "num_predict": 192,
+  "timeout_seconds": 120.0,
+  "repeats": 3,
+  "sample_interval_s": 1.0,
+  "temporal_config": "config/temporal-state.json",
+  "track_config": "config/person-tracking.json",
+  "split": "development"
+}

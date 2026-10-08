@@ -1,0 +1,469 @@
+{
+  "baseline": {
+    "config": {
+      "window_s": 2.0,
+      "max_gap_s": 0.25,
+      "min_span_s": 1.0,
+      "min_samples": 5,
+      "min_gaze_coverage_s": 0.8,
+      "min_gaze_coverage_fraction": 0.6,
+      "looking_enter": 0.8,
+      "looking_exit": 0.7,
+      "sustained_enter": 0.8,
+      "sustained_exit": 0.65,
+      "none_enter": 0.2,
+      "none_exit": 0.35,
+      "category_dwell_s": 0.3,
+      "min_sustained_run_s": 0.4,
+      "distance_deadband_mps": 0.1,
+      "max_distance_speed_mps": 3.0,
+      "distance_jump_allowance_m": 0.05,
+      "max_fit_residual_m": 0.1,
+      "max_fit_samples": 32,
+      "too_close_m": 0.6,
+      "interaction_max_m": 1.5,
+      "approachable_max_m": 3.0,
+      "zone_hysteresis_m": 0.1,
+      "stationary_linear_tolerance_mps": 0.02,
+      "stationary_angular_tolerance_rps": 0.03
+    },
+    "scenarios": {
+      "scenario-01": {
+        "actions": {
+          "CONTINUE": 91
+        },
+        "gaze_states": {},
+        "max_gaze_coverage_s": 0,
+        "max_distance_contiguous_span_s": 0,
+        "track_epochs": 0,
+        "relative_trends": {}
+      },
+      "scenario-02": {
+        "actions": {
+          "CONTINUE": 28,
+          "NOT_READY": 56
+        },
+        "gaze_states": {
+          "UNKNOWN": 27
+        },
+        "max_gaze_coverage_s": 0.896,
+        "max_distance_contiguous_span_s": 0.896,
+        "track_epochs": 8,
+        "relative_trends": {
+          "UNKNOWN": 27
+        }
+      },
+      "scenario-03": {
+        "actions": {
+          "NOT_READY": 34,
+          "ENGAGE": 75,
+          "CONTINUE": 6
+        },
+        "gaze_states": {
+          "UNKNOWN": 29,
+          "SUSTAINED": 75,
+          "INTERMITTENT": 6
+        },
+        "max_gaze_coverage_s": 1.9993280000000004,
+        "max_distance_contiguous_span_s": 1.999328,
+        "track_epochs": 2,
+        "relative_trends": {
+          "UNKNOWN": 23,
+          "STABLE": 46,
+          "DECREASING": 41
+        }
+      },
+      "scenario-04": {
+        "actions": {
+          "CONTINUE": 55
+        },
+        "gaze_states": {},
+        "max_gaze_coverage_s": 0,
+        "max_distance_contiguous_span_s": 0,
+        "track_epochs": 0,
+        "relative_trends": {}
+      },
+      "scenario-05": {
+        "actions": {
+          "CONTINUE": 40
+        },
+        "gaze_states": {},
+        "max_gaze_coverage_s": 0,
+        "max_distance_contiguous_span_s": 0,
+        "track_epochs": 0,
+        "relative_trends": {}
+      },
+      "scenario-06": {
+        "actions": {
+          "CONTINUE": 69,
+          "NOT_READY": 8
+        },
+        "gaze_states": {
+          "UNKNOWN": 4
+        },
+        "max_gaze_coverage_s": 0.127234,
+        "max_distance_contiguous_span_s": 0.127234,
+        "track_epochs": 3,
+        "relative_trends": {
+          "UNKNOWN": 4
+        }
+      },
+      "scenario-07": {
+        "actions": {
+          "CONTINUE": 29
+        },
+        "gaze_states": {},
+        "max_gaze_coverage_s": 0,
+        "max_distance_contiguous_span_s": 0,
+        "track_epochs": 0,
+        "relative_trends": {}
+      },
+      "scenario-08": {
+        "actions": {
+          "CONTINUE": 72,
+          "NOT_READY": 45
+        },
+        "gaze_states": {
+          "UNKNOWN": 32
+        },
+        "max_gaze_coverage_s": 0.344669,
+        "max_distance_contiguous_span_s": 0.213092,
+        "track_epochs": 8,
+        "relative_trends": {
+          "UNKNOWN": 32
+        }
+      },
+      "scenario-09": {
+        "actions": {
+          "NOT_READY": 45,
+          "APPROACH": 20,
+          "CONTINUE": 57
+        },
+        "gaze_states": {
+          "UNKNOWN": 31,
+          "SUSTAINED": 20,
+          "INTERMITTENT": 5
+        },
+        "max_gaze_coverage_s": 1.987147,
+        "max_distance_contiguous_span_s": 1.987147,
+        "track_epochs": 1,
+        "relative_trends": {
+          "UNKNOWN": 18,
+          "STABLE": 38
+        }
+      }
+    }
+  },
+  "shorter_evidence": {
+    "config": {
+      "window_s": 2.0,
+      "max_gap_s": 0.25,
+      "min_span_s": 0.5,
+      "min_samples": 5,
+      "min_gaze_coverage_s": 0.4,
+      "min_gaze_coverage_fraction": 0.6,
+      "looking_enter": 0.8,
+      "looking_exit": 0.7,
+      "sustained_enter": 0.8,
+      "sustained_exit": 0.65,
+      "none_enter": 0.2,
+      "none_exit": 0.35,
+      "category_dwell_s": 0.2,
+      "min_sustained_run_s": 0.4,
+      "distance_deadband_mps": 0.1,
+      "max_distance_speed_mps": 3.0,
+      "distance_jump_allowance_m": 0.05,
+      "max_fit_residual_m": 0.1,
+      "max_fit_samples": 32,
+      "too_close_m": 0.6,
+      "interaction_max_m": 1.5,
+      "approachable_max_m": 3.0,
+      "zone_hysteresis_m": 0.1,
+      "stationary_linear_tolerance_mps": 0.02,
+      "stationary_angular_tolerance_rps": 0.03
+    },
+    "scenarios": {
+      "scenario-01": {
+        "actions": {
+          "CONTINUE": 91
+        },
+        "gaze_states": {},
+        "max_gaze_coverage_s": 0,
+        "max_distance_contiguous_span_s": 0,
+        "track_epochs": 0,
+        "relative_trends": {}
+      },
+      "scenario-02": {
+        "actions": {
+          "CONTINUE": 28,
+          "NOT_READY": 56
+        },
+        "gaze_states": {
+          "UNKNOWN": 27
+        },
+        "max_gaze_coverage_s": 0.896,
+        "max_distance_contiguous_span_s": 0.896,
+        "track_epochs": 8,
+        "relative_trends": {
+          "UNKNOWN": 22,
+          "STABLE": 5
+        }
+      },
+      "scenario-03": {
+        "actions": {
+          "NOT_READY": 21,
+          "ENGAGE": 83,
+          "CONTINUE": 11
+        },
+        "gaze_states": {
+          "UNKNOWN": 16,
+          "SUSTAINED": 83,
+          "INTERMITTENT": 11
+        },
+        "max_gaze_coverage_s": 1.9993280000000004,
+        "max_distance_contiguous_span_s": 1.999328,
+        "track_epochs": 2,
+        "relative_trends": {
+          "UNKNOWN": 14,
+          "STABLE": 51,
+          "DECREASING": 45
+        }
+      },
+      "scenario-04": {
+        "actions": {
+          "CONTINUE": 55
+        },
+        "gaze_states": {},
+        "max_gaze_coverage_s": 0,
+        "max_distance_contiguous_span_s": 0,
+        "track_epochs": 0,
+        "relative_trends": {}
+      },
+      "scenario-05": {
+        "actions": {
+          "CONTINUE": 40
+        },
+        "gaze_states": {},
+        "max_gaze_coverage_s": 0,
+        "max_distance_contiguous_span_s": 0,
+        "track_epochs": 0,
+        "relative_trends": {}
+      },
+      "scenario-06": {
+        "actions": {
+          "CONTINUE": 69,
+          "NOT_READY": 8
+        },
+        "gaze_states": {
+          "UNKNOWN": 4
+        },
+        "max_gaze_coverage_s": 0.127234,
+        "max_distance_contiguous_span_s": 0.127234,
+        "track_epochs": 3,
+        "relative_trends": {
+          "UNKNOWN": 4
+        }
+      },
+      "scenario-07": {
+        "actions": {
+          "CONTINUE": 29
+        },
+        "gaze_states": {},
+        "max_gaze_coverage_s": 0,
+        "max_distance_contiguous_span_s": 0,
+        "track_epochs": 0,
+        "relative_trends": {}
+      },
+      "scenario-08": {
+        "actions": {
+          "CONTINUE": 72,
+          "NOT_READY": 45
+        },
+        "gaze_states": {
+          "UNKNOWN": 32
+        },
+        "max_gaze_coverage_s": 0.344669,
+        "max_distance_contiguous_span_s": 0.213092,
+        "track_epochs": 8,
+        "relative_trends": {
+          "UNKNOWN": 32
+        }
+      },
+      "scenario-09": {
+        "actions": {
+          "NOT_READY": 37,
+          "APPROACH": 27,
+          "CONTINUE": 58
+        },
+        "gaze_states": {
+          "UNKNOWN": 23,
+          "SUSTAINED": 27,
+          "INTERMITTENT": 6
+        },
+        "max_gaze_coverage_s": 1.987147,
+        "max_distance_contiguous_span_s": 1.987147,
+        "track_epochs": 1,
+        "relative_trends": {
+          "UNKNOWN": 13,
+          "DECREASING": 2,
+          "STABLE": 41
+        }
+      }
+    }
+  },
+  "wider_gap": {
+    "config": {
+      "window_s": 2.0,
+      "max_gap_s": 0.5,
+      "min_span_s": 1.0,
+      "min_samples": 5,
+      "min_gaze_coverage_s": 0.8,
+      "min_gaze_coverage_fraction": 0.6,
+      "looking_enter": 0.8,
+      "looking_exit": 0.7,
+      "sustained_enter": 0.8,
+      "sustained_exit": 0.65,
+      "none_enter": 0.2,
+      "none_exit": 0.35,
+      "category_dwell_s": 0.3,
+      "min_sustained_run_s": 0.4,
+      "distance_deadband_mps": 0.1,
+      "max_distance_speed_mps": 3.0,
+      "distance_jump_allowance_m": 0.05,
+      "max_fit_residual_m": 0.1,
+      "max_fit_samples": 32,
+      "too_close_m": 0.6,
+      "interaction_max_m": 1.5,
+      "approachable_max_m": 3.0,
+      "zone_hysteresis_m": 0.1,
+      "stationary_linear_tolerance_mps": 0.02,
+      "stationary_angular_tolerance_rps": 0.03
+    },
+    "scenarios": {
+      "scenario-01": {
+        "actions": {
+          "CONTINUE": 91
+        },
+        "gaze_states": {},
+        "max_gaze_coverage_s": 0,
+        "max_distance_contiguous_span_s": 0,
+        "track_epochs": 0,
+        "relative_trends": {}
+      },
+      "scenario-02": {
+        "actions": {
+          "CONTINUE": 28,
+          "NOT_READY": 56
+        },
+        "gaze_states": {
+          "UNKNOWN": 27
+        },
+        "max_gaze_coverage_s": 0.896,
+        "max_distance_contiguous_span_s": 0.896,
+        "track_epochs": 8,
+        "relative_trends": {
+          "UNKNOWN": 27
+        }
+      },
+      "scenario-03": {
+        "actions": {
+          "NOT_READY": 34,
+          "ENGAGE": 75,
+          "CONTINUE": 6
+        },
+        "gaze_states": {
+          "UNKNOWN": 29,
+          "SUSTAINED": 75,
+          "INTERMITTENT": 6
+        },
+        "max_gaze_coverage_s": 1.9993280000000004,
+        "max_distance_contiguous_span_s": 1.999328,
+        "track_epochs": 2,
+        "relative_trends": {
+          "UNKNOWN": 23,
+          "STABLE": 46,
+          "DECREASING": 41
+        }
+      },
+      "scenario-04": {
+        "actions": {
+          "CONTINUE": 55
+        },
+        "gaze_states": {},
+        "max_gaze_coverage_s": 0,
+        "max_distance_contiguous_span_s": 0,
+        "track_epochs": 0,
+        "relative_trends": {}
+      },
+      "scenario-05": {
+        "actions": {
+          "CONTINUE": 40
+        },
+        "gaze_states": {},
+        "max_gaze_coverage_s": 0,
+        "max_distance_contiguous_span_s": 0,
+        "track_epochs": 0,
+        "relative_trends": {}
+      },
+      "scenario-06": {
+        "actions": {
+          "CONTINUE": 69,
+          "NOT_READY": 8
+        },
+        "gaze_states": {
+          "UNKNOWN": 4
+        },
+        "max_gaze_coverage_s": 0.127234,
+        "max_distance_contiguous_span_s": 0.127234,
+        "track_epochs": 3,
+        "relative_trends": {
+          "UNKNOWN": 4
+        }
+      },
+      "scenario-07": {
+        "actions": {
+          "CONTINUE": 29
+        },
+        "gaze_states": {},
+        "max_gaze_coverage_s": 0,
+        "max_distance_contiguous_span_s": 0,
+        "track_epochs": 0,
+        "relative_trends": {}
+      },
+      "scenario-08": {
+        "actions": {
+          "CONTINUE": 72,
+          "NOT_READY": 45
+        },
+        "gaze_states": {
+          "UNKNOWN": 32
+        },
+        "max_gaze_coverage_s": 0.344669,
+        "max_distance_contiguous_span_s": 0.213092,
+        "track_epochs": 8,
+        "relative_trends": {
+          "UNKNOWN": 32
+        }
+      },
+      "scenario-09": {
+        "actions": {
+          "NOT_READY": 45,
+          "APPROACH": 20,
+          "CONTINUE": 57
+        },
+        "gaze_states": {
+          "UNKNOWN": 31,
+          "SUSTAINED": 20,
+          "INTERMITTENT": 5
+        },
+        "max_gaze_coverage_s": 1.987147,
+        "max_distance_contiguous_span_s": 1.987147,
+        "track_epochs": 1,
+        "relative_trends": {
+          "UNKNOWN": 18,
+          "STABLE": 38
+        }
+      }
+    }
+  }
+}

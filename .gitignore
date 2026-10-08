@@ -17,3 +17,6 @@ web/
 .idea/
 .DS_Store
 Thumbs.db
+
+# Full reproducible evaluation evidence (compact results under docs/results)
+var/evaluation/

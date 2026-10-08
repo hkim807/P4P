@@ -1,0 +1,33 @@
+{
+  "addition": "\nInterpret the current categories explicitly: SUSTAINED means temporally sustained measured attention; NONE and INTERMITTENT do not establish sustained attention. INTERACTION_RANGE means suitable conversational distance; APPROACHABLE means farther than conversation distance but within approach range; FAR means outside approach range. These are current measurements, not hypothetical labels. UNKNOWN path or gesture information does not invalidate measured gaze or distance. Briefly cite the actual gaze_state and distance_zone values in your reason when a person is observed, then explain the chosen action. Do not infer the current category from cue_changes; read people directly.\n",
+  "results": [
+    {
+      "state_id": "replay-8f9030f65696dfa3909274bb:22",
+      "rule": {
+        "action": "ENGAGE",
+        "duration_s": 4.208646714687347e-06,
+        "reason": "SUSTAINED_GAZE_IN_INTERACTION_RANGE",
+        "status": "DECIDED",
+        "target_track_epoch": 1,
+        "target_uid": 1920266662
+      },
+      "raw_content": "{\n  \"action\": \"CONTINUE\",\n  \"reason\": \"Sustained gaze (gaze_state: SUSTAINED) and interaction range (distance_zone: INTERACTION_RANGE) indicate a potential interaction, but the path relation is unknown and the pass gesture is UNKNOWN, so continuing the route is the most appropriate action.\"\n}",
+      "ok": true,
+      "duration_s": 11.192499208729714
+    },
+    {
+      "state_id": "replay-8f9030f65696dfa3909274bb:54",
+      "rule": {
+        "action": "CONTINUE",
+        "duration_s": 5.166046321392059e-06,
+        "reason": "INCIDENTAL_ATTENTION",
+        "status": "DECIDED",
+        "target_track_epoch": null,
+        "target_uid": null
+      },
+      "raw_content": "{\n  \"action\": \"CONTINUE\",\n  \"reason\": \"The person is observed at INTERACTION_RANGE, with INTERMITTENT gaze and no sustained attention. The distance is within APPROACHABLE range but not close enough for interaction. No path conflicts or pass gestures are detected.\"\n}",
+      "ok": true,
+      "duration_s": 13.717901917174459
+    }
+  ]
+}
