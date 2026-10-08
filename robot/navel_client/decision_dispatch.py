@@ -66,7 +66,7 @@ def parse_decision(payload: Mapping[str, Any], observation: Mapping[str, Any],
         if raw.get("source_state_id") != state_id or raw.get("session_id") != session_id:
             raise DecisionRejected("decision_state_mismatch")
         decision_id = raw.get("decision_id")
-        if (raw.get("policy_version") not in {POLICY_VERSION, "social-rules-v3"}
+        if (raw.get("policy_version") not in {POLICY_VERSION, "social-rules-v3", "social-rules-v4"}
                 or decision_id != f"{state_id}:{raw.get('policy_version')}"):
             raise DecisionRejected("decision_version_or_id_invalid")
         decision, reason = raw.get("decision"), raw.get("reason_code")

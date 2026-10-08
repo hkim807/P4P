@@ -1,5 +1,11 @@
 # Refined social decision pipeline
 
+The original experiments below describe rules v3 and LLM prompt v6. The current
+rule policy is v4: [closing with low gaze](social-policy.md) replaces distance-only
+TOO_CLOSE yielding, within a 3 m cutoff. See [v4 validation](results/yield-closing-low-gaze/report.md).
+The LLM prompt remains v6. Verify the current candidate with
+`config/live-study-freeze-yield-low-gaze.json`; the original freeze is historical.
+
 Work is on `feature/end-to-end-pipeline-refinement`, based on `33d9a78`.
 The requested Ollama branch exists as `feature/ollama-llm-vlm-policies` at
 `c6b988f`. Its older integration was already merged into the target branch.
@@ -181,7 +187,7 @@ From the repository root, choose a new output folder:
   --model qwen2.5:7b --diagnostic-interval-s 1 \
   --output var/evaluation/refined-new
 .venv/bin/python -m evaluation.experiments --output /tmp/p4p-screen-new.json
-.venv/bin/python -m evaluation.freeze --verify config/live-study-freeze.json
+.venv/bin/python -m evaluation.freeze --verify config/live-study-freeze-yield-low-gaze.json
 .venv/bin/python -m unittest discover -s tests
 ```
 
@@ -220,7 +226,7 @@ described in the physical-executor and route documents. The current timed YIELD
 does not verify clearance or exact route return. The new offline results cannot
 establish approach success, physical safety or action-completion latency.
 
-`config/live-study-freeze.json` freezes source/configuration hashes, exact prompt,
+`config/live-study-freeze-yield-low-gaze.json` freezes current source/configuration hashes, exact prompt,
 policy versions, model/runtime identity and inference settings. Verify it before
 new data collection. Record externally annotated encounter endpoints, transmitted
 raw frames, SDK/camera coverage and controller outcomes under the frozen version.

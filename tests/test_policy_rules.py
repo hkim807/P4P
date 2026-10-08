@@ -63,8 +63,8 @@ class PolicyRulesTests(unittest.TestCase):
                 self.assertEqual((decision.target_uid, decision.target_track_epoch), (17, 1))
                 self.assertEqual(decision.source_state_id, state["state_id"])
 
-    def test_moving_gaze_and_proximity_pass_trial_acceptance(self):
-        for distance, action in ((1.0, "ENGAGE"), (2.0, "APPROACH"), (.4, "YIELD"), (2.0, "CONTINUE")):
+    def test_moving_gaze_and_nearby_attention_pass_trial_acceptance(self):
+        for distance, action in ((1.0, "ENGAGE"), (2.0, "APPROACH"), (.4, "ENGAGE"), (2.0, "CONTINUE")):
             with self.subTest(distance=distance):
                 pipeline = SocialPipeline("moving-test")
                 for i in range(21):
@@ -88,9 +88,6 @@ class PolicyRulesTests(unittest.TestCase):
                 trial = SingleTrial(monotonic_us=lambda: observation["timestamp"])
                 self.assertTrue(trial.accept_rule_response(payload, observation))
                 self.assertEqual((trial.phase, trial.decision["action"]), ("DECIDED", action))
-                if action == "YIELD":
-                    self.assertIn("proximity", response["final_decision"]["reason"])
-                    self.assertIn("does not imply a blocked path", response["final_decision"]["reason"])
 
     def test_precedence_and_clear_non_engagement(self):
         state = ready_state()
@@ -110,7 +107,7 @@ class PolicyRulesTests(unittest.TestCase):
 
         person = state["people"][0]
         person["distance_zone"] = "TOO_CLOSE"
-        self.assertEqual(decide(state).decision, "YIELD")
+        self.assertEqual(decide(state).decision, "ENGAGE")
         person["distance_zone"] = "UNKNOWN"
         self.assertEqual(rule_readiness(state), "DISTANCE_UNKNOWN")
         person["distance_zone"] = "APPROACHABLE"

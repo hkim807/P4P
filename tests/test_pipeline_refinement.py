@@ -76,11 +76,10 @@ class RefinedCueTests(unittest.TestCase):
         s = deepcopy(state); s['people'][0]['evidence']['gaze_valid'] = False
         self.assertIsNotNone(rule_readiness(s))
 
-    def test_conflict_proximity_and_pass_precede_gaze(self):
+    def test_conflict_and_pass_precede_gaze(self):
         state = ready_state()
         for updates, expected in (({'path_relation': 'CONFLICT'}, 'YIELD'),
                                   ({'pass_gesture': 'PASS'}, 'CONTINUE'),
-                                  ({'distance_zone': 'TOO_CLOSE'}, 'YIELD'),
                                   ({'path_relation': 'CONFLICT', 'pass_gesture': 'PASS'}, 'YIELD')):
             s = deepcopy(state); person = s['people'][0]
             person.update(updates); person['gaze_state'] = 'UNKNOWN'; person['evidence']['gaze_valid'] = False

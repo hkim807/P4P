@@ -27,33 +27,63 @@ DEFER and STOP are rejected in both rule and final contracts. Live and
 `app.decide` replay results carry `policy_decision`, `final_decision`, and
 `policy_readiness`. An unready observation has status OBSERVING and a reason
 code, with both decisions null: the policy was not invoked. Processing errors
-and decision timeouts remain statuses. LLM/VLM outputs and inputs are unchanged.
+and decision timeouts remain statuses.
 
 Readiness requires exactly one currently observed person, valid current distance
 and usable NONE/INTERMITTENT/SUSTAINED gaze with existing coverage and category
 dwell, plus valid processing and freshness. No person, multiple people, invalid
 distance or UNKNOWN gaze keep observing. No stationary-window, human-motion,
-identity-lock or distance-trend prerequisite is added.
+identity-lock or distance-trend prerequisite is added to general readiness.
+Explicit path conflict can resolve before distance/gaze warmup, and PASS can
+resolve with valid current distance before gaze warmup. Proximity alone cannot.
 
-Eligible `social-rules-v2` observations use this order:
+Eligible `social-rules-v4` observations use this order:
 
 | Evidence | Action |
 | --- | --- |
-| TOO_CLOSE | YIELD |
-| Reliable AWAY motion (valid trend and stationary measurement window) | CONTINUE |
-| SUSTAINED gaze in INTERACTION_RANGE | ENGAGE |
-| SUSTAINED gaze in APPROACHABLE | APPROACH |
-| Other eligible cases, including NONE/INTERMITTENT or FAR | CONTINUE |
+| Explicit upstream path CONFLICT | YIELD |
+| Measured PASS invitation | CONTINUE |
+| Current face detected, distance ≤3 m, valid DECREASING trend, valid NONE gaze, latest looking false and latest gaze score ≤0.7 | YIELD |
+| Latest looking false while historical SUSTAINED category is held | CONTINUE |
+| Sustained or qualifying recurring attention in TOO_CLOSE or INTERACTION_RANGE | ENGAGE |
+| Reliable AWAY motion or reliable increasing separation outside conversation range | CONTINUE |
+| Sustained or qualifying recurring attention in APPROACHABLE | APPROACH |
+| Other eligible cases, including NONE, incidental INTERMITTENT or FAR | CONTINUE |
 
-TOO_CLOSE uses the existing threshold/hysteresis. Its YIELD rule is a provisional
-study assumption to give space, not evidence of crossing or route obstruction.
-Relative closing while the robot moves leaves human motion UNKNOWN; gaze-based
-decisions still work. No ego-motion compensation or physical handler is added.
+The closing/low-gaze trigger replaces v3's distance-only TOO_CLOSE trigger.
+TOO_CLOSE remains a distance category: attentive nearby people support ENGAGE,
+and eligible non-attentive people support CONTINUE unless the new closing trigger
+applies. A stationary person at 0.4 m does not cause YIELD solely through proximity.
+The exact current distance cutoff is `config.yield_closing_max_distance_m`,
+independent of distance-zone hysteresis, and includes exactly 3 m. Low gaze uses
+`config.looking_exit`; NONE requires established low attention over the temporal
+window, not one low sample. DECREASING requires a valid fitted slope more negative
+than `-config.distance_deadband_mps` (currently -0.1 m/s), with valid current
+distance, sufficient span/samples and acceptable residual.
+
+The SDK adapter sets `face_detected: true` only for a finite positive-size `face`
+bounding box. Missing/invalid boxes supply no detection evidence. Face evidence
+and `evidence.latest_gaze_overlap` clear immediately on missing observations.
+At 10 Hz with uninterrupted low gaze and smooth closing, the configured 1 s
+minimum span plus 0.1 s category dwell allows a first YIELD at approximately
+1.1 s. Gaps, missing readings and failed fits can delay or prevent it.
+Relative closing while the robot moves leaves human motion UNKNOWN; it describes
+decreasing separation rather than proven human movement or path conflict.
+No ego-motion compensation or physical handler is added.
+
+The LLM prompt remains `social-state-llm-v6`, including its earlier proximity
+guidance. It receives the additional measured fields and revised shared readiness,
+but this is a rule-policy change, not a matched change to LLM decision guidance.
+Historical reports remain under their recorded versions. The active candidate
+freeze is `config/live-study-freeze-yield-low-gaze.json`; the original v3 freeze
+is retained for historical reproducibility.
 The target-lock wire contract is `target-lock-v3`: identity/rebind/cooldown holds
 have `execution_status: HOLD`, a `hold_reason` and `effective_decision: null`;
 they never invent an action. Target availability and command checks remain.
-SingleTrial accepts fresh pure proposals independently of execution holds; route
-trials retain temporary stop-on-decision behaviour and finish at DECIDED.
+SingleTrial accepts fresh pure proposals independently of execution holds.
+With single-trial execution, CONTINUE finishes the existing route and the other
+actions stop it before running their handlers. The first accepted output latches;
+the trial does not reconsider CONTINUE if the person starts closing later.
 
 Historical replay under `social-rules-v1` shows why these are provisional decisions:
 recording 04 (named no gaze) produces 3 `APPROACH` frames; recording 05 (named

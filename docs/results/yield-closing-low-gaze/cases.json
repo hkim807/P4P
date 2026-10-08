@@ -1,0 +1,163 @@
+[
+  {
+    "condition": "No detected person",
+    "action": null,
+    "transport_decision": null,
+    "reason": "NO_VISIBLE_PERSON",
+    "status": "NOT_READY"
+  },
+  {
+    "condition": "Retained track, currently missing",
+    "action": null,
+    "transport_decision": null,
+    "reason": "NO_VISIBLE_PERSON",
+    "status": "NOT_READY"
+  },
+  {
+    "condition": "Invalid distance",
+    "action": null,
+    "transport_decision": null,
+    "reason": "DISTANCE_UNKNOWN",
+    "status": "NOT_READY"
+  },
+  {
+    "condition": "Insufficient gaze history",
+    "action": null,
+    "transport_decision": null,
+    "reason": "INSUFFICIENT_GAZE_EVIDENCE",
+    "status": "NOT_READY"
+  },
+  {
+    "condition": "Two visible people",
+    "action": null,
+    "transport_decision": null,
+    "reason": "MULTIPLE_VISIBLE_PEOPLE",
+    "status": "NOT_READY"
+  },
+  {
+    "condition": "Two people, explicit conflict on one",
+    "action": null,
+    "transport_decision": null,
+    "reason": "MULTIPLE_VISIBLE_PEOPLE",
+    "status": "NOT_READY"
+  },
+  {
+    "condition": "Explicit conflict, gaze unavailable",
+    "action": "YIELD",
+    "transport_decision": "YIELD",
+    "reason": "HUMAN_PATH_CONFLICT",
+    "status": "DECIDED"
+  },
+  {
+    "condition": "Too close, gaze unavailable",
+    "action": null,
+    "transport_decision": null,
+    "reason": "INSUFFICIENT_GAZE_EVIDENCE",
+    "status": "NOT_READY"
+  },
+  {
+    "condition": "Pass gesture, gaze unavailable",
+    "action": "CONTINUE",
+    "transport_decision": "CONTINUE",
+    "reason": "PASS_GESTURE",
+    "status": "DECIDED"
+  },
+  {
+    "condition": "Pass gesture, gaze ready",
+    "action": "CONTINUE",
+    "transport_decision": "CONTINUE",
+    "reason": "PASS_GESTURE",
+    "status": "DECIDED"
+  },
+  {
+    "condition": "Sustained attention nearby",
+    "action": "ENGAGE",
+    "transport_decision": "ENGAGE",
+    "reason": "SUSTAINED_GAZE_IN_INTERACTION_RANGE",
+    "status": "DECIDED"
+  },
+  {
+    "condition": "Sustained attention in approach range",
+    "action": "APPROACH",
+    "transport_decision": "APPROACH",
+    "reason": "SUSTAINED_GAZE_IN_APPROACHABLE_RANGE",
+    "status": "DECIDED"
+  },
+  {
+    "condition": "Sustained attention far away",
+    "action": "CONTINUE",
+    "transport_decision": "CONTINUE",
+    "reason": "PERSON_FAR",
+    "status": "DECIDED"
+  },
+  {
+    "condition": "No attention",
+    "action": "CONTINUE",
+    "transport_decision": "CONTINUE",
+    "reason": "NO_ATTENTION",
+    "status": "DECIDED"
+  },
+  {
+    "condition": "Incidental intermittent glance",
+    "action": "CONTINUE",
+    "transport_decision": "CONTINUE",
+    "reason": "NO_INTERACTION_CUE",
+    "status": "DECIDED"
+  },
+  {
+    "condition": "Qualifying recurring attention nearby",
+    "action": "ENGAGE",
+    "transport_decision": "ENGAGE",
+    "reason": "RECURRING_ATTENTION_IN_INTERACTION_RANGE",
+    "status": "DECIDED"
+  },
+  {
+    "condition": "Qualifying recurring attention in approach range",
+    "action": "APPROACH",
+    "transport_decision": "APPROACH",
+    "reason": "RECURRING_ATTENTION_IN_APPROACHABLE_RANGE",
+    "status": "DECIDED"
+  },
+  {
+    "condition": "Attention ended, category still sustained",
+    "action": "CONTINUE",
+    "transport_decision": "CONTINUE",
+    "reason": "ATTENTION_ENDED",
+    "status": "DECIDED"
+  },
+  {
+    "condition": "Looking resumed for only 0.2 seconds, category still sustained",
+    "action": "CONTINUE",
+    "transport_decision": "CONTINUE",
+    "reason": "NO_INTERACTION_CUE",
+    "status": "DECIDED"
+  },
+  {
+    "condition": "Attentive nearby person moving away",
+    "action": "ENGAGE",
+    "transport_decision": "ENGAGE",
+    "reason": "SUSTAINED_GAZE_IN_INTERACTION_RANGE",
+    "status": "DECIDED"
+  },
+  {
+    "condition": "Attentive farther person moving away",
+    "action": "CONTINUE",
+    "transport_decision": "CONTINUE",
+    "reason": "PERSON_MOVING_AWAY",
+    "status": "DECIDED"
+  },
+  {
+    "condition": "Attentive nearby person, increasing relative separation while robot moves",
+    "action": "ENGAGE",
+    "transport_decision": "ENGAGE",
+    "reason": "SUSTAINED_GAZE_IN_INTERACTION_RANGE",
+    "status": "DECIDED"
+  },
+  {
+    "condition": "Attentive farther person, increasing relative separation while robot moves",
+    "action": "CONTINUE",
+    "transport_decision": "CONTINUE",
+    "reason": "RELATIVE_SEPARATION_INCREASING",
+    "status": "DECIDED"
+  }
+]

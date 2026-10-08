@@ -32,6 +32,7 @@ class TemporalConfig(StrictModel):
     recurring_min_looking_s: float = Field(default=1.0, gt=0)
     recurring_min_fraction: float = Field(default=0.45, gt=0, le=1)
     recurring_min_bouts: int = Field(default=2, ge=2)
+    yield_closing_max_distance_m: float | None = Field(default=3.0, gt=0)
     distance_deadband_mps: float = Field(default=0.1, gt=0)
     max_distance_speed_mps: float = Field(default=3.0, gt=0)
     distance_jump_allowance_m: float = Field(default=0.05, ge=0)
@@ -82,6 +83,7 @@ class TemporalEvidence(StrictModel):
     window_span_s: float
     mean_gaze_overlap: float | None = None
     latest_gaze_looking: bool | None = None
+    latest_gaze_overlap: float | None = Field(default=None, ge=0, le=1)
     looking_time_s: float = 0.0
     looking_bouts: int = 0
     gaze_fraction: float | None
@@ -116,6 +118,7 @@ class PersonSocialState(StrictModel):
     evidence: TemporalEvidence
     path_relation: Literal["UNKNOWN", "CLEAR", "CONFLICT"] = "UNKNOWN"
     pass_gesture: Literal["UNKNOWN", "PASS"] = "UNKNOWN"
+    face_detected: bool | None = None
     relative_head_position: dict[str, str | float] | None = None
     validity_flags: list[str]
 
@@ -168,7 +171,8 @@ def observation_hold_reason(state: SocialState) -> str | None:
     """Identical eligibility for rules, structured LLM, production and replay.
 
     Empty detections never establish that the encounter is socially clear.
-    Explicit conflict, measured proximity and pass cues need no gaze history.
+    Explicit conflict and pass cues need no gaze history. Proximity alone
+    does not establish a social action.
     """
     visible = [p for p in state.people if p.visibility == "OBSERVED"]
     if not visible:
@@ -181,7 +185,7 @@ def observation_hold_reason(state: SocialState) -> str | None:
     if (not person.evidence.latest_distance_valid or person.latest_distance_m is None
             or person.latest_distance_m < 0 or person.distance_zone == "UNKNOWN"):
         return "DISTANCE_UNKNOWN"
-    if person.distance_zone == "TOO_CLOSE" or person.pass_gesture == "PASS":
+    if person.pass_gesture == "PASS":
         return None
     if not person.evidence.gaze_valid:
         return "INSUFFICIENT_GAZE_EVIDENCE"

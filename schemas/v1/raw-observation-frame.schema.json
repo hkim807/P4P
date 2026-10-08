@@ -15,6 +15,18 @@
           ],
           "title": "Distance M"
         },
+        "face_detected": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Face Detected"
+        },
         "gaze_overlap": {
           "anyOf": [
             {

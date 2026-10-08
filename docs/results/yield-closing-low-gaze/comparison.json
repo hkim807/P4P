@@ -1,0 +1,10 @@
+{
+  "frames": 730,
+  "observed_person_frames": 229,
+  "positive_face_frames": 229,
+  "current_low_gaze_frames": 14,
+  "low_gaze_valid_none_frames": 0,
+  "action_reason_status_differences": [],
+  "yield_frames": 0,
+  "comparison": "native v3 at 306571a versus v4 candidate; identical SDK files and temporal values apart from explicit 3 m yield cutoff"
+}

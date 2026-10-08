@@ -137,6 +137,7 @@ def extract_features(track: dict, now: int, config: TemporalConfig,
                            sum(s["gaze_overlap"] is not None for s in samples)
                            if any(s["gaze_overlap"] is not None for s in samples) else None),
         latest_gaze_looking=memory.states.get(samples[-1]["timestamp_us"]) if samples and observed else None,
+        latest_gaze_overlap=samples[-1]["gaze_overlap"] if samples and observed else None,
         looking_time_s=looking_time, looking_bouts=looking_bouts,
         gaze_coverage_fraction=coverage_fraction, gaze_valid_samples=valid_gaze_samples,
         sustained_gaze_s=sustained if observed else 0.0, distance_slope_mps=slope,

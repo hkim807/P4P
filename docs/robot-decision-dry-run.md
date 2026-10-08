@@ -226,8 +226,9 @@ rejected response also clears the placeholder. These checks protect this
   add a robot-local controller that can verify and perform a physical stop,
   arbitrate route motion, recheck current target and obstacle data, and expire
   executable command leases even while HTTP is stalled.
-- Rules select `YIELD` for TOO_CLOSE using the existing provisional proximity
-  condition; this does not establish a verified route conflict.
+- Rules v4 select `YIELD` for measured closing within 3 m with a current face and
+  established low gaze, or an explicit path conflict. TOO_CLOSE alone no longer
+  causes YIELD. See [current policy](social-policy.md) for evidence requirements.
 - A changed PC session is rejected until the client restarts. A later command
   protocol should negotiate a new session explicitly.
 

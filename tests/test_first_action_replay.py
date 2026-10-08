@@ -17,7 +17,8 @@ from tests.fixtures import frame
 def item(index, *, people=True):
     raw = frame()
     raw['timestamp'] += index * 100_000
-    raw['people'] = [{'uid': 17, 'distance_m': .5, 'gaze_overlap': .95}] if people else []
+    raw['people'] = [{'uid': 17, 'distance_m': .5, 'gaze_overlap': .95,
+                      'path_relation': 'CONFLICT'}] if people else []
     capture = {'capture_version': 1, 'session_id': 'test', 'stream': 'perception',
         'sequence': index + 1, 'received_monotonic_us': raw['timestamp'],
         'received_unix_us': 2_000_000 + index * 100_000,
@@ -64,7 +65,7 @@ class FirstActionReplayTests(unittest.TestCase):
                 self.config = config
             def chat(self, messages):
                 time.sleep(delay)
-                decision = ModelDecision(action='YIELD', reason='The person is too close.')
+                decision = ModelDecision(action='YIELD', reason='An upstream observation reports a path conflict.')
                 return OllamaResult(self.config.model, self.config.model,
                                     decision.model_dump_json(), delay, decision, None)
         return patch('app.inference.live.OllamaClient', Client)

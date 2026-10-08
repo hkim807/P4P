@@ -111,7 +111,8 @@ class SocialStateEstimator:
                 evidence=evidence, validity_flags=flags,
                 relative_head_position=latest.get("optional_relative_head_position") if latest else None,
                 path_relation=latest.get("path_relation", "UNKNOWN") if latest and track["visibility"] == "OBSERVED" else "UNKNOWN",
-                pass_gesture=latest.get("pass_gesture", "UNKNOWN") if latest and track["visibility"] == "OBSERVED" else "UNKNOWN")
+                pass_gesture=latest.get("pass_gesture", "UNKNOWN") if latest and track["visibility"] == "OBSERVED" else "UNKNOWN",
+                face_detected=latest.get("face_detected") if latest and track["visibility"] == "OBSERVED" else None)
             for cue in CUES:
                 value = getattr(person, cue)
                 previous = memory.previous.get(cue, "UNKNOWN")

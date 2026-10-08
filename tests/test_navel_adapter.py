@@ -43,6 +43,18 @@ class NavelObservationAdapterTests(unittest.TestCase):
         payload = self.adapter.convert(perception(NS(uid=5)))
         self.assertEqual(payload["people"], [{"uid": 5, "distance_m": None, "gaze_overlap": None}])
 
+    def test_face_detection_requires_a_finite_positive_sdk_bounding_box(self):
+        for face in ({'x1': 10, 'y1': 20, 'x2': 30, 'y2': 40},
+                     NS(x1=10, y1=20, x2=30, y2=40)):
+            p = self.adapter.convert(perception(person(face=face)))['people'][0]
+            self.assertTrue(RawObservationFrame.model_validate({
+                **self.adapter.convert(perception()), 'people': [p]}).people[0].face_detected)
+        for face in (None, {}, NS(x1=0, y1=0, x2=0, y2=1),
+                     NS(x1=0, y1=0, x2=1, y2=float('nan')),
+                     NS(x1=0, y1=0, x2=True, y2=1)):
+            p = self.adapter.convert(perception(person(face=face)))['people'][0]
+            self.assertNotIn('face_detected', p)
+
     def test_invalid_measurements_are_unavailable_without_clamping(self):
         for distance, gaze in [(-1, 1.5), (float("nan"), float("inf")), (True, False)]:
             with self.subTest(distance=distance, gaze=gaze):

@@ -9,7 +9,7 @@ from app.domain.model_decision import FinalDecision
 from app.state.social_models import SocialState, StrictModel, observation_hold_reason
 
 
-POLICY_VERSION = "social-rules-v3"
+POLICY_VERSION = "social-rules-v4"
 DecisionName = Literal["CONTINUE", "APPROACH", "ENGAGE", "YIELD"]
 
 
@@ -17,7 +17,7 @@ class PolicyDecision(StrictModel):
     decision_id: str
     source_state_id: str
     session_id: str
-    policy_version: Literal["social-rules-v2", "social-rules-v3"] = POLICY_VERSION
+    policy_version: Literal["social-rules-v2", "social-rules-v3", "social-rules-v4"] = POLICY_VERSION
     decision: DecisionName
     reason_code: str
     target_uid: int | None = Field(default=None, ge=0)
@@ -31,7 +31,7 @@ _FINAL_REASONS = {
     "RELATIVE_SEPARATION_INCREASING": "Separation is increasing outside conversation range; avoid pursuing the person.",
     "RECURRING_ATTENTION_IN_INTERACTION_RANGE": "Repeated measured attention supports a conversation at the current distance.",
     "RECURRING_ATTENTION_IN_APPROACHABLE_RANGE": "Repeated measured attention supports approaching to conversation distance.",
-    "PERSON_TOO_CLOSE": "The person is in the TOO_CLOSE zone; give more space by temporarily moving aside and backwards, waiting briefly, returning towards the route and advancing a short distance before ending. This provisional proximity rule does not imply a blocked path.",
+    "CLOSING_DISTANCE_WITH_LOW_GAZE": "Measured separation is decreasing within the configured yield range, with a currently detected face and established low gaze towards the robot; give the person room to pass. Relative closing does not establish which participant is moving or a path conflict.",
     "NO_INTERACTION_CUE": "Usable gaze evidence does not show sustained attention; continue along the fixed route.",
     "PERSON_FAR": "The person is outside the interaction and approach ranges; continue along the fixed route.",
     "NO_ATTENTION": "Gaze evidence is classified as no attention; continue along the fixed route.",
@@ -92,13 +92,19 @@ def decide(state: SocialState | dict, *, stale: bool = False,
 
     if person.path_relation == "CONFLICT":
         return result("YIELD", "HUMAN_PATH_CONFLICT")
-    if person.distance_zone == "TOO_CLOSE":
-        return result("YIELD", "PERSON_TOO_CLOSE")
     if person.pass_gesture == "PASS":
         return result("CONTINUE", "PASS_GESTURE")
+    c, e = state.config, person.evidence
+    if (person.face_detected is True and e.distance_trend_valid
+            and person.relative_distance_trend == "DECREASING"
+            and (c.yield_closing_max_distance_m is None
+                 or person.latest_distance_m <= c.yield_closing_max_distance_m)
+            and e.gaze_valid and person.gaze_state == "NONE"
+            and e.latest_gaze_looking is False
+            and e.latest_gaze_overlap is not None and e.latest_gaze_overlap <= c.looking_exit):
+        return result("YIELD", "CLOSING_DISTANCE_WITH_LOW_GAZE")
     if person.evidence.latest_gaze_looking is False and person.gaze_state == "SUSTAINED":
         return result("CONTINUE", "ATTENTION_ENDED")
-    c, e = state.config, person.evidence
     recurring = (person.gaze_state == "INTERMITTENT" and e.latest_gaze_looking is True
                  and e.looking_bouts >= c.recurring_min_bouts
                  and e.looking_time_s >= c.recurring_min_looking_s
@@ -107,7 +113,7 @@ def decide(state: SocialState | dict, *, stale: bool = False,
                  (e.latest_gaze_looking is None or e.sustained_gaze_s + 1e-9 >= c.min_sustained_run_s))
     attentive = sustained or recurring
     # A greeting does not move closer: nearby attentive retreat differs from pursuit.
-    if attentive and person.distance_zone == "INTERACTION_RANGE":
+    if attentive and person.distance_zone in ("TOO_CLOSE", "INTERACTION_RANGE"):
         return result("ENGAGE", "RECURRING_ATTENTION_IN_INTERACTION_RANGE" if recurring
                       else "SUSTAINED_GAZE_IN_INTERACTION_RANGE")
     if (person.human_radial_motion == "AWAY" and e.distance_trend_valid

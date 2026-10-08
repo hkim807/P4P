@@ -135,6 +135,18 @@
           "title": "Pass Gesture",
           "type": "string"
         },
+        "face_detected": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Face Detected"
+        },
         "relative_head_position": {
           "anyOf": [
             {
@@ -346,6 +358,19 @@
           "title": "Recurring Min Bouts",
           "type": "integer"
         },
+        "yield_closing_max_distance_m": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": 3.0,
+          "title": "Yield Closing Max Distance M"
+        },
         "distance_deadband_mps": {
           "default": 0.1,
           "exclusiveMinimum": 0,
@@ -447,6 +472,20 @@
           ],
           "default": null,
           "title": "Latest Gaze Looking"
+        },
+        "latest_gaze_overlap": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Latest Gaze Overlap"
         },
         "looking_time_s": {
           "default": 0.0,

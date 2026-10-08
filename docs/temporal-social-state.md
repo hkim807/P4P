@@ -31,8 +31,11 @@ Per observed or temporarily missing track, output includes:
 - `distance_zone`: `TOO_CLOSE`, `INTERACTION_RANGE`, `APPROACHABLE`, `FAR`, or `UNKNOWN`.
 - `relative_distance_trend`: `DECREASING`, `STABLE`, `INCREASING`, or `UNKNOWN`.
 - `human_radial_motion`: `TOWARD`, `STATIONARY`, `AWAY`, or `UNKNOWN`.
+- `face_detected`: current positive SDK face-box evidence; null when unavailable
+  or the track is temporarily missing.
 - `evidence`: coverage, gaze fraction/run duration, sample counts, slope, fit
-  residual, segment span, detected jumps, and stationarity from robot velocities.
+  residual, segment span, detected jumps, stationarity from robot velocities,
+  and current `latest_gaze_overlap` (null when unavailable or missing).
 - `validity_flags`: why evidence is missing, insufficient, or unreliable.
 
 At scene level, `cue_changes` identifies category transitions by UID/epoch and

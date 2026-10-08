@@ -26,5 +26,6 @@
   "stationary_angular_tolerance_rps": 0.03,
   "recurring_min_looking_s": 1.0,
   "recurring_min_fraction": 0.45,
-  "recurring_min_bouts": 2
+  "recurring_min_bouts": 2,
+  "yield_closing_max_distance_m": 3.0
 }
