@@ -14,8 +14,12 @@
       "type": "string"
     },
     "policy_version": {
-      "const": "social-rules-v1",
-      "default": "social-rules-v1",
+      "default": "social-rules-v4",
+      "enum": [
+        "social-rules-v2",
+        "social-rules-v3",
+        "social-rules-v4"
+      ],
       "title": "Policy Version",
       "type": "string"
     },
@@ -24,8 +28,7 @@
         "CONTINUE",
         "APPROACH",
         "ENGAGE",
-        "YIELD",
-        "DEFER"
+        "YIELD"
       ],
       "title": "Decision",
       "type": "string"

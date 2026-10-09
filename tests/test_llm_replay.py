@@ -131,8 +131,8 @@ class ReplayRunnerTests(unittest.TestCase):
             "--prepare-only", "--sample-interval", "0.7", output=prepared)
         self.assertEqual(status, 0)
         fake = FakeClient(result=OllamaResult(
-            "caller-model", "returned-model", '{"action":"STOP","reason":"Fake."}',
-            900.0, ModelDecision(action="STOP", reason="Fake."), None))
+            "caller-model", "returned-model", '{"action":"YIELD","reason":"Fake."}',
+            900.0, ModelDecision(action="YIELD", reason="Fake."), None))
         with patch("time.monotonic", return_value=9_000_000.0):
             status, summary, inferred, _, _, _ = self.run_main(
                 "--sample-interval", "0.7", client=fake)
@@ -229,7 +229,7 @@ class ReplayRunnerTests(unittest.TestCase):
     def test_inference_failures_are_rows_without_fallback_and_exit_one(self):
         result = OllamaResult("caller-model", "response-model", "invalid output", 1.25,
                               None, OllamaError(OllamaErrorCategory.INVALID_DECISION,
-                                                "Wrong action: YIELD.", 200))
+                                                "Wrong action: STOP.", 200))
         status, summary, rows, _, client, _ = self.run_main(
             "--max-calls", "2", client=FakeClient(result))
         self.assertEqual(status, 1)
@@ -246,7 +246,7 @@ class ReplayRunnerTests(unittest.TestCase):
             self.assertIsNone(row["decision"])
             self.assertEqual(row["raw_content"], "invalid output")
             self.assertEqual(row["error"], {"category": "invalid_decision",
-                                            "message": "Wrong action: YIELD.",
+                                            "message": "Wrong action: STOP.",
                                             "http_status": 200})
             self.assertEqual(row["request_duration_s"], 1.25)
 

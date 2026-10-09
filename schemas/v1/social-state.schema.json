@@ -116,6 +116,59 @@
         "evidence": {
           "$ref": "#/$defs/TemporalEvidence"
         },
+        "path_relation": {
+          "default": "UNKNOWN",
+          "enum": [
+            "UNKNOWN",
+            "CLEAR",
+            "CONFLICT"
+          ],
+          "title": "Path Relation",
+          "type": "string"
+        },
+        "pass_gesture": {
+          "default": "UNKNOWN",
+          "enum": [
+            "UNKNOWN",
+            "PASS"
+          ],
+          "title": "Pass Gesture",
+          "type": "string"
+        },
+        "face_detected": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Face Detected"
+        },
+        "relative_head_position": {
+          "anyOf": [
+            {
+              "additionalProperties": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "number"
+                  }
+                ]
+              },
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Relative Head Position"
+        },
         "validity_flags": {
           "items": {
             "type": "string"
@@ -286,6 +339,38 @@
           "title": "Min Sustained Run S",
           "type": "number"
         },
+        "recurring_min_looking_s": {
+          "default": 1.0,
+          "exclusiveMinimum": 0,
+          "title": "Recurring Min Looking S",
+          "type": "number"
+        },
+        "recurring_min_fraction": {
+          "default": 0.45,
+          "exclusiveMinimum": 0,
+          "maximum": 1,
+          "title": "Recurring Min Fraction",
+          "type": "number"
+        },
+        "recurring_min_bouts": {
+          "default": 2,
+          "minimum": 2,
+          "title": "Recurring Min Bouts",
+          "type": "integer"
+        },
+        "yield_closing_max_distance_m": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": 3.0,
+          "title": "Yield Closing Max Distance M"
+        },
         "distance_deadband_mps": {
           "default": 0.1,
           "exclusiveMinimum": 0,
@@ -363,6 +448,54 @@
         "window_span_s": {
           "title": "Window Span S",
           "type": "number"
+        },
+        "mean_gaze_overlap": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Mean Gaze Overlap"
+        },
+        "latest_gaze_looking": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Latest Gaze Looking"
+        },
+        "latest_gaze_overlap": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Latest Gaze Overlap"
+        },
+        "looking_time_s": {
+          "default": 0.0,
+          "title": "Looking Time S",
+          "type": "number"
+        },
+        "looking_bouts": {
+          "default": 0,
+          "title": "Looking Bouts",
+          "type": "integer"
         },
         "gaze_fraction": {
           "anyOf": [
@@ -489,9 +622,26 @@
       "type": "integer"
     },
     "estimator_version": {
-      "const": "temporal-social-v1",
-      "default": "temporal-social-v1",
+      "default": "temporal-social-v2",
+      "enum": [
+        "temporal-social-v1",
+        "temporal-social-v2"
+      ],
       "title": "Estimator Version",
+      "type": "string"
+    },
+    "observation_readiness": {
+      "default": "NOT_READY",
+      "enum": [
+        "READY",
+        "NOT_READY"
+      ],
+      "title": "Observation Readiness",
+      "type": "string"
+    },
+    "readiness_reason": {
+      "default": "UNASSESSED",
+      "title": "Readiness Reason",
       "type": "string"
     },
     "state_id": {

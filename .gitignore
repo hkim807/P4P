@@ -6,6 +6,8 @@ __pycache__/
 # Reproducible derived tracking traces; compact reports live in docs/results
 var/tracking-validation/
 var/temporal-validation/
+var/gaze-features/
+var/gaze-scores/
 
 # Local frontend build/dependency artifacts left from main
 web/

@@ -1,0 +1,89 @@
+{
+  "scenario_id": "S3",
+  "policy": "llm",
+  "status": "ACTION_RESOLVED",
+  "action": "ENGAGE",
+  "decision": {
+    "action": "ENGAGE",
+    "reason": "The gaze_state is SUSTAINED and the distance_zone is INTERACTION_RANGE, supporting an immediate interaction."
+  },
+  "accepted_by_live_client": true,
+  "acceptance_details": {
+    "current_readiness": true,
+    "latest_observation_age_s": 0.081173,
+    "model_source_age_s": 5.992206,
+    "trial_phase": "DECIDED",
+    "failure_reason": null
+  },
+  "resolved_elapsed_s": 7.17894933372736,
+  "stop_elapsed_s": 7.17894933372736,
+  "frames_ingested": 72,
+  "ready_frames": 56,
+  "readiness_counts": {
+    "INSUFFICIENT_GAZE_EVIDENCE": 12,
+    "GAZE_CATEGORY_NOT_READY": 4,
+    "READY": 56
+  },
+  "recording_exhausted": false,
+  "last_ingested_source_offset_s": 7.097779,
+  "last_ingested_line": 143,
+  "decision_source_offset_s": 1.186746,
+  "max_dispatch_lag_s": 0.006669791880995035,
+  "model_failures": [],
+  "first_model_request": {
+    "decision": null,
+    "error": null,
+    "policy": "llm",
+    "request_id": "a81dd582e791435099f6803232eb293e",
+    "session_id": "replay-8f9030f65696dfa3909274bb",
+    "source_robot_timestamp_us": 13767457164,
+    "source_state_id": "replay-8f9030f65696dfa3909274bb:13",
+    "status": "pending",
+    "trial_id": "3e63053053f24cb5b98c8eb011c01644"
+  },
+  "resolved_output": {
+    "completed_at": "2026-10-08T08:37:20.895156+00:00",
+    "decision": {
+      "action": "ENGAGE",
+      "reason": "The gaze_state is SUSTAINED and the distance_zone is INTERACTION_RANGE, supporting an immediate interaction."
+    },
+    "error": null,
+    "error_stage": null,
+    "ok": true,
+    "ollama_configuration": {
+      "base_url": "http://127.0.0.1:11434",
+      "generation_options": {
+        "num_ctx": 8192,
+        "num_predict": 192,
+        "seed": 42,
+        "temperature": 0.0
+      },
+      "model": "qwen2.5:7b",
+      "num_ctx": 8192,
+      "num_predict": 192,
+      "seed": 42,
+      "temperature": 0.0,
+      "timeout_seconds": 120.0
+    },
+    "policy": "llm",
+    "prompt_version": "social-state-llm-v6",
+    "raw_content": "{\n  \"action\": \"ENGAGE\",\n  \"reason\": \"The gaze_state is SUSTAINED and the distance_zone is INTERACTION_RANGE, supporting an immediate interaction.\"\n}",
+    "request_duration_s": 5.937912291847169,
+    "request_id": "a81dd582e791435099f6803232eb293e",
+    "requested_model": "qwen2.5:7b",
+    "returned_model": "qwen2.5:7b",
+    "session_id": "replay-8f9030f65696dfa3909274bb",
+    "source_robot_timestamp_us": 13767457164,
+    "source_state_id": "replay-8f9030f65696dfa3909274bb:13",
+    "status": "succeeded",
+    "trial_id": "3e63053053f24cb5b98c8eb011c01644"
+  },
+  "last_readiness": {
+    "reason_code": null,
+    "status": "READY"
+  },
+  "source_sha256": "f01522167bb74c2f91b5930beb80267d04268e00270e061cf1acb4e486babe58",
+  "trial_id": "3e63053053f24cb5b98c8eb011c01644",
+  "clock_mapping": "original first perception receipt + real elapsed replay time",
+  "physical_execution": false
+}

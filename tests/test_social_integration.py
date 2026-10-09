@@ -83,6 +83,7 @@ class SocialIntegrationTests(unittest.TestCase):
                 self.assertTrue(response.json["accepted"])
                 self.assertEqual(response.json["processing_status"], "failed")
                 self.assertEqual(response.json["processing_stage"], stage)
+                self.assertIsNone(response.json["final_decision"])
             self.assertEqual(len(list(read_frames(raw))), 2)
 
     def test_duplicate_frame_cannot_advance_social_state(self):

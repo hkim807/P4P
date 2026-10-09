@@ -1,0 +1,10 @@
+scenario,detected_frames,frames,rule_actions,llm_actions,agreement,not_ready_rate,rule_delay_s,llm_delay_s
+scenario-01,0,91,"{""CONTINUE"": 91}","{""CONTINUE"": 27}",1.0,0.0,,
+scenario-02,27,84,"{""CONTINUE"": 28, ""NOT_READY"": 56}","{""CONTINUE"": 9}",1.0,0.6666666666666666,1.427912,4.411004
+scenario-03,110,115,"{""NOT_READY"": 34, ""ENGAGE"": 75, ""CONTINUE"": 6}","{""CONTINUE"": 21, ""YIELD"": 3}",0.125,0.2956521739130435,1.401296,2.096264
+scenario-04,0,55,"{""CONTINUE"": 55}","{""CONTINUE"": 18}",1.0,0.0,,
+scenario-05,0,40,"{""CONTINUE"": 40}","{""CONTINUE"": 12}",1.0,0.0,,
+scenario-06,4,77,"{""CONTINUE"": 69, ""NOT_READY"": 8}","{""CONTINUE"": 21}",1.0,0.1038961038961039,,
+scenario-07,0,29,"{""CONTINUE"": 29}","{""CONTINUE"": 9}",1.0,0.0,,
+scenario-08,32,117,"{""CONTINUE"": 72, ""NOT_READY"": 45}","{""CONTINUE"": 21}",1.0,0.38461538461538464,,
+scenario-09,56,122,"{""NOT_READY"": 45, ""APPROACH"": 20, ""CONTINUE"": 57}","{""CONTINUE"": 21}",0.7142857142857143,0.36885245901639346,1.509459,2.200196

@@ -81,7 +81,7 @@ class VLMPromptTests(unittest.TestCase):
     def test_prompt_is_static_english_versioned_and_reproducible(self):
         first = build_vlm_prompt(ENCODED_IMAGE)
         second = build_vlm_prompt(base64.b64encode(png_bytes((5, 7, 9))).decode("ascii"))
-        self.assertEqual(first.prompt_version, "image-only-vlm-v1")
+        self.assertEqual(first.prompt_version, "image-only-vlm-v4")
         self.assertEqual(first.prompt_version, PROMPT_VERSION)
         self.assertEqual(first.instructions, SYSTEM_PROMPT)
         self.assertEqual(second.instructions, first.instructions)
@@ -90,13 +90,13 @@ class VLMPromptTests(unittest.TestCase):
         USER_PROMPT.encode("ascii")
         self.assertEqual(build_vlm_prompt(ENCODED_IMAGE), first)
 
-    def test_task_context_and_definitions_match_step_two_verbatim(self):
+    def test_task_context_and_definitions_match_llm_verbatim(self):
         text = build_vlm_prompt(ENCODED_IMAGE).instructions
         self.assertTrue(text.startswith(
             "A robot is assigned to travel along a fixed route inside a laboratory. "
             "It must choose its next behaviour around people."))
         definitions = [line for line in llm.SYSTEM_PROMPT.splitlines()
-                       if line.startswith(("- CONTINUE:", "- STOP:", "- APPROACH:", "- ENGAGE:"))]
+                       if line.startswith(("- CONTINUE:", "- YIELD:", "- APPROACH:", "- ENGAGE:"))]
         self.assertEqual(len(definitions), 4)
         for line in definitions:
             with self.subTest(definition=line):
@@ -110,7 +110,7 @@ class VLMPromptTests(unittest.TestCase):
             "Do not invent measured distances, durations or velocities",
             "brief explanation grounded in visible evidence", "Select exactly one of the four actions",
             "only the required fields action and reason",
-            "action must be exactly STOP, CONTINUE, APPROACH or ENGAGE",
+            "action must be exactly CONTINUE, APPROACH, ENGAGE or YIELD",
             "reason must be a string containing non-whitespace text",
             "Do not return prose, code fences or additional fields",
         ):
@@ -159,7 +159,7 @@ class VLMPromptTests(unittest.TestCase):
 
 class VLMPolicyTests(unittest.TestCase):
     def test_all_four_actions_original_result_identity_and_one_call_are_preserved(self):
-        for action in ("STOP", "CONTINUE", "APPROACH", "ENGAGE"):
+        for action in ("YIELD", "CONTINUE", "APPROACH", "ENGAGE"):
             with self.subTest(action=action):
                 original = success(action)
                 client = FakeClient(original)
@@ -230,7 +230,7 @@ class VLMPolicyTests(unittest.TestCase):
 
 class VLMOllamaRequestTests(unittest.TestCase):
     def test_fake_http_requests_contain_static_text_exact_png_bytes_and_four_action_schema(self):
-        for action in ("STOP", "CONTINUE", "APPROACH", "ENGAGE"):
+        for action in ("YIELD", "CONTINUE", "APPROACH", "ENGAGE"):
             with self.subTest(action=action):
                 content = json.dumps({"action": action, "reason": "Fake visible-evidence explanation."})
                 transport = FakeTransport(content=content)
@@ -260,11 +260,12 @@ class VLMOllamaRequestTests(unittest.TestCase):
                     self.assertEqual(image.size, (2, 3))
 
     def test_invalid_model_outputs_remain_failures_without_action_substitution(self):
-        contents = ("not JSON", '{"action":"YIELD","reason":"Fake."}',
+        contents = ("not JSON",
                     '{"action":"DEFER","reason":"Fake."}',
-                    '{"action":"STOP","reason":"   "}',
-                    '{"action":"STOP","reason":"Fake.","uid":12}',
-                    '```json\n{"action":"STOP","reason":"Fake."}\n```')
+                    '{"action":"STOP","reason":"Obsolete model action."}',
+                    '{"action":"YIELD","reason":"   "}',
+                    '{"action":"YIELD","reason":"Fake.","uid":12}',
+                    '```json\n{"action":"YIELD","reason":"Fake."}\n```')
         for content in contents:
             with self.subTest(content=content):
                 transport = FakeTransport(content=content)

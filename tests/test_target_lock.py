@@ -35,7 +35,8 @@ class TargetLockTests(unittest.TestCase):
         for i in (2, 3):
             tentative = pipeline.process(sample(i, uid=18, distance=2.05))["target_lock"]
             self.assertEqual(tentative["status"], "TENTATIVE_RETURN")
-            self.assertEqual(tentative["effective_decision"]["decision"], "DEFER")
+            self.assertIsNone(tentative["effective_decision"])
+            self.assertEqual(tentative["execution_status"], "HOLD")
         rebound = pipeline.process(sample(4, uid=18, distance=2.05))["target_lock"]
         self.assertEqual(rebound["status"], "LOCKED")
         self.assertEqual(rebound["lock_id"], first["lock_id"])
@@ -44,7 +45,7 @@ class TargetLockTests(unittest.TestCase):
             {"uid": 17, "track_epoch": 1}, {"uid": 18, "track_epoch": 2},
         ])
         self.assertEqual(rebound["events"], ["REBOUND"])
-        self.assertEqual(rebound["effective_decision"]["reason_code"], "UID_REBOUND_OBSERVE")
+        self.assertEqual(rebound["hold_reason"], "UID_REBOUND_OBSERVE")
         for i in range(5, 21):
             state = pipeline.process(sample(i, uid=18, distance=2.05))["target_lock"]
         self.assertEqual(state["lock_id"], first["lock_id"])
@@ -69,7 +70,7 @@ class TargetLockTests(unittest.TestCase):
         for i in (2, 3, 4):
             state = pipeline.process(sample(i, uid=0, distance=2.0))["target_lock"]
         self.assertEqual(state["status"], "TENTATIVE_RETURN")
-        self.assertEqual(state["effective_decision"]["reason_code"], "UID_ZERO_UNVERIFIED")
+        self.assertEqual(state["hold_reason"], "UID_ZERO_UNVERIFIED")
         self.assertEqual(state["lock_id"], first["lock_id"])
 
     def test_competing_person_blocks_rebind_even_after_leaving(self):
@@ -81,7 +82,7 @@ class TargetLockTests(unittest.TestCase):
         for i in (2, 3, 4):
             state = pipeline.process(sample(i, uid=18))["target_lock"]
         self.assertEqual(state["status"], "TENTATIVE_RETURN")
-        self.assertEqual(state["effective_decision"]["reason_code"], "RETURN_SCENE_AMBIGUOUS")
+        self.assertEqual(state["hold_reason"], "RETURN_SCENE_AMBIGUOUS")
         self.assertEqual(state["target_uid"], 17)
         self.assertEqual(state["lock_id"], first["lock_id"])
 
@@ -92,7 +93,7 @@ class TargetLockTests(unittest.TestCase):
         for i in (2, 3, 4):
             state = pipeline.process(sample(i, uid=19))["target_lock"]
         self.assertEqual(state["status"], "TENTATIVE_RETURN")
-        self.assertEqual(state["effective_decision"]["reason_code"], "RETURN_SCENE_AMBIGUOUS")
+        self.assertEqual(state["hold_reason"], "RETURN_SCENE_AMBIGUOUS")
         self.assertEqual(state["lock_id"], first["lock_id"])
         self.assertEqual(state["target_uid"], 17)
 
@@ -104,8 +105,9 @@ class TargetLockTests(unittest.TestCase):
         self.assertEqual(first["target_uid"], 17)
         missing = pipeline.process(no_person(1))["target_lock"]
         self.assertEqual(missing["status"], "MISSING")
-        self.assertEqual(missing["effective_decision"]["decision"], "DEFER")
-        self.assertEqual(missing["effective_decision"]["reason_code"], "LOCKED_TARGET_MISSING")
+        self.assertIsNone(missing["effective_decision"])
+        self.assertEqual(missing["execution_status"], "HOLD")
+        self.assertEqual(missing["hold_reason"], "LOCKED_TARGET_MISSING")
         same = pipeline.process(sample(2))["target_lock"]
         self.assertEqual(same["status"], "LOCKED")
         self.assertEqual(same["lock_id"], lock_id)
@@ -115,8 +117,8 @@ class TargetLockTests(unittest.TestCase):
         self.assertEqual(changed["lock_id"], lock_id)
         self.assertEqual(changed["target_uid"], 17)
         self.assertEqual(changed["candidate_uid"], 18)
-        self.assertIsNone(changed["effective_decision"]["target_uid"])
-        self.assertEqual(changed["effective_decision"]["reason_code"], "IDENTITY_UNRESOLVED")
+        self.assertIsNone(changed["effective_decision"])
+        self.assertEqual(changed["hold_reason"], "IDENTITY_UNRESOLVED")
 
     def test_new_epoch_and_crowd_never_rebind_old_lock(self):
         pipeline = SocialPipeline("lock-test")
@@ -141,7 +143,8 @@ class TargetLockTests(unittest.TestCase):
         self.assertEqual(timed_out["status"], "COOLDOWN")
         self.assertIn("RELEASED_MISSING_TIMEOUT", timed_out["events"])
         self.assertIsNone(timed_out["target_uid"])
-        self.assertEqual(timed_out["effective_decision"]["decision"], "DEFER")
+        self.assertIsNone(timed_out["effective_decision"])
+        self.assertEqual(timed_out["execution_status"], "HOLD")
         still_cooling = pipeline.process(sample(29, uid=18))["target_lock"]
         self.assertEqual(still_cooling["status"], "COOLDOWN")
         new = pipeline.process(sample(30, uid=18))["target_lock"]
@@ -161,7 +164,8 @@ class TargetLockTests(unittest.TestCase):
         else:
             self.fail("valid no-attention evidence did not release the lock")
         self.assertEqual(state["status"], "COOLDOWN")
-        self.assertEqual(state["effective_decision"]["decision"], "DEFER")
+        self.assertIsNone(state["effective_decision"])
+        self.assertEqual(state["execution_status"], "HOLD")
 
     def test_live_response_and_replay_trace_match(self):
         frames = [sample(0), no_person(1), sample(2, uid=18), sample(3),
@@ -199,19 +203,20 @@ class TargetLockTests(unittest.TestCase):
 
             missing = no_person(21)
             response = client.post("/api/v1/observations", json=missing)
-            self.assertEqual(response.json["policy_decision"]["decision"], "CONTINUE")
+            self.assertIsNone(response.json["policy_decision"])
             parsed = parse_decision(response.json, missing, missing["timestamp"] + 1000, 1_000_000)
-            self.assertEqual((parsed.decision, parsed.reason_code), ("DEFER", "LOCKED_TARGET_MISSING"))
+            self.assertIsNone(parsed)
+            self.assertEqual(response.json["target_lock"]["hold_reason"], "LOCKED_TARGET_MISSING")
 
             candidate = sample(22, uid=18)
             response = client.post("/api/v1/observations", json=candidate)
             parsed = parse_decision(response.json, candidate, candidate["timestamp"] + 1000, 1_000_000)
-            self.assertEqual(parsed.decision, "DEFER")
+            self.assertIsNone(parsed)
             self.assertEqual(response.json["target_lock"]["candidate_uid"], 18)
             old_lock_id = response.json["target_lock"]["lock_id"]
             forged = json.loads(json.dumps(response.json))
-            forged["target_lock"]["effective_decision"].update(
-                decision="ENGAGE", target_uid=18, target_track_epoch=2)
+            forged["target_lock"]["effective_decision"] = {
+                "decision": "ENGAGE", "target_uid": 18, "target_track_epoch": 2}
             with self.assertRaises(DecisionRejected):
                 parse_decision(forged, candidate, candidate["timestamp"] + 1000, 1_000_000)
             for field, value in (("status", []), ("robot_timestamp_us", True)):
@@ -220,7 +225,7 @@ class TargetLockTests(unittest.TestCase):
                 with self.subTest(field=field), self.assertRaises(DecisionRejected):
                     parse_decision(malformed, candidate, candidate["timestamp"] + 1000, 1_000_000)
             malformed = json.loads(json.dumps(response.json))
-            malformed["target_lock"]["effective_decision"]["decision"] = []
+            malformed["target_lock"]["effective_decision"] = {"decision": []}
             with self.assertRaises(DecisionRejected):
                 parse_decision(malformed, candidate, candidate["timestamp"] + 1000, 1_000_000)
 
@@ -232,8 +237,9 @@ class TargetLockTests(unittest.TestCase):
             self.assertEqual(response.json["target_lock"]["lock_id"], old_lock_id)
             rebound_decision = parse_decision(response.json, candidate,
                                               candidate["timestamp"] + 1000, 1_000_000)
-            self.assertEqual(rebound_decision.reason_code, "UID_REBOUND_OBSERVE")
-            self.assertEqual(rebound_decision.lock_id, old_lock_id)
+            self.assertIsNone(rebound_decision)
+            self.assertEqual(response.json["target_lock"]["hold_reason"], "UID_REBOUND_OBSERVE")
+            self.assertEqual(response.json["target_lock"]["lock_id"], old_lock_id)
 
     def test_config_file_matches_defaults(self):
         root = Path(__file__).resolve().parents[1]

@@ -1,0 +1,666 @@
+[
+  {
+    "temporal": {
+      "window_s": 2.0,
+      "max_gap_s": 0.25,
+      "min_span_s": 1.0,
+      "min_samples": 5,
+      "min_gaze_coverage_s": 0.75,
+      "min_gaze_coverage_fraction": 0.6,
+      "looking_enter": 0.8,
+      "looking_exit": 0.7,
+      "sustained_enter": 0.8,
+      "sustained_exit": 0.65,
+      "none_enter": 0.2,
+      "none_exit": 0.35,
+      "category_dwell_s": 0.3,
+      "min_sustained_run_s": 0.4,
+      "distance_deadband_mps": 0.1,
+      "max_distance_speed_mps": 3.0,
+      "distance_jump_allowance_m": 0.05,
+      "max_fit_residual_m": 0.1,
+      "max_fit_samples": 32,
+      "too_close_m": 0.6,
+      "interaction_max_m": 1.5,
+      "approachable_max_m": 3.0,
+      "zone_hysteresis_m": 0.1,
+      "stationary_linear_tolerance_mps": 0.02,
+      "stationary_angular_tolerance_rps": 0.03
+    },
+    "config_version": "temporal-v1-ae7d3b756d04",
+    "sdk_end_diagnostic": {
+      "S1": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON"
+      },
+      "S2": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "GAZE_CATEGORY_NOT_READY"
+      },
+      "S3": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON"
+      },
+      "S4": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON"
+      },
+      "S5": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON"
+      },
+      "S6": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON"
+      },
+      "S7": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON"
+      },
+      "S8": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "INSUFFICIENT_GAZE_EVIDENCE"
+      },
+      "S9": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON"
+      }
+    },
+    "frame_diagnostics": {
+      "NOT_READY": 624,
+      "ENGAGE": 75,
+      "CONTINUE": 11,
+      "APPROACH": 20
+    }
+  },
+  {
+    "temporal": {
+      "window_s": 2.0,
+      "max_gap_s": 0.25,
+      "min_span_s": 1.0,
+      "min_samples": 5,
+      "min_gaze_coverage_s": 0.75,
+      "min_gaze_coverage_fraction": 0.6,
+      "looking_enter": 0.8,
+      "looking_exit": 0.7,
+      "sustained_enter": 0.8,
+      "sustained_exit": 0.65,
+      "none_enter": 0.2,
+      "none_exit": 0.35,
+      "category_dwell_s": 0.2,
+      "min_sustained_run_s": 0.4,
+      "distance_deadband_mps": 0.1,
+      "max_distance_speed_mps": 3.0,
+      "distance_jump_allowance_m": 0.05,
+      "max_fit_residual_m": 0.1,
+      "max_fit_samples": 32,
+      "too_close_m": 0.6,
+      "interaction_max_m": 1.5,
+      "approachable_max_m": 3.0,
+      "zone_hysteresis_m": 0.1,
+      "stationary_linear_tolerance_mps": 0.02,
+      "stationary_angular_tolerance_rps": 0.03
+    },
+    "config_version": "temporal-v1-17273341b58d",
+    "sdk_end_diagnostic": {
+      "S1": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON"
+      },
+      "S2": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "GAZE_CATEGORY_NOT_READY"
+      },
+      "S3": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON"
+      },
+      "S4": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON"
+      },
+      "S5": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON"
+      },
+      "S6": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON"
+      },
+      "S7": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON"
+      },
+      "S8": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "INSUFFICIENT_GAZE_EVIDENCE"
+      },
+      "S9": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON"
+      }
+    },
+    "frame_diagnostics": {
+      "NOT_READY": 612,
+      "ENGAGE": 78,
+      "CONTINUE": 17,
+      "APPROACH": 23
+    }
+  },
+  {
+    "temporal": {
+      "window_s": 2.0,
+      "max_gap_s": 0.35,
+      "min_span_s": 1.0,
+      "min_samples": 5,
+      "min_gaze_coverage_s": 0.75,
+      "min_gaze_coverage_fraction": 0.6,
+      "looking_enter": 0.8,
+      "looking_exit": 0.7,
+      "sustained_enter": 0.8,
+      "sustained_exit": 0.65,
+      "none_enter": 0.2,
+      "none_exit": 0.35,
+      "category_dwell_s": 0.3,
+      "min_sustained_run_s": 0.4,
+      "distance_deadband_mps": 0.1,
+      "max_distance_speed_mps": 3.0,
+      "distance_jump_allowance_m": 0.05,
+      "max_fit_residual_m": 0.1,
+      "max_fit_samples": 32,
+      "too_close_m": 0.6,
+      "interaction_max_m": 1.5,
+      "approachable_max_m": 3.0,
+      "zone_hysteresis_m": 0.1,
+      "stationary_linear_tolerance_mps": 0.02,
+      "stationary_angular_tolerance_rps": 0.03
+    },
+    "config_version": "temporal-v1-f94321a04c04",
+    "sdk_end_diagnostic": {
+      "S1": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON"
+      },
+      "S2": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "GAZE_CATEGORY_NOT_READY"
+      },
+      "S3": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON"
+      },
+      "S4": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON"
+      },
+      "S5": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON"
+      },
+      "S6": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON"
+      },
+      "S7": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON"
+      },
+      "S8": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "INSUFFICIENT_GAZE_EVIDENCE"
+      },
+      "S9": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON"
+      }
+    },
+    "frame_diagnostics": {
+      "NOT_READY": 624,
+      "ENGAGE": 75,
+      "CONTINUE": 11,
+      "APPROACH": 20
+    }
+  },
+  {
+    "temporal": {
+      "window_s": 2.0,
+      "max_gap_s": 0.35,
+      "min_span_s": 1.0,
+      "min_samples": 5,
+      "min_gaze_coverage_s": 0.75,
+      "min_gaze_coverage_fraction": 0.6,
+      "looking_enter": 0.8,
+      "looking_exit": 0.7,
+      "sustained_enter": 0.8,
+      "sustained_exit": 0.65,
+      "none_enter": 0.2,
+      "none_exit": 0.35,
+      "category_dwell_s": 0.2,
+      "min_sustained_run_s": 0.4,
+      "distance_deadband_mps": 0.1,
+      "max_distance_speed_mps": 3.0,
+      "distance_jump_allowance_m": 0.05,
+      "max_fit_residual_m": 0.1,
+      "max_fit_samples": 32,
+      "too_close_m": 0.6,
+      "interaction_max_m": 1.5,
+      "approachable_max_m": 3.0,
+      "zone_hysteresis_m": 0.1,
+      "stationary_linear_tolerance_mps": 0.02,
+      "stationary_angular_tolerance_rps": 0.03
+    },
+    "config_version": "temporal-v1-8afb86c4ce67",
+    "sdk_end_diagnostic": {
+      "S1": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON"
+      },
+      "S2": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "GAZE_CATEGORY_NOT_READY"
+      },
+      "S3": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON"
+      },
+      "S4": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON"
+      },
+      "S5": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON"
+      },
+      "S6": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON"
+      },
+      "S7": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON"
+      },
+      "S8": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "INSUFFICIENT_GAZE_EVIDENCE"
+      },
+      "S9": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON"
+      }
+    },
+    "frame_diagnostics": {
+      "NOT_READY": 612,
+      "ENGAGE": 78,
+      "CONTINUE": 17,
+      "APPROACH": 23
+    }
+  },
+  {
+    "temporal": {
+      "window_s": 2.0,
+      "max_gap_s": 0.25,
+      "min_span_s": 0.8,
+      "min_samples": 5,
+      "min_gaze_coverage_s": 0.6000000000000001,
+      "min_gaze_coverage_fraction": 0.6,
+      "looking_enter": 0.8,
+      "looking_exit": 0.7,
+      "sustained_enter": 0.8,
+      "sustained_exit": 0.65,
+      "none_enter": 0.2,
+      "none_exit": 0.35,
+      "category_dwell_s": 0.3,
+      "min_sustained_run_s": 0.4,
+      "distance_deadband_mps": 0.1,
+      "max_distance_speed_mps": 3.0,
+      "distance_jump_allowance_m": 0.05,
+      "max_fit_residual_m": 0.1,
+      "max_fit_samples": 32,
+      "too_close_m": 0.6,
+      "interaction_max_m": 1.5,
+      "approachable_max_m": 3.0,
+      "zone_hysteresis_m": 0.1,
+      "stationary_linear_tolerance_mps": 0.02,
+      "stationary_angular_tolerance_rps": 0.03
+    },
+    "config_version": "temporal-v1-30ab64286a48",
+    "sdk_end_diagnostic": {
+      "S1": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON"
+      },
+      "S2": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "GAZE_CATEGORY_NOT_READY"
+      },
+      "S3": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON"
+      },
+      "S4": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON"
+      },
+      "S5": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON"
+      },
+      "S6": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON"
+      },
+      "S7": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON"
+      },
+      "S8": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "INSUFFICIENT_GAZE_EVIDENCE"
+      },
+      "S9": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON"
+      }
+    },
+    "frame_diagnostics": {
+      "NOT_READY": 619,
+      "ENGAGE": 77,
+      "CONTINUE": 11,
+      "APPROACH": 23
+    }
+  },
+  {
+    "temporal": {
+      "window_s": 2.0,
+      "max_gap_s": 0.25,
+      "min_span_s": 0.8,
+      "min_samples": 5,
+      "min_gaze_coverage_s": 0.6000000000000001,
+      "min_gaze_coverage_fraction": 0.6,
+      "looking_enter": 0.8,
+      "looking_exit": 0.7,
+      "sustained_enter": 0.8,
+      "sustained_exit": 0.65,
+      "none_enter": 0.2,
+      "none_exit": 0.35,
+      "category_dwell_s": 0.2,
+      "min_sustained_run_s": 0.4,
+      "distance_deadband_mps": 0.1,
+      "max_distance_speed_mps": 3.0,
+      "distance_jump_allowance_m": 0.05,
+      "max_fit_residual_m": 0.1,
+      "max_fit_samples": 32,
+      "too_close_m": 0.6,
+      "interaction_max_m": 1.5,
+      "approachable_max_m": 3.0,
+      "zone_hysteresis_m": 0.1,
+      "stationary_linear_tolerance_mps": 0.02,
+      "stationary_angular_tolerance_rps": 0.03
+    },
+    "config_version": "temporal-v1-60799c5b1b70",
+    "sdk_end_diagnostic": {
+      "S1": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON"
+      },
+      "S2": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "GAZE_CATEGORY_NOT_READY"
+      },
+      "S3": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON"
+      },
+      "S4": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON"
+      },
+      "S5": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON"
+      },
+      "S6": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON"
+      },
+      "S7": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON"
+      },
+      "S8": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "INSUFFICIENT_GAZE_EVIDENCE"
+      },
+      "S9": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON"
+      }
+    },
+    "frame_diagnostics": {
+      "NOT_READY": 609,
+      "ENGAGE": 80,
+      "CONTINUE": 17,
+      "APPROACH": 24
+    }
+  },
+  {
+    "temporal": {
+      "window_s": 2.0,
+      "max_gap_s": 0.35,
+      "min_span_s": 0.8,
+      "min_samples": 5,
+      "min_gaze_coverage_s": 0.6000000000000001,
+      "min_gaze_coverage_fraction": 0.6,
+      "looking_enter": 0.8,
+      "looking_exit": 0.7,
+      "sustained_enter": 0.8,
+      "sustained_exit": 0.65,
+      "none_enter": 0.2,
+      "none_exit": 0.35,
+      "category_dwell_s": 0.3,
+      "min_sustained_run_s": 0.4,
+      "distance_deadband_mps": 0.1,
+      "max_distance_speed_mps": 3.0,
+      "distance_jump_allowance_m": 0.05,
+      "max_fit_residual_m": 0.1,
+      "max_fit_samples": 32,
+      "too_close_m": 0.6,
+      "interaction_max_m": 1.5,
+      "approachable_max_m": 3.0,
+      "zone_hysteresis_m": 0.1,
+      "stationary_linear_tolerance_mps": 0.02,
+      "stationary_angular_tolerance_rps": 0.03
+    },
+    "config_version": "temporal-v1-3d4f0f443234",
+    "sdk_end_diagnostic": {
+      "S1": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON"
+      },
+      "S2": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "GAZE_CATEGORY_NOT_READY"
+      },
+      "S3": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON"
+      },
+      "S4": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON"
+      },
+      "S5": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON"
+      },
+      "S6": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON"
+      },
+      "S7": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON"
+      },
+      "S8": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "INSUFFICIENT_GAZE_EVIDENCE"
+      },
+      "S9": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON"
+      }
+    },
+    "frame_diagnostics": {
+      "NOT_READY": 619,
+      "ENGAGE": 77,
+      "CONTINUE": 11,
+      "APPROACH": 23
+    }
+  },
+  {
+    "temporal": {
+      "window_s": 2.0,
+      "max_gap_s": 0.35,
+      "min_span_s": 0.8,
+      "min_samples": 5,
+      "min_gaze_coverage_s": 0.6000000000000001,
+      "min_gaze_coverage_fraction": 0.6,
+      "looking_enter": 0.8,
+      "looking_exit": 0.7,
+      "sustained_enter": 0.8,
+      "sustained_exit": 0.65,
+      "none_enter": 0.2,
+      "none_exit": 0.35,
+      "category_dwell_s": 0.2,
+      "min_sustained_run_s": 0.4,
+      "distance_deadband_mps": 0.1,
+      "max_distance_speed_mps": 3.0,
+      "distance_jump_allowance_m": 0.05,
+      "max_fit_residual_m": 0.1,
+      "max_fit_samples": 32,
+      "too_close_m": 0.6,
+      "interaction_max_m": 1.5,
+      "approachable_max_m": 3.0,
+      "zone_hysteresis_m": 0.1,
+      "stationary_linear_tolerance_mps": 0.02,
+      "stationary_angular_tolerance_rps": 0.03
+    },
+    "config_version": "temporal-v1-cc9096cb81bb",
+    "sdk_end_diagnostic": {
+      "S1": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON"
+      },
+      "S2": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "GAZE_CATEGORY_NOT_READY"
+      },
+      "S3": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON"
+      },
+      "S4": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON"
+      },
+      "S5": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON"
+      },
+      "S6": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON"
+      },
+      "S7": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON"
+      },
+      "S8": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "INSUFFICIENT_GAZE_EVIDENCE"
+      },
+      "S9": {
+        "status": "NOT_READY",
+        "action": null,
+        "reason": "NO_VISIBLE_PERSON"
+      }
+    },
+    "frame_diagnostics": {
+      "NOT_READY": 609,
+      "ENGAGE": 80,
+      "CONTINUE": 17,
+      "APPROACH": 24
+    }
+  }
+]

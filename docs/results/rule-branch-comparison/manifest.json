@@ -1,0 +1,36 @@
+{
+  "source_branch": "feature/ollama-llm-vlm-policies",
+  "source_commit": "c6b988f2986fe10ef9991f8abd177b22aca51394",
+  "current_branch": "feature/end-to-end-pipeline-refinement",
+  "current_commit": "3b5fdc8ec37367787553f6a3a7f1a5769b438f65",
+  "runner_sha256": "d09593e00cd25aa55a6ac18f1ead13ee1bb5efedd7adcc7e2d85bf6b81ccac5c",
+  "native_temporal_configs": {
+    "ollama": "config/temporal-state.json at source commit",
+    "current": "config/temporal-development-frozen.json at current commit"
+  },
+  "native_config_changes": {
+    "min_gaze_coverage_s": [
+      0.8,
+      0.6
+    ],
+    "category_dwell_s": [
+      0.3,
+      0.1
+    ]
+  },
+  "design": [
+    "All 730 SDK perception frames replayed causally on each isolated branch, without changing the active checkout.",
+    "Native comparisons use each branch temporal configuration and identical SDK adapter, replay reconstruction and tracking configuration.",
+    "Policy-only comparison feeds current states to both classifiers, projecting away fields not present in the old strict schema.",
+    "The current-with-old-temporal control isolates threshold changes; all scenarios retain the same source hashes.",
+    "DEFER is normalized to null action, with original transport decision and reason retained.",
+    "First outputs are policy proposals; robot acceptance, command execution, survey endpoints and LLM inference are not evaluated."
+  ],
+  "tests": {
+    "source_branch_rule_tests": 6,
+    "current_policy_refinement_tests": 23,
+    "status": "passed"
+  },
+  "physical_execution": false,
+  "ollama_requests": 0
+}

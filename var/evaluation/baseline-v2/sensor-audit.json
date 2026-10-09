@@ -1,0 +1,317 @@
+{
+  "scenario-01": {
+    "perception_frames": 91,
+    "locomotion_frames": 90,
+    "person_frames": 0,
+    "person_instances": 0,
+    "uids": [],
+    "nonempty_person_fields": {},
+    "gaze_min": null,
+    "gaze_max": null,
+    "distance_min_m": null,
+    "distance_max_m": null,
+    "linear_velocity_range_mps": [
+      0.0,
+      0.212
+    ],
+    "odometry_displacement_m": 0.31679226887662504,
+    "camera_records": 23,
+    "camera_statuses": {
+      "None": 23
+    },
+    "camera_streams": {
+      "chest": 1,
+      "head": 22
+    }
+  },
+  "scenario-02": {
+    "perception_frames": 84,
+    "locomotion_frames": 82,
+    "person_frames": 27,
+    "person_instances": 27,
+    "uids": [
+      0,
+      1237533383,
+      1732459285,
+      1920266662
+    ],
+    "nonempty_person_fields": {
+      "id_score": 23,
+      "uid": 27,
+      "face": 27,
+      "landmarks": 27,
+      "head_position": 27,
+      "gaze": 26,
+      "facial_expression": 27,
+      "dist_mm": 27,
+      "gaze_overlap": 26,
+      "g_eye_left": 27,
+      "g_eye_right": 27,
+      "g_nose": 27,
+      "g_gaze": 26
+    },
+    "gaze_min": 0.8841193914413452,
+    "gaze_max": 0.9525421857833862,
+    "distance_min_m": 1.035796630859375,
+    "distance_max_m": 1.5225384521484375,
+    "linear_velocity_range_mps": [
+      0.0,
+      0.209
+    ],
+    "odometry_displacement_m": 0.7846817179755118,
+    "camera_records": 26,
+    "camera_statuses": {
+      "None": 26
+    },
+    "camera_streams": {
+      "chest": 1,
+      "head": 25
+    }
+  },
+  "scenario-03": {
+    "perception_frames": 115,
+    "locomotion_frames": 114,
+    "person_frames": 110,
+    "person_instances": 111,
+    "uids": [
+      1732459285,
+      1920266662
+    ],
+    "nonempty_person_fields": {
+      "id_score": 106,
+      "uid": 111,
+      "face": 111,
+      "landmarks": 111,
+      "head_position": 111,
+      "gaze": 110,
+      "facial_expression": 111,
+      "dist_mm": 111,
+      "gaze_overlap": 110,
+      "g_eye_left": 111,
+      "g_eye_right": 111,
+      "g_nose": 111,
+      "g_gaze": 110
+    },
+    "gaze_min": 0.9314332008361816,
+    "gaze_max": 0.9876241683959961,
+    "distance_min_m": 0.5980872802734375,
+    "distance_max_m": 1.453784423828125,
+    "linear_velocity_range_mps": [
+      -0.022,
+      0.212
+    ],
+    "odometry_displacement_m": 1.4963977478347803,
+    "camera_records": 21,
+    "camera_statuses": {
+      "None": 21
+    },
+    "camera_streams": {
+      "chest": 1,
+      "head": 20
+    }
+  },
+  "scenario-04": {
+    "perception_frames": 55,
+    "locomotion_frames": 56,
+    "person_frames": 0,
+    "person_instances": 0,
+    "uids": [],
+    "nonempty_person_fields": {},
+    "gaze_min": null,
+    "gaze_max": null,
+    "distance_min_m": null,
+    "distance_max_m": null,
+    "linear_velocity_range_mps": [
+      0.0,
+      0.20600000000000002
+    ],
+    "odometry_displacement_m": 0.2705227218737833,
+    "camera_records": 15,
+    "camera_statuses": {
+      "None": 15
+    },
+    "camera_streams": {
+      "chest": 1,
+      "head": 14
+    }
+  },
+  "scenario-05": {
+    "perception_frames": 40,
+    "locomotion_frames": 41,
+    "person_frames": 0,
+    "person_instances": 0,
+    "uids": [],
+    "nonempty_person_fields": {},
+    "gaze_min": null,
+    "gaze_max": null,
+    "distance_min_m": null,
+    "distance_max_m": null,
+    "linear_velocity_range_mps": [
+      0.0,
+      0.008
+    ],
+    "odometry_displacement_m": 0.0004341393785395307,
+    "camera_records": 15,
+    "camera_statuses": {
+      "None": 15
+    },
+    "camera_streams": {
+      "chest": 1,
+      "head": 14
+    }
+  },
+  "scenario-06": {
+    "perception_frames": 77,
+    "locomotion_frames": 77,
+    "person_frames": 4,
+    "person_instances": 4,
+    "uids": [
+      1625849556,
+      1732459285,
+      1920266662
+    ],
+    "nonempty_person_fields": {
+      "id_score": 4,
+      "uid": 4,
+      "face": 4,
+      "landmarks": 4,
+      "head_position": 4,
+      "gaze": 4,
+      "facial_expression": 4,
+      "dist_mm": 4,
+      "gaze_overlap": 4,
+      "g_eye_left": 4,
+      "g_eye_right": 4,
+      "g_nose": 4,
+      "g_gaze": 4
+    },
+    "gaze_min": 0.9207947850227356,
+    "gaze_max": 0.989955723285675,
+    "distance_min_m": 3.011103271484375,
+    "distance_max_m": 3.172938720703125,
+    "linear_velocity_range_mps": [
+      0.0,
+      0.209
+    ],
+    "odometry_displacement_m": 0.8669461059904464,
+    "camera_records": 19,
+    "camera_statuses": {
+      "None": 19
+    },
+    "camera_streams": {
+      "chest": 1,
+      "head": 18
+    }
+  },
+  "scenario-07": {
+    "perception_frames": 29,
+    "locomotion_frames": 28,
+    "person_frames": 0,
+    "person_instances": 0,
+    "uids": [],
+    "nonempty_person_fields": {},
+    "gaze_min": null,
+    "gaze_max": null,
+    "distance_min_m": null,
+    "distance_max_m": null,
+    "linear_velocity_range_mps": [
+      0.0,
+      0.0
+    ],
+    "odometry_displacement_m": 0.0,
+    "camera_records": 24,
+    "camera_statuses": {
+      "None": 24
+    },
+    "camera_streams": {
+      "chest": 1,
+      "head": 23
+    }
+  },
+  "scenario-08": {
+    "perception_frames": 117,
+    "locomotion_frames": 118,
+    "person_frames": 32,
+    "person_instances": 32,
+    "uids": [
+      0,
+      389381214,
+      528263967,
+      781013082,
+      1920266662
+    ],
+    "nonempty_person_fields": {
+      "id_score": 29,
+      "uid": 32,
+      "face": 32,
+      "landmarks": 32,
+      "head_position": 32,
+      "gaze": 31,
+      "facial_expression": 32,
+      "dist_mm": 32,
+      "gaze_overlap": 31,
+      "g_eye_left": 32,
+      "g_eye_right": 32,
+      "g_nose": 32,
+      "g_gaze": 17
+    },
+    "gaze_min": 0.5,
+    "gaze_max": 0.9634483456611633,
+    "distance_min_m": 0.8620763549804688,
+    "distance_max_m": 1.898779541015625,
+    "linear_velocity_range_mps": [
+      0.0,
+      0.215
+    ],
+    "odometry_displacement_m": 1.700061354155195,
+    "camera_records": 24,
+    "camera_statuses": {
+      "None": 24
+    },
+    "camera_streams": {
+      "chest": 1,
+      "head": 23
+    }
+  },
+  "scenario-09": {
+    "perception_frames": 122,
+    "locomotion_frames": 121,
+    "person_frames": 56,
+    "person_instances": 56,
+    "uids": [
+      1920266662
+    ],
+    "nonempty_person_fields": {
+      "uid": 56,
+      "face": 56,
+      "landmarks": 56,
+      "head_position": 56,
+      "gaze": 54,
+      "facial_expression": 56,
+      "dist_mm": 56,
+      "gaze_overlap": 54,
+      "g_eye_left": 56,
+      "g_eye_right": 56,
+      "g_nose": 56,
+      "g_gaze": 54,
+      "id_score": 50
+    },
+    "gaze_min": 0.8715596199035645,
+    "gaze_max": 0.9536606073379517,
+    "distance_min_m": 1.2869189453125,
+    "distance_max_m": 1.7391474609375,
+    "linear_velocity_range_mps": [
+      0.0,
+      0.215
+    ],
+    "odometry_displacement_m": 1.581518380304509,
+    "camera_records": 21,
+    "camera_statuses": {
+      "None": 21
+    },
+    "camera_streams": {
+      "chest": 1,
+      "head": 20
+    }
+  }
+}

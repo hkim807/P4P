@@ -137,7 +137,7 @@ class LLMPromptTests(unittest.TestCase):
         second = build_llm_prompt(reordered)
         self.assertEqual(first, second)
         self.assertEqual(first.messages, second.messages)
-        self.assertEqual(first.prompt_version, "social-state-llm-v1")
+        self.assertEqual(first.prompt_version, "social-state-llm-v6")
         self.assertEqual(first.prompt_version, PROMPT_VERSION)
         self.assertEqual(first.instructions, SYSTEM_PROMPT)
         changed = social_state()
@@ -149,10 +149,10 @@ class LLMPromptTests(unittest.TestCase):
         self.assertIn("A robot is assigned to travel along a fixed route inside a laboratory.", text)
         self.assertIn("The supplied robot state describes its actual movement at the observation moment.", text)
         definitions = {
-            "CONTINUE": "Continue along the existing fixed route without initiating an interaction or diverting towards the person.",
-            "STOP": "Stop the robot's base movement and remain in place for now.",
-            "APPROACH": "Leave the existing route to move towards the person and stop at a suitable distance for conversation.",
-            "ENGAGE": "The person is already at a suitable interaction distance. Remain in place and initiate an interaction, such as a greeting.",
+            "CONTINUE": "Continue along the existing fixed route without approaching the person or initiating an interaction. During execution, the robot will complete the remaining route.",
+            "YIELD": "Give a person priority for a likely path conflict, including stopping, slowing, or moving aside.",
+            "APPROACH": "Leave the existing route, move towards the observed person, and stop at a suitable distance for conversation.",
+            "ENGAGE": "The person is already at a suitable interaction distance. Stop or remain stationary and initiate an interaction, such as a greeting.",
         }
         for action, definition in definitions.items():
             with self.subTest(action=action):
@@ -187,7 +187,7 @@ class LLMPromptTests(unittest.TestCase):
             "is not evidence that a cue is absent",
             "Relative distance changes do not necessarily identify human movement when the robot is moving",
             "Missing or invalid temporal evidence must not be described as a confirmed trend",
-            "Uncertainty does not by itself require STOP",
+            "Uncertainty does not by itself require YIELD",
             "brief explanation grounded in the supplied evidence",
         ):
             with self.subTest(instruction=instruction):
@@ -208,7 +208,7 @@ class LLMPromptTests(unittest.TestCase):
             self.assertIsNone(message.images)
             self.assertEqual(set(message.model_dump(exclude_none=True)), {"role", "content"})
             for forbidden in ("rule_decision", "policy_decision", "scenario-", "expected_action",
-                              "RawObservationFrame", "gaze_overlap", "lidar", "sonar", "few-shot"):
+                              "RawObservationFrame", "lidar", "sonar", "few-shot"):
                 with self.subTest(forbidden=forbidden):
                     self.assertNotIn(forbidden, message.content)
 
@@ -235,7 +235,7 @@ class LLMPromptTests(unittest.TestCase):
 
 class LLMPolicyTests(unittest.TestCase):
     def test_each_arbitrary_valid_model_action_is_preserved_with_exactly_one_call(self):
-        for action in ("STOP", "CONTINUE", "APPROACH", "ENGAGE"):
+        for action in ("YIELD", "CONTINUE", "APPROACH", "ENGAGE"):
             with self.subTest(action=action):
                 state = social_state()
                 before = state.model_dump(mode="json")

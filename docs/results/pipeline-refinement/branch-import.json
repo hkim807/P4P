@@ -1,0 +1,39 @@
+{
+  "target_branch": "feature/end-to-end-pipeline-refinement",
+  "baseline_commit": "33d9a78",
+  "source_branch": "feature/ollama-llm-vlm-policies",
+  "source_commit": "c6b988f2986fe10ef9991f8abd177b22aca51394",
+  "adaptations": [
+    "comparison runner and audit reused for endpoint contract",
+    "num_ctx generation option",
+    "explicit unknown path/gesture representation; readiness retains no-person hold",
+    "newer live action and controller contracts preserved",
+    "action descriptions updated to supplied survey semantics",
+    "source audit helper extracted to avoid legacy runner dependency"
+  ],
+  "historical_reports": "docs/results/policy-baseline is source-branch history, not the refined evaluation",
+  "initially_imported_verbatim": [
+    "app/domain/actions.py",
+    "evaluation/__init__.py",
+    "evaluation/audit_recordings.py",
+    "docs/results/policy-baseline/action-semantics-probe.json",
+    "docs/results/policy-baseline/decisions.jsonl",
+    "docs/results/policy-baseline/manifest.json",
+    "docs/results/policy-baseline/policy-matrix.csv",
+    "docs/results/policy-baseline/prompt-calibration-v3.json",
+    "docs/results/policy-baseline/prompt-calibration.json",
+    "docs/results/policy-baseline/prompt-v2/decisions.jsonl",
+    "docs/results/policy-baseline/prompt-v2/manifest.json",
+    "docs/results/policy-baseline/prompt-v2/results.md",
+    "docs/results/policy-baseline/prompt-v2/summary.json",
+    "docs/results/policy-baseline/publication.json",
+    "docs/results/policy-baseline/results.md",
+    "docs/results/policy-baseline/selected-inputs.jsonl",
+    "docs/results/policy-baseline/sensitivity.json",
+    "docs/results/policy-baseline/sensor-audit.json",
+    "docs/results/policy-baseline/stream-coverage.json",
+    "docs/results/policy-baseline/summary.csv",
+    "docs/results/policy-baseline/summary.json",
+    "docs/results/policy-baseline/transitions.jsonl"
+  ]
+}

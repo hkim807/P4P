@@ -59,6 +59,9 @@ def extract_features(track: dict, now: int, config: TemporalConfig,
     times = {s["timestamp_us"] for s in samples}
     memory.states = {t: v for t, v in memory.states.items() if t in times}
     coverage = looking_time = sustained = 0.0
+    # Count only distinct observed false->true transitions. Missing intervals
+    # cannot manufacture repeated attention from fragmented detections.
+    looking_bouts = 1 if samples and memory.states.get(samples[0]["timestamp_us"]) is True else 0
     for a, b in zip(samples, samples[1:]):
         sa, sb = memory.states.get(a["timestamp_us"]), memory.states.get(b["timestamp_us"])
         if adjacent(a, b, config) and sa is not None and sb is not None:
@@ -66,6 +69,8 @@ def extract_features(track: dict, now: int, config: TemporalConfig,
             coverage += dt
             looking_time += dt if sa else 0.0
             sustained = sustained + dt if sa and sb else 0.0
+            if sa is False and sb is True:
+                looking_bouts += 1
         else:
             sustained = 0.0
     span = (now - samples[0]["timestamp_us"]) / 1e6 if samples else 0.0
@@ -128,6 +133,12 @@ def extract_features(track: dict, now: int, config: TemporalConfig,
         flags.append("STATIONARY_BASE_UNVERIFIED")
     return TemporalEvidence(
         window_span_s=span, gaze_fraction=fraction, gaze_valid_coverage_s=coverage,
+        mean_gaze_overlap=(sum(s["gaze_overlap"] for s in samples if s["gaze_overlap"] is not None) /
+                           sum(s["gaze_overlap"] is not None for s in samples)
+                           if any(s["gaze_overlap"] is not None for s in samples) else None),
+        latest_gaze_looking=memory.states.get(samples[-1]["timestamp_us"]) if samples and observed else None,
+        latest_gaze_overlap=samples[-1]["gaze_overlap"] if samples and observed else None,
+        looking_time_s=looking_time, looking_bouts=looking_bouts,
         gaze_coverage_fraction=coverage_fraction, gaze_valid_samples=valid_gaze_samples,
         sustained_gaze_s=sustained if observed else 0.0, distance_slope_mps=slope,
         distance_valid_span_s=distance_span, distance_fit_residual_m=residual,

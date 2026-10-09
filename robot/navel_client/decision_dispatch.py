@@ -12,8 +12,8 @@ from typing import Any, Callable
 
 
 logger = logging.getLogger(__name__)
-POLICY_VERSION = "social-rules-v1"
-DECISIONS = {"CONTINUE", "APPROACH", "ENGAGE", "YIELD", "DEFER"}
+POLICY_VERSION = "social-rules-v2"
+DECISIONS = {"CONTINUE", "APPROACH", "ENGAGE", "YIELD"}
 
 
 class DecisionRejected(ValueError):
@@ -41,7 +41,7 @@ def _integer(value: Any, *, minimum: int = 0) -> bool:
 
 
 def parse_decision(payload: Mapping[str, Any], observation: Mapping[str, Any],
-                   now_us: int, max_age_us: int) -> RobotDecision:
+                   now_us: int, max_age_us: int) -> RobotDecision | None:
     """Check the response against the exact observation and current robot clock."""
     if payload.get("accepted") is not True or payload.get("processing_status") != "complete":
         raise DecisionRejected("observation_not_fully_processed")
@@ -53,54 +53,49 @@ def parse_decision(payload: Mapping[str, Any], observation: Mapping[str, Any],
         raise DecisionRejected("source_frame_not_fresh")
 
     social, raw = payload.get("social_state"), payload.get("policy_decision")
-    if not isinstance(social, Mapping) or not isinstance(raw, Mapping):
+    if not isinstance(social, Mapping) or (raw is not None and not isinstance(raw, Mapping)):
         raise DecisionRejected("social_state_or_decision_missing")
     state_id, session_id = social.get("state_id"), social.get("session_id")
     if (not isinstance(state_id, str) or not state_id
             or not isinstance(session_id, str) or not session_id
             or not _integer(social.get("robot_timestamp_us"))
-            or social["robot_timestamp_us"] != timestamp
-            or raw.get("source_state_id") != state_id
-            or raw.get("session_id") != session_id):
+            or social["robot_timestamp_us"] != timestamp):
         raise DecisionRejected("decision_state_mismatch")
-    decision_id = raw.get("decision_id")
-    if (raw.get("policy_version") != POLICY_VERSION
-            or decision_id != f"{state_id}:{POLICY_VERSION}"):
-        raise DecisionRejected("decision_version_or_id_invalid")
-    decision, reason = raw.get("decision"), raw.get("reason_code")
-    if not isinstance(decision, str) or decision not in DECISIONS or not isinstance(reason, str) or not reason:
-        raise DecisionRejected("decision_or_reason_invalid")
-    uid, epoch = raw.get("target_uid"), raw.get("target_track_epoch")
-    if decision in ("APPROACH", "ENGAGE"):
-        if not _integer(uid) or not _integer(epoch, minimum=1):
-            raise DecisionRejected("target_missing_or_invalid")
-        people, local_people = social.get("people"), observation.get("people")
-        observed = ([person for person in people if isinstance(person, Mapping)
-                     and person.get("visibility") == "OBSERVED"]
-                    if isinstance(people, list) else [])
-        if (len(observed) != 1 or observed[0].get("uid") != uid
-                or observed[0].get("track_epoch") != epoch
-                or not isinstance(local_people, list)
-                or not any(isinstance(person, Mapping) and person.get("uid") == uid
-                           for person in local_people)):
-            raise DecisionRejected("target_not_observed")
-    elif uid is not None or epoch is not None:
-        raise DecisionRejected("unexpected_target")
+    decision_id = decision = reason = uid = epoch = None
+    if raw is not None:
+        if raw.get("source_state_id") != state_id or raw.get("session_id") != session_id:
+            raise DecisionRejected("decision_state_mismatch")
+        decision_id = raw.get("decision_id")
+        if (raw.get("policy_version") not in {POLICY_VERSION, "social-rules-v3", "social-rules-v4"}
+                or decision_id != f"{state_id}:{raw.get('policy_version')}"):
+            raise DecisionRejected("decision_version_or_id_invalid")
+        decision, reason = raw.get("decision"), raw.get("reason_code")
+        if not isinstance(decision, str) or decision not in DECISIONS or not isinstance(reason, str) or not reason:
+            raise DecisionRejected("decision_or_reason_invalid")
+        uid, epoch = raw.get("target_uid"), raw.get("target_track_epoch")
+        if decision in ("APPROACH", "ENGAGE"):
+            if not _integer(uid) or not _integer(epoch, minimum=1):
+                raise DecisionRejected("target_missing_or_invalid")
+            people, local_people = social.get("people"), observation.get("people")
+            observed = ([person for person in people if isinstance(person, Mapping)
+                         and person.get("visibility") == "OBSERVED"]
+                        if isinstance(people, list) else [])
+            if (len(observed) != 1 or observed[0].get("uid") != uid
+                    or observed[0].get("track_epoch") != epoch
+                    or not isinstance(local_people, list)
+                    or not any(isinstance(person, Mapping) and person.get("uid") == uid
+                               for person in local_people)):
+                raise DecisionRejected("target_not_observed")
+        elif uid is not None or epoch is not None:
+            raise DecisionRejected("unexpected_target")
     lock = payload.get("target_lock")
     if lock is not None:
-        if (not isinstance(lock, Mapping) or lock.get("lock_version") != "target-lock-v2"
+        if (not isinstance(lock, Mapping) or lock.get("lock_version") != "target-lock-v3"
                 or lock.get("source_state_id") != state_id or lock.get("session_id") != session_id
                 or not _integer(lock.get("robot_timestamp_us"))
                 or lock.get("robot_timestamp_us") != timestamp):
             raise DecisionRejected("target_lock_state_mismatch")
         effective = lock.get("effective_decision")
-        if (not isinstance(effective, Mapping)
-                or effective.get("source_state_id") != state_id
-                or effective.get("session_id") != session_id
-                or effective.get("policy_version") != "target-lock-v2"
-                or effective.get("decision_id") != f"{state_id}:target-lock-v2"
-                or effective.get("lock_id") != lock.get("lock_id")):
-            raise DecisionRejected("target_lock_decision_mismatch")
         status = lock.get("status")
         lock_id = lock.get("lock_id")
         if (not isinstance(status, str)
@@ -114,6 +109,22 @@ def parse_decision(payload: Mapping[str, Any], observation: Mapping[str, Any],
                 raise DecisionRejected("target_lock_target_invalid")
         elif lock_uid is not None or lock_epoch is not None:
             raise DecisionRejected("target_lock_unexpected_target")
+        if effective is None:
+            if (lock.get("execution_status") != "HOLD"
+                    or not isinstance(lock.get("hold_reason"), str) or not lock["hold_reason"]):
+                raise DecisionRejected("target_lock_hold_invalid")
+            return None
+        if (lock.get("execution_status") != "READY" or lock.get("hold_reason") is not None
+                or status in {"MISSING", "TENTATIVE_RETURN", "AMBIGUOUS", "COOLDOWN"}
+                or raw is None):
+            raise DecisionRejected("target_lock_hold_cannot_authorize_action")
+        if (not isinstance(effective, Mapping)
+                or effective.get("source_state_id") != state_id
+                or effective.get("session_id") != session_id
+                or effective.get("policy_version") != "target-lock-v3"
+                or effective.get("decision_id") != f"{state_id}:target-lock-v3"
+                or effective.get("lock_id") != lock.get("lock_id")):
+            raise DecisionRejected("target_lock_decision_mismatch")
         decision, reason = effective.get("decision"), effective.get("reason_code")
         if not isinstance(decision, str) or decision not in DECISIONS or not isinstance(reason, str) or not reason:
             raise DecisionRejected("target_lock_decision_invalid")
@@ -127,13 +138,15 @@ def parse_decision(payload: Mapping[str, Any], observation: Mapping[str, Any],
                 raise DecisionRejected("target_lock_does_not_authorize_target")
         elif uid is not None or epoch is not None:
             raise DecisionRejected("target_lock_unexpected_target")
-        if status in {"MISSING", "TENTATIVE_RETURN", "AMBIGUOUS", "COOLDOWN"} and decision != "DEFER":
-            raise DecisionRejected("target_lock_hold_requires_defer")
         if status == "LOCKED" and decision == "CONTINUE":
             raise DecisionRejected("target_lock_locked_cannot_continue")
+        if decision != raw["decision"]:
+            raise DecisionRejected("target_lock_proposal_mismatch")
         decision_id = effective["decision_id"]
     else:
         lock_id = None
+    if decision is None:
+        return None
     return RobotDecision(decision_id, state_id, session_id, decision, reason, uid, epoch, lock_id)
 
 
@@ -155,9 +168,6 @@ class DryRunHandlers:
 
     async def yield_route(self, decision: RobotDecision) -> None:
         self._log("YIELD", decision)
-
-    async def observe(self, decision: RobotDecision) -> None:
-        self._log("DEFER", decision)
 
     async def cancel_active(self, decision: RobotDecision, reason: str) -> None:
         logger.info("decision_dry_run=%s", json.dumps({
@@ -205,20 +215,25 @@ class DecisionDispatcher:
             try:
                 decision = parse_decision(payload, observation, self.monotonic_us(), self.max_age_us)
                 timestamp = observation["timestamp"]
-                if self.session_id is not None and decision.session_id != self.session_id:
+                session_id = payload["social_state"]["session_id"]
+                if self.session_id is not None and session_id != self.session_id:
                     raise DecisionRejected("session_changed_restart_client")
                 if self.last_timestamp_us is not None and timestamp < self.last_timestamp_us:
                     raise DecisionRejected("older_response")
                 if (self.last_timestamp_us == timestamp
-                        and decision.decision_id != self.last_decision_id):
+                        and (decision.decision_id if decision else None) != self.last_decision_id):
                     raise DecisionRejected("conflicting_response_for_frame")
             except DecisionRejected as error:
                 logger.warning("decision_rejected=%s", error)
                 await self._clear(str(error))
                 return False
 
-            self.session_id = decision.session_id
+            self.session_id = session_id
             self.last_timestamp_us = timestamp
+            if decision is None:
+                self.last_decision_id = None
+                await self._clear("observation_or_execution_hold")
+                return False
             self.last_valid_at = self.monotonic()
             if decision.decision_id == self.last_decision_id:
                 return True
@@ -231,7 +246,6 @@ class DecisionDispatcher:
                 "APPROACH": self.handlers.approach_person,
                 "ENGAGE": self.handlers.engage_person,
                 "YIELD": self.handlers.yield_route,
-                "DEFER": self.handlers.observe,
             }[decision.decision]
             await method(decision)
             self.current = decision

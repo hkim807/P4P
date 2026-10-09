@@ -1,0 +1,1 @@
+Setup failed before model calls: legacy PolicyDecision forward references could not resolve Literal. Registered the detached diagnostic module before loading it; rerun is policy-ablation.

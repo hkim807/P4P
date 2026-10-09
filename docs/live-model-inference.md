@@ -2,9 +2,52 @@
 
 The receiver can run the existing SocialState LLM and image-only VLM policies
 alongside its rule policy. Model results are written to a separate JSONL file.
-They never enter target locking, command planning, execution feedback, or the
-robot's command dispatcher. The existing `policy_decision`, `target_lock`, and
+Outside an opted-in SingleTrial, model results remain audit-only. They do not
+enter target locking, command planning, execution feedback, or the robot's
+command dispatcher. The existing `policy_decision`, `target_lock`, and
 `robot_command` response fields continue to come from the rule pipeline.
+
+## Selected SingleTrial delivery
+
+`--single-trial-policy rules|llm|vlm` selects the sole decision source. Model
+trials register at `/api/v1/model-trials`, attach their identity to observation
+POSTs, and poll `/api/v1/model-trials/result` every 0.1 seconds. The existing
+worker publishes pending/succeeded/failed results in memory before audit flushing.
+Only success contains the strict `{action, reason}` decision; correlation fields
+(trial ID, server session, policy, request ID, source state and robot timestamp)
+and model/image/timing diagnostics stay outside it. At most 16 trials are retained,
+each with one outstanding request, cleared on close or the registered deadline.
+Outside trials, existing sampling and paired `both` audits remain available.
+
+The robot's `--model-result-max-age` is provisionally **10 seconds**, measured
+from the original observation on its monotonic clock. The current single-person
+scene and server readiness still require fresh observations under the unchanged
+`--max-decision-age` (one second). LLM keeps structured evidence requirements;
+VLM instead requires a fresh matched head image and no gaze classification.
+Failure or expiry permits a fresh selected-policy request within the existing
+30-second trial deadline, with no fallback action. Late/duplicate results cannot
+change a decided or terminated trial. Registration rejects incompatible server
+configuration before route startup. Route cancellation, settling and zero base
+velocity precede polling/close acknowledgements; acceptance ends at DECIDED with
+no final-action execution.
+
+For rules, start the receiver with `--social-output var/rules.social.jsonl` and
+no model flags. For LLM, use `--model-inference llm --llm-model <installed-model>
+--model-output var/llm.models.jsonl`. For VLM, use `--model-inference vlm
+--vlm-model <installed-vision-model> --model-output var/vlm.models.jsonl
+--sdk-output var/vlm.sdk.jsonl --model-allow-receipt-match`; the last flag opts
+into the existing bounded receipt association when exact SDK timestamps differ.
+Choose new output paths each run. On the robot use:
+
+```bash
+python3 -m robot.navel_client.main --server http://COMPUTER_IP:6060 \
+  --decision-dry-run --single-trial --single-trial-policy rules
+# Replace rules with llm for LLM. For VLM replace rules with vlm and append:
+# --model-provenance --sdk-capture --camera-capture --camera-interval 0.5
+```
+
+Append `--route-trial` to use the existing real moving baseline. Mocked software
+checks do not establish camera availability, inference latency, or physical stop.
 
 ## Receiver commands
 

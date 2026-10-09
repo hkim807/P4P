@@ -1,0 +1,59 @@
+{
+  "scenario_id": "S2",
+  "policy": "llm",
+  "status": "RECORDING_ENDED_NO_ACTION",
+  "action": null,
+  "decision": null,
+  "accepted_by_live_client": null,
+  "acceptance_details": null,
+  "resolved_elapsed_s": null,
+  "stop_elapsed_s": 18.29446954233572,
+  "frames_ingested": 84,
+  "ready_frames": 1,
+  "readiness_counts": {
+    "NO_VISIBLE_PERSON": 57,
+    "INSUFFICIENT_GAZE_EVIDENCE": 24,
+    "GAZE_CATEGORY_NOT_READY": 2,
+    "READY": 1
+  },
+  "recording_exhausted": true,
+  "last_ingested_source_offset_s": 8.269501,
+  "last_ingested_line": 166,
+  "decision_source_offset_s": null,
+  "max_dispatch_lag_s": 0.004947000183165073,
+  "model_failures": [
+    {
+      "decision": null,
+      "error": {
+        "category": "request_expired"
+      },
+      "policy": "llm",
+      "request_id": "b1250529ccce46e285e5001f1e780896",
+      "session_id": "replay-40ae3c0eab66557e7874f396",
+      "source_robot_timestamp_us": 13679790093,
+      "source_state_id": "replay-40ae3c0eab66557e7874f396:84",
+      "status": "failed",
+      "trial_id": "2b2c747edf82425b8effe19707f9ffc7"
+    }
+  ],
+  "first_model_request": {
+    "decision": null,
+    "error": null,
+    "policy": "llm",
+    "request_id": "b1250529ccce46e285e5001f1e780896",
+    "session_id": "replay-40ae3c0eab66557e7874f396",
+    "source_robot_timestamp_us": 13679790093,
+    "source_state_id": "replay-40ae3c0eab66557e7874f396:84",
+    "status": "pending",
+    "trial_id": "2b2c747edf82425b8effe19707f9ffc7"
+  },
+  "resolved_output": null,
+  "last_readiness": {
+    "reason_code": null,
+    "status": "READY"
+  },
+  "source_sha256": "018f091688c8fa0637ceaef053b79c62c7017c532f2cba33570d7f42e06603d9",
+  "trial_id": "2b2c747edf82425b8effe19707f9ffc7",
+  "clock_mapping": "original first perception receipt + real elapsed replay time",
+  "physical_execution": false
+}

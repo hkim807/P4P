@@ -1,0 +1,201 @@
+{
+  "source_sha256": "56e9221a1938532bc608af77687fc6facfa12d6fe8db139c418a72738218a5e6",
+  "scenarios": {
+    "S1": {
+      "respondents": 37,
+      "preferred_counts": {
+        "CONTINUE": 30,
+        "YIELD": 5,
+        "APPROACH": 1,
+        "ENGAGE": 1
+      },
+      "mean_appropriateness": {
+        "YIELD": 2.861111111111111,
+        "CONTINUE": 4.45945945945946,
+        "ENGAGE": 2.5714285714285716,
+        "APPROACH": 2.0833333333333335
+      },
+      "rating_n": {
+        "YIELD": 36,
+        "CONTINUE": 37,
+        "ENGAGE": 35,
+        "APPROACH": 36
+      },
+      "original_intended": "CONTINUE"
+    },
+    "S2": {
+      "respondents": 37,
+      "preferred_counts": {
+        "APPROACH": 18,
+        "ENGAGE": 11,
+        "CONTINUE": 6,
+        "YIELD": 2
+      },
+      "mean_appropriateness": {
+        "YIELD": 2.0,
+        "CONTINUE": 2.7837837837837838,
+        "ENGAGE": 3.7777777777777777,
+        "APPROACH": 3.6486486486486487
+      },
+      "rating_n": {
+        "YIELD": 34,
+        "CONTINUE": 37,
+        "ENGAGE": 36,
+        "APPROACH": 37
+      },
+      "original_intended": "APPROACH"
+    },
+    "S3": {
+      "respondents": 37,
+      "preferred_counts": {
+        "ENGAGE": 12,
+        "YIELD": 18,
+        "APPROACH": 5,
+        "CONTINUE": 1,
+        "Unable to judge from the video": 1
+      },
+      "mean_appropriateness": {
+        "YIELD": 3.5675675675675675,
+        "CONTINUE": 1.5405405405405406,
+        "ENGAGE": 3.7837837837837838,
+        "APPROACH": 3.081081081081081
+      },
+      "rating_n": {
+        "YIELD": 37,
+        "CONTINUE": 37,
+        "ENGAGE": 37,
+        "APPROACH": 37
+      },
+      "original_intended": "ENGAGE"
+    },
+    "S4": {
+      "respondents": 37,
+      "preferred_counts": {
+        "YIELD": 34,
+        "APPROACH": 2,
+        "CONTINUE": 1
+      },
+      "mean_appropriateness": {
+        "YIELD": 4.378378378378378,
+        "CONTINUE": 1.4054054054054055,
+        "ENGAGE": 2.4444444444444446,
+        "APPROACH": 2.1944444444444446
+      },
+      "rating_n": {
+        "YIELD": 37,
+        "CONTINUE": 37,
+        "ENGAGE": 36,
+        "APPROACH": 36
+      },
+      "original_intended": "YIELD"
+    },
+    "S5": {
+      "respondents": 37,
+      "preferred_counts": {
+        "CONTINUE": 21,
+        "YIELD": 13,
+        "ENGAGE": 2,
+        "APPROACH": 1
+      },
+      "mean_appropriateness": {
+        "YIELD": 3.0,
+        "CONTINUE": 3.8378378378378377,
+        "ENGAGE": 1.864864864864865,
+        "APPROACH": 1.7837837837837838
+      },
+      "rating_n": {
+        "YIELD": 37,
+        "CONTINUE": 37,
+        "ENGAGE": 37,
+        "APPROACH": 37
+      },
+      "original_intended": "CONTINUE"
+    },
+    "S6": {
+      "respondents": 37,
+      "preferred_counts": {
+        "ENGAGE": 9,
+        "CONTINUE": 26,
+        "APPROACH": 1,
+        "Unable to judge from the video": 1
+      },
+      "mean_appropriateness": {
+        "YIELD": 2.2777777777777777,
+        "CONTINUE": 4.081081081081081,
+        "ENGAGE": 2.8378378378378377,
+        "APPROACH": 2.189189189189189
+      },
+      "rating_n": {
+        "YIELD": 36,
+        "CONTINUE": 37,
+        "ENGAGE": 37,
+        "APPROACH": 37
+      },
+      "original_intended": "CONTINUE"
+    },
+    "S7": {
+      "respondents": 37,
+      "preferred_counts": {
+        "APPROACH": 19,
+        "ENGAGE": 13,
+        "CONTINUE": 5
+      },
+      "mean_appropriateness": {
+        "YIELD": 1.8055555555555556,
+        "CONTINUE": 2.6216216216216215,
+        "ENGAGE": 3.6944444444444446,
+        "APPROACH": 3.7027027027027026
+      },
+      "rating_n": {
+        "YIELD": 36,
+        "CONTINUE": 37,
+        "ENGAGE": 36,
+        "APPROACH": 37
+      },
+      "original_intended": "CONTINUE"
+    },
+    "S8": {
+      "respondents": 37,
+      "preferred_counts": {
+        "ENGAGE": 23,
+        "APPROACH": 8,
+        "YIELD": 3,
+        "CONTINUE": 3
+      },
+      "mean_appropriateness": {
+        "YIELD": 2.081081081081081,
+        "CONTINUE": 2.4864864864864864,
+        "ENGAGE": 4.108108108108108,
+        "APPROACH": 3.361111111111111
+      },
+      "rating_n": {
+        "YIELD": 37,
+        "CONTINUE": 37,
+        "ENGAGE": 37,
+        "APPROACH": 36
+      },
+      "original_intended": "CONTINUE"
+    },
+    "S9": {
+      "respondents": 37,
+      "preferred_counts": {
+        "CONTINUE": 26,
+        "ENGAGE": 7,
+        "APPROACH": 4
+      },
+      "mean_appropriateness": {
+        "YIELD": 1.8108108108108107,
+        "CONTINUE": 4.054054054054054,
+        "ENGAGE": 2.918918918918919,
+        "APPROACH": 2.138888888888889
+      },
+      "rating_n": {
+        "YIELD": 37,
+        "CONTINUE": 37,
+        "ENGAGE": 37,
+        "APPROACH": 36
+      },
+      "original_intended": "CONTINUE"
+    }
+  }
+}

@@ -3,10 +3,10 @@
   "properties": {
     "action": {
       "enum": [
-        "STOP",
         "CONTINUE",
         "APPROACH",
-        "ENGAGE"
+        "ENGAGE",
+        "YIELD"
       ],
       "title": "Action",
       "type": "string"
@@ -22,6 +22,6 @@
     "action",
     "reason"
   ],
-  "title": "ModelDecision",
+  "title": "FinalDecision",
   "type": "object"
 }

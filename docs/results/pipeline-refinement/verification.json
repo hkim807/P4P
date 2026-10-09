@@ -1,0 +1,19 @@
+{
+  "baseline": {
+    "tests": 534,
+    "result": "OK",
+    "command": ".venv/bin/python -m unittest discover -s tests",
+    "log_sha256": "cbde579241f6ca23a7cfa8aa53ba4d43d4bb61d0a5f02475bbc815a265860869"
+  },
+  "refined": {
+    "tests": 550,
+    "result": "OK",
+    "command": ".venv/bin/python -m unittest discover -s tests",
+    "log_sha256": "1ff4c4623a63faf2997b488e4becfec59009ac6e7d03c1c97d45b8b4299e9800"
+  },
+  "focused_regressions_added": 16,
+  "localhost_access": "Tests used sandbox escalation for temporary local HTTP fixtures; no external services in the test suite.",
+  "model_experiments": "Actual local Ollama results retained separately from unit-test mocks.",
+  "source_preservation": "Nine SDK recordings, camera manifests, workbook and PDF verified against initial hashes.",
+  "hardware_executed": false
+}

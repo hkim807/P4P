@@ -1,4 +1,4 @@
-"""Strict model output, independent of the rule-based PolicyDecision contract."""
+"""Shared strict final output for rule-based, LLM and VLM policies."""
 from __future__ import annotations
 
 import json
@@ -15,11 +15,15 @@ NON_WHITESPACE_PATTERN = (
 )
 
 
-class ModelDecision(BaseModel):
+class FinalDecision(BaseModel):
     model_config = ConfigDict(extra="forbid", strict=True, allow_inf_nan=False, frozen=True)
 
-    action: Literal["STOP", "CONTINUE", "APPROACH", "ENGAGE"]
+    action: Literal["CONTINUE", "APPROACH", "ENGAGE", "YIELD"]
     reason: str = Field(min_length=1, pattern=NON_WHITESPACE_PATTERN)
+
+
+# Preserve existing imports for model inference and replay consumers.
+ModelDecision = FinalDecision
 
 
 class ModelDecisionValidationError(ValueError):
@@ -39,7 +43,7 @@ def _reject_constant(value: str) -> None:
     raise ModelDecisionValidationError(f"invalid JSON constant: {value}")
 
 
-def parse_model_decision(content: str) -> ModelDecision:
+def parse_model_decision(content: str) -> FinalDecision:
     """Validate the complete text; never repair, extract, or default a decision."""
     if not isinstance(content, str):
         raise ModelDecisionValidationError("model content must be a string")
@@ -51,11 +55,11 @@ def parse_model_decision(content: str) -> ModelDecision:
     if not isinstance(payload, dict):
         raise ModelDecisionValidationError("model decision must be a JSON object")
     try:
-        return ModelDecision.model_validate(payload)
+        return FinalDecision.model_validate(payload)
     except ValidationError as error:
         raise ModelDecisionValidationError(f"invalid model decision: {error}") from error
 
 
 def model_decision_schema() -> dict[str, Any]:
     """Fresh JSON Schema shared by the exported artifact and Ollama requests."""
-    return ModelDecision.model_json_schema(mode="validation")
+    return FinalDecision.model_json_schema(mode="validation")

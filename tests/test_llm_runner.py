@@ -183,7 +183,7 @@ class SingleSnapshotRunnerTests(unittest.TestCase):
         config = constructor.call_args.args[0]
         self.assertEqual(config.model_dump(), {
             "base_url": "https://inference.example:11434/", "model": "caller-model",
-            "timeout_seconds": 4.5, "temperature": 0.2, "seed": 123, "num_predict": 80,
+            "timeout_seconds": 4.5, "temperature": 0.2, "seed": 123, "num_predict": 80, "num_ctx": None,
         })
         client = constructor.return_value
         client.chat.assert_called_once()

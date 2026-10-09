@@ -27,6 +27,7 @@ class OllamaConfig(BaseModel):
     timeout_seconds: float = Field(default=30.0, gt=0)
     temperature: float = Field(default=0.0, ge=0)
     seed: int | None = None
+    num_ctx: int | None = Field(default=None, gt=0, strict=True)
     num_predict: int | None = Field(default=None, ge=1)
 
     @field_validator("base_url")
@@ -55,6 +56,8 @@ class OllamaConfig(BaseModel):
             options["seed"] = self.seed
         if self.num_predict is not None:
             options["num_predict"] = self.num_predict
+        if self.num_ctx is not None:
+            options["num_ctx"] = self.num_ctx
         return options
 
 

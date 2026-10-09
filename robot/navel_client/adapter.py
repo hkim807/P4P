@@ -55,6 +55,15 @@ class NavelObservationAdapter:
                 "distance_m": distance_mm / 1000 if distance_mm is not None else None,
                 "gaze_overlap": gaze,
             }
+            # SDK face is a bounding box. A missing/invalid box supplies no
+            # positive detection evidence; person identity alone is insufficient.
+            face = getattr(person, "face", None)
+            coordinates = [_finite_number(face.get(key) if isinstance(face, Mapping)
+                                           else getattr(face, key, None))
+                           for key in ("x1", "y1", "x2", "y2")]
+            if (all(value is not None for value in coordinates)
+                    and coordinates[2] > coordinates[0] and coordinates[3] > coordinates[1]):
+                converted["face_detected"] = True
             position = self._relative_head_position(getattr(person, "g_head_position", None))
             if position is not None:
                 converted["optional_relative_head_position"] = position

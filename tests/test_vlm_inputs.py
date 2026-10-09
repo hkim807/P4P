@@ -260,8 +260,8 @@ class AssociatedReplayReaderTests(unittest.TestCase):
 
     def test_accepts_prepared_succeeded_and_failed_llm_results(self):
         success = deepcopy(self.row)
-        success.update(status="succeeded", ok=True, decision={"action": "STOP", "reason": "Original decision."},
-                       error=None, raw_content='{"action":"STOP","reason":"Original decision."}',
+        success.update(status="succeeded", ok=True, decision={"action": "YIELD", "reason": "Original decision."},
+                       error=None, raw_content='{"action":"YIELD","reason":"Original decision."}',
                        request_duration_s=0.01, returned_model="original-model")
         failed = deepcopy(success)
         failed.update(status="failed", ok=False, decision=None,

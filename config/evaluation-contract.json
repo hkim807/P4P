@@ -1,0 +1,153 @@
+{
+  "version": "survey-endpoint-v1",
+  "clock": "co-capture robot-host receipt monotonic microseconds",
+  "max_state_age_s": 0.25,
+  "selection": "last perception at or before endpoint; never last READY or future frame",
+  "survey_contract": "Immediate next action at survey video end. User confirms videos were trimmed; offsets to longer repository captures are unavailable.",
+  "scenarios": [
+    {
+      "scenario_id": "S1",
+      "recording": "var/recordings/scenario-01.sdk.jsonl",
+      "source_sha256": "d334471b1995c3c8fd556266fc41a3e34a0ebc527396f71776deafa053a6ffe1",
+      "camera_manifest": "var/recordings/scenario-01.cameras/frames.jsonl",
+      "camera_manifest_sha256": "6cc718258558ed8ddebbd2ff1484ec8af8bbb9cbe27b6269d58e46168909ab78",
+      "capture_session": "bb414cc5b139453885f52d9895b1f97a",
+      "survey_video_mapping": "TRIM_OFFSETS_MISSING",
+      "endpoints": {
+        "camera_end_proxy": 13373190465,
+        "sdk_end_diagnostic": 13360773995
+      },
+      "camera_end_frame": "head/000022-1791271650164510.ppm",
+      "camera_end_sequence": 22,
+      "camera_tail_without_sdk_s": 12.41647
+    },
+    {
+      "scenario_id": "S2",
+      "recording": "var/recordings/scenario-02.sdk.jsonl",
+      "source_sha256": "018f091688c8fa0637ceaef053b79c62c7017c532f2cba33570d7f42e06603d9",
+      "camera_manifest": "var/recordings/scenario-02.cameras/frames.jsonl",
+      "camera_manifest_sha256": "4a971d225cba52e35ca9c734ee357e7d0cece6f4b44ea9ec280fa7daa38b1a53",
+      "capture_session": "c7c78bdcd4534653ba9e4826e9f3dd75",
+      "survey_video_mapping": "TRIM_OFFSETS_MISSING",
+      "endpoints": {
+        "camera_end_proxy": 13696062494,
+        "sdk_end_diagnostic": 13679790093
+      },
+      "camera_end_frame": "head/000025-1791271973008189.ppm",
+      "camera_end_sequence": 25,
+      "camera_tail_without_sdk_s": 16.272401
+    },
+    {
+      "scenario_id": "S3",
+      "recording": "var/recordings/scenario-03.sdk.jsonl",
+      "source_sha256": "f01522167bb74c2f91b5930beb80267d04268e00270e061cf1acb4e486babe58",
+      "camera_manifest": "var/recordings/scenario-03.cameras/frames.jsonl",
+      "camera_manifest_sha256": "39dedbaa080dd5d72918c5e915c8e03c17b3c5137457f19210f3a3031d002e1a",
+      "capture_session": "3425596259d0482da6d9275fa8b10c83",
+      "survey_video_mapping": "TRIM_OFFSETS_MISSING",
+      "endpoints": {
+        "camera_end_proxy": 13785705521,
+        "sdk_end_diagnostic": 13777649720
+      },
+      "camera_end_frame": "head/000020-1791272062664726.ppm",
+      "camera_end_sequence": 20,
+      "camera_tail_without_sdk_s": 8.055801
+    },
+    {
+      "scenario_id": "S4",
+      "recording": "var/recordings/scenario-04.sdk.jsonl",
+      "source_sha256": "4a517097a7b67f8b860e5dc8ef364d7a4578126a1f207767517630cf8d956341",
+      "camera_manifest": "var/recordings/scenario-04.cameras/frames.jsonl",
+      "camera_manifest_sha256": "826b2f5ac295f51e91a55ea0868d95bfacc22cc1a4d6e03594d1487d032a276b",
+      "capture_session": "02c47e877dd54a68a56ad6099b503783",
+      "survey_video_mapping": "TRIM_OFFSETS_MISSING",
+      "endpoints": {
+        "camera_end_proxy": 13842322353,
+        "sdk_end_diagnostic": 13834515508
+      },
+      "camera_end_frame": "head/000014-1791272119335364.ppm",
+      "camera_end_sequence": 14,
+      "camera_tail_without_sdk_s": 7.806845
+    },
+    {
+      "scenario_id": "S5",
+      "recording": "var/recordings/scenario-05.sdk.jsonl",
+      "source_sha256": "f065d390e0af0e253fb715aa54d4378d0ef6141222409867e06de312af99526a",
+      "camera_manifest": "var/recordings/scenario-05.cameras/frames.jsonl",
+      "camera_manifest_sha256": "1c0e8dd4b0dae9e6b139c8aa527c4835c224b1eb076f2f72642e5d5d7b812f35",
+      "capture_session": "de3643062cab4790bb0eb331a739fa15",
+      "survey_video_mapping": "TRIM_OFFSETS_MISSING",
+      "endpoints": {
+        "camera_end_proxy": 13877956267,
+        "sdk_end_diagnostic": 13868495952
+      },
+      "camera_end_frame": "head/000014-1791272154920267.ppm",
+      "camera_end_sequence": 14,
+      "camera_tail_without_sdk_s": 9.460315
+    },
+    {
+      "scenario_id": "S6",
+      "recording": "var/recordings/scenario-06.sdk.jsonl",
+      "source_sha256": "cc98d6355cd8a424151be36618a58da7649f39b76787e5791e91b88ec99c5ec3",
+      "camera_manifest": "var/recordings/scenario-06.cameras/frames.jsonl",
+      "camera_manifest_sha256": "a10e62ccdcb930e48803ffb6bfe9fa91edbae822ceb5dfff6277db956e0f488f",
+      "capture_session": "f29e8470090c4bfcb2551f61615196d4",
+      "survey_video_mapping": "TRIM_OFFSETS_MISSING",
+      "endpoints": {
+        "camera_end_proxy": 14136031320,
+        "sdk_end_diagnostic": 14126307539
+      },
+      "camera_end_frame": "head/000018-1791272413012336.ppm",
+      "camera_end_sequence": 18,
+      "camera_tail_without_sdk_s": 9.723781
+    },
+    {
+      "scenario_id": "S7",
+      "recording": "var/recordings/scenario-07.sdk.jsonl",
+      "source_sha256": "14632cb1e500d408f21e2b55ded5727f42c46bb02a46178b991a34ef90340d8d",
+      "camera_manifest": "var/recordings/scenario-07.cameras/frames.jsonl",
+      "camera_manifest_sha256": "81c2928b11cf714431db550a2d5439f8dd769afcc30f10b7dd3a42cba38851b6",
+      "capture_session": "d9e943aae88d421c8581fa1c2322c178",
+      "survey_video_mapping": "TRIM_OFFSETS_MISSING",
+      "endpoints": {
+        "camera_end_proxy": 14259936248,
+        "sdk_end_diagnostic": 14240307014
+      },
+      "camera_end_frame": "head/000023-1791272536930939.ppm",
+      "camera_end_sequence": 23,
+      "camera_tail_without_sdk_s": 19.629234
+    },
+    {
+      "scenario_id": "S8",
+      "recording": "var/recordings/scenario-08.sdk.jsonl",
+      "source_sha256": "650d8ac08c5e3cba26722c3ebdfd0f5de4525fd35d639ec536d043a25bbf47bc",
+      "camera_manifest": "var/recordings/scenario-08.cameras/frames.jsonl",
+      "camera_manifest_sha256": "cec139cd9a152bbe82dccbb3c634d25a2cc6b150e604e43521b134c16557bf4e",
+      "capture_session": "f2be67f3489a4f78919f5c16e13b8457",
+      "survey_video_mapping": "TRIM_OFFSETS_MISSING",
+      "endpoints": {
+        "camera_end_proxy": 14310228350,
+        "sdk_end_diagnostic": 14299278413
+      },
+      "camera_end_frame": "head/000023-1791272587206557.ppm",
+      "camera_end_sequence": 23,
+      "camera_tail_without_sdk_s": 10.949937
+    },
+    {
+      "scenario_id": "S9",
+      "recording": "var/recordings/scenario-09.sdk.jsonl",
+      "source_sha256": "37ccb101be89048ce1fe1f09fe0ef614488f2be60038e635c24f21cb54880eb7",
+      "camera_manifest": "var/recordings/scenario-09.cameras/frames.jsonl",
+      "camera_manifest_sha256": "f1236f9de30d325e4d2ae5faa623680d5711003991c60ec28b88c4b0ebeea3d3",
+      "capture_session": "62f64e4e89da4f06bcc373742f34d14e",
+      "survey_video_mapping": "TRIM_OFFSETS_MISSING",
+      "endpoints": {
+        "camera_end_proxy": 14490736217,
+        "sdk_end_diagnostic": 14483510522
+      },
+      "camera_end_frame": "head/000020-1791272767718567.ppm",
+      "camera_end_sequence": 20,
+      "camera_tail_without_sdk_s": 7.225695
+    }
+  ]
+}

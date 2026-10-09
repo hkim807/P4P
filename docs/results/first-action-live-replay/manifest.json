@@ -1,0 +1,72 @@
+{
+  "created_utc": "2026-10-08T08:35:46.211083+00:00",
+  "git_head": "054fc23d1101594a59393b80e4823ee476abf124",
+  "runner_sha256": "24e78ed9e47e58ce5e4101263874bc537c4947e922e4075b7c31fd4e0ef9d655",
+  "settings": {
+    "action_version": "social-actions-v3",
+    "rule_version": "social-rules-v3",
+    "prompt_version": "social-state-llm-v6",
+    "temporal_config": "config/temporal-development-frozen.json",
+    "track_config": "config/person-tracking.json",
+    "evaluation_contract": "config/evaluation-contract.json",
+    "human_reference": "config/human-reference.json",
+    "model": "qwen2.5:7b",
+    "temperature": 0.0,
+    "seed": 42,
+    "num_ctx": 8192,
+    "num_predict": 192,
+    "timeout_seconds": 120.0,
+    "diagnostic_interval_s": 1.0,
+    "model_trial_max_age_s": 10.0,
+    "design": "development recordings; survey trims unresolved; no physical execution",
+    "base_url": "http://127.0.0.1:11434"
+  },
+  "rate": 1.0,
+  "stop": "first valid policy output, or source exhausted with no pending request",
+  "receiver": "production Flask endpoints using in-process HTTP test client",
+  "client": "production SingleTrial, 30s timeout, 1s latest observation age, 10s model source age",
+  "limitations": [
+    "SDK reconstruction cannot recover outgoing queue drops or collection delay",
+    "structured LLM/rules consume SDK observations; camera pixels are not a VLM condition",
+    "no physical actions; generated commands are recorded in events only",
+    "first action timing differs from the trimmed survey endpoint task"
+  ],
+  "warm_model": true,
+  "ollama_tags": {
+    "models": [
+      {
+        "name": "qwen2.5:7b",
+        "model": "qwen2.5:7b",
+        "modified_at": "2026-09-15T18:05:40.0886835+12:00",
+        "size": 4683087332,
+        "digest": "845dbda0ea48ed749caafd9e6037047aa19acfcfd82e704d7ca97d631a0b697e",
+        "details": {
+          "parent_model": "",
+          "format": "gguf",
+          "family": "qwen2",
+          "families": [
+            "qwen2"
+          ],
+          "parameter_size": "7.6B",
+          "quantization_level": "Q4_K_M",
+          "context_length": 32768,
+          "embedding_length": 3584
+        },
+        "capabilities": [
+          "completion",
+          "tools"
+        ]
+      }
+    ]
+  },
+  "ollama_version": {
+    "version": "0.34.0"
+  },
+  "warmup": {
+    "model": "qwen2.5:7b",
+    "created_at": "2026-10-08T08:35:50.114778Z",
+    "response": "",
+    "done": true,
+    "done_reason": "load"
+  }
+}

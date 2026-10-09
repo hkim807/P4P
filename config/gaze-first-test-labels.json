@@ -1,0 +1,17 @@
+{
+  "label_version": 1,
+  "source_sha256": "174aac1d0573a511802b10e4f44bf88b3e4fd6e4539eb9789866831999906794",
+  "session_id": "6633cc75129a4f6ca8187f4ff1017210",
+  "label_origin": "Approximate intervals inferred from the user's action order and inspection of these same signals; not independently timestamped ground truth.",
+  "notes": "Times are seconds from the first perception packet. UID attribution, including the switch during head turns, is inferred. Initial direct and eye-only phases fit the baseline. Head turns and the short final direct phase are diagnostic only; they are not independent validation because this recording was already inspected.",
+  "intervals": [
+    {"name": "initial_direct", "start_s": 10, "end_s": 24, "uid": 1520584141, "target": "DIRECT", "split": "train"},
+    {"name": "eyes_right", "start_s": 26, "end_s": 38, "uid": 1520584141, "target": "AWAY", "split": "train"},
+    {"name": "eyes_left", "start_s": 40, "end_s": 50, "uid": 1520584141, "target": "AWAY", "split": "train"},
+    {"name": "eyes_down", "start_s": 50, "end_s": 62, "uid": 1520584141, "target": "AWAY", "split": "train"},
+    {"name": "eyes_up", "start_s": 64, "end_s": 74, "uid": 1520584141, "target": "AWAY", "split": "train"},
+    {"name": "head_right", "start_s": 76, "end_s": 86, "uid": 1520584141, "target": "AWAY", "split": "diagnostic"},
+    {"name": "head_left", "start_s": 86, "end_s": 94, "uid": 1783940805, "target": "AWAY", "split": "diagnostic"},
+    {"name": "final_direct", "start_s": 94, "end_s": 96, "uid": 1783940805, "target": "DIRECT", "split": "diagnostic"}
+  ]
+}

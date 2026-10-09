@@ -1,0 +1,50 @@
+{
+  "scenario_id": "synthetic-closing-low-gaze",
+  "policy": "rules",
+  "status": "ACTION_RESOLVED",
+  "action": "YIELD",
+  "decision": {
+    "action": "YIELD",
+    "reason": "Measured separation is decreasing within the configured yield range, with a currently detected face and established low gaze towards the robot; give the person room to pass. Relative closing does not establish which participant is moving or a path conflict."
+  },
+  "accepted_by_live_client": true,
+  "acceptance_details": {
+    "current_readiness": true,
+    "latest_observation_age_s": 0.0,
+    "model_source_age_s": 0.0,
+    "trial_phase": "DECIDED",
+    "failure_reason": null
+  },
+  "resolved_elapsed_s": 1.1,
+  "stop_elapsed_s": 1.1,
+  "frames_ingested": 12,
+  "ready_frames": 1,
+  "readiness_counts": {
+    "INSUFFICIENT_GAZE_EVIDENCE": 10,
+    "GAZE_CATEGORY_NOT_READY": 1,
+    "READY": 1
+  },
+  "recording_exhausted": false,
+  "last_ingested_source_offset_s": 1.1,
+  "last_ingested_line": 12,
+  "decision_source_offset_s": 1.1,
+  "max_dispatch_lag_s": 0.0,
+  "model_failures": [],
+  "first_model_request": null,
+  "resolved_output": {
+    "decision": {
+      "action": "YIELD",
+      "reason": "Measured separation is decreasing within the configured yield range, with a currently detected face and established low gaze towards the robot; give the person room to pass. Relative closing does not establish which participant is moving or a path conflict."
+    },
+    "source_robot_timestamp_us": 1100000,
+    "source_state_id": "test:12"
+  },
+  "last_readiness": {
+    "reason_code": null,
+    "status": "READY"
+  },
+  "source_sha256": "synthetic",
+  "trial_id": "8c9ac800419d432e95c5562a0a423b15",
+  "clock_mapping": "original first perception receipt + real elapsed replay time",
+  "physical_execution": false
+}
