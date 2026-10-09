@@ -43,7 +43,7 @@ Eligible `social-rules-v4` observations use this order:
 | --- | --- |
 | Explicit upstream path CONFLICT | YIELD |
 | Measured PASS invitation | CONTINUE |
-| Current face detected, distance ≤3 m, valid DECREASING trend, valid NONE gaze, latest looking false and latest gaze score ≤0.7 | YIELD |
+| Current face detected, distance ≤3 m, valid DECREASING trend, valid NONE gaze, latest looking false and latest gaze score ≤0.87 | YIELD |
 | Latest looking false while historical SUSTAINED category is held | CONTINUE |
 | Sustained or qualifying recurring attention in TOO_CLOSE or INTERACTION_RANGE | ENGAGE |
 | Reliable AWAY motion or reliable increasing separation outside conversation range | CONTINUE |
@@ -56,7 +56,9 @@ and eligible non-attentive people support CONTINUE unless the new closing trigge
 applies. A stationary person at 0.4 m does not cause YIELD solely through proximity.
 The exact current distance cutoff is `config.yield_closing_max_distance_m`,
 independent of distance-zone hysteresis, and includes exactly 3 m. Low gaze uses
-`config.looking_exit`; NONE requires established low attention over the temporal
+`config.looking_exit` (currently 0.87); a score at or above `looking_enter`
+(currently 0.88) establishes looking, while the narrow band between those
+thresholds retains the previous per-sample state. NONE requires established low attention over the temporal
 window, not one low sample. DECREASING requires a valid fitted slope more negative
 than `-config.distance_deadband_mps` (currently -0.1 m/s), with valid current
 distance, sufficient span/samples and acceptable residual.

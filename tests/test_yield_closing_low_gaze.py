@@ -104,12 +104,18 @@ class ClosingYieldTests(unittest.TestCase):
         self.assertIsNone(row['final_decision'])
 
     def test_current_low_gaze_required_even_when_history_holds_none(self):
-        for gaze in (.75, .95):
+        for gaze in (.875, .95):
             with self.subTest(gaze=gaze):
                 pipeline, _ = sequence()
                 state = pipeline.process(closing_observation(24, gaze=gaze))['social_state']
                 self.assertEqual(state['people'][0]['gaze_state'], 'NONE')
                 self.assertEqual(decide(state).decision, 'CONTINUE')
+
+    def test_configured_point_eight_seven_gaze_cutoff(self):
+        _, at_exit = sequence(gaze=.87)
+        _, at_enter = sequence(gaze=.88)
+        self.assertEqual(at_exit[-1]['final_decision']['action'], 'YIELD')
+        self.assertEqual(at_enter[-1]['final_decision']['action'], 'APPROACH')
 
     def test_pass_overrides_closing_trigger_and_conflict_overrides_pass(self):
         _, rows = sequence()
