@@ -107,12 +107,14 @@ distance, with ±0.10 m distance and ±4° heading tolerances. Arc speed is
 heading speed is `min(70, sqrt(abs(angle_degrees) * 60))`, acceleration 60°/s².
 The reference acquisition, filtering, geometric UID association, arc monitoring,
 one distance correction and up to two final heading corrections are retained.
-The head remains neutral during APPROACH. After measured stopping, only fresh
-`APPROACHED_VERIFIED` arrival permits the owned/awaited utterance "Approach
-complete!" followed by a look at the currently observed person. `APPROACHED_UNVERIFIED` and
+The head remains neutral during APPROACH. Only fresh `APPROACHED_VERIFIED`
+arrival permits completion: confirm measured stopping, look at the approach's
+existing target UID, then own and await "Hi! Do you need any help?" while keeping
+that person focus. This final look also runs without the trial head controller.
+`APPROACHED_UNVERIFIED` and
 `OUTSIDE_TOLERANCE` fail without speaking; measurements are retained in
 `SingleTrial.approach_result` and local approach logs, separately from policy.
-There is no ENGAGE greeting or route resumption after APPROACH. YIELD first
+There is no route resumption after APPROACH. YIELD first
 looks at the current single person, temporarily
 moves aside/backwards, waits, returns towards the original route, advances a short
 distance and ends. It rotates +100° (30°/s, 35°/s²), reverses −0.60 m

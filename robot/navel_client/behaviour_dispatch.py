@@ -34,7 +34,16 @@ async def approach_person(context):
     result = context.approach_result = await approach_human(runtime, uid)
     if result.status != "APPROACHED_VERIFIED":
         raise ApproachNotVerified(result.status)
-    await context.own_task(context.robot.say("Approach complete!"))
+    await runtime.settle()
+    # Use the approach's existing target, which may have acquired a new SDK UID.
+    uid = runtime.target["uid"]
+    if context.trial_head is not None:
+        await context.trial_head.look_at_person(uid)
+    else:
+        command = context.robot.look_at_person(uid, 1.0)
+        if inspect.isawaitable(command):
+            await context.own_task(command)
+    await context.own_task(context.robot.say("Hi! Do you need any help?"))
 
 
 async def engage_person(context):
@@ -142,7 +151,7 @@ class BehaviourDispatcher:
         if self.handlers["ENGAGE"] is engage_person and not callable(getattr(self.context.robot, "say", None)):
             raise ValueError("ENGAGE execution requires SDK robot.say")
         if self.handlers["APPROACH"] is approach_person:
-            for method in ("move_and_rotate_base", "rotate_base", "say"):
+            for method in ("move_and_rotate_base", "rotate_base", "look_at_person", "say"):
                 if not callable(getattr(self.context.robot, method, None)):
                     raise ValueError(f"APPROACH execution requires SDK robot.{method}")
         if self.handlers["YIELD"] is yield_space:
@@ -208,7 +217,7 @@ class BehaviourDispatcher:
                         await trial_head.look_at_person(self._person_uid(context, current_first=True))
                 try:
                     await handler(context)
-                    if trial_head is not None and action == "APPROACH":
+                    if trial_head is not None and action == "APPROACH" and handler is not approach_person:
                         await trial_head.look_at_person(self._person_uid(context, current_first=True))
                 finally:
                     if trial_head is not None and action == "YIELD":

@@ -384,10 +384,12 @@ class ClientTests(unittest.IsolatedAsyncioTestCase):
         with self.assertRaisesRegex(ValueError, "--route-trial"):
             await collect_and_stream(robot, args)
         observation = frame()
-        for scene in ("missing_handler", "absent", "ambiguous", "stale"):
-            with self.subTest(scene=scene):
+        cases = [("missing_handler", "YIELD")] + [
+            (scene, action) for scene in ("absent", "ambiguous", "stale")
+            for action in ("APPROACH", "ENGAGE")]
+        for scene, action in cases:
+            with self.subTest(scene=scene, action=action):
                 trial = SingleTrial(monotonic_us=lambda: observation["timestamp"])
-                action = "YIELD" if scene == "missing_handler" else "ENGAGE"
                 payload = response_for(observation, 1, action, action in ('APPROACH', 'ENGAGE'))
                 payload["final_decision"] = {"action": action, "reason": "Test decision."}
                 self.assertTrue(trial.accept_rule_response(payload, observation))
@@ -405,7 +407,7 @@ class ClientTests(unittest.IsolatedAsyncioTestCase):
                     raise BehaviourNotImplemented("test handler unavailable")
 
                 dispatcher = BehaviourDispatcher(trial, NS(base_vel=lambda x, r: None),
-                    handlers={"YIELD": unavailable} if scene == "missing_handler" else {"ENGAGE": unexpected})
+                    handlers={"YIELD": unavailable} if scene == "missing_handler" else {action: unexpected})
                 self.assertFalse(await dispatcher.dispatch())
                 self.assertEqual(trial.failure_reason, "BEHAVIOUR_NOT_IMPLEMENTED" if scene == "missing_handler"
                                  else "CURRENT_PERSON_UNAVAILABLE")
@@ -600,6 +602,7 @@ class ClientTests(unittest.IsolatedAsyncioTestCase):
 
                 robot = NS(move_base=move, base_vel=lambda x, r: zeros.append(trial.phase),
                            say=lambda text: self.fail("CONTINUE must not speak"),
+                           look_at_person=lambda *a: self.fail("CONTINUE must not look without trial head control"),
                            move_and_rotate_base=lambda *a, **kw: self.fail("CONTINUE must not approach"),
                            rotate_base=lambda *a, **kw: self.fail("CONTINUE must not rotate"))
                 route = StraightRoute(robot, 0.5, 0.1, 0.2)
@@ -822,8 +825,10 @@ class ClientTests(unittest.IsolatedAsyncioTestCase):
 
                         async def speech():
                             before = self.seq
+                            head_commands = [c for c in calls if c[0] == 'head']
                             await asyncio.sleep(.09)
                             assert self.seq > before, 'sensor collection stopped during speech'
+                            assert [c for c in calls if c[0] == 'head'] == head_commands, 'head focus changed during speech'
                             if outcome == 'speech_failure':
                                 raise OSError('speech failed')
                             calls.append(('speech_finished',))
@@ -864,7 +869,15 @@ class ClientTests(unittest.IsolatedAsyncioTestCase):
                 self.assertEqual(sum(c[0] == 'baseline' for c in calls), 1)
                 self.assertLess(calls.index(('baseline_settled',)), next(i for i, c in enumerate(calls) if c[0] == 'arc'))
                 self.assertEqual([c for c in calls if c[0] == 'say'],
-                                 [('say', 'Approach complete!')] if outcome in ('verified', 'speech_failure') else [])
+                                 [('say', 'Hi! Do you need any help?')] if outcome in ('verified', 'speech_failure') else [])
+                approach_calls = calls[next(i for i, c in enumerate(calls) if c[0] == 'arc'):]
+                completion_looks = [c for c in approach_calls if c[0] == 'head']
+                self.assertEqual(len(completion_looks), 1 if outcome in ('verified', 'speech_failure') else 0)
+                if completion_looks:
+                    speech_index = calls.index(('say', 'Hi! Do you need any help?'))
+                    self.assertEqual(calls[speech_index-1], completion_looks[0])
+                    last_motion = max(i for i, c in enumerate(calls) if c[0] in ('arc_settled', 'turn_settled'))
+                    self.assertIn(('zero',), calls[last_motion+1:speech_index-1])
                 self.assertLessEqual(sum(c[0] == 'arc' for c in calls), 2)
                 self.assertLessEqual(sum(c[0] == 'turn' for c in calls), 2)
                 for call in calls:
