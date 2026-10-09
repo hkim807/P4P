@@ -1,0 +1,17 @@
+{
+  "label_version": 1,
+  "source_sha256": "f77d6fd7d8feea74074a3726edd3cb423e7fcd5b9172214b84047dff1871c52c",
+  "session_id": "06cad32ab19d426ca73f8ce75a4b964a",
+  "label_origin": "Provisional: early intervals follow the user-reported eight-second schedule beginning at first visibility (38.591s), with margins removed. Final direct is inferred from the reported last action and the final stable segment. No independent cue timestamps.",
+  "notes": "All intervals have uncertain timing. Do not interpret performance as validated accuracy. Exclude 94-153s: the later head-action timing is incompatible with the stated consecutive eight-second schedule and cannot be assigned reliably. No labels are assigned to other IDs or transition frames.",
+  "intervals": [
+    {"name": "initial_direct", "start_s": 40, "end_s": 45, "uid": 1783940805, "target": "DIRECT", "split": "train"},
+    {"name": "eyes_slightly_left", "start_s": 48, "end_s": 53, "uid": 1783940805, "target": "AWAY", "split": "train"},
+    {"name": "eyes_slightly_right", "start_s": 56, "end_s": 61, "uid": 1783940805, "target": "AWAY", "split": "train"},
+    {"name": "eyes_down", "start_s": 64, "end_s": 69, "uid": 1783940805, "target": "AWAY", "split": "train"},
+    {"name": "eyes_up", "start_s": 72, "end_s": 77, "uid": 1783940805, "target": "AWAY", "split": "train"},
+    {"name": "eyes_far_left", "start_s": 80, "end_s": 85, "uid": 1783940805, "target": "AWAY", "split": "train"},
+    {"name": "eyes_far_right", "start_s": 88, "end_s": 93, "uid": 1783940805, "target": "AWAY", "split": "train"},
+    {"name": "final_direct", "start_s": 154, "end_s": 161, "uid": 1783940805, "target": "DIRECT", "split": "train"}
+  ]
+}

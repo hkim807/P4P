@@ -1,5 +1,8 @@
 # V1 gaze feature extractor
 
+An [experimental scoring model](gaze-scoring-model.md) now consumes these
+features and produces provisional scores while preserving UNKNOWN estimates.
+
 Extract offline features from the complete SDK capture before calibrating a
 replacement gaze score. This runs on the computer using Python's standard
 library; it requires neither camera streaming nor the robot SDK. It does not
