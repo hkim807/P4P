@@ -95,6 +95,8 @@ class BehaviourContext:
     current_observation: object
     route: object = None
     head: object = None
+    trial_head: object = None
+    decision_person_uid: int | None = None
     approach: object = None
     approach_result: object = None
     timeout_s: float = 120.0
@@ -112,7 +114,8 @@ class BehaviourContext:
 
 
 class BehaviourDispatcher:
-    def __init__(self, trial, robot, *, route=None, head=None, timeout_s=120.0, handlers=None):
+    def __init__(self, trial, robot, *, route=None, head=None, trial_head=None,
+                 timeout_s=120.0, handlers=None):
         if not math.isfinite(timeout_s) or not 0 < timeout_s <= 3600:
             raise ValueError("behaviour timeout must be positive and at most 3600 seconds")
         self.handlers = {**HANDLERS, **(handlers or {})}
@@ -120,8 +123,8 @@ class BehaviourDispatcher:
                 not inspect.iscoroutinefunction(handler) for handler in self.handlers.values()):
             raise ValueError("behaviour handlers must map the four actions to async functions")
         self.trial, self.timeout_s = trial, timeout_s
-        self.context = BehaviourContext(robot, None, None, lambda: trial.current_observation, route, head,
-                                        timeout_s=timeout_s)
+        self.context = BehaviourContext(robot, None, None, lambda: trial.current_observation,
+                                        route, head, trial_head, timeout_s=timeout_s)
         if self.handlers["APPROACH"] is approach_person or self.handlers["YIELD"] is yield_space:
             self.context.approach = ApproachRuntime(self.context)
         self._dispatched = self._cleaned = False
@@ -146,6 +149,23 @@ class BehaviourDispatcher:
             for method in ("rotate_base", "move_base", "say"):
                 if not callable(getattr(self.context.robot, method, None)):
                     raise ValueError(f"YIELD execution requires SDK robot.{method}")
+        if self.context.trial_head is not None:
+            self.context.trial_head.preflight()
+
+    @staticmethod
+    def _person_uid(context: BehaviourContext, *, current_first: bool = False) -> int:
+        current_uid = None
+        observation = context.current_observation()
+        people = observation.get("people", []) if observation else []
+        if len(people) == 1:
+            candidate = people[0].get("uid")
+            current_uid = candidate if type(candidate) is int and candidate >= 0 else None
+        candidates = ((current_uid, context.decision_person_uid) if current_first
+                      else (context.decision_person_uid, current_uid))
+        uid = next((candidate for candidate in candidates if candidate is not None), None)
+        if uid is None:
+            raise RuntimeError("action head command requires one visible decision person")
+        return uid
 
     async def dispatch(self):
         if self._dispatched or self.trial.phase != "DECIDED":
@@ -154,6 +174,7 @@ class BehaviourDispatcher:
         self._dispatched = True
         context = self.context
         context.decision, context.source = self.trial.decision, self.trial.source
+        context.decision_person_uid = self.trial.decision_person_uid
         action = context.decision["action"]
         handler = self.handlers[action]
         succeeded = False
@@ -175,7 +196,23 @@ class BehaviourDispatcher:
                 if not self.trial.start_execution():
                     return False
                 logger.info("single_trial phase=EXECUTING action=%s", action)
-                await handler(context)
+                trial_head = context.trial_head
+                if trial_head is not None:
+                    if action == "CONTINUE":
+                        await trial_head.glance(self._person_uid(context, current_first=True))
+                    elif action == "YIELD":
+                        await trial_head.look_at_person(self._person_uid(context, current_first=True))
+                    elif action == "APPROACH":
+                        await trial_head.neutral()
+                    else:  # ENGAGE
+                        await trial_head.look_at_person(self._person_uid(context, current_first=True))
+                try:
+                    await handler(context)
+                    if trial_head is not None and action == "APPROACH":
+                        await trial_head.look_at_person(self._person_uid(context, current_first=True))
+                finally:
+                    if trial_head is not None and action == "YIELD":
+                        await trial_head.neutral()
                 return True
 
             task = context.own_task(run_handler())
@@ -216,11 +253,13 @@ class BehaviourDispatcher:
             # Cancel the handler first: its awaited SDK task may be cancelled
             # by propagation. A second cancel could interrupt sender settling.
             if self._handler_task is not None and not self._handler_task.done():
-                if not self._handler_task.cancelling():
-                    self._handler_task.cancel()
-            for task in context._tasks:
-                if not task.done() and not getattr(task, "cancelling", lambda: 0)():
-                    task.cancel()
+                self._handler_task.cancel()
+            elif self._handler_task is None or self._handler_task.done():
+                # An active handler owns and awaits its child senders; cancelling
+                # those again can interrupt their measured-stop cleanup.
+                for task in context._tasks:
+                    if task is not self._handler_task and not task.done():
+                        task.cancel()
             if context.route is not None and context.route.task is not None:
                 task = context.route.task
                 if not task.done() and not getattr(task, "cancelling", lambda: 0)():
@@ -230,6 +269,8 @@ class BehaviourDispatcher:
                     # Local motion cancellation includes up to 2 s sender settling
                     # plus the reference's 3 s measured stop confirmation.
                     cleanup_timeout = 6.0 if context.approach is not None and context.approach.motion_active else 2.0
+                    if context.trial_head is not None:
+                        cleanup_timeout += getattr(context.trial_head, "neutral_settle_s", 2.0) + 0.5
                     await asyncio.wait(context._tasks, timeout=cleanup_timeout)
                     if any(not task.done() for task in context._tasks):
                         raise RuntimeError("behaviour sender did not settle; stop unconfirmed")

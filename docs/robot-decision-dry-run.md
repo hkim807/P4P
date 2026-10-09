@@ -90,9 +90,13 @@ stopping. Hardware verification is still required.
 The separate `--single-trial --single-trial-execute` option connects acceptance
 to [`BehaviourDispatcher`](../robot/navel_client/behaviour_dispatch.py). It
 excludes decision/command dry-run, the older script executor, SDK-only, and
-print-only modes. CONTINUE awaits the original route task with baseline head
-tracking active; it never starts another movement. ENGAGE cancels/settles/zeros
-the route and settles baseline head commands, then says exactly once:
+print-only modes. Executable route trials first replace any prior focus with a
+point 2 m ahead in the SDK `HEAD_STRAIGHT` frame and keep that neutral target
+through observation. This action-specific controller is still active with
+`--no-head-focus`; that option disables continuous baseline person following.
+CONTINUE briefly looks at the current single person, returns to neutral and
+awaits the original route task without starting another movement. ENGAGE
+cancels/settles/zeros the route, looks at the person and then says exactly once:
 "Hello! Do you need any guidance in the lab?" It owns and awaits `robot.say()`'s
 asyncio task. The [SDK documentation](https://doc.navelrobotics.com/getting_started.html#creating-your-own-scripts)
 defines awaiting this task as waiting for speech to finish. APPROACH uses the
@@ -103,11 +107,13 @@ distance, with ±0.10 m distance and ±4° heading tolerances. Arc speed is
 heading speed is `min(70, sqrt(abs(angle_degrees) * 60))`, acceleration 60°/s².
 The reference acquisition, filtering, geometric UID association, arc monitoring,
 one distance correction and up to two final heading corrections are retained.
-After measured stopping, only fresh `APPROACHED_VERIFIED` arrival permits the
-owned/awaited utterance "Approach complete!". `APPROACHED_UNVERIFIED` and
+The head remains neutral during APPROACH. After measured stopping, only fresh
+`APPROACHED_VERIFIED` arrival permits the owned/awaited utterance "Approach
+complete!" followed by a look at the currently observed person. `APPROACHED_UNVERIFIED` and
 `OUTSIDE_TOLERANCE` fail without speaking; measurements are retained in
 `SingleTrial.approach_result` and local approach logs, separately from policy.
-There is no ENGAGE greeting or route resumption after APPROACH. YIELD temporarily
+There is no ENGAGE greeting or route resumption after APPROACH. YIELD first
+looks at the current single person, temporarily
 moves aside/backwards, waits, returns towards the original route, advances a short
 distance and ends. It rotates +100° (30°/s, 35°/s²), reverses −0.60 m
 (0.25 m/s, 0.35 m/s²), stops and says "Please go ahead.". After speech completion
@@ -117,7 +123,8 @@ it waits 3 seconds, moves +0.60 m (0.12 m/s, 0.15 m/s²), stops, rotates −100�
 and the short advance margin 0.04 s, following actual SDK task completion and
 local measured stopping. The wait is timed, not sensor-confirmed clearance;
 return is nominal, not verified navigation to an exact path. YIELD uses local
-odometry without UID/nose acquisition and never restarts the cancelled baseline.
+odometry without UID/nose acquisition, returns the head to neutral after the
+whole maneuver, and never restarts the cancelled baseline.
 Interruption/failure stops locally without forcing the remaining return stages.
 Preflight requires `--route-trial`
 and the SDK movement, arc, rotation, stopping and speech methods before motion starts.
@@ -127,8 +134,8 @@ Handlers are asynchronous functions receiving the frozen decision/source,
 shared robot, `current_observation()` getter, existing `route`/`head` controls,
 and `own_task(awaitable)` for SDK tasks. Handlers must register and await their
 SDK tasks; they must not launch detached senders. CONTINUE retains
-`route.task` and baseline tracking. APPROACH, ENGAGE, and YIELD suspend/settle
-baseline head commands and cancel/settle/zero the route before handler startup.
+`route.task`. APPROACH, ENGAGE, and YIELD cancel/settle/zero the route before
+handler startup.
 APPROACH/ENGAGE recheck one fresh local person then, without tying it to the
 source UID. The perception reader continues throughout execution.
 

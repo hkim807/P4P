@@ -35,6 +35,7 @@ class SingleTrial:
         self.ready = False
         self.session_id = None
         self._decision = self._source = self._latest_source = None
+        self._decision_person_uid = None
         self.monotonic, self.monotonic_us = monotonic, monotonic_us
         self.deadline = monotonic() + wait_timeout_s
         self.max_age_us = round(max_age_s * 1_000_000)
@@ -52,6 +53,11 @@ class SingleTrial:
     def current_observation(self):
         """Latest robot-local frame, independent of the frozen decision source."""
         return self._local_observation
+
+    @property
+    def decision_person_uid(self):
+        """Robot-local UID visible in the observation that resolved the trial."""
+        return self._decision_person_uid
 
     @property
     def terminal(self):
@@ -209,6 +215,9 @@ class SingleTrial:
             if type(value) in (str, int) or value is None:
                 if key in source:
                     metadata[key] = value
+        people = local.get("people", []) if isinstance(local, Mapping) else []
+        uid = people[0].get("uid") if len(people) == 1 and isinstance(people[0], Mapping) else None
+        self._decision_person_uid = uid if type(uid) is int and uid >= 0 else None
         self._decision = MappingProxyType(dict(decision))
         self._source = MappingProxyType(metadata)
         self.phase = "DECIDED"

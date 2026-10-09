@@ -25,6 +25,7 @@ from robot.navel_client.sdk_capture import SdkCapture
 from robot.navel_client.single_trial import SingleTrial
 from robot.navel_client.straight_route import StraightRoute
 from robot.navel_client.transport import ObservationTransport, TransportError
+from robot.navel_client.trial_head import TrialHeadController
 
 
 logger = logging.getLogger(__name__)
@@ -320,7 +321,8 @@ async def _execute_trial(trial, dispatcher, tasks, decision_tasks, route):
 
 
 async def collect_and_stream(robot: Any, args: argparse.Namespace,
-                             camera_types: dict[str, Any] | None = None) -> SingleTrial | None:
+                             camera_types: dict[str, Any] | None = None,
+                             navel_module: Any | None = None) -> SingleTrial | None:
     transport = ObservationTransport(args.server, timeout_seconds=args.request_timeout)
     sdk_capture = SdkCapture(transport) if args.sdk_capture else None
     camera_capture = (CameraCapture(transport, session_id=sdk_capture.session_id if sdk_capture else None)
@@ -330,17 +332,20 @@ async def collect_and_stream(robot: Any, args: argparse.Namespace,
     latest = LatestLocomotion()
     route = (StraightRoute(robot, args.route_distance, args.route_speed, args.route_acceleration)
              if args.route_trial else None)
+    trial_head = (TrialHeadController(robot, navel_module)
+                  if args.single_trial_execute and route is not None and navel_module is not None else None)
     head_focus = (HeadFocusController(robot,
                                      magnitude=1.0 if route else args.head_focus_magnitude,
                                      grace_s=args.head_focus_grace,
                                      command_interval_s=0.6 if route else None,
                                      raise_on_error=route is not None,
                                      select_first_visible=route is not None)
-                  if not args.no_head_focus and (args.head_focus or route) else None)
+                  if trial_head is None and not args.no_head_focus and (args.head_focus or route) else None)
     trial = (SingleTrial(args.single_trial_policy, wait_timeout_s=args.decision_wait_timeout,
                          max_age_s=args.max_decision_age, model_max_age_s=args.model_result_max_age)
              if args.single_trial else None)
     behaviour_dispatcher = (BehaviourDispatcher(trial, robot, route=route, head=head_focus,
+                                                trial_head=trial_head,
                                                 timeout_s=args.behaviour_timeout)
                             if args.single_trial_execute else None)
     if behaviour_dispatcher is not None:
@@ -349,6 +354,9 @@ async def collect_and_stream(robot: Any, args: argparse.Namespace,
         except BehaviourNotImplemented:
             trial.fail("BEHAVIOUR_NOT_IMPLEMENTED")
             return trial
+    if trial_head is not None:
+        # Establish the fixed forward target before route motion or perception starts.
+        await trial_head.neutral()
     model_trial = trial is not None and trial.policy != "rules"
     if model_trial:
         registered = await asyncio.to_thread(transport.open_model_trial, trial.trial_id, trial.policy,
@@ -536,7 +544,7 @@ async def run(args: argparse.Namespace) -> SingleTrial | None:
         if args.sdk_capture_only:
             await collect_sdk_only(robot, args, camera_types)
         else:
-            return await collect_and_stream(robot, args, camera_types)
+            return await collect_and_stream(robot, args, camera_types, navel_module=navel)
 
 
 async def collect_sdk_only(robot: Any, args: argparse.Namespace,

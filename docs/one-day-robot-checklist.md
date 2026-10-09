@@ -157,16 +157,23 @@ python3 -m robot.navel_client.main --server http://PC_IP:6060 \
   --route-trial --route-distance 1.0 --route-speed 0.05
 ```
 
-- [ ] CONTINUE: observe it completing the existing short route.
-- [ ] ENGAGE: observe route stop and greeting, with no duplicate greeting.
+- [ ] Confirm every executable trial centres the head before starting the route
+  and holds it neutral until the decision.
+- [ ] CONTINUE: observe a brief look at the person, return to neutral, and
+  completion of the existing short route without changing base motion.
+- [ ] ENGAGE: observe route stop, look at the person and greeting, with no
+  duplicate greeting.
 - [ ] APPROACH: observe route stop, approach and stopping at the configured
-  conversation distance. Verify physical distance rather than relying only on
-  the completion message. Current behavior does not automatically greet afterward.
+  conversation distance while the head remains neutral. After verified
+  completion, confirm the robot looks at the person. Verify physical distance
+  rather than relying only on the completion message.
 - [ ] Once APPROACH is verified, replace “Approach complete!” with a short greeting
   after the successful stop. Remove “Yielding complete!” if it adds no value to
   the person. These are small handler edits, not existing command-line options.
-- [ ] YIELD: inspect the whole current turn/back/wait/return maneuver. The route
-  speed flag does not reduce its separate movement distances/speeds.
+- [ ] YIELD: confirm the initial look at the person, inspect the whole current
+  turn/back/wait/return maneuver, and confirm the head returns to neutral only
+  after completion. The route speed flag does not reduce its separate movement
+  distances/speeds.
 
 The current YIELD rotates 100 degrees, moves backward 0.6 m, speaks, waits three
 seconds, moves forward 0.6 m, rotates back and advances 0.15 m. It does not detect
