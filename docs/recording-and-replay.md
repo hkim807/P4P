@@ -78,6 +78,10 @@ if collection cannot keep up. A fresh run requires a fresh output path.
 
 ## Record through the working reverse tunnel
 
+For offline gaze-vector analysis of a full SDK capture, see the
+[V1 gaze feature extractor](gaze-feature-extractor.md). It preserves missing
+estimates and extracts angular features without changing the live gaze policy.
+
 On the PC, activate the existing environment and start a named recording:
 
 ```bash
