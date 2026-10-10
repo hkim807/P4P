@@ -30,7 +30,7 @@ class RefinedCueTests(unittest.TestCase):
             for i in range(24):
                 row = p.process(sample(i, distance=distance, velocity=.15))
             self.assertEqual(row['final_decision']['action'], action)
-            self.assertEqual(row['social_state']['people'][0]['human_radial_motion'], 'UNKNOWN')
+            self.assertEqual(row['social_state']['people'][0]['relative_distance_trend'], 'STABLE')
 
     def test_attention_ends_before_category_dwell(self):
         p = SocialPipeline('change')
@@ -101,7 +101,7 @@ class RefinedCueTests(unittest.TestCase):
     def test_retreat_nearby_greeting_differs_from_distant_pursuit(self):
         for distance, expected in ((1.0, 'ENGAGE'), (2.0, 'CONTINUE')):
             state = ready_state(distance)
-            state['people'][0].update(human_radial_motion='AWAY', relative_distance_trend='INCREASING')
+            state['people'][0]['relative_distance_trend'] = 'INCREASING'
             self.assertEqual(decide(state).decision, expected)
 
     def test_distance_transition_uses_hysteresis(self):

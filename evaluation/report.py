@@ -20,7 +20,7 @@ def report(root):
         if row['condition'] == 'survey_video_end':
             versions['before'].append(dict(row))
     columns = ['version', 'scenario', 'condition', 'policy', 'endpoint_us', 'source_us', 'state_age_s',
-               'status', 'action', 'reason', 'gaze', 'distance_zone', 'distance_m', 'motion',
+               'status', 'action', 'reason', 'gaze', 'distance_zone', 'distance_m', 'relative_distance_trend',
                'path', 'gesture', 'preferred_count', 'support_of_37', 'appropriateness',
                'modal_agreement', 'original_agreement', 'latency_s', 'error', 'execution']
     table = []
@@ -32,7 +32,7 @@ def report(root):
             table.append([version, row['scenario_id'], row['condition'], row['policy'],
                           row.get('endpoint_timestamp_us'), row.get('source_timestamp_us'), row.get('state_age_s'),
                           row['status'], row['action'], row.get('reason'), person.get('gaze_state'),
-                          person.get('distance_zone'), person.get('latest_distance_m'), person.get('human_radial_motion'),
+                          person.get('distance_zone'), person.get('latest_distance_m'), person.get('relative_distance_trend'),
                           person.get('path_relation', 'UNKNOWN'), person.get('pass_gesture', 'UNKNOWN'),
                           h['preferred_count'], h['preference_support'], h['mean_appropriateness'],
                           h['modal_agreement'], h['original_agreement'], row.get('duration_s'), row.get('error'),

@@ -9,7 +9,7 @@ from app.domain.model_decision import FinalDecision
 from app.state.social_models import SocialState, StrictModel, observation_hold_reason
 
 
-POLICY_VERSION = "social-rules-v4"
+POLICY_VERSION = "social-rules-v5"
 DecisionName = Literal["CONTINUE", "APPROACH", "ENGAGE", "YIELD"]
 
 
@@ -17,7 +17,7 @@ class PolicyDecision(StrictModel):
     decision_id: str
     source_state_id: str
     session_id: str
-    policy_version: Literal["social-rules-v2", "social-rules-v3", "social-rules-v4"] = POLICY_VERSION
+    policy_version: Literal["social-rules-v2", "social-rules-v3", "social-rules-v4", "social-rules-v5"] = POLICY_VERSION
     decision: DecisionName
     reason_code: str
     target_uid: int | None = Field(default=None, ge=0)
@@ -35,7 +35,6 @@ _FINAL_REASONS = {
     "NO_INTERACTION_CUE": "Usable gaze evidence does not show sustained attention; continue along the fixed route.",
     "PERSON_FAR": "The person is outside the interaction and approach ranges; continue along the fixed route.",
     "NO_ATTENTION": "Gaze evidence is classified as no attention; continue along the fixed route.",
-    "PERSON_MOVING_AWAY": "The person is moving away; continue along the fixed route.",
     "SUSTAINED_GAZE_IN_INTERACTION_RANGE": (
         "The person is looking steadily at the robot and is within conversation distance."
     ),
@@ -116,9 +115,6 @@ def decide(state: SocialState | dict, *, stale: bool = False,
     if attentive and person.distance_zone in ("TOO_CLOSE", "INTERACTION_RANGE"):
         return result("ENGAGE", "RECURRING_ATTENTION_IN_INTERACTION_RANGE" if recurring
                       else "SUSTAINED_GAZE_IN_INTERACTION_RANGE")
-    if (person.human_radial_motion == "AWAY" and e.distance_trend_valid
-            and e.stationary_window_confirmed):
-        return result("CONTINUE", "PERSON_MOVING_AWAY")
     if person.relative_distance_trend == "INCREASING" and e.distance_trend_valid:
         return result("CONTINUE", "RELATIVE_SEPARATION_INCREASING")
     if attentive and person.distance_zone == "APPROACHABLE":

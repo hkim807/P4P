@@ -27,15 +27,14 @@ def social_state():
         "distance_fit_samples": 8, "distance_window_start_us": 2_400_000,
         "distance_jump_count": 0, "gaze_valid": True,
         "distance_trend_valid": True, "latest_distance_valid": True,
-        "stationary_window_confirmed": False,
     }
     person = {
         "uid": 12, "track_epoch": 3, "visibility": "OBSERVED",
         "track_age_s": 5.0, "time_since_seen_s": 0.0,
         "latest_distance_m": 2.1, "gaze_state": "INTERMITTENT",
         "distance_zone": "APPROACHABLE", "relative_distance_trend": "DECREASING",
-        "human_radial_motion": "UNKNOWN", "evidence": evidence,
-        "validity_flags": ["STATIONARY_BASE_UNVERIFIED"],
+        "evidence": evidence,
+        "validity_flags": [],
     }
     missing = {
         **person, "uid": 41, "track_epoch": 7,
@@ -59,7 +58,6 @@ def social_state():
             "distance_fit_samples": 0, "distance_window_start_us": None,
             "distance_jump_count": 1, "gaze_valid": False,
             "distance_trend_valid": False, "latest_distance_valid": False,
-            "stationary_window_confirmed": False,
         },
         "validity_flags": ["GAZE_UNAVAILABLE", "DISTANCE_UNAVAILABLE_OR_JUMP"],
     }
@@ -129,6 +127,9 @@ class LLMPromptTests(unittest.TestCase):
         self.assertNotIn("active_target_uid", data)
         self.assertNotIn("active_target_track_epoch", data)
         self.assertNotIn("range_data_status", data)
+        for person in data["people"]:
+            self.assertNotIn("human_radial_motion", person)
+            self.assertNotIn("stationary_window_confirmed", person["evidence"])
 
     def test_prompt_is_static_versioned_and_reproducible_across_input_key_order(self):
         state = social_state()
@@ -137,7 +138,7 @@ class LLMPromptTests(unittest.TestCase):
         second = build_llm_prompt(reordered)
         self.assertEqual(first, second)
         self.assertEqual(first.messages, second.messages)
-        self.assertEqual(first.prompt_version, "social-state-llm-v8")
+        self.assertEqual(first.prompt_version, "social-state-llm-v9")
         self.assertEqual(first.prompt_version, PROMPT_VERSION)
         self.assertEqual(first.instructions, SYSTEM_PROMPT)
         changed = social_state()
@@ -167,13 +168,11 @@ class LLMPromptTests(unittest.TestCase):
             "signed forward velocity in m/s", "signed yaw velocity in rad/s",
             "no clockwise/counterclockwise convention specified",
             "Negative distance_slope_mps means decreasing robot-relative distance; positive means increasing",
-            "human attribution requires reliable distance evidence and stationary robot measurements throughout its distance segment",
+            "Use these relative changes regardless of robot movement; no human motion attribution is supplied or required",
             "gaze_fraction is looking time divided by valid adjacent-gaze coverage",
             "not average gaze overlap", "newest contiguous valid-distance segment",
             "nulls, missing frames, excessive time gaps and implausible jumps break it",
             "distance_fit_residual_m is RMS fit error in metres",
-            "stationary_window_confirmed means both robot velocities were available within tolerance at every distance-segment sample",
-            "alone it does not confirm a reliable trend",
         )
         for meaning in meanings:
             with self.subTest(meaning=meaning):

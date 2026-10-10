@@ -34,7 +34,6 @@ class ClosingYieldTests(unittest.TestCase):
         self.assertTrue(all(row['final_decision'] is None for row in rows[:11]))
         person = rows[-1]['social_state']['people'][0]
         self.assertEqual(person['relative_distance_trend'], 'DECREASING')
-        self.assertEqual(person['human_radial_motion'], 'UNKNOWN')
         self.assertTrue(person['face_detected'])
         self.assertEqual(person['evidence']['latest_gaze_overlap'], .1)
         self.assertEqual(rows[-1]['policy_decision']['reason_code'], 'CLOSING_DISTANCE_WITH_LOW_GAZE')

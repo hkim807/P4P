@@ -37,7 +37,7 @@ identity-lock or distance-trend prerequisite is added to general readiness.
 Explicit path conflict can resolve before distance/gaze warmup, and PASS can
 resolve with valid current distance before gaze warmup. Proximity alone cannot.
 
-Eligible `social-rules-v4` observations use this order:
+Eligible `social-rules-v5` observations use this order:
 
 | Evidence | Action |
 | --- | --- |
@@ -46,7 +46,7 @@ Eligible `social-rules-v4` observations use this order:
 | Current face detected, distance ≤3 m, valid DECREASING trend, valid NONE gaze, latest looking false and latest gaze score ≤0.87 | YIELD |
 | Latest looking false while historical SUSTAINED category is held | CONTINUE |
 | Sustained or qualifying recurring attention in TOO_CLOSE or INTERACTION_RANGE | ENGAGE |
-| Reliable AWAY motion or reliable increasing separation outside conversation range | CONTINUE |
+| Reliable increasing relative separation outside conversation range | CONTINUE |
 | Sustained or qualifying recurring attention in APPROACHABLE | APPROACH |
 | Other eligible cases, including NONE, incidental INTERMITTENT or FAR | CONTINUE |
 
@@ -69,13 +69,15 @@ and `evidence.latest_gaze_overlap` clear immediately on missing observations.
 At 10 Hz with uninterrupted low gaze and smooth closing, the configured 1 s
 minimum span plus 0.1 s category dwell allows a first YIELD at approximately
 1.1 s. Gaps, missing readings and failed fits can delay or prevent it.
-Relative closing while the robot moves leaves human motion UNKNOWN; it describes
-decreasing separation rather than proven human movement or path conflict.
+Relative closing describes decreasing separation regardless of which participant
+is moving; human motion is not estimated and closing does not establish a path conflict.
 No ego-motion compensation or physical handler is added.
 
-The LLM prompt remains `social-state-llm-v6`, including its earlier proximity
-guidance. It receives the additional measured fields and revised shared readiness,
-but this is a rule-policy change, not a matched change to LLM decision guidance.
+The LLM prompt is `social-state-llm-v9`, including its earlier proximity
+guidance. It receives relative distance trends without human-motion or
+stationary-window fields. Rule and LLM guidance still differ on proximity.
+Target locks release on `RELATIVE_SEPARATION_INCREASING` outside conversation
+range, whether the robot is moving, stationary, or its velocity is unavailable.
 Historical reports remain under their recorded versions. The active candidate
 freeze is `config/live-study-freeze-yield-low-gaze.json`; the original v3 freeze
 is retained for historical reproducibility.

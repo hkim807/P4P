@@ -1,5 +1,9 @@
 # Fixed-route interaction integration plan
 
+Historical plan: the current estimator and policies use relative distance changes
+only. Human radial motion and its stationary-window gate have been removed;
+the motion-attribution blockers below describe the earlier implementation.
+
 This plan uses the current server pipeline and robot client. The route,
 approach, engage, pause, resume, and hardware-stop behaviors will be supplied
 separately. The first complete version should stop the route, observe from a

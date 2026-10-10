@@ -142,11 +142,8 @@ Important limits of the current stream:
 - There is no image, person speech, route state, command completion, or verified
   pedestrian-path-conflict field. Those facts must not be inferred from gaze.
 
-For the first motion-dependent policy, collect stationary-base recordings and
-then implement pause-and-observe on the robot. Treat human radial motion as
-`UNKNOWN` whenever stationarity is unverified. Continue computing relative
-distance trend for diagnostics while moving. Full ego-motion compensation is a
-later experiment requiring reliable yaw and geometry.
+Use relative distance trends for decisions while the robot is stationary or
+moving. The estimator does not attribute those changes to human or robot motion.
 
 ## Layers and their interfaces
 
@@ -220,7 +217,6 @@ SocialState
     gaze_state: NONE / INTERMITTENT / SUSTAINED / UNKNOWN
     distance_zone: TOO_CLOSE / INTERACTION_RANGE / APPROACHABLE / FAR / UNKNOWN
     relative_distance_trend: DECREASING / STABLE / INCREASING / UNKNOWN
-    human_radial_motion: TOWARD / STATIONARY / AWAY / UNKNOWN
     evidence:
       gaze_fraction, gaze_valid_coverage_s, sustained_gaze_s
       distance_slope_mps, distance_valid_span_s, distance_fit_residual
@@ -231,8 +227,7 @@ SocialState
     local_execution_status
 ```
 
-`STATIONARY` for human radial motion means little radial movement; it does not
-prove the person is motionless in every direction. A lateral passerby can have
+`STABLE` relative distance does not prove the person is motionless. A lateral passerby can have
 almost constant range. Avoid a numeric engagement probability unless it has
 been calibrated against labels. Data coverage and reasons are sufficient for
 the interpretable baseline.
@@ -289,12 +284,10 @@ large gaps rather than joining unrelated pieces of history. Retain the signed
 slope and a fit-quality measure. Negative slope means separation is decreasing;
 positive means increasing. Calibrate a deadband from stationary-person recordings.
 
-**Motion interpretation.** The implemented estimator converts a relative trend
-to human radial motion only when both recorded robot velocities are present and
-near zero at every sample in the fitted distance segment. Validate the live
-velocity channels and their freshness before using this label for physical
-actions. Head/camera motion and face-distance noise remain limitations even
-during stationary-base observation.
+**Motion interpretation.** The estimator reports relative distance trends and
+does not estimate human motion. Robot velocities describe the robot's current
+movement, but do not gate distance-trend classification. Head/camera motion and
+face-distance noise remain limitations.
 
 **Distance zones.** Calibrate the boundaries of four regions with separate entry/exit
 limits. Do not adopt the PDF's mixed near/mid/far wording as several competing
@@ -316,7 +309,7 @@ sensor calibration remains a separate task before interpreting cues or moving.
 | 1. Raw input, recording, replay - implemented | Existing schema, receiver, JSONL writer/reader, replay CLI | All seven recordings validate; existing raw playback still works. |
 | 2. Person tracking - implemented | Bounded UID histories, visibility lifecycle, session isolation, replay track trace | Passed: all 682 frames; continuous histories in 03/05; separate changed UIDs; lifecycle edge cases; identical traces at replay speeds 0/1/2 and through the receiver. See the linked validation report. |
 | 3a. Temporal measurements - implemented | Windowed gaze evidence, robust distance slope, coverage and gap handling | Seven recordings and controlled stimuli pass source-time, validity, and replay checks. Evidence traces expose gaps/UID fragmentation. |
-| 3b. SocialState - implemented with provisional thresholds | Gaze categories, distance zones, relative trend and conditional human radial motion, validity | Synthetic pattern checkpoints pass; output carries evidence/config/uncertainty. Calibration and human-labeled evaluation remain pending; original 04/05 show gaze-score ambiguity. |
+| 3b. SocialState - implemented with provisional thresholds | Gaze categories, distance zones, relative trend, validity | Synthetic pattern checkpoints pass; output carries evidence/config/uncertainty. Calibration and human-labeled evaluation remain pending; original 04/05 show gaze-score ambiguity. |
 | 4a. Rule decision - implemented | Pure rule table over SocialState; action or defer with reason ID | Branch tests and live/replay decision parity pass. No commands or robot dependency. See the [rule policy](social-policy.md). |
 | 4b. Interaction lifecycle | Observe/decide, target lock, cooldown, completion/cancellation handling | Simulated feedback demonstrates the full state progression; missing/changed UIDs never transfer a lock; repeated frames do not retrigger engagement. Live inspection emits the same stage outputs as replay and detects stream loss. |
 | 5a. Commands and dry-run round trip | Full session envelope, intent validation, command parsing/deduplication, fake executor, execution events | Real HTTP through the existing tunnel delivers correlated commands and feedback. Stale/lost-target/old-session/duplicate/unsupported commands are rejected or deduplicated. |
@@ -466,10 +459,10 @@ must expose the rule ID and measured evidence used for every decision.
 
 | Evidence / condition | Proposal |
 | --- | --- |
-| Sustained gaze, reliable toward/stable radial motion, interaction-range distance | `ENGAGE` with the current visible UID |
-| Sustained gaze, reliable toward/stable radial motion, approachable distance | `APPROACH` with the current visible UID |
-| Reliably moving away, or enough valid evidence for no attention | `CONTINUE` when route continuation is permitted |
-| Intermittent gaze, insufficient coverage, unknown human motion, or ambiguous target | Defer and observe; request bounded pause-and-observe when available |
+| Sustained gaze, interaction-range distance | `ENGAGE` with the current visible UID |
+| Sustained gaze, approachable distance, no valid increasing separation | `APPROACH` with the current visible UID |
+| Reliably increasing separation outside conversation range, or enough valid evidence for no attention | `CONTINUE` when route continuation is permitted |
+| Insufficient gaze/distance coverage or ambiguous target | Keep observing |
 | Confirmed pedestrian route conflict from future verified geometry/local context | `YIELD` |
 | Too-close distance, invalid/stale control inputs, or local obstruction | Block approach; robot-local hold/cancel under execution protection |
 

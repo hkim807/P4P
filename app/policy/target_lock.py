@@ -171,7 +171,7 @@ class TargetLockController:
                 self._clear_candidate()
                 self.gap_contaminated = len(visible) > 1
                 status = "LOCKED"
-                if proposal is not None and proposal.decision == "CONTINUE" and proposal.reason_code in ("NO_ATTENTION", "PERSON_MOVING_AWAY"):
+                if proposal is not None and proposal.decision == "CONTINUE" and proposal.reason_code in ("NO_ATTENTION", "RELATIVE_SEPARATION_INCREASING"):
                     self._release(now, events, "RELEASED_BY_POLICY")
                     released_this_frame = True
                     status, decision, reason = "COOLDOWN", None, "LOCK_COOLDOWN"
@@ -267,7 +267,7 @@ class TargetLockController:
                     self.cooldown_until_us = None
                     self.lock_id = None
                     self.bound_tracks = []
-                if len(visible) == 1 and not (proposal is not None and proposal.decision == "CONTINUE" and proposal.reason_code in ("NO_ATTENTION", "PERSON_MOVING_AWAY")):
+                if len(visible) == 1 and not (proposal is not None and proposal.decision == "CONTINUE" and proposal.reason_code in ("NO_ATTENTION", "RELATIVE_SEPARATION_INCREASING")):
                     self.counter += 1
                     self.lock_id = f"{state.session_id}:lock:{self.counter}"
                     self.key = next(iter(visible))

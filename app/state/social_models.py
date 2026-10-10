@@ -101,7 +101,6 @@ class TemporalEvidence(StrictModel):
     gaze_valid: bool
     distance_trend_valid: bool
     latest_distance_valid: bool
-    stationary_window_confirmed: bool
 
 
 class PersonSocialState(StrictModel):
@@ -114,7 +113,6 @@ class PersonSocialState(StrictModel):
     gaze_state: Gaze
     distance_zone: Zone
     relative_distance_trend: Trend
-    human_radial_motion: Literal["TOWARD", "STATIONARY", "AWAY", "UNKNOWN"]
     evidence: TemporalEvidence
     path_relation: Literal["UNKNOWN", "CLEAR", "CONFLICT"] = "UNKNOWN"
     pass_gesture: Literal["UNKNOWN", "PASS"] = "UNKNOWN"
@@ -140,7 +138,7 @@ class CueChange(StrictModel):
 
 class SocialState(StrictModel):
     schema_version: Literal[1] = 1
-    estimator_version: Literal["temporal-social-v1", "temporal-social-v2"] = "temporal-social-v2"
+    estimator_version: Literal["temporal-social-v1", "temporal-social-v2", "temporal-social-v3"] = "temporal-social-v3"
     observation_readiness: Literal["READY", "NOT_READY"] = "NOT_READY"
     readiness_reason: str = "UNASSESSED"
     state_id: str

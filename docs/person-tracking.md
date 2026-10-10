@@ -129,9 +129,10 @@ watchdog remains a later layer and is not implemented here.
 
 **Decision.** Keep samples in `[current_timestamp - 3 seconds, current_timestamp]`
 with an additional 64-sample cap per track and a 32-active-track cap. Prune missing
-tracks too. Preserve nulls and optional head-position presence, and include the
-contemporaneous robot velocity fields with each person sample for later motion
-interpretation. Samples are copied on output so consumers cannot mutate history.
+tracks too. Preserve nulls and optional head-position presence. Current robot
+velocities are included once at snapshot level; person histories do not duplicate
+them because distance trends use relative separation only. Samples are copied on
+output so consumers cannot mutate history.
 
 **Why.** Temporal social analysis needs original evidence and timing, as motivated
 by the engagement study. The final project plan suggests 1-3 seconds; three

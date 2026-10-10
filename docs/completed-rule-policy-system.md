@@ -101,9 +101,9 @@ validated identity accuracy remain planned:
 | --- | --- | --- |
 | No visible person | `CONTINUE` | Continue only with no active/missing lock; otherwise hold through the bounded return window. |
 | Multiple visible people, too close, or invalid evidence | `DEFER` | Retain or release the current lock by explicit lifecycle rules; do not select a new target opportunistically. |
-| Valid no attention or person moving away | `CONTINUE` | Release or enter cooldown as appropriate before route resume. |
-| Sustained gaze plus valid toward/stationary motion in approachable range | `APPROACH` | Issue at most one bounded approach command after route and robot-local checks. |
-| Sustained gaze plus valid toward/stationary motion in interaction range | `ENGAGE` | Issue one engagement command per logical interaction; wait for completion feedback before cooldown. |
+| Valid no attention or increasing relative separation outside conversation range | `CONTINUE` | Release or enter cooldown as appropriate before route resume. |
+| Sustained gaze in approachable range with no valid increasing separation | `APPROACH` | Issue at most one bounded approach command after route and robot-local checks. |
+| Sustained gaze in interaction range | `ENGAGE` | Issue one engagement command per logical interaction; wait for completion feedback before cooldown. |
 | Verified route conflict | No current input; `YIELD` is never emitted | Add only after route-conflict geometry and robot-local yield behavior are validated. |
 
 ## Target-lock state and decisions
@@ -128,10 +128,9 @@ Do not add image/relative-position matching until head pose or a settled-camera
 condition is verified. Rebuild gaze and distance-trend evidence for the new
 track rather than copying measurements across UIDs.
 
-The current temporal estimator checks only base velocity before labeling human
-radial motion. The completed estimator must mark this cue unknown while head
-motion could explain a range change, or transform measurements into a verified
-stable frame. Gaze thresholds also need evaluation with head following enabled.
+The temporal estimator reports relative distance changes without attributing
+them to human or robot motion. Head/camera movement can still affect those
+measurements. Gaze thresholds also need evaluation with head following enabled.
 
 ## Implementation and validation matrix
 

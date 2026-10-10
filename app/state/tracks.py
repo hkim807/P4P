@@ -15,7 +15,7 @@ from typing import Any
 from app.domain.models import RawObservationFrame
 from app.recording import TimestampOrderError
 
-TRACKER_VERSION = "uid-tracking-v1"
+TRACKER_VERSION = "uid-tracking-v2"
 
 @dataclass(frozen=True)
 class TrackConfig:
@@ -137,8 +137,7 @@ class TrackManager:
             track.observation_count += 1
             sample = person.model_dump(exclude_unset=True)
             del sample["uid"]
-            sample.update(timestamp_us=now, frame_sequence=self._sequence,
-                          robot=validated.robot.model_dump())
+            sample.update(timestamp_us=now, frame_sequence=self._sequence)
             track.samples.append(sample)
 
         cutoff = now - self.config.history_window_us
