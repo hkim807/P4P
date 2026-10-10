@@ -710,6 +710,44 @@ class ClientTests(unittest.IsolatedAsyncioTestCase):
         finally:
             await feeder
 
+    async def test_approach_final_arrival_asymmetric_distance_acceptance(self):
+        cases = (
+            (.7, .8132305429744903, -.2637930206988461, True, 'APPROACHED_VERIFIED'),
+            (.7, .85, 0., True, 'APPROACHED_VERIFIED'),
+            (.7, .85001, 0., True, 'OUTSIDE_TOLERANCE'),
+            (.7, .60, 0., True, 'APPROACHED_VERIFIED'),
+            (.7, .59999, 0., True, 'OUTSIDE_TOLERANCE'),
+            (.7, .7, 4., True, 'APPROACHED_VERIFIED'),
+            (.7, .7, -4., True, 'APPROACHED_VERIFIED'),
+            (.7, .7, 4.01, True, 'OUTSIDE_TOLERANCE'),
+            (.7, .7, -4.01, True, 'OUTSIDE_TOLERANCE'),
+            (.7, .81323, 0., False, 'APPROACHED_UNVERIFIED'),
+            (1., 1.15, 0., True, 'APPROACHED_VERIFIED'),
+            (1., 1.15001, 0., True, 'OUTSIDE_TOLERANCE'),
+            (1., .9, 0., True, 'APPROACHED_VERIFIED'),
+            (1., .89999, 0., True, 'OUTSIDE_TOLERANCE'),
+        )
+        for stop_distance, distance, heading, fresh, status in cases:
+            with self.subTest(stop_distance=stop_distance, distance=distance, heading=heading, fresh=fresh):
+                angle = math.radians(heading)
+                x = distance*math.cos(angle)
+                target = dict(wx=x, wy=x*math.tan(angle), uid=18,
+                              seen_at=time.monotonic(), frame_seq=1)
+                rt = NS(target=target, cfg=ApproachConfig(stop_distance=stop_distance),
+                        pose=lambda: dict(x=0., y=0., yaw=0., v=0., w=0.),
+                        log=NS(emit=lambda *a, **kw: None))
+                with patch('robot.navel_client.approach.sample_target', new=AsyncMock(return_value=target if fresh else None)), \
+                        patch('robot.navel_client.approach.run_arc', new=AsyncMock()) as arcs, \
+                        patch('robot.navel_client.approach.turn_to_target', new=AsyncMock()):
+                    result = await approach_human(rt)
+                self.assertEqual(result.status, status)
+                self.assertEqual(result.live_position_verified, fresh)
+                self.assertAlmostEqual(result.distance_m, distance)
+                self.assertAlmostEqual(result.heading_error_deg, heading)
+                # Final acceptance must not relax the existing correction threshold.
+                self.assertEqual(arcs.await_count,
+                                 2 if fresh and distance > stop_distance+.1 else 1)
+
     async def test_approach_bounded_corrections_and_unsuccessful_results(self):
         target = dict(wx=1.5, wy=.3, uid=18, seen_at=time.monotonic(), frame_seq=1)
         for fresh, status in ((True, 'OUTSIDE_TOLERANCE'), (False, 'APPROACHED_UNVERIFIED')):

@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
 @dataclass
 class ApproachConfig:
     stop_distance: float = 0.7
-    distance_tolerance: float = 0.10
+    distance_tolerance: float = 0.15
     heading_tolerance_deg: float = 4.0
     head_x: float = 0.0
     head_y: float = 0.0
