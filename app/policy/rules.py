@@ -121,12 +121,9 @@ def decide(state: SocialState | dict, *, stale: bool = False,
         return result("CONTINUE", "PERSON_MOVING_AWAY")
     if person.relative_distance_trend == "INCREASING" and e.distance_trend_valid:
         return result("CONTINUE", "RELATIVE_SEPARATION_INCREASING")
-    if attentive:
-        if person.distance_zone == "INTERACTION_RANGE":
-            return result("ENGAGE", "SUSTAINED_GAZE_IN_INTERACTION_RANGE")
-        if person.distance_zone == "APPROACHABLE":
-            return result("APPROACH", "RECURRING_ATTENTION_IN_APPROACHABLE_RANGE" if recurring
-                          else "SUSTAINED_GAZE_IN_APPROACHABLE_RANGE")
+    if attentive and person.distance_zone == "APPROACHABLE":
+        return result("APPROACH", "RECURRING_ATTENTION_IN_APPROACHABLE_RANGE" if recurring
+                      else "SUSTAINED_GAZE_IN_APPROACHABLE_RANGE")
     if person.gaze_state == "NONE":
         return result("CONTINUE", "NO_ATTENTION")
     return result("CONTINUE", "PERSON_FAR" if person.distance_zone == "FAR" else "NO_INTERACTION_CUE")

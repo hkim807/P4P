@@ -706,16 +706,6 @@
       },
       "title": "Track Events",
       "type": "array"
-    },
-    "active_target_uid": {
-      "default": null,
-      "title": "Active Target Uid",
-      "type": "null"
-    },
-    "active_target_track_epoch": {
-      "default": null,
-      "title": "Active Target Track Epoch",
-      "type": "null"
     }
   },
   "required": [

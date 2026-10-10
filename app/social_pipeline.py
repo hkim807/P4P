@@ -2,7 +2,7 @@
 from threading import Lock
 
 from app.commands import CommandConfig, CommandPlanner, ExecutionEvent
-from app.pipeline import TrackingPipeline, TrackTraceWriter, TrackingProcessingError
+from app.pipeline import TrackingPipeline, TrackingProcessingError
 from app.policy.rules import decide, normalise_rule_decision, rule_readiness
 from app.policy.target_lock import LockConfig, TargetLockController
 from app.state.estimator import SocialStateEstimator

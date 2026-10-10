@@ -154,9 +154,6 @@ class SocialState(StrictModel):
     people: list[PersonSocialState]
     cue_changes: list[CueChange]
     track_events: list[dict[str, int | str]]
-    # No target selection, collision interpretation, or engagement probability yet.
-    active_target_uid: None = None
-    active_target_track_epoch: None = None
 
     @model_validator(mode="after")
     def derive_readiness(self):

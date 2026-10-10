@@ -229,7 +229,6 @@ SocialState
   safety:
     calibrated_range_summary
     local_execution_status
-  active_target_uid, active_target_track_epoch
 ```
 
 `STATIONARY` for human radial motion means little radial movement; it does not

@@ -268,7 +268,6 @@ class LiveModelRunner:
                      identity: dict[str, Any]) -> dict[str, Any]:
         job = self._freeze(state, source)
         people = [person for person in state["people"] if person["visibility"] == "OBSERVED"]
-        evidence = people[0]["evidence"] if len(people) == 1 else {}
         image_ready = job.frame is not None
         from app.state.social_models import observation_hold_reason
         ready = len(people) == 1 and (image_ready if identity["policy"] == "vlm" else
