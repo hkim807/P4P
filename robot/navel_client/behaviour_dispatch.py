@@ -30,7 +30,9 @@ async def approach_person(context):
     await runtime.settle()
     observation = context.current_observation()
     people = observation.get("people", []) if observation else []
-    uid = people[0]["uid"] if len(people) == 1 else None
+    uid = context.local_target_uid
+    if uid is None:
+        uid = people[0]["uid"] if len(people) == 1 else None
     result = context.approach_result = await approach_human(runtime, uid)
     if result.status != "APPROACHED_VERIFIED":
         raise ApproachNotVerified(result.status)
@@ -104,6 +106,7 @@ class BehaviourContext:
     approach: object = None
     approach_result: object = None
     timeout_s: float = 120.0
+    local_target_uid: int | None = None
     _tasks: set = field(default_factory=set, init=False, repr=False)
     _closing: bool = field(default=False, init=False, repr=False)
 
@@ -135,21 +138,21 @@ class BehaviourDispatcher:
         self._handler_task = None
         self._cleanup_lock = asyncio.Lock()
 
-    def preflight(self):
+    def preflight(self, action=None):
         if not callable(getattr(self.context.robot, "base_vel", None)):
             raise ValueError("execution requires SDK robot.base_vel for local stopping")
-        if self.handlers["CONTINUE"] is continue_route:
+        if action in (None, "CONTINUE") and self.handlers["CONTINUE"] is continue_route:
             if self.context.route is None:
                 raise ValueError("CONTINUE execution requires --route-trial")
             if not callable(getattr(self.context.robot, "move_base", None)):
                 raise ValueError("CONTINUE execution requires SDK robot.move_base")
-        if self.handlers["ENGAGE"] is engage_person and not callable(getattr(self.context.robot, "say", None)):
+        if action in (None, "ENGAGE") and self.handlers["ENGAGE"] is engage_person and not callable(getattr(self.context.robot, "say", None)):
             raise ValueError("ENGAGE execution requires SDK robot.say")
-        if self.handlers["APPROACH"] is approach_person:
+        if action in (None, "APPROACH") and self.handlers["APPROACH"] is approach_person:
             for method in ("move_and_rotate_base", "rotate_base", "look_at_person", "say"):
                 if not callable(getattr(self.context.robot, method, None)):
                     raise ValueError(f"APPROACH execution requires SDK robot.{method}")
-        if self.handlers["YIELD"] is yield_space:
+        if action in (None, "YIELD") and self.handlers["YIELD"] is yield_space:
             for method in ("move_and_rotate_base", "move_base", "say"):
                 if not callable(getattr(self.context.robot, method, None)):
                     raise ValueError(f"YIELD execution requires SDK robot.{method}")
@@ -179,7 +182,24 @@ class BehaviourDispatcher:
         context = self.context
         context.decision, context.source = self.trial.decision, self.trial.source
         context.decision_person_uid = self.trial.decision_person_uid
-        action = context.decision["action"]
+        return await self._execute(context.decision["action"])
+
+    async def dispatch_local(self, action, *, target_uid=None):
+        """Execute an explicit local action without a server decision or route."""
+        if action not in {"APPROACH", "YIELD", "ENGAGE"}:
+            raise ValueError("local action must be APPROACH, YIELD or ENGAGE")
+        if action == "APPROACH" and (type(target_uid) is not int or target_uid < 0):
+            raise ValueError("local APPROACH requires a valid acquired target UID")
+        if self.context.route is not None:
+            raise ValueError("local action excludes a baseline route")
+        if self._dispatched or self.trial.phase != "OBSERVING":
+            return False
+        self._dispatched = True
+        self.context.local_target_uid = target_uid
+        return await self._execute(action, local=True)
+
+    async def _execute(self, action, *, local=False):
+        context = self.context
         handler = self.handlers[action]
         succeeded = False
         try:
@@ -190,26 +210,42 @@ class BehaviourDispatcher:
                     await context.route.stop()
                 if context.head is not None:
                     await context.head.suspend_and_settle()
-            if action in {"APPROACH", "ENGAGE"}:
+            if not local and action in {"APPROACH", "ENGAGE"}:
                 observation = context.current_observation()
                 if (observation is None or len(observation.get("people", [])) != 1
                         or not 0 <= self.trial.monotonic_us() - observation["timestamp"] <= self.trial.max_age_us):
                     self.trial.fail("CURRENT_PERSON_UNAVAILABLE")
                     return False
             async def run_handler():
-                if not self.trial.start_execution():
+                started = (self.trial.start_local_execution() if local
+                           else self.trial.start_execution())
+                if not started:
                     return False
-                logger.info("single_trial phase=EXECUTING action=%s", action)
+                logger.info("%s phase=EXECUTING action=%s", "debug_action" if local else "single_trial", action)
+                if local and action == "ENGAGE":
+                    await context.approach.wait_ready(require_perception=False)
+                    await context.approach.settle()
                 trial_head = context.trial_head
+                local_uid = None
+                if local:
+                    observation = context.current_observation()
+                    if (observation is not None and
+                            0 <= self.trial.monotonic_us() - observation["timestamp"] <= self.trial.max_age_us):
+                        try:
+                            local_uid = self._person_uid(context, current_first=True)
+                        except RuntimeError:
+                            pass  # Optional focus must not gate target-free actions.
                 if trial_head is not None:
                     if action == "CONTINUE":
                         await trial_head.glance(self._person_uid(context, current_first=True))
                     elif action == "YIELD":
-                        await trial_head.look_at_person(self._person_uid(context, current_first=True))
+                        if not local or local_uid is not None:
+                            await trial_head.look_at_person(local_uid if local else self._person_uid(context, current_first=True))
                     elif action == "APPROACH":
                         await trial_head.neutral()
                     else:  # ENGAGE
-                        await trial_head.look_at_person(self._person_uid(context, current_first=True))
+                        if not local or local_uid is not None:
+                            await trial_head.look_at_person(local_uid if local else self._person_uid(context, current_first=True))
                 try:
                     await handler(context)
                     if trial_head is not None and action == "APPROACH" and handler is not approach_person:
