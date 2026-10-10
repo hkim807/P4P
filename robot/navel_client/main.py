@@ -14,7 +14,7 @@ from dataclasses import dataclass
 from typing import Any
 
 from robot.navel_client.adapter import NavelObservationAdapter
-from robot.navel_client.behaviour_dispatch import BehaviourDispatcher, BehaviourNotImplemented
+from robot.navel_client.behaviour_dispatch import BehaviourDispatcher
 from robot.navel_client.camera_capture import CameraCapture
 from robot.navel_client.command_dispatch import CommandRejected, FakeCommandExecutor
 from robot.navel_client.decision_dispatch import (
@@ -353,11 +353,7 @@ async def collect_and_stream(robot: Any, args: argparse.Namespace,
                                                 timeout_s=args.behaviour_timeout)
                             if args.single_trial_execute else None)
     if behaviour_dispatcher is not None:
-        try:
-            behaviour_dispatcher.preflight()
-        except BehaviourNotImplemented:
-            trial.fail("BEHAVIOUR_NOT_IMPLEMENTED")
-            return trial
+        behaviour_dispatcher.preflight()
     if trial_head is not None:
         # Establish the fixed forward target before route motion or perception starts.
         await trial_head.neutral()

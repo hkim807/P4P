@@ -456,7 +456,11 @@ async def approach_human(rt, uid=None):
     remaining, bearing = math.hypot(x, y), math.degrees(math.atan2(y, x))
     status = 'APPROACHED_UNVERIFIED'
     if fresh is not None:
-        status = ('APPROACHED_VERIFIED' if abs(remaining-rt.cfg.stop_distance) <= rt.cfg.distance_tolerance
+        # Compare the bounds directly so subtraction does not reject an arrival
+        # exactly at the configured upper distance limit.
+        within_distance = (rt.cfg.stop_distance-rt.cfg.distance_tolerance <= remaining
+                           <= rt.cfg.stop_distance+rt.cfg.distance_tolerance)
+        status = ('APPROACHED_VERIFIED' if within_distance
                   and abs(bearing) <= rt.cfg.heading_tolerance_deg else 'OUTSIDE_TOLERANCE')
     result = ApproachResult(status, remaining, bearing, fresh is not None)
     rt.log.emit('APPROACH_RESULT', **asdict(result))

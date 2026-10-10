@@ -30,11 +30,10 @@ Per observed or temporarily missing track, output includes:
 - `gaze_state`: `NONE`, `INTERMITTENT`, `SUSTAINED`, or `UNKNOWN`.
 - `distance_zone`: `TOO_CLOSE`, `INTERACTION_RANGE`, `APPROACHABLE`, `FAR`, or `UNKNOWN`.
 - `relative_distance_trend`: `DECREASING`, `STABLE`, `INCREASING`, or `UNKNOWN`.
-- `human_radial_motion`: `TOWARD`, `STATIONARY`, `AWAY`, or `UNKNOWN`.
 - `face_detected`: current positive SDK face-box evidence; null when unavailable
   or the track is temporarily missing.
 - `evidence`: coverage, gaze fraction/run duration, sample counts, slope, fit
-  residual, segment span, detected jumps, stationarity from robot velocities,
+  residual, segment span, detected jumps,
   and current `latest_gaze_overlap` (null when unavailable or missing).
 - `validity_flags`: why evidence is missing, insufficient, or unreliable.
 
@@ -43,10 +42,18 @@ field; `track_events` retains acquisition/missing/reacquisition/loss information
 Expired tracks leave the people array and appear in terminal tracking events.
 `latest_distance_m` can be a retained historical reading for a missing track;
 visibility and last-seen age must be consulted. Its current distance zone is then
-UNKNOWN. Active targets are null and range-data status remains UNKNOWN because
-this layer does not calibrate or interpret lidar/sonar.
+UNKNOWN. Target selection is reported separately in `target_lock`; SocialState
+contains no target-selection fields. This layer does not calibrate or interpret
+lidar/sonar, so SocialState contains no range-sensor status or collision summary.
 
 ## Design decisions and research basis
+
+The numeric defaults below describe `TemporalConfig` and `config/temporal-state.json`.
+Live development trials using `config/temporal-development-frozen.json` instead
+use a 3 s window, 2 s minimum span, gaze entry/exit 0.93/0.90, 0.1 s category
+dwell and a 6 m APPROACHABLE boundary. The separate closing-yield cutoff is 3 m.
+Each SocialState embeds the effective config; [the policy guide](social-policy.md)
+describes how those values affect actions.
 
 ### 1. Temporal evidence before engagement interpretation
 
@@ -143,13 +150,14 @@ First valid readings are classified directly. Subsequent transitions must cross
 the relevant boundary plus/minus the margin. These are research-development
 settings, not proven social-distance preferences or robot stopping distances.
 
-Relative distance changes cannot distinguish human movement from robot movement.
-The estimator treats the robot base as stationary when both recorded velocities
-are present and within provisional tolerances (0.02 m/s forward, 0.03 rad/s yaw)
-at every sample in the fitted distance segment. A missing velocity or measured
-robot motion prevents a human-motion label. No separate context file is needed.
-`STATIONARY` for the human means stable radial separation, not absence of lateral
-movement. Head movement and face-distance noise remain limitations.
+Distance trends describe relative separation regardless of which participant
+is moving. `STABLE` means little change in separation, not that the person is
+motionless. No human radial motion or stationary-window evidence is calculated.
+Robot velocities and the instantaneous robot `motion_state` remain available:
+the base is STATIONARY when both current velocities are present and within
+provisional tolerances (0.02 m/s forward, 0.03 rad/s yaw). These tolerances do
+not affect relative distance trends. Head movement and face-distance noise
+remain limitations.
 
 ### 5. Identity, live integration, and failure behavior
 
@@ -191,10 +199,10 @@ are set to zero throughout.
 
 | Checkpoint | Designed gaze | Designed separation | Expected state |
 | --- | --- | --- | --- |
-| 3.5 s | Low throughout | Constant | NONE / STABLE / STATIONARY |
-| 7.5 s | High throughout recent window | Decreasing at 0.2 m/s | SUSTAINED / DECREASING / TOWARD |
-| 11.5 s | Alternating high/low | Constant | INTERMITTENT / STABLE / STATIONARY |
-| 15.5 s | Low throughout recent window | Increasing at 0.2 m/s | NONE / INCREASING / AWAY |
+| 3.5 s | Low throughout | Constant | NONE / STABLE |
+| 7.5 s | High throughout recent window | Decreasing at 0.2 m/s | SUSTAINED / DECREASING |
+| 11.5 s | Alternating high/low | Constant | INTERMITTENT / STABLE |
+| 15.5 s | Low throughout recent window | Increasing at 0.2 m/s | NONE / INCREASING |
 
 All four checkpoints pass at the default config. Their expectations are fixed
 synthetic checks, so a config that changes their semantics can intentionally fail

@@ -114,8 +114,7 @@ class SingleSnapshotRunnerTests(unittest.TestCase):
 
     def test_schema_errors_are_detected_before_client_construction(self):
         for field, value in (("robot_timestamp_us", "1100000"), ("schema_version", 2),
-                             ("people", {}), ("active_target_uid", 17),
-                             ("range_data_status", "CLEAR"), ("extra_sensor", {})):
+                             ("people", {}), ("extra_sensor", {})):
             with self.subTest(field=field):
                 payload = dict(self.payload)
                 payload[field] = value

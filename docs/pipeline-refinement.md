@@ -1,10 +1,17 @@
 # Refined social decision pipeline
 
-The original experiments below describe rules v3 and LLM prompt v6. The current
-rule policy is v4: [closing with low gaze](social-policy.md) replaces distance-only
-TOO_CLOSE yielding, within a 3 m cutoff. See [v4 validation](results/yield-closing-low-gaze/report.md).
-The LLM prompt remains v6. Verify the current candidate with
-`config/live-study-freeze-yield-low-gaze.json`; the original freeze is historical.
+The current rule policy is `social-rules-v5` and the LLM prompt is
+`social-state-llm-v10`. Both describe measured conflict, PASS priority and the
+complete closing-distance/low-gaze YIELD condition; proximity alone does not
+justify YIELD. Human motion is not estimated. Current parameters and guidance
+are documented in [the social policy](social-policy.md).
+
+## Historical refinement experiment
+
+The experiments below describe rules v3 and LLM prompt v6, followed by
+[v4 yield validation](results/yield-closing-low-gaze/report.md). Their reported
+thresholds, versions, hashes and results describe those runs. Existing freeze
+manifests are historical; create a new freeze for the current candidate.
 
 Work is on `feature/end-to-end-pipeline-refinement`, based on `33d9a78`.
 The requested Ollama branch exists as `feature/ollama-llm-vlm-policies` at

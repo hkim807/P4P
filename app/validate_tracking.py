@@ -32,7 +32,7 @@ def audit_recording(path: Path, config: TrackConfig, trace_output: Path | None =
     source_index = {}
     for frame in frames:
         for person in frame["people"]:
-            source_index[(frame["timestamp"], person["uid"])] = {**person, "robot": frame["robot"]}
+            source_index[(frame["timestamp"], person["uid"])] = person
 
     def require(condition, message):
         if not condition:

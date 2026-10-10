@@ -2,7 +2,7 @@
 from pathlib import Path
 import unittest
 
-from app.policy.rules import decide
+from app.policy.rules import POLICY_VERSION, decide
 from app.social_pipeline import SocialPipeline
 from app.state.social_models import TemporalConfig
 from robot.navel_client.decision_dispatch import parse_decision
@@ -26,15 +26,15 @@ def sequence(**kwargs):
 
 
 class ClosingYieldTests(unittest.TestCase):
-    def test_closing_low_gaze_resolves_after_warmup_and_robot_accepts_v4(self):
+    def test_closing_low_gaze_resolves_after_warmup_and_robot_accepts_current_policy(self):
         _, rows = sequence()
         first = next(row for row in rows if row['final_decision'])
         self.assertEqual(first['final_decision']['action'], 'YIELD')
-        self.assertEqual(first['social_state']['robot_timestamp_us'], 1_100_000)
-        self.assertTrue(all(row['final_decision'] is None for row in rows[:11]))
+        self.assertEqual(first['social_state']['robot_timestamp_us'], 2_100_000)
+        self.assertTrue(all(row['final_decision'] is None for row in rows[:21]))
+        self.assertEqual(first['policy_decision']['policy_version'], POLICY_VERSION)
         person = rows[-1]['social_state']['people'][0]
         self.assertEqual(person['relative_distance_trend'], 'DECREASING')
-        self.assertEqual(person['human_radial_motion'], 'UNKNOWN')
         self.assertTrue(person['face_detected'])
         self.assertEqual(person['evidence']['latest_gaze_overlap'], .1)
         self.assertEqual(rows[-1]['policy_decision']['reason_code'], 'CLOSING_DISTANCE_WITH_LOW_GAZE')
@@ -60,7 +60,7 @@ class ClosingYieldTests(unittest.TestCase):
         _, rows = sequence(start=3.46)
         state = rows[-1]['social_state']
         self.assertEqual(state['people'][0]['latest_distance_m'], 3.0)
-        self.assertEqual(state['people'][0]['distance_zone'], 'FAR')
+        self.assertEqual(state['people'][0]['distance_zone'], 'APPROACHABLE')
         self.assertEqual(rows[-2]['final_decision']['action'], 'CONTINUE')
         self.assertEqual(rows[-1]['final_decision']['action'], 'YIELD')
         state['config']['yield_closing_max_distance_m'] = 2.9
@@ -104,18 +104,30 @@ class ClosingYieldTests(unittest.TestCase):
         self.assertIsNone(row['final_decision'])
 
     def test_current_low_gaze_required_even_when_history_holds_none(self):
-        for gaze in (.875, .95):
+        for gaze in (.91, .95):
             with self.subTest(gaze=gaze):
                 pipeline, _ = sequence()
                 state = pipeline.process(closing_observation(24, gaze=gaze))['social_state']
                 self.assertEqual(state['people'][0]['gaze_state'], 'NONE')
                 self.assertEqual(decide(state).decision, 'CONTINUE')
 
-    def test_configured_point_eight_seven_gaze_cutoff(self):
-        _, at_exit = sequence(gaze=.87)
-        _, at_enter = sequence(gaze=.88)
+    def test_configured_gaze_entry_exit_and_initial_hysteresis_band(self):
+        _, at_exit = sequence(gaze=CONFIG.looking_exit)
+        _, at_enter = sequence(gaze=CONFIG.looking_enter)
         self.assertEqual(at_exit[-1]['final_decision']['action'], 'YIELD')
         self.assertEqual(at_enter[-1]['final_decision']['action'], 'APPROACH')
+        _, in_band = sequence(gaze=(CONFIG.looking_exit + CONFIG.looking_enter) / 2)
+        self.assertIsNone(in_band[-1]['final_decision'])
+
+    def test_custom_cutoff_and_null_cutoff_control_yield_independently_of_zone(self):
+        _, rows = sequence(start=4.5)
+        state = rows[-1]['social_state']
+        self.assertEqual(state['people'][0]['distance_zone'], 'APPROACHABLE')
+        self.assertEqual(decide(state).decision, 'CONTINUE')
+        for cutoff in (state['people'][0]['latest_distance_m'], None):
+            with self.subTest(cutoff=cutoff):
+                state['config']['yield_closing_max_distance_m'] = cutoff
+                self.assertEqual(decide(state).decision, 'YIELD')
 
     def test_pass_overrides_closing_trigger_and_conflict_overrides_pass(self):
         _, rows = sequence()

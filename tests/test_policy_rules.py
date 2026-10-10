@@ -26,7 +26,7 @@ def ready_state(distance=2.0):
     for i in range(21):
         state = pipeline.process(sample(i, distance=distance))["social_state"]
     assert state["people"][0]["gaze_state"] == "SUSTAINED"
-    assert state["people"][0]["human_radial_motion"] == "STATIONARY"
+    assert state["people"][0]["relative_distance_trend"] == "STABLE"
     return state
 
 
@@ -54,7 +54,7 @@ class PolicyRulesTests(unittest.TestCase):
             normalise_rule_decision({"decision_id": "test", "source_state_id": "test:1",
                 "session_id": "test", "decision": "DEFER", "reason_code": "WAITING"})
 
-    def test_sustained_gaze_and_known_motion_select_one_target(self):
+    def test_sustained_gaze_selects_one_target(self):
         for distance, expected in ((1.0, "ENGAGE"), (2.0, "APPROACH")):
             with self.subTest(distance=distance):
                 state = ready_state(distance)
@@ -72,9 +72,7 @@ class PolicyRulesTests(unittest.TestCase):
                                          gaze=.1 if action == "CONTINUE" else .95)
                     response = pipeline.process(observation)
                 person = response["social_state"]["people"][0]
-                self.assertEqual(person["human_radial_motion"], "UNKNOWN")
                 self.assertEqual(person["relative_distance_trend"], "DECREASING")
-                self.assertFalse(person["evidence"]["stationary_window_confirmed"])
                 self.assertEqual(response["policy_decision"]["decision"], action)
                 self.assertEqual(response["final_decision"]["action"], action)
                 payload = {**response, "accepted": True, "processing_status": "complete",
@@ -114,9 +112,9 @@ class PolicyRulesTests(unittest.TestCase):
         person["gaze_state"] = "NONE"
         self.assertEqual(decide(state).reason_code, "NO_ATTENTION")
         person["gaze_state"] = "SUSTAINED"
-        person["human_radial_motion"] = "AWAY"
-        self.assertEqual(decide(state).reason_code, "PERSON_MOVING_AWAY")
-        person["human_radial_motion"] = "STATIONARY"
+        person["relative_distance_trend"] = "INCREASING"
+        self.assertEqual(decide(state).reason_code, "RELATIVE_SEPARATION_INCREASING")
+        person["relative_distance_trend"] = "STABLE"
         person["gaze_state"] = "INTERMITTENT"
         self.assertEqual(decide(state).decision, "CONTINUE")
         person["gaze_state"] = "SUSTAINED"
@@ -152,9 +150,7 @@ class PolicyRulesTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             decide(state)
         person["gaze_state"] = "SUSTAINED"
-        person["evidence"]["stationary_window_confirmed"] = False
         person["evidence"]["distance_trend_valid"] = False
-        person["human_radial_motion"] = "UNKNOWN"
         self.assertEqual(decide(state).decision, "APPROACH")
 
     def test_live_response_matches_decision_replay(self):

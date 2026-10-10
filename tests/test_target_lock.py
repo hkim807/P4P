@@ -167,6 +167,25 @@ class TargetLockTests(unittest.TestCase):
         self.assertIsNone(state["effective_decision"])
         self.assertEqual(state["execution_status"], "HOLD")
 
+    def test_increasing_separation_releases_lock_without_robot_motion_attribution(self):
+        for velocity in (0.0, .2, None):
+            with self.subTest(velocity=velocity):
+                pipeline = SocialPipeline("separation")
+                for i in range(21):
+                    row = pipeline.process(sample(i, velocity=velocity))
+                self.assertEqual(row["target_lock"]["status"], "LOCKED")
+                for i in range(21, 51):
+                    row = pipeline.process(sample(i, distance=2 + (i-20)*.03, velocity=velocity))
+                    if "RELEASED_BY_POLICY" in row["target_lock"]["events"]:
+                        break
+                else:
+                    self.fail("increasing separation did not release the lock")
+                self.assertEqual(row["policy_decision"]["reason_code"], "RELATIVE_SEPARATION_INCREASING")
+                self.assertEqual(row["target_lock"]["status"], "COOLDOWN")
+                for i in range(i + 1, i + 16):
+                    row = pipeline.process(sample(i, distance=2 + (i-20)*.03, velocity=velocity))
+                self.assertIsNone(row["target_lock"]["target_uid"])
+
     def test_live_response_and_replay_trace_match(self):
         frames = [sample(0), no_person(1), sample(2, uid=18), sample(3),
                   no_person(4), sample(25, uid=18), sample(36, uid=18)]

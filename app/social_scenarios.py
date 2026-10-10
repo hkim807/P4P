@@ -24,9 +24,9 @@ def controlled_scenarios(template):
         frame["safety"] = {"lidar": None, "sonar": None}
         frames.append(frame)
     expectations = {
-        35: {"gaze_state": "NONE", "relative_distance_trend": "STABLE", "human_radial_motion": "STATIONARY"},
-        75: {"gaze_state": "SUSTAINED", "relative_distance_trend": "DECREASING", "human_radial_motion": "TOWARD"},
-        115: {"gaze_state": "INTERMITTENT", "relative_distance_trend": "STABLE", "human_radial_motion": "STATIONARY"},
-        155: {"gaze_state": "NONE", "relative_distance_trend": "INCREASING", "human_radial_motion": "AWAY"},
+        35: {"gaze_state": "NONE", "relative_distance_trend": "STABLE"},
+        75: {"gaze_state": "SUSTAINED", "relative_distance_trend": "DECREASING"},
+        115: {"gaze_state": "INTERMITTENT", "relative_distance_trend": "STABLE"},
+        155: {"gaze_state": "NONE", "relative_distance_trend": "INCREASING"},
     }
     return frames, expectations

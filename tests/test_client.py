@@ -242,8 +242,10 @@ class ClientTests(unittest.IsolatedAsyncioTestCase):
                         await asyncio.Event().wait()
 
                 model_trial = outcome in ("model_stall", "poll_stall")
+                model_clock = [0.0]
                 trial = SingleTrial("llm" if model_trial else "rules",
-                    wait_timeout_s=0.15 if model_trial else 0.01 if outcome in ("timeout", "slow_http") else 30)
+                    wait_timeout_s=0.15 if model_trial else 0.01 if outcome in ("timeout", "slow_http") else 30,
+                    monotonic=(lambda: model_clock[0]) if model_trial else time.monotonic)
 
                 def send(observation):
                     if outcome == "slow_http":
@@ -277,7 +279,7 @@ class ClientTests(unittest.IsolatedAsyncioTestCase):
                     nonlocal pending
                     response = send(observation)
                     if pending is None:
-                        pending = {**trial.model_identity(), "request_id": "request",
+                        pending = {**trial.model_identity(), "session_id": "session-a", "request_id": "request",
                             "source_state_id": "session-a:1", "source_robot_timestamp_us": observation["timestamp"],
                             "status": "pending", "decision": None}
                     return ObservationResponse(200, {**response.payload,
@@ -285,6 +287,10 @@ class ClientTests(unittest.IsolatedAsyncioTestCase):
 
                 def poll(identity):
                     poll_started.set()
+                    # Expire only after polling begins, so this fixture checks
+                    # local stopping during a blocked HTTP call without racing
+                    # the event loop's 0.1 s polling interval.
+                    model_clock[0] = 0.15
                     if outcome == "poll_stall":
                         release_http.wait(1)
                         http_done.set()
@@ -710,22 +716,26 @@ class ClientTests(unittest.IsolatedAsyncioTestCase):
         finally:
             await feeder
 
-    async def test_approach_final_arrival_asymmetric_distance_acceptance(self):
+    async def test_approach_final_arrival_symmetric_distance_and_heading_tolerances(self):
         cases = (
             (.7, .8132305429744903, -.2637930206988461, True, 'APPROACHED_VERIFIED'),
             (.7, .85, 0., True, 'APPROACHED_VERIFIED'),
+            (.7, .84999, 0., True, 'APPROACHED_VERIFIED'),
             (.7, .85001, 0., True, 'OUTSIDE_TOLERANCE'),
-            (.7, .60, 0., True, 'APPROACHED_VERIFIED'),
-            (.7, .59999, 0., True, 'OUTSIDE_TOLERANCE'),
-            (.7, .7, 4., True, 'APPROACHED_VERIFIED'),
-            (.7, .7, -4., True, 'APPROACHED_VERIFIED'),
-            (.7, .7, 4.01, True, 'OUTSIDE_TOLERANCE'),
-            (.7, .7, -4.01, True, 'OUTSIDE_TOLERANCE'),
+            (.7, .55, 0., True, 'APPROACHED_VERIFIED'),
+            (.7, .55001, 0., True, 'APPROACHED_VERIFIED'),
+            (.7, .54999, 0., True, 'OUTSIDE_TOLERANCE'),
+            (.7, .7, 8.99, True, 'APPROACHED_VERIFIED'),
+            (.7, .7, -8.99, True, 'APPROACHED_VERIFIED'),
+            (.7, .7, 9.01, True, 'OUTSIDE_TOLERANCE'),
+            (.7, .7, -9.01, True, 'OUTSIDE_TOLERANCE'),
             (.7, .81323, 0., False, 'APPROACHED_UNVERIFIED'),
             (1., 1.15, 0., True, 'APPROACHED_VERIFIED'),
+            (1., 1.14999, 0., True, 'APPROACHED_VERIFIED'),
             (1., 1.15001, 0., True, 'OUTSIDE_TOLERANCE'),
-            (1., .9, 0., True, 'APPROACHED_VERIFIED'),
-            (1., .89999, 0., True, 'OUTSIDE_TOLERANCE'),
+            (1., .85, 0., True, 'APPROACHED_VERIFIED'),
+            (1., .85001, 0., True, 'APPROACHED_VERIFIED'),
+            (1., .84999, 0., True, 'OUTSIDE_TOLERANCE'),
         )
         for stop_distance, distance, heading, fresh, status in cases:
             with self.subTest(stop_distance=stop_distance, distance=distance, heading=heading, fresh=fresh):
@@ -744,9 +754,9 @@ class ClientTests(unittest.IsolatedAsyncioTestCase):
                 self.assertEqual(result.live_position_verified, fresh)
                 self.assertAlmostEqual(result.distance_m, distance)
                 self.assertAlmostEqual(result.heading_error_deg, heading)
-                # Final acceptance must not relax the existing correction threshold.
+                # Correction and final acceptance share the 0.15 m tolerance.
                 self.assertEqual(arcs.await_count,
-                                 2 if fresh and distance > stop_distance+.1 else 1)
+                                 2 if fresh and distance > stop_distance+.15 else 1)
 
     async def test_approach_bounded_corrections_and_unsuccessful_results(self):
         target = dict(wx=1.5, wy=.3, uid=18, seen_at=time.monotonic(), frame_seq=1)
@@ -900,8 +910,8 @@ class ClientTests(unittest.IsolatedAsyncioTestCase):
                         self.assertEqual(trial.phase, 'COMPLETED' if outcome == 'verified' else 'FAILED')
                         if outcome != 'stale':
                             self.assertEqual(trial.approach_result['status'], 'APPROACHED_VERIFIED')
-                            self.assertLessEqual(abs(trial.approach_result['distance_m']-.7), .1)
-                            self.assertLessEqual(abs(trial.approach_result['heading_error_deg']), 4.)
+                            self.assertLessEqual(abs(trial.approach_result['distance_m']-.7), .15)
+                            self.assertLessEqual(abs(trial.approach_result['heading_error_deg']), 9.)
                 self.assertEqual(robot.active, 0)
                 self.assertEqual([len(value) for value in readers.values()], [1, 1])
                 self.assertEqual(sum(c[0] == 'baseline' for c in calls), 1)

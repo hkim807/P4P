@@ -8,8 +8,8 @@ pilot acceptance criteria, not established performance claims.
 
 ## 1. Prepare the exact system — 30 minutes
 
-- [ ] Put the same current branch/code on the PC and Navel. The starting version
-  is `feature/end-to-end-pipeline-refinement`, commit `e2b136b`.
+- [ ] Put the same selected current commit on the PC and Navel. Record its hash
+  with `git rev-parse HEAD`; this checklist is not pinned to an older trial commit.
 - [ ] Confirm PC/robot connectivity and the installed SDK. Keep other scripts
   that command the robot's base/head stopped during these tests.
 - [ ] Mark a short straight route and person positions at approximately 1.2,
@@ -78,7 +78,8 @@ and 2.2 m, with at least two people and two repetitions:
   flag `--no-head-focus` prevents new commands; it does not promise to cancel an
   earlier SDK tracking command. Verify the actual head behavior.
 - [ ] Decide whether the scalar distinguishes attention from looking away.
-  Scores consistently above 0.9 do not support the current 0.8/0.7 thresholds.
+  Compare the labelled conditions against the development config's current
+  `looking_enter: 0.93` and `looking_exit: 0.90`; high scores alone do not prove attention.
 
 Do not spend this block stretching each recording to 0–1. That cannot create
 separation if looking and non-looking periods overlap.
@@ -126,8 +127,9 @@ continue after DECIDED; use Ctrl+C after recording the first result.
 - [ ] Read the `single_trial phase=DECIDED` line and its action/reason.
 - [ ] Also try no person and two people: expect observation hold, not a fabricated
   social decision. A missing gaze reading is not low gaze.
-- [ ] Keep each intended cue present for at least two seconds. Clean 10 Hz input
-  can resolve around 1.1 s; gaps and UID changes can delay readiness.
+- [ ] Keep each intended cue present for at least three seconds. With the
+  development config's 2 s minimum span and 0.1 s category dwell, clean 10 Hz
+  input can resolve around 2.1 s; gaps and UID changes can delay readiness.
 - [ ] Start a new trial for a new condition. An accepted CONTINUE latches and
   cannot change to YIELD when somebody starts closing later. Starting a low-gaze
   person outside 3 m can therefore resolve CONTINUE before they enter the cutoff.
@@ -167,18 +169,18 @@ python3 -m robot.navel_client.main --server http://PC_IP:6060 \
   conversation distance while the head remains neutral. After verified
   completion, confirm the robot looks at the person. Verify physical distance
   rather than relying only on the completion message.
-- [ ] Once APPROACH is verified, replace “Approach complete!” with a short greeting
-  after the successful stop. Remove “Yielding complete!” if it adds no value to
-  the person. These are small handler edits, not existing command-line options.
+- [ ] After verified APPROACH arrival, confirm the current greeting is
+  “Hi! Do you need any help?” and occurs only after measured stopping.
 - [ ] YIELD: confirm the initial look at the person, inspect the whole current
   backward arc/wait/return arc/advance maneuver, and confirm the head returns to
   neutral only after completion. The route speed flag does not reduce its movement
   distances/speeds.
 
 The current YIELD combines −0.90 m backward motion with +100° rotation, speaks,
-waits three seconds, returns with a combined +0.85 m/−95° arc and advances 0.15 m.
-These empirical parameters nominally leave +5° heading difference and do not
-guarantee an exact return to the departure pose. It does not detect that the
+waits three seconds, returns with a combined +0.85 m/−92.5° arc and advances 0.15 m.
+It ends by saying “Yield complete.” These empirical parameters nominally leave
+a +7.5° heading difference and do not guarantee an exact return to the departure
+pose. It does not detect that the
 person has passed. If this is not repeatable in the available space,
 prefer implementing/testing a simpler stop, “Please go ahead,” timed wait and
 end behavior today. That is a deliberate handler change; no existing flag makes
@@ -201,7 +203,7 @@ the current maneuver simpler. Do not spend the day making the return path clever
 
 - [ ] Stop tuning for the last hour. Keep the final PC and robot versions the same.
 - [ ] Commit measured calibration/handler changes and save the exact configuration.
-  The existing v4 freeze will differ if its tracked code/config is changed.
+  Existing freeze manifests describe earlier code/config and are historical.
 - [ ] If using the existing active temporal-config path, create and verify a new
   freeze with the available installed-model metadata (no new LLM test is implied):
 

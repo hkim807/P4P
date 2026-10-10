@@ -103,16 +103,6 @@
           "title": "Relative Distance Trend",
           "type": "string"
         },
-        "human_radial_motion": {
-          "enum": [
-            "TOWARD",
-            "STATIONARY",
-            "AWAY",
-            "UNKNOWN"
-          ],
-          "title": "Human Radial Motion",
-          "type": "string"
-        },
         "evidence": {
           "$ref": "#/$defs/TemporalEvidence"
         },
@@ -187,7 +177,6 @@
         "gaze_state",
         "distance_zone",
         "relative_distance_trend",
-        "human_radial_motion",
         "evidence",
         "validity_flags"
       ],
@@ -584,10 +573,6 @@
         "latest_distance_valid": {
           "title": "Latest Distance Valid",
           "type": "boolean"
-        },
-        "stationary_window_confirmed": {
-          "title": "Stationary Window Confirmed",
-          "type": "boolean"
         }
       },
       "required": [
@@ -606,8 +591,7 @@
         "distance_jump_count",
         "gaze_valid",
         "distance_trend_valid",
-        "latest_distance_valid",
-        "stationary_window_confirmed"
+        "latest_distance_valid"
       ],
       "title": "TemporalEvidence",
       "type": "object"
@@ -622,10 +606,11 @@
       "type": "integer"
     },
     "estimator_version": {
-      "default": "temporal-social-v2",
+      "default": "temporal-social-v3",
       "enum": [
         "temporal-social-v1",
-        "temporal-social-v2"
+        "temporal-social-v2",
+        "temporal-social-v3"
       ],
       "title": "Estimator Version",
       "type": "string"
@@ -706,22 +691,6 @@
       },
       "title": "Track Events",
       "type": "array"
-    },
-    "active_target_uid": {
-      "default": null,
-      "title": "Active Target Uid",
-      "type": "null"
-    },
-    "active_target_track_epoch": {
-      "default": null,
-      "title": "Active Target Track Epoch",
-      "type": "null"
-    },
-    "range_data_status": {
-      "const": "UNKNOWN",
-      "default": "UNKNOWN",
-      "title": "Range Data Status",
-      "type": "string"
     }
   },
   "required": [

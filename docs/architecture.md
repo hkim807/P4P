@@ -1,9 +1,9 @@
 # Sensor-stream extraction
 
-Branch: `feature/navel-raw-http-stream`. Starting point: `main` commit
-`af211ba` (recorder/replayer merge). This branch now includes the raw Navel
-stream, UID tracking, temporal SocialState, pure rules, and a conservative
-logical target lock, a command protocol, and an opt-in physical script executor.
+The current pipeline includes the raw Navel stream, UID tracking, temporal
+SocialState, rules and model policies, a logical target lock, a command protocol,
+and opt-in script or native single-trial execution. See [the current policy](social-policy.md)
+and [robot execution guide](robot-decision-dry-run.md).
 
 ## Components
 
@@ -69,6 +69,8 @@ The receiver's `/health` endpoint reports service liveness only.
 - The physical executor runs configured approach/engage and route/stop scripts,
   enforces command expiry and lease, and reports actual outcomes. Robot action
   scripts and hardware verification must still be supplied.
+- Native single-trial execution provides CONTINUE, APPROACH, ENGAGE and YIELD
+  handlers through the same sensor readers; it latches one fresh decision.
 - The robot still needs only its supplied Navel SDK plus the standard library.
 
 The receiver is a simple Flask development service for the computer/robot LAN

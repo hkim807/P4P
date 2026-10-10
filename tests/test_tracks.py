@@ -92,7 +92,8 @@ class TrackTests(unittest.TestCase):
         self.assertEqual(track["identity_quality_flags"], ["UID_ZERO_UNVERIFIED"])
         self.assertIsNone(track["samples"][0]["gaze_overlap"])
         self.assertIsNone(track["samples"][0]["distance_m"])
-        self.assertEqual(track["samples"][0]["robot"], payload["robot"])
+        self.assertNotIn("robot", track["samples"][0])
+        self.assertEqual(result["robot"], payload["robot"])
         self.assertNotIn("optional_relative_head_position", track["samples"][0])
 
     def test_sample_cap_and_active_cap_evict_absent_oldest_deterministically(self):

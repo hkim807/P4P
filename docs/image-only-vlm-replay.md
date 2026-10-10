@@ -53,8 +53,13 @@ and passed as the single `OllamaMessage.images` item.
 
 ## Actual prompt
 
-Version: `image-only-vlm-v3`. The static system and user instructions are
+Version: `image-only-vlm-v5`. The static system and user instructions are
 `SYSTEM_PROMPT` and `USER_PROMPT` in [`app/policy/vlm.py`](../app/policy/vlm.py).
+
+Its four action descriptions match the structured LLM, including the current
+move-aside/back, wait and nominal return behavior for YIELD. Temporal closing
+and low-gaze requirements belong to the structured LLM's measured SocialState
+guidance; a single VLM image cannot establish those measurements.
 
 Only that user message has an `images` list, containing one raw PNG base64
 string. Neither function accepts a replay row or SocialState. Paths, scenario
@@ -139,7 +144,7 @@ A JSONL subtree excerpt from **fake-response tests**, not real model inference:
   "vlm_inference": {
     "schema_version": 1,
     "status": "succeeded",
-    "prompt_version": "image-only-vlm-v3",
+    "prompt_version": "image-only-vlm-v5",
     "ok": true,
     "requested_model": "vision-model",
     "returned_model": "actual-vision-model",

@@ -128,9 +128,6 @@ def extract_features(track: dict, now: int, config: TemporalConfig,
         flags.append("DISTANCE_FIT_UNRELIABLE")
     if jumps:
         flags.append("DISTANCE_SEGMENT_BROKEN_BY_JUMP")
-    stationary_segment = bool(segment and all(stationary(s["robot"], config) for s in segment))
-    if not stationary_segment:
-        flags.append("STATIONARY_BASE_UNVERIFIED")
     return TemporalEvidence(
         window_span_s=span, gaze_fraction=fraction, gaze_valid_coverage_s=coverage,
         mean_gaze_overlap=(sum(s["gaze_overlap"] for s in samples if s["gaze_overlap"] is not None) /
@@ -145,5 +142,5 @@ def extract_features(track: dict, now: int, config: TemporalConfig,
         distance_valid_samples=len(segment), distance_fit_samples=len(fit),
         distance_window_start_us=segment[0]["timestamp_us"] if segment else None,
         distance_jump_count=jumps, gaze_valid=gaze_valid, distance_trend_valid=distance_valid,
-        latest_distance_valid=latest_distance_valid, stationary_window_confirmed=stationary_segment,
+        latest_distance_valid=latest_distance_valid,
     ), flags

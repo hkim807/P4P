@@ -102,7 +102,8 @@ asyncio task. The [SDK documentation](https://doc.navelrobotics.com/getting_star
 defines awaiting this task as waiting for speech to finish. APPROACH uses the
 ported demo's `HEAD_STRAIGHT` g_nose geometry and timestamp-matched odometry
 from the existing shared readers. It targets 0.7 m horizontal base-centre-to-nose
-distance, with ±0.10 m distance and ±4° heading tolerances. Arc speed is
+distance, with symmetric ±0.15 m distance and ±9° heading tolerances. A terminal
+distance correction is attempted only beyond the upper distance tolerance. Arc speed is
 `min(0.25, radians(70) * length / max(abs(theta), 1e-9))`, acceleration 1.0 m/s²;
 heading speed is `min(70, sqrt(abs(angle_degrees) * 60))`, acceleration 60°/s².
 The reference acquisition, filtering, geometric UID association, arc monitoring,
@@ -119,13 +120,13 @@ looks at the current single person, temporarily
 moves aside/backwards, waits, returns towards the original route, advances a short
 distance and ends. It combines −0.90 m backward translation with +100° rotation
 (0.25 m/s, 0.35 m/s²), confirms stopping and says "Please go ahead.". After
-speech completion it waits 3 seconds, returns with a combined +0.85 m/−95° arc
+speech completion it waits 3 seconds, returns with a combined +0.85 m/−92.5° arc
 (0.12 m/s, 0.15 m/s²), confirms stopping, advances only +0.15 m
 (0.25 m/s, 0.35 m/s²), confirms stopping and awaits "Yield complete.". Each
 movement uses the existing SDK sender supervision and local measured stopping;
 there are no fixed movement-margin sleeps. These are initial empirical tuning
 parameters. The return is shorter and rotates less than the outward arc; the
-unequal rotation requests nominally leave a +5° heading difference. They do not
+unequal rotation requests nominally leave a +7.5° heading difference. They do not
 guarantee lateral clearance or an exact return to the departure pose.
 The wait is timed, not sensor-confirmed clearance; return is predefined,
 not navigation to a measured departure pose. YIELD uses local
@@ -203,7 +204,7 @@ decision_dry_run={"event":"CALL","handler":"APPROACH","decision_id":"...","sourc
 When the decision or target changes, or a response is lost or rejected, the
 active placeholder gets a `CANCEL` log before the new placeholder is called.
 Repeated frames proposing the same decision and target produce no extra call.
-The `DEFER` placeholder logs observation; it does not pause or move the robot.
+Observation holds have no action or placeholder call; DEFER is rejected.
 
 You can inspect the PC's social trace after the run, or feed it to the decision
 replay command:
@@ -232,8 +233,10 @@ are rejected. Restart the robot client after restarting the PC receiver so it
 can bind to the new session.
 When a target lock is present, the client also validates its source state,
 selected UID/epoch, lock ID, and effective decision. A missing or unresolved
-target produces `DEFER`, even when the pure rule says `CONTINUE` or proposes an
-action for a different UID.
+target produces `effective_decision: null` with `execution_status: HOLD` and a
+hold reason, even when the pure rule says `CONTINUE` or proposes an action for
+a different UID. SingleTrial accepts a fresh pure decision independently of
+these command-execution holds.
 
 An independent local task expires the active placeholder after two seconds
 without a valid decision response. `--max-decision-age` and
@@ -243,25 +246,22 @@ rejected response also clears the placeholder. These checks protect this
 
 ## Current limits and next changes
 
-- No real Navel behavior function is called. The five methods in
-  `DryRunHandlers` are explicit replacement points, but should only be connected
-  to actions after the command and execution layer is built.
-- The PC sends **policy decisions, not commands**. There is no command ID,
-  execution lease, local capability check, or `STARTED`/`COMPLETED`/`REJECTED`
-  feedback route to the PC.
-- The logical lock has a missing hold and release cooldown, but no completion
-  feedback. The dispatcher suppresses identical decision/target/lock calls
-  while active; a later change can still cause another `ENGAGE` call. Calibrate
-  gaze and identity continuity before using that decision for speech or motion.
-- The watchdog cancels a logging placeholder only. Before physical execution,
-  add a robot-local controller that can verify and perform a physical stop,
-  arbitrate route motion, recheck current target and obstacle data, and expire
-  executable command leases even while HTTP is stalled.
-- Rules v4 select `YIELD` for measured closing within 3 m with a current face and
+- The standalone decision dry-run dispatcher uses four logging handlers and
+  does not execute social actions. `--route-trial` and head focus still perform
+  their explicitly enabled SDK movements; `--single-trial-execute` runs the
+  native physical handlers described above.
+- The PC also exposes a separate command/feedback protocol for the opt-in
+  [script executor](physical-executor.md). This differs from pure decision
+  acceptance in SingleTrial.
+- The dry-run dispatcher suppresses identical decision/target/lock calls while
+  active; a later change can cause another logging call. Its watchdog cancels
+  logging placeholders. Executable single trials latch the first decision and
+  supervise their own motion, cancellation and local stopping.
+- Rules v5 and LLM prompt v10 describe `YIELD` for measured closing within the
+  configured cutoff (3 m in the development config), with a current face and
   established low gaze, or an explicit path conflict. TOO_CLOSE alone no longer
   causes YIELD. See [current policy](social-policy.md) for evidence requirements.
-- A changed PC session is rejected until the client restarts. A later command
-  protocol should negotiate a new session explicitly.
+- A changed PC session is rejected until the client restarts.
 
 Offline tests cover parsing, response matching, duplicate suppression,
 target/decision changes, a missing decision, transport loss, watchdog expiry,

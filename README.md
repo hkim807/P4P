@@ -167,8 +167,8 @@ python3 -m app.validate_social var/recordings/0[1-7]_*.jsonl --output-dir var/te
 ```
 
 Outputs are separate from raw recordings. Thresholds are provisional; missing
-evidence is UNKNOWN, and human motion requires valid near-zero robot velocities
-throughout the fitted distance interval. Add `--social-output <new-social.jsonl>`
+evidence is UNKNOWN. Distance trends describe relative separation whether the
+robot is stationary or moving; human motion is not estimated. Add `--social-output <new-social.jsonl>`
 to the receiver to enable the same layer live. `--tracking-output` alone continues
 to produce UID histories.
 See [temporal design and commands](docs/temporal-social-state.md) and
@@ -178,9 +178,12 @@ transformations of a recorded frame into changing cue patterns.
 ## Inspect rule decisions
 
 With `--social-output` enabled, each accepted HTTP response also includes a
-`policy_decision`: `CONTINUE`, `APPROACH`, `ENGAGE`, or `DEFER`, with its reason and
-source state ID. The current cues cannot establish a route conflict, so the
-policy does not emit `YIELD`. These are proposals, not robot commands.
+`policy_decision`: `CONTINUE`, `APPROACH`, `ENGAGE`, or `YIELD`, with its reason and
+source state ID. Unready observations have null decisions and an observation
+hold reason, rather than a DEFER action. YIELD requires a measured upstream path
+conflict or the complete face-detected, closing-distance, low-gaze trigger;
+proximity alone does not trigger it. See [the policy and current parameters](docs/social-policy.md).
+These are proposals; robot-local execution checks still apply.
 
 Apply the same rules to an existing SocialState trace:
 
@@ -321,7 +324,8 @@ checked before Pydantic validation. Valid explanation text is preserved exactly.
 `model_decision_schema()` generates the same schema as
 [`schemas/v1/model-decision.schema.json`](schemas/v1/model-decision.schema.json),
 which the client sends to Ollama. Structured output is still validated locally.
-Rule outputs add `final_decision`, or `null` for `DEFER`; metadata stays outside it.
+Rule outputs add `final_decision`, or `null` while observations are not ready;
+metadata stays outside it. DEFER is not a policy action.
 See [action meanings and rule outputs](docs/social-policy.md).
 
 Configure the HTTP(S) origin and a model already available on that server:
@@ -372,8 +376,10 @@ duplicate envelope keys, and nonstandard JSON constants. It performs one request
 with no redirect, automatic retry, fallback, or inferred robot action.
 
 The standalone SocialState LLM policy and image-only VLM replay are described
-below. Model result delivery and physical action execution remain later work;
-inference failures retain no final decision. Tests inject fake HTTP responses and require no
+below. Live model delivery and opt-in physical execution are documented in
+[live inference](docs/live-model-inference.md) and
+[robot execution](docs/robot-decision-dry-run.md). Inference failures retain no
+final decision. Tests inject fake HTTP responses and require no
 Ollama service or robot.
 
 ## SocialState LLM policy (Step 2)
@@ -427,11 +433,15 @@ Input/configuration failures have no model content or request duration. Inferenc
 failures retain Step 1 diagnostics with `decision: null`; there is no default
 action, retry or rule fallback. The CLI has no persistent output writer.
 
-Prompt version: **`social-state-llm-v3`**. Changing instructions or serialization
+Prompt version: **`social-state-llm-v10`**. Changing instructions or serialization
 semantics requires a new prompt version. Deterministic prompt construction does
 not guarantee deterministic model output; caller model/settings still matter.
 The system instructions are `SYSTEM_PROMPT` in
 [`app/policy/llm.py`](app/policy/llm.py).
+
+YIELD guidance follows the rule policy's priority: measured path conflict,
+PASS invitation, then the complete face-detected closing-distance/low-gaze
+condition. It uses the supplied config; proximity alone never justifies YIELD.
 
 The only other message is a user message consisting of this exact prefix followed
 by the complete canonical SocialState JSON (the placeholder is not sent):

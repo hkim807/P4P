@@ -1,7 +1,7 @@
 {
   "action_version": "social-actions-v3",
-  "rule_version": "social-rules-v4",
-  "prompt_version": "social-state-llm-v6",
+  "rule_version": "social-rules-v5",
+  "prompt_version": "social-state-llm-v10",
   "temporal_config": "config/temporal-development-frozen.json",
   "track_config": "config/person-tracking.json",
   "evaluation_contract": "config/evaluation-contract.json",
