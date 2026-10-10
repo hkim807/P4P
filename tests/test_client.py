@@ -889,28 +889,47 @@ class ClientTests(unittest.IsolatedAsyncioTestCase):
                         self.assertEqual(call[4], 60.)
                 self.assertEqual(calls[-1], ('zero',))
 
+    def test_yield_preflight_requires_only_used_sdk_capabilities(self):
+        async def other_handler(context):
+            self.fail('preflight must not execute handlers')
+
+        methods = {name: lambda *args, **kwargs: self.fail('preflight must not issue SDK commands')
+                   for name in ('base_vel', 'move_and_rotate_base', 'move_base', 'say')}
+        for missing in (None, *methods):
+            with self.subTest(missing=missing):
+                robot = NS(**{name: method for name, method in methods.items() if name != missing})
+                dispatcher = BehaviourDispatcher(SingleTrial(), robot,
+                    handlers={name: other_handler for name in HANDLERS if name != 'YIELD'})
+                if missing is None:
+                    dispatcher.preflight()  # No rotate_base capability is required.
+                else:
+                    with self.assertRaisesRegex(ValueError, 'robot\\.'+missing):
+                        dispatcher.preflight()
+
     async def test_production_yield_sequence_and_failure_cleanup(self):
-        expected = [('baseline', 10., .1, .2), ('rotate', 100., 30., 35.),
-                    ('move', -.6, .25, .35), ('move', .6, .12, .15),
-                    ('rotate', -100., 30., 35.), ('move', .15, .25, .35)]
-        for outcome in ('success', 'cancel_escape', 'cancel_wait', 'cancel_return',
-                        'motion_failure', 'speech_failure', 'final_speech_failure', 'timeout'):
+        expected = [('baseline', 10., .1, .2), ('arc', -.6, 100., .25, .35),
+                    ('arc', .6, -100., .12, .15), ('move', .15, .25, .35)]
+        for outcome in ('success', 'cancel_escape', 'cancel_wait', 'cancel_return', 'cancel_advance',
+                        'motion_failure', 'return_failure', 'advance_failure',
+                        'speech_failure', 'final_speech_failure', 'timeout'):
             with self.subTest(outcome=outcome):
-                events, sdk_tasks = [], []
+                events, sdk_tasks, motion_checks = [], [], []
                 readers = {'perception': set(), 'odometry': set()}
-                reached = {name: asyncio.Event() for name in ('escape', 'wait', 'return')}
+                reached = {name: asyncio.Event() for name in ('escape', 'wait', 'return', 'advance')}
                 baseline_started = asyncio.Event()
                 trial = SingleTrial()
 
                 class Robot:
                     active = reads = 0
+                    linear_velocity = angular_velocity = 0.
 
                     async def next_locomotion(self, timeout):
                         readers['odometry'].add(asyncio.current_task())
                         await asyncio.sleep(.01)
                         return NS(odometry=NS(position=NS(x=0., y=0.),
                             orientation=NS(x=0., y=1., z=0., w=0.),
-                            velocity=NS(linear_x=.1 if self.active else 0., linear_y=0., angular_z=0.),
+                            velocity=NS(linear_x=self.linear_velocity,
+                                        linear_y=self.angular_velocity, angular_z=0.),
                             time=int(time.monotonic()*1e6)))
 
                     async def next_frame(self, timeout):
@@ -925,27 +944,35 @@ class ClientTests(unittest.IsolatedAsyncioTestCase):
                     async def look_at_person(self, uid, head):
                         events.append(('head', uid))
 
-                    def movement(self, name, amount, speed, acceleration):
+                    def movement(self, name, amount, speed, acceleration, angle=None):
                         assert self.active == 0, 'overlapping movement senders'
-                        events.append((name, amount, speed, acceleration))
+                        if amount in (-.6, .15):
+                            assert events[-1] == ('stopped',), 'movement before confirmed stop'
+                        events.append((name, amount, speed, acceleration) if angle is None
+                                      else (name, amount, angle, speed, acceleration))
 
                         async def sender():
                             self.active += 1
+                            self.linear_velocity = math.copysign(.1, amount)
+                            self.angular_velocity = math.copysign(.1, angle) if angle is not None else 0.
                             try:
                                 if name == 'baseline':
                                     baseline_started.set()
                                     await asyncio.Event().wait()
-                                stage = 'escape' if amount == -.6 else 'return' if amount == .6 else None
+                                stage = ('escape' if amount == -.6 else 'return' if amount == .6
+                                         else 'advance' if amount == .15 else None)
                                 if stage:
                                     reached[stage].set()
                                 if (stage and outcome == 'cancel_'+stage) or (stage == 'escape' and outcome == 'timeout'):
                                     await asyncio.Event().wait()
                                 await asyncio.sleep(.01)
-                                if stage == 'escape' and outcome == 'motion_failure':
-                                    raise OSError('escape failed')
+                                if ((stage == 'escape' and outcome == 'motion_failure')
+                                        or (stage and outcome == stage+'_failure')):
+                                    raise OSError(stage+' failed')
                             finally:
                                 await asyncio.sleep(.03)
                                 self.active -= 1
+                                self.linear_velocity = self.angular_velocity = 0.
                                 events.append(('settled', name, amount))
                         task = asyncio.create_task(sender())
                         sdk_tasks.append(task)
@@ -955,10 +982,10 @@ class ClientTests(unittest.IsolatedAsyncioTestCase):
                         return self.movement('baseline' if distance == 10. else 'move', distance, speed, acceleration)
 
                     def rotate_base(self, angle, *, speed, acceleration):
-                        return self.movement('rotate', angle, speed, acceleration)
+                        raise AssertionError('YIELD must not rotate separately')
 
-                    def move_and_rotate_base(self, *args, **kwargs):
-                        raise AssertionError('YIELD must not approach')
+                    def move_and_rotate_base(self, distance, angle, *, speed, acceleration):
+                        return self.movement('arc', distance, speed, acceleration, angle)
 
                     def base_vel(self, x, r):
                         assert self.active == 0, 'zero before sender settled'
@@ -966,7 +993,7 @@ class ClientTests(unittest.IsolatedAsyncioTestCase):
 
                     def say(self, text):
                         assert self.active == 0
-                        assert events[-1][0] == 'margin', 'speech before stop/margin finished'
+                        assert events[-1] == ('stopped',), 'speech before confirmed stop'
                         events.append(('say', text))
 
                         async def speech():
@@ -974,7 +1001,7 @@ class ClientTests(unittest.IsolatedAsyncioTestCase):
                             await asyncio.sleep(.03)
                             assert self.reads > before, 'collectors stopped during speech'
                             if (outcome == 'speech_failure' and text == 'Please go ahead.') or (
-                                    outcome == 'final_speech_failure' and text == 'Yielding complete!'):
+                                    outcome == 'final_speech_failure' and text == 'Yield complete.'):
                                 raise OSError('speech failed')
                             events.append(('speech_finished', text))
                         task = asyncio.create_task(speech())
@@ -982,16 +1009,23 @@ class ClientTests(unittest.IsolatedAsyncioTestCase):
                         return task
 
                 async def timed_sleep(seconds):
-                    if seconds == 3.:
-                        self.assertEqual(events[-1], ('speech_finished', 'Please go ahead.'))
-                        reached['wait'].set()
-                        events.append(('wait', seconds))
-                        if outcome == 'cancel_wait':
-                            await asyncio.Event().wait()
-                    else:
-                        self.assertEqual(events[-1], ('zero',))
-                        events.append(('margin', seconds))
+                    self.assertEqual(seconds, 3., 'obsolete movement delay retained')
+                    self.assertEqual(events[-1], ('speech_finished', 'Please go ahead.'))
+                    reached['wait'].set()
+                    events.append(('wait', seconds))
+                    if outcome == 'cancel_wait':
+                        await asyncio.Event().wait()
                     await asyncio.sleep(.005)
+
+                original_settle, original_motion = ApproachRuntime.settle, ApproachRuntime.motion
+
+                async def confirmed_stop(runtime):
+                    await original_settle(runtime)
+                    events.append(('stopped',))
+
+                async def supervised_motion(runtime, *args, **kwargs):
+                    motion_checks.append(kwargs['check_people'])
+                    return await original_motion(runtime, *args, **kwargs)
 
                 def send(observation):
                     payload = response_for(observation, 1, 'YIELD', False)
@@ -1008,6 +1042,8 @@ class ClientTests(unittest.IsolatedAsyncioTestCase):
                         patch('robot.navel_client.main.SingleTrial', return_value=trial), \
                         patch.object(ObservationTransport, 'send', side_effect=send), \
                         patch.object(ApproachRuntime, 'detect', side_effect=AssertionError('YIELD acquired a target')), \
+                        patch.object(ApproachRuntime, 'settle', new=confirmed_stop), \
+                        patch.object(ApproachRuntime, 'motion', new=supervised_motion), \
                         contextlib.redirect_stdout(io.StringIO()):
                     task = asyncio.create_task(collect_and_stream(robot, args))
                     if outcome.startswith('cancel_'):
@@ -1023,18 +1059,24 @@ class ClientTests(unittest.IsolatedAsyncioTestCase):
                 self.assertTrue(all(task.done() and task.cancelling() <= 1 for task in sdk_tasks))
                 self.assertEqual(robot.active, 0)
                 self.assertEqual([len(value) for value in readers.values()], [1, 1])
-                motions = [e for e in events if e[0] in ('baseline', 'rotate', 'move')]
-                expected_count = 6 if outcome in ('success', 'final_speech_failure') else 4 if outcome == 'cancel_return' else 3
+                motions = [e for e in events if e[0] in ('baseline', 'arc', 'move')]
+                expected_count = (4 if outcome in ('success', 'cancel_advance', 'advance_failure', 'final_speech_failure')
+                                  else 3 if outcome in ('cancel_return', 'return_failure') else 2)
                 self.assertEqual(motions, expected[:expected_count])
+                self.assertEqual(motion_checks, [False, True, True][:expected_count-1])
                 speeches = [e[1] for e in events if e[0] == 'say']
-                expected_speech = (['Please go ahead.', 'Yielding complete!'] if expected_count == 6
-                                   else ['Please go ahead.'] if outcome in ('cancel_wait', 'cancel_return', 'speech_failure') else [])
+                expected_speech = (['Please go ahead.', 'Yield complete.']
+                                   if outcome in ('success', 'final_speech_failure')
+                                   else [] if outcome in ('cancel_escape', 'motion_failure', 'timeout')
+                                   else ['Please go ahead.'])
                 self.assertEqual(speeches, expected_speech)
                 self.assertEqual(sum(e[0] == 'wait' for e in events),
-                                 1 if outcome in ('success', 'cancel_wait', 'cancel_return', 'final_speech_failure') else 0)
+                                 0 if outcome in ('cancel_escape', 'motion_failure', 'speech_failure', 'timeout') else 1)
                 if outcome == 'success':
-                    self.assertEqual([e[1] for e in events if e[0] == 'margin'], [.5, .3, .3, .5, .04])
-                    self.assertIn(('speech_finished', 'Yielding complete!'), events)
+                    stages = [e for e in events if e[0] in ('arc', 'move', 'say', 'wait')]
+                    self.assertEqual(stages, [expected[1], ('say', 'Please go ahead.'), ('wait', 3.),
+                                             expected[2], expected[3], ('say', 'Yield complete.')])
+                    self.assertIn(('speech_finished', 'Yield complete.'), events)
                 baseline_end = events.index(('settled', 'baseline', 10.))
                 self.assertFalse(any(e[0] == 'head' for e in events[baseline_end:]))
                 self.assertEqual(events[-1], ('zero',))

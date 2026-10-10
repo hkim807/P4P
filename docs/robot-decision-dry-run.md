@@ -117,14 +117,17 @@ that person focus. This final look also runs without the trial head controller.
 There is no route resumption after APPROACH. YIELD first
 looks at the current single person, temporarily
 moves aside/backwards, waits, returns towards the original route, advances a short
-distance and ends. It rotates +100° (30°/s, 35°/s²), reverses −0.60 m
-(0.25 m/s, 0.35 m/s²), stops and says "Please go ahead.". After speech completion
-it waits 3 seconds, moves +0.60 m (0.12 m/s, 0.15 m/s²), stops, rotates −100°
-(30°/s, 35°/s²), advances only +0.15 m (0.25 m/s, 0.35 m/s²), stops and awaits
-"Yielding complete!". Rotation margins are 0.50 s, escape/return margins 0.30 s,
-and the short advance margin 0.04 s, following actual SDK task completion and
-local measured stopping. The wait is timed, not sensor-confirmed clearance;
-return is nominal, not verified navigation to an exact path. YIELD uses local
+distance and ends. It combines −0.60 m backward translation with +100° rotation
+(0.25 m/s, 0.35 m/s²), confirms stopping and says "Please go ahead.". After
+speech completion it waits 3 seconds, returns with a combined +0.60 m/−100° arc
+(0.12 m/s, 0.15 m/s²), confirms stopping, advances only +0.15 m
+(0.25 m/s, 0.35 m/s²), confirms stopping and awaits "Yield complete.". Each
+movement uses the existing SDK sender supervision and local measured stopping;
+there are no fixed movement-margin sleeps. These are initial physical-test
+parameters: the outward arc gives approximately 0.40 m ideal lateral displacement.
+Route clearance, smoothness and return accuracy remain unverified on the robot.
+The wait is timed, not sensor-confirmed clearance; return is predefined,
+not navigation to a measured departure pose. YIELD uses local
 odometry without UID/nose acquisition, returns the head to neutral after the
 whole maneuver, and never restarts the cancelled baseline.
 Interruption/failure stops locally without forcing the remaining return stages.

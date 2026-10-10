@@ -57,36 +57,31 @@ async def yield_space(context):
         raise RuntimeError("YIELD requires local odometry state")
     stage = "BASE_STOP"
 
-    async def movement(name, command, margin):
+    async def movement(name, command):
         nonlocal stage
         stage = name
         logger.info("yield_stage=%s", stage)
         await runtime.motion(command, timeout=context.timeout_s,
                              check_people=name in {"RETURN", "ADVANCE"})
-        await asyncio.sleep(margin)
 
     try:
         await runtime.wait_ready(require_perception=False)
         await runtime.settle()
-        await movement("TURN_OUT", lambda: context.robot.rotate_base(
-            100.0, speed=30.0, acceleration=35.0), 0.50)
-        await movement("ESCAPE", lambda: context.robot.move_base(
-            -0.60, speed=0.25, acceleration=0.35), 0.30)
+        await movement("ESCAPE", lambda: context.robot.move_and_rotate_base(
+            -0.60, 100.0, speed=0.25, acceleration=0.35))
         stage = "PASS_SPEECH"
         logger.info("yield_stage=%s", stage)
         await context.own_task(context.robot.say("Please go ahead."))
         stage = "WAIT"
         logger.info("yield_stage=%s timed_wait_s=3", stage)
         await asyncio.sleep(3.0)
-        await movement("RETURN", lambda: context.robot.move_base(
-            0.60, speed=0.12, acceleration=0.15), 0.30)
-        await movement("TURN_BACK", lambda: context.robot.rotate_base(
-            -100.0, speed=30.0, acceleration=35.0), 0.50)
+        await movement("RETURN", lambda: context.robot.move_and_rotate_base(
+            0.60, -100.0, speed=0.12, acceleration=0.15))
         await movement("ADVANCE", lambda: context.robot.move_base(
-            0.15, speed=0.25, acceleration=0.35), 0.04)
+            0.15, speed=0.25, acceleration=0.35))
         stage = "COMPLETE_SPEECH"
         logger.info("yield_stage=%s", stage)
-        await context.own_task(context.robot.say("Yielding complete!"))
+        await context.own_task(context.robot.say("Yield complete."))
     except (Exception, asyncio.CancelledError) as exc:
         logger.warning("yield_failed stage=%s error=%s", stage, str(exc) or type(exc).__name__)
         raise
@@ -155,7 +150,7 @@ class BehaviourDispatcher:
                 if not callable(getattr(self.context.robot, method, None)):
                     raise ValueError(f"APPROACH execution requires SDK robot.{method}")
         if self.handlers["YIELD"] is yield_space:
-            for method in ("rotate_base", "move_base", "say"):
+            for method in ("move_and_rotate_base", "move_base", "say"):
                 if not callable(getattr(self.context.robot, method, None)):
                     raise ValueError(f"YIELD execution requires SDK robot.{method}")
         if self.context.trial_head is not None:
