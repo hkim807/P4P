@@ -70,7 +70,7 @@ async def yield_space(context):
         await runtime.wait_ready(require_perception=False)
         await runtime.settle()
         await movement("ESCAPE", lambda: context.robot.move_and_rotate_base(
-            -0.60, 100.0, speed=0.25, acceleration=0.35))
+            -0.90, 100.0, speed=0.25, acceleration=0.35))
         stage = "PASS_SPEECH"
         logger.info("yield_stage=%s", stage)
         await context.own_task(context.robot.say("Please go ahead."))
@@ -78,7 +78,7 @@ async def yield_space(context):
         logger.info("yield_stage=%s timed_wait_s=3", stage)
         await asyncio.sleep(3.0)
         await movement("RETURN", lambda: context.robot.move_and_rotate_base(
-            0.60, -100.0, speed=0.12, acceleration=0.15))
+            0.85, -92.5, speed=0.12, acceleration=0.15))
         await movement("ADVANCE", lambda: context.robot.move_base(
             0.15, speed=0.25, acceleration=0.35))
         stage = "COMPLETE_SPEECH"

@@ -171,13 +171,15 @@ python3 -m robot.navel_client.main --server http://PC_IP:6060 \
   after the successful stop. Remove “Yielding complete!” if it adds no value to
   the person. These are small handler edits, not existing command-line options.
 - [ ] YIELD: confirm the initial look at the person, inspect the whole current
-  turn/back/wait/return maneuver, and confirm the head returns to neutral only
-  after completion. The route speed flag does not reduce its separate movement
+  backward arc/wait/return arc/advance maneuver, and confirm the head returns to
+  neutral only after completion. The route speed flag does not reduce its movement
   distances/speeds.
 
-The current YIELD rotates 100 degrees, moves backward 0.6 m, speaks, waits three
-seconds, moves forward 0.6 m, rotates back and advances 0.15 m. It does not detect
-that the person has passed. If this is not repeatable in the available space,
+The current YIELD combines −0.90 m backward motion with +100° rotation, speaks,
+waits three seconds, returns with a combined +0.85 m/−95° arc and advances 0.15 m.
+These empirical parameters nominally leave +5° heading difference and do not
+guarantee an exact return to the departure pose. It does not detect that the
+person has passed. If this is not repeatable in the available space,
 prefer implementing/testing a simpler stop, “Please go ahead,” timed wait and
 end behavior today. That is a deliberate handler change; no existing flag makes
 the current maneuver simpler. Do not spend the day making the return path clever.

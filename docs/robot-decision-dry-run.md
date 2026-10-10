@@ -117,20 +117,39 @@ that person focus. This final look also runs without the trial head controller.
 There is no route resumption after APPROACH. YIELD first
 looks at the current single person, temporarily
 moves aside/backwards, waits, returns towards the original route, advances a short
-distance and ends. It combines −0.60 m backward translation with +100° rotation
+distance and ends. It combines −0.90 m backward translation with +100° rotation
 (0.25 m/s, 0.35 m/s²), confirms stopping and says "Please go ahead.". After
-speech completion it waits 3 seconds, returns with a combined +0.60 m/−100° arc
+speech completion it waits 3 seconds, returns with a combined +0.85 m/−95° arc
 (0.12 m/s, 0.15 m/s²), confirms stopping, advances only +0.15 m
 (0.25 m/s, 0.35 m/s²), confirms stopping and awaits "Yield complete.". Each
 movement uses the existing SDK sender supervision and local measured stopping;
-there are no fixed movement-margin sleeps. These are initial physical-test
-parameters: the outward arc gives approximately 0.40 m ideal lateral displacement.
-Route clearance, smoothness and return accuracy remain unverified on the robot.
+there are no fixed movement-margin sleeps. These are initial empirical tuning
+parameters. The return is shorter and rotates less than the outward arc; the
+unequal rotation requests nominally leave a +5° heading difference. They do not
+guarantee lateral clearance or an exact return to the departure pose.
 The wait is timed, not sensor-confirmed clearance; return is predefined,
 not navigation to a measured departure pose. YIELD uses local
 odometry without UID/nose acquisition, returns the head to neutral after the
 whole maneuver, and never restarts the cancelled baseline.
 Interruption/failure stops locally without forcing the remaining return stages.
+
+To check this tuning without a server or baseline route, mark the departure
+position, heading and original route on the floor, then run from the repository
+root in the robot's existing SDK-enabled environment:
+
+```bash
+python3 -m robot.navel_client.main --debug-action YIELD
+```
+
+Record video against the floor marks and retain the existing terminal logs.
+Measure outward lateral clearance during `yield_stage=WAIT`, after the first
+`BASE_STOPPED` following `ESCAPE`. Identify the stopped return position and
+heading in the video immediately before `yield_stage=ADVANCE`; there is no
+inspection pause before the advance. Measure final position separately after
+`yield_stage=COMPLETE_SPEECH` and cleanup. Existing `MOTION` events provide
+odometry samples during movement; `BASE_STOPPED` confirms the stop check but
+does not log a final pose. Check both speeches, the 3-second wait and completion.
+
 Preflight requires `--route-trial`
 and the SDK movement, arc, rotation, stopping and speech methods before motion starts.
 Dry-run remains at DECIDED and never calls this dispatcher.

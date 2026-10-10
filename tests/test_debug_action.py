@@ -242,9 +242,9 @@ class DebugActionTests(unittest.IsolatedAsyncioTestCase):
         self.assertIs(dispatcher.handlers["YIELD"], HANDLERS["YIELD"])
         stages = [event for event in robot.events if event[0] in {"arc", "advance", "say", "wait"}]
         self.assertEqual(stages, [
-            ("arc", -0.60, 100.0, 0.25, 0.35),
+            ("arc", -0.90, 100.0, 0.25, 0.35),
             ("say", "Please go ahead."), ("wait", 3.0),
-            ("arc", 0.60, -100.0, 0.12, 0.15),
+            ("arc", 0.85, -92.5, 0.12, 0.15),
             ("advance", 0.15, 0.25, 0.35), ("say", "Yield complete."),
         ])
         # The real runtime confirms stopping between every sender and next stage.

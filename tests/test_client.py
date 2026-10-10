@@ -945,8 +945,8 @@ class ClientTests(unittest.IsolatedAsyncioTestCase):
                         dispatcher.preflight()
 
     async def test_production_yield_sequence_and_failure_cleanup(self):
-        expected = [('baseline', 10., .1, .2), ('arc', -.6, 100., .25, .35),
-                    ('arc', .6, -100., .12, .15), ('move', .15, .25, .35)]
+        expected = [('baseline', 10., .1, .2), ('arc', -.9, 100., .25, .35),
+                    ('arc', .85, -92.5, .12, .15), ('move', .15, .25, .35)]
         for outcome in ('success', 'cancel_escape', 'cancel_wait', 'cancel_return', 'cancel_advance',
                         'motion_failure', 'return_failure', 'advance_failure',
                         'speech_failure', 'final_speech_failure', 'timeout'):
@@ -984,7 +984,7 @@ class ClientTests(unittest.IsolatedAsyncioTestCase):
 
                     def movement(self, name, amount, speed, acceleration, angle=None):
                         assert self.active == 0, 'overlapping movement senders'
-                        if amount in (-.6, .15):
+                        if amount in (-.9, .15):
                             assert events[-1] == ('stopped',), 'movement before confirmed stop'
                         events.append((name, amount, speed, acceleration) if angle is None
                                       else (name, amount, angle, speed, acceleration))
@@ -997,7 +997,7 @@ class ClientTests(unittest.IsolatedAsyncioTestCase):
                                 if name == 'baseline':
                                     baseline_started.set()
                                     await asyncio.Event().wait()
-                                stage = ('escape' if amount == -.6 else 'return' if amount == .6
+                                stage = ('escape' if amount == -.9 else 'return' if amount == .85
                                          else 'advance' if amount == .15 else None)
                                 if stage:
                                     reached[stage].set()
