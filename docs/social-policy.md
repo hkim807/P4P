@@ -43,7 +43,7 @@ Eligible `social-rules-v5` observations use this order:
 | --- | --- |
 | Explicit upstream path CONFLICT | YIELD |
 | Measured PASS invitation | CONTINUE |
-| Current face detected, distance ≤3 m, valid DECREASING trend, valid NONE gaze, latest looking false and latest gaze score ≤0.87 | YIELD |
+| Current face detected, distance within `config.yield_closing_max_distance_m`, valid DECREASING trend, valid NONE gaze, latest looking false and latest gaze score ≤`config.looking_exit` | YIELD |
 | Latest looking false while historical SUSTAINED category is held | CONTINUE |
 | Sustained or qualifying recurring attention in TOO_CLOSE or INTERACTION_RANGE | ENGAGE |
 | Reliable increasing relative separation outside conversation range | CONTINUE |
@@ -55,9 +55,11 @@ TOO_CLOSE remains a distance category: attentive nearby people support ENGAGE,
 and eligible non-attentive people support CONTINUE unless the new closing trigger
 applies. A stationary person at 0.4 m does not cause YIELD solely through proximity.
 The exact current distance cutoff is `config.yield_closing_max_distance_m`,
-independent of distance-zone hysteresis, and includes exactly 3 m. Low gaze uses
-`config.looking_exit` (currently 0.87); a score at or above `looking_enter`
-(currently 0.88) establishes looking, while the narrow band between those
+independent of distance-zone hysteresis. The development config sets it to 3 m,
+including exactly 3 m; null removes this distance limit while retaining every
+other required cue. Low gaze uses `config.looking_exit` (0.90 in
+`config/temporal-development-frozen.json`); a score at or above `looking_enter`
+(0.93 in that config) establishes looking, while the band between those
 thresholds retains the previous per-sample state. NONE requires established low attention over the temporal
 window, not one low sample. DECREASING requires a valid fitted slope more negative
 than `-config.distance_deadband_mps` (currently -0.1 m/s), with valid current
@@ -66,21 +68,28 @@ distance, sufficient span/samples and acceptable residual.
 The SDK adapter sets `face_detected: true` only for a finite positive-size `face`
 bounding box. Missing/invalid boxes supply no detection evidence. Face evidence
 and `evidence.latest_gaze_overlap` clear immediately on missing observations.
-At 10 Hz with uninterrupted low gaze and smooth closing, the configured 1 s
+At 10 Hz with uninterrupted low gaze and smooth closing, the development config's 2 s
 minimum span plus 0.1 s category dwell allows a first YIELD at approximately
-1.1 s. Gaps, missing readings and failed fits can delay or prevent it.
+2.1 s. Gaps, missing readings and failed fits can delay or prevent it. The
+APPROACHABLE boundary is 6 m in that config, independent of the 3 m yield cutoff.
+The class defaults and `config/temporal-state.json` remain a separate earlier
+configuration; each SocialState embeds the effective parameters used for it.
 Relative closing describes decreasing separation regardless of which participant
 is moving; human motion is not estimated and closing does not establish a path conflict.
 No ego-motion compensation or physical handler is added.
 
-The LLM prompt is `social-state-llm-v9`, including its earlier proximity
-guidance. It receives relative distance trends without human-motion or
-stationary-window fields. Rule and LLM guidance still differ on proximity.
+The LLM prompt is `social-state-llm-v10`. Its YIELD guidance follows the same
+priority and evidence requirements: measured conflict first, PASS next, then
+the complete face/closing/low-gaze trigger. Proximity alone never triggers
+YIELD. Nearby sustained or qualifying recurring attention supports ENGAGE,
+including TOO_CLOSE. The model receives the effective config and the same
+relative-distance evidence as the rules. Matching guidance does not guarantee
+matching model outputs; no rule correction or fallback is applied.
 Target locks release on `RELATIVE_SEPARATION_INCREASING` outside conversation
 range, whether the robot is moving, stationary, or its velocity is unavailable.
-Historical reports remain under their recorded versions. The active candidate
-freeze is `config/live-study-freeze-yield-low-gaze.json`; the original v3 freeze
-is retained for historical reproducibility.
+Historical reports and freeze manifests remain under their recorded versions.
+`config/live-study-freeze-yield-low-gaze.json` predates the current code and prompt;
+create and verify a new freeze before collecting a new study.
 The target-lock wire contract is `target-lock-v3`: identity/rebind/cooldown holds
 have `execution_status: HOLD`, a `hold_reason` and `effective_decision: null`;
 they never invent an action. Target availability and command checks remain.

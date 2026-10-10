@@ -1,5 +1,10 @@
 # Completed rule-based Navel interaction system
 
+Historical architecture proposal. Its implementation/planned labels and tables
+describe the earlier script-executor design. Use [the social policy](social-policy.md)
+and [the current robot execution guide](robot-decision-dry-run.md) for the current
+four-action single-trial pipeline.
+
 This is the target architecture for a robot roaming a fixed route. **Implemented**
 means present in this branch; **planned** means the behavior or interface still
 needs to be built. A rule decision is a proposal until the robot validates and

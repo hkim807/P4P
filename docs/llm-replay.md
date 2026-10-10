@@ -1,9 +1,11 @@
 # Offline LLM recording replay (Step 3)
 
 `python -m app.llm_replay` accepts explicit `sdk`, `raw`, or `social` JSONL
-inputs. It runs synchronously and only builds SocialState plus the existing
-`social-state-llm-v3` policy. The four-action contract and Step 2 messages are
-unchanged. Use closed recordings and a new output path for every run.
+inputs. It runs synchronously and builds SocialState plus the current
+`social-state-llm-v10` prompt. The four-action output contract remains unchanged.
+YIELD guidance uses measured conflict or the complete face/closing/low-gaze
+condition described in [the social policy](social-policy.md). Use closed
+recordings and a new output path for every run.
 
 ## Inputs inspected on this branch
 
@@ -149,7 +151,7 @@ Structural example below abbreviates the full source and SocialState objects;
 actual JSONL contains both complete objects and the exact canonical state string.
 
 ```json
-{"schema_version":1,"status":"prepared","source":{"input_path":"var/recordings/scenario-03.sdk.jsonl","input_format":"sdk","reconstructed":true,"line_number":1,"original_capture_session":"3425596259d0482da6d9275fa8b10c83","processing_session_id":"replay-<content/session-digest>","timestamps":{"received_monotonic_us":13766270418,"received_unix_us":"<recorded wall time>","sdk_perception_timestamp":"<original packet.time>"},"source_record":"<complete SDK envelope>"},"processing":"<effective configs and versions>","sampling":{"interval_us":1000000,"warmup_us":0,"max_calls":null,"selected_index":1},"social_state":"<complete frozen SocialState>","social_state_json":"<exact canonical JSON sent as observation data>","source_state_id":"replay-<digest>:1","session_id":"replay-<digest>","source_robot_timestamp_us":13766270418,"prompt_version":"social-state-llm-v3","ollama_configuration":"<model, URL, timeout, generation settings>","ok":null,"decision":null,"error":null,"requested_model":"<installed-model-name>","returned_model":null,"raw_content":null,"request_duration_s":null,"completed_at":"<replay-host UTC ISO time>","completion_clock":"replay-host UTC wall clock; independent of source clocks"}
+{"schema_version":1,"status":"prepared","source":{"input_path":"var/recordings/scenario-03.sdk.jsonl","input_format":"sdk","reconstructed":true,"line_number":1,"original_capture_session":"3425596259d0482da6d9275fa8b10c83","processing_session_id":"replay-<content/session-digest>","timestamps":{"received_monotonic_us":13766270418,"received_unix_us":"<recorded wall time>","sdk_perception_timestamp":"<original packet.time>"},"source_record":"<complete SDK envelope>"},"processing":"<effective configs and versions>","sampling":{"interval_us":1000000,"warmup_us":0,"max_calls":null,"selected_index":1},"social_state":"<complete frozen SocialState>","social_state_json":"<exact canonical JSON sent as observation data>","source_state_id":"replay-<digest>:1","session_id":"replay-<digest>","source_robot_timestamp_us":13766270418,"prompt_version":"social-state-llm-v10","ollama_configuration":"<model, URL, timeout, generation settings>","ok":null,"decision":null,"error":null,"requested_model":"<installed-model-name>","returned_model":null,"raw_content":null,"request_duration_s":null,"completed_at":"<replay-host UTC ISO time>","completion_clock":"replay-host UTC wall clock; independent of source clocks"}
 ```
 
 For successful inference the decision is the unchanged two-field
@@ -166,6 +168,10 @@ assumed for every frame; capture frequencies differ. This step does not read
 camera manifests, match frames, convert images or make VLM requests.
 
 ## Verification on the current recordings
+
+The results below are historical verification from 2026-10-07 under prompt v3.
+Saved SocialState files must match the current schema; reconstruct raw or SDK
+recordings to regenerate traces after removed-field changes.
 
 Preparation-only CLI runs on 2026-10-07 completed with interval 1 second and
 warmup 0, without a model call:

@@ -48,6 +48,13 @@ lidar/sonar, so SocialState contains no range-sensor status or collision summary
 
 ## Design decisions and research basis
 
+The numeric defaults below describe `TemporalConfig` and `config/temporal-state.json`.
+Live development trials using `config/temporal-development-frozen.json` instead
+use a 3 s window, 2 s minimum span, gaze entry/exit 0.93/0.90, 0.1 s category
+dwell and a 6 m APPROACHABLE boundary. The separate closing-yield cutoff is 3 m.
+Each SocialState embeds the effective config; [the policy guide](social-policy.md)
+describes how those values affect actions.
+
 ### 1. Temporal evidence before engagement interpretation
 
 The feature layer consumes original observations, while the estimator consumes

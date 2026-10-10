@@ -1,5 +1,10 @@
 # PC social-state and Navel execution implementation plan
 
+Historical implementation plan. For current action eligibility, relative-distance
+handling and single-trial execution, see [the social policy](social-policy.md)
+and [the robot execution guide](robot-decision-dry-run.md). Historical validation
+reports retain the parameters and schemas used in their original runs.
+
 ## Objective and starting point
 
 **Layers 1-3 and the first stateless Layer 4a rule policy are implemented at the

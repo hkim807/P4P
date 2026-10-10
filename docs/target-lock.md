@@ -13,12 +13,17 @@ available for audit.
 
 | State | Meaning | Effective decision |
 | --- | --- | --- |
-| `UNLOCKED` | No selected target; acquire only when exactly one track is visible | Pure `CONTINUE` or `DEFER` |
-| `LOCKED` | Bound UID and track epoch visible, including after a guarded UID handoff | Pure proposal if it targets this track; otherwise `DEFER` |
-| `MISSING` | Selected track absent within the hold window | `DEFER / LOCKED_TARGET_MISSING` |
-| `TENTATIVE_RETURN` | One different UID or epoch is visible; handoff evidence is accumulating | `DEFER` with the current evidence reason |
-| `AMBIGUOUS` | Several other tracks are visible | `DEFER / MULTIPLE_RETURN_CANDIDATES` |
-| `COOLDOWN` | Lock released by timeout, stream gap, valid no-attention/away evidence, completed engagement, or failed/cancelled/rejected action | `DEFER / LOCK_COOLDOWN` |
+| `UNLOCKED` | No selected target; acquire only when exactly one track is visible and policy has not classified no attention or increasing separation | Eligible `CONTINUE`, otherwise null/HOLD |
+| `LOCKED` | Bound UID and track epoch visible, including after a guarded UID handoff | Eligible APPROACH/ENGAGE for this track or YIELD; otherwise null/HOLD |
+| `MISSING` | Selected track absent within the hold window | null/HOLD, `LOCKED_TARGET_MISSING` |
+| `TENTATIVE_RETURN` | One different UID or epoch is visible; handoff evidence is accumulating | null/HOLD with the current evidence reason |
+| `AMBIGUOUS` | Several other tracks are visible | null/HOLD, `MULTIPLE_RETURN_CANDIDATES` |
+| `COOLDOWN` | Lock released by timeout, stream gap, valid no-attention/increasing-separation evidence, completed engagement, or failed/cancelled/rejected action | null/HOLD, `LOCK_COOLDOWN` |
+
+The wire contract is `target-lock-v3`. A hold has `execution_status: HOLD`,
+`effective_decision: null` and a `hold_reason`; it is not a DEFER action.
+Increasing separation releases the lock regardless of robot velocity. Nearby
+attentive people can still receive ENGAGE before this increasing-distance rule.
 
 The default hold is **2 seconds** from the selected track's last observation.
 The default release cooldown is **1 second**. Both use robot source timestamps,
@@ -40,9 +45,9 @@ the **same logical lock ID**. It requires all of the following:
    with no inter-frame gap over 0.35 seconds. Neither side can use UID `0`, and
    each logical lock permits at most three handoffs by default.
 
-While evidence accumulates, the effective decision is `DEFER`. The handoff
-frame also returns `DEFER / UID_REBOUND_OBSERVE`. The new raw track retains its
-own epoch and builds fresh gaze and motion evidence; no measurements are copied
+While evidence accumulates, the effective decision is null with a HOLD status.
+The handoff frame also holds with `UID_REBOUND_OBSERVE`. The new raw track retains its
+own epoch and builds fresh gaze and relative-distance evidence; no measurements are copied
 from the old UID. The trace's `bound_tracks` lists the raw tracks associated
 with the logical lock. If the checks fail, the old lock stays unresolved until
 it returns or expires. After release and cooldown, a sole visible person may
@@ -99,4 +104,6 @@ recordings lack identity labels and measured robot head pose. The server now
 issues correlated `APPROACH` and `ENGAGE` commands, and the opt-in
 [physical executor](physical-executor.md) can run user-provided scripts and
 report actual outcomes. The route, action, and hardware stop scripts still
-need to be supplied and validated on Navel.
+need to be supplied and validated on Navel for that script mode. The separate
+`--single-trial-execute` mode includes native four-action SDK handlers, as
+documented in [the robot execution guide](robot-decision-dry-run.md).

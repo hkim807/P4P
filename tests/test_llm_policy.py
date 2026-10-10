@@ -138,7 +138,7 @@ class LLMPromptTests(unittest.TestCase):
         second = build_llm_prompt(reordered)
         self.assertEqual(first, second)
         self.assertEqual(first.messages, second.messages)
-        self.assertEqual(first.prompt_version, "social-state-llm-v9")
+        self.assertEqual(first.prompt_version, "social-state-llm-v10")
         self.assertEqual(first.prompt_version, PROMPT_VERSION)
         self.assertEqual(first.instructions, SYSTEM_PROMPT)
         changed = social_state()
@@ -151,7 +151,7 @@ class LLMPromptTests(unittest.TestCase):
         self.assertIn("The supplied robot state describes its actual movement at the observation moment.", text)
         definitions = {
             "CONTINUE": "Continue along the existing fixed route without approaching the person or initiating an interaction. During execution, the robot will complete the remaining route.",
-            "YIELD": "Give a person priority for a likely path conflict, including stopping, slowing, or moving aside.",
+            "YIELD": "Give the person room to pass by temporarily moving aside and backwards, waiting, returning towards the route and advancing a short distance.",
             "APPROACH": "Leave the existing route, move towards the observed person, and stop at a suitable distance for conversation.",
             "ENGAGE": "The person is already at a suitable interaction distance. Stop or remain stationary and initiate an interaction, such as a greeting.",
         }
@@ -191,6 +191,26 @@ class LLMPromptTests(unittest.TestCase):
         ):
             with self.subTest(instruction=instruction):
                 self.assertIn(instruction, text)
+
+    def test_yield_guidance_requires_measured_evidence_and_matches_rule_priority(self):
+        text = build_llm_prompt(social_state()).instructions
+        for requirement in (
+            "measured path CONFLICT, measured PASS invitation, closing-distance/low-gaze yielding",
+            "A measured path_relation CONFLICT requires YIELD, even if gaze or face evidence is unavailable",
+            "PASS requires CONTINUE after the conflict check and overrides closing-distance/low-gaze yielding",
+            "face_detected is true", "evidence.latest_distance_valid and evidence.distance_trend_valid are true",
+            "relative_distance_trend is DECREASING", "latest_distance_m <= config.yield_closing_max_distance_m",
+            "a null cutoff removes only the distance limit", "evidence.gaze_valid is true", "gaze_state is NONE",
+            "evidence.latest_gaze_looking is false", "evidence.latest_gaze_overlap is available and <= config.looking_exit",
+            "Use the current measured distance, not distance_zone, for the cutoff",
+            "TOO_CLOSE or low gaze alone does not justify YIELD",
+            "A current gaze score above config.looking_exit vetoes this trigger",
+            "without claiming which participant is moving or a confirmed path conflict",
+        ):
+            with self.subTest(requirement=requirement):
+                self.assertIn(requirement, text)
+        self.assertNotIn("conflict/proximity", text)
+        self.assertNotIn("provisional proximity response", text)
 
     def test_only_static_system_message_and_single_state_text_are_supplied(self):
         state = social_state()
