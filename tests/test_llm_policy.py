@@ -128,7 +128,7 @@ class LLMPromptTests(unittest.TestCase):
         self.assertIsNone(unavailable["evidence"]["distance_window_start_us"])
         self.assertIsNone(data["active_target_uid"])
         self.assertIsNone(data["active_target_track_epoch"])
-        self.assertEqual(data["range_data_status"], "UNKNOWN")
+        self.assertNotIn("range_data_status", data)
 
     def test_prompt_is_static_versioned_and_reproducible_across_input_key_order(self):
         state = social_state()
@@ -137,7 +137,7 @@ class LLMPromptTests(unittest.TestCase):
         second = build_llm_prompt(reordered)
         self.assertEqual(first, second)
         self.assertEqual(first.messages, second.messages)
-        self.assertEqual(first.prompt_version, "social-state-llm-v6")
+        self.assertEqual(first.prompt_version, "social-state-llm-v7")
         self.assertEqual(first.prompt_version, PROMPT_VERSION)
         self.assertEqual(first.instructions, SYSTEM_PROMPT)
         changed = social_state()

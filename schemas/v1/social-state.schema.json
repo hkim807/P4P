@@ -716,12 +716,6 @@
       "default": null,
       "title": "Active Target Track Epoch",
       "type": "null"
-    },
-    "range_data_status": {
-      "const": "UNKNOWN",
-      "default": "UNKNOWN",
-      "title": "Range Data Status",
-      "type": "string"
     }
   },
   "required": [

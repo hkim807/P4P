@@ -227,7 +227,6 @@ SocialState
       valid_sample_counts
     validity_flags
   safety:
-    range_data_status: VALID / UNKNOWN / STALE
     calibrated_range_summary
     local_execution_status
   active_target_uid, active_target_track_epoch

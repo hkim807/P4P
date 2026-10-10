@@ -157,7 +157,6 @@ class SocialState(StrictModel):
     # No target selection, collision interpretation, or engagement probability yet.
     active_target_uid: None = None
     active_target_track_epoch: None = None
-    range_data_status: Literal["UNKNOWN"] = "UNKNOWN"
 
     @model_validator(mode="after")
     def derive_readiness(self):

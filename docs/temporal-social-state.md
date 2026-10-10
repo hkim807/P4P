@@ -43,8 +43,8 @@ field; `track_events` retains acquisition/missing/reacquisition/loss information
 Expired tracks leave the people array and appear in terminal tracking events.
 `latest_distance_m` can be a retained historical reading for a missing track;
 visibility and last-seen age must be consulted. Its current distance zone is then
-UNKNOWN. Active targets are null and range-data status remains UNKNOWN because
-this layer does not calibrate or interpret lidar/sonar.
+UNKNOWN. Active targets are null. This layer does not calibrate or interpret
+lidar/sonar, so SocialState contains no range-sensor status or collision summary.
 
 ## Design decisions and research basis
 
