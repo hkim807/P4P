@@ -223,6 +223,28 @@ Use the same branch on the robot and its existing Navel SDK installation.
 The robot client needs only that SDK and the Python standard library. Do not
 install the computer server's requirements on Navel.
 
+To execute one existing action locally and exit, use the SDK-enabled Python from
+the repository root on the robot:
+
+```bash
+python3 -m robot.navel_client.main --debug-action APPROACH
+python3 -m robot.navel_client.main --debug-action YIELD
+python3 -m robot.navel_client.main --debug-action ENGAGE
+```
+
+This uses the existing `navel.Robot()` connection and local sensor readers. No
+HTTP server, decision pipeline, or baseline route is started; `--server` and
+`NAVEL_SENSOR_SERVER` are unused. Route/trial, capture, and other execution modes
+cannot be combined with `--debug-action`. APPROACH selects the first valid UID
+with usable existing nose geometry in the first usable local frame, including
+when several people are visible. Its initial acquisition is bounded by
+`--decision-wait-timeout` (default 30 seconds); the existing approach then retains
+its tracking and verification. ENGAGE does not require a person. All three actions
+retain `--behaviour-timeout` (default 120 seconds), stopping and cleanup, and log
+the action, selected UID where applicable, and completion or failure reason.
+These commands execute real robot actions; motion, head tracking, stopping,
+route clearance and return accuracy still require physical testing.
+
 First inspect sensor frames locally:
 
 ```bash

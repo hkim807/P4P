@@ -107,25 +107,49 @@ distance, with ±0.10 m distance and ±4° heading tolerances. Arc speed is
 heading speed is `min(70, sqrt(abs(angle_degrees) * 60))`, acceleration 60°/s².
 The reference acquisition, filtering, geometric UID association, arc monitoring,
 one distance correction and up to two final heading corrections are retained.
-The head remains neutral during APPROACH. After measured stopping, only fresh
-`APPROACHED_VERIFIED` arrival permits the owned/awaited utterance "Approach
-complete!" followed by a look at the currently observed person. `APPROACHED_UNVERIFIED` and
+The head remains neutral during APPROACH. Only fresh `APPROACHED_VERIFIED`
+arrival permits completion: confirm measured stopping, look at the approach's
+existing target UID, then own and await "Hi! Do you need any help?" while keeping
+that person focus. This final look also runs without the trial head controller.
+`APPROACHED_UNVERIFIED` and
 `OUTSIDE_TOLERANCE` fail without speaking; measurements are retained in
 `SingleTrial.approach_result` and local approach logs, separately from policy.
-There is no ENGAGE greeting or route resumption after APPROACH. YIELD first
+There is no route resumption after APPROACH. YIELD first
 looks at the current single person, temporarily
 moves aside/backwards, waits, returns towards the original route, advances a short
-distance and ends. It rotates +100° (30°/s, 35°/s²), reverses −0.60 m
-(0.25 m/s, 0.35 m/s²), stops and says "Please go ahead.". After speech completion
-it waits 3 seconds, moves +0.60 m (0.12 m/s, 0.15 m/s²), stops, rotates −100°
-(30°/s, 35°/s²), advances only +0.15 m (0.25 m/s, 0.35 m/s²), stops and awaits
-"Yielding complete!". Rotation margins are 0.50 s, escape/return margins 0.30 s,
-and the short advance margin 0.04 s, following actual SDK task completion and
-local measured stopping. The wait is timed, not sensor-confirmed clearance;
-return is nominal, not verified navigation to an exact path. YIELD uses local
+distance and ends. It combines −0.90 m backward translation with +100° rotation
+(0.25 m/s, 0.35 m/s²), confirms stopping and says "Please go ahead.". After
+speech completion it waits 3 seconds, returns with a combined +0.85 m/−95° arc
+(0.12 m/s, 0.15 m/s²), confirms stopping, advances only +0.15 m
+(0.25 m/s, 0.35 m/s²), confirms stopping and awaits "Yield complete.". Each
+movement uses the existing SDK sender supervision and local measured stopping;
+there are no fixed movement-margin sleeps. These are initial empirical tuning
+parameters. The return is shorter and rotates less than the outward arc; the
+unequal rotation requests nominally leave a +5° heading difference. They do not
+guarantee lateral clearance or an exact return to the departure pose.
+The wait is timed, not sensor-confirmed clearance; return is predefined,
+not navigation to a measured departure pose. YIELD uses local
 odometry without UID/nose acquisition, returns the head to neutral after the
 whole maneuver, and never restarts the cancelled baseline.
 Interruption/failure stops locally without forcing the remaining return stages.
+
+To check this tuning without a server or baseline route, mark the departure
+position, heading and original route on the floor, then run from the repository
+root in the robot's existing SDK-enabled environment:
+
+```bash
+python3 -m robot.navel_client.main --debug-action YIELD
+```
+
+Record video against the floor marks and retain the existing terminal logs.
+Measure outward lateral clearance during `yield_stage=WAIT`, after the first
+`BASE_STOPPED` following `ESCAPE`. Identify the stopped return position and
+heading in the video immediately before `yield_stage=ADVANCE`; there is no
+inspection pause before the advance. Measure final position separately after
+`yield_stage=COMPLETE_SPEECH` and cleanup. Existing `MOTION` events provide
+odometry samples during movement; `BASE_STOPPED` confirms the stop check but
+does not log a final pose. Check both speeches, the 3-second wait and completion.
+
 Preflight requires `--route-trial`
 and the SDK movement, arc, rotation, stopping and speech methods before motion starts.
 Dry-run remains at DECIDED and never calls this dispatcher.

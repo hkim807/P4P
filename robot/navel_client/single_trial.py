@@ -249,6 +249,13 @@ class SingleTrial:
         self.phase = "EXECUTING"
         return True
 
+    def start_local_execution(self):
+        """Explicit CLI action; no policy proposal is accepted or fabricated."""
+        if self.phase != "OBSERVING" or self.decision is not None:
+            return False
+        self.phase = "EXECUTING"
+        return True
+
     def complete_execution(self):
         if self.phase != "EXECUTING":
             return False

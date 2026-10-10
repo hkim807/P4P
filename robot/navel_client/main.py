@@ -8,6 +8,7 @@ import json
 import logging
 import math
 import os
+import sys
 import time
 from dataclasses import dataclass
 from typing import Any
@@ -87,6 +88,7 @@ async def _collect_perception(
     perception_loss_timeout_s: float | None = None,
     trial: SingleTrial | None = None,
     approach=None,
+    on_perception=None,
 ) -> None:
     if model_provenance and sdk_capture is None:
         raise ValueError("model provenance requires SDK capture")
@@ -107,6 +109,8 @@ async def _collect_perception(
         observation = adapter.convert(perception, latest.fresh_value(max_locomotion_age_s))
         if approach is not None:
             approach.ingest_perception(perception)
+        if on_perception is not None:
+            on_perception()
         if trial is not None:
             trial.note_observation(observation)
         _replace_queued(queue, ModelObservation(observation, captured)
@@ -533,11 +537,96 @@ async def collect_and_stream(robot: Any, args: argparse.Namespace,
     return trial
 
 
+async def execute_debug_action(robot: Any, args: argparse.Namespace,
+                               navel_module: Any | None = None) -> SingleTrial:
+    """Run one existing action with local readers and no HTTP/decision tasks."""
+    action = args.debug_action
+    logger.info("debug_action action=%s", action)
+    trial = SingleTrial(wait_timeout_s=args.decision_wait_timeout)
+    trial_head = TrialHeadController(robot, navel_module) if navel_module is not None else None
+    dispatcher = BehaviourDispatcher(trial, robot, trial_head=trial_head,
+                                     timeout_s=args.behaviour_timeout)
+    dispatcher.preflight(action)
+    runtime = dispatcher.context.approach
+    latest = LatestLocomotion()
+    queue = asyncio.Queue(maxsize=1)
+    selected = asyncio.Event()
+    target_uid = None
+
+    def select_first_person():
+        nonlocal target_uid
+        if action != "APPROACH" or selected.is_set():
+            return
+        try:
+            runtime.check(require_perception=True)
+        except RuntimeError:
+            return  # Wait for a usable frame with fresh odometry.
+        for person in runtime.people:
+            uid = person["uid"]
+            if type(uid) is int and uid >= 0:
+                target_uid = uid
+                selected.set()
+                logger.info("debug_action action=APPROACH target_uid=%s", uid)
+                return
+
+    async def execute():
+        if action == "APPROACH":
+            try:
+                await asyncio.wait_for(selected.wait(), timeout=args.decision_wait_timeout)
+            except asyncio.TimeoutError:
+                trial.fail("TARGET_ACQUISITION_TIMEOUT")
+                return
+        await dispatcher.dispatch_local(action, target_uid=target_uid)
+
+    collectors = [
+        asyncio.create_task(_collect_locomotion(robot, latest, approach=runtime)),
+        asyncio.create_task(_collect_perception(
+            robot, NavelObservationAdapter(), latest, queue,
+            max_locomotion_age_s=args.max_locomotion_age, trial=trial,
+            approach=runtime, on_perception=select_first_person)),
+    ]
+    execution = asyncio.create_task(execute())
+    try:
+        done, _ = await asyncio.wait([*collectors, execution], return_when=asyncio.FIRST_COMPLETED)
+        for task in done:
+            task.result()
+        if execution not in done:
+            trial.fail("SUPERVISED_TASK_STOPPED")
+    except asyncio.CancelledError:
+        trial.fail("INTERRUPTED")
+        raise
+    except Exception:
+        trial.fail("LOCAL_SENSOR_FAILED")
+        logger.exception("debug_action local_sensor_failed action=%s", action)
+    finally:
+        if not trial.terminal:
+            trial.fail("CLIENT_STOPPED")
+        execution.cancel()
+        # Keep fresh odometry available until owned senders and measured stops settle.
+        cleanup = asyncio.create_task(dispatcher.close())
+        try:
+            try:
+                await asyncio.shield(cleanup)
+            except asyncio.CancelledError:
+                await cleanup
+        except Exception:
+            trial.fail("LOCAL_CLEANUP_FAILED")
+            logger.exception("debug_action cleanup_failed action=%s", action)
+        for task in collectors:
+            task.cancel()
+        await asyncio.gather(execution, *collectors, return_exceptions=True)
+        logger.info("debug_action action=%s target_uid=%s phase=%s reason=%s",
+                    action, target_uid, trial.phase, trial.failure_reason or "COMPLETED")
+    return trial
+
+
 async def run(args: argparse.Namespace) -> SingleTrial | None:
     # Delay the robot-only dependency so --help and offline tests work anywhere.
     import navel
 
     async with navel.Robot() as robot:
+        if args.debug_action is not None:
+            return await execute_debug_action(robot, args, navel_module=navel)
         camera_types = ({"head": getattr(navel, "HeadCamera", None),
                          "chest": getattr(navel, "ChestCamera", None)}
                         if args.camera_capture else None)
@@ -609,6 +698,8 @@ async def collect_sdk_only(robot: Any, args: argparse.Namespace,
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Stream raw Navel sensors to a computer over HTTP.")
+    parser.add_argument("--debug-action", choices=("APPROACH", "YIELD", "ENGAGE"),
+                        help="Execute one local action and exit; no HTTP server, decisions or baseline route")
     parser.add_argument("--server", default=os.getenv("NAVEL_SENSOR_SERVER", "http://127.0.0.1:6060"),
                         help="Computer's HTTP base URL; use its LAN IP on Navel")
     parser.add_argument("--request-timeout", type=float, default=5.0)
@@ -639,7 +730,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--model-result-max-age", type=float, default=10.0,
                         help="Maximum model source age in robot monotonic seconds (provisional default: 10)")
     parser.add_argument("--decision-wait-timeout", type=float, default=30.0,
-                        help="Single-trial decision deadline in local monotonic seconds (default: 30)")
+                        help="Decision or debug APPROACH target acquisition deadline in seconds (default: 30)")
     parser.add_argument("--route-trial", action="store_true",
                         help="Enable REAL straight base movement and head tracking; requires a single-trial mode")
     parser.add_argument("--route-distance", type=float, default=10.0, help="SDK forward distance request in metres (default: 10)")
@@ -672,6 +763,29 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--decision-timeout", type=float, default=2.0,
                         help="Expire a dry-run decision after this long without a valid response (seconds)")
     args = parser.parse_args(argv)
+    if args.debug_action is not None:
+        # Explicit route/trial options conflict even when their values equal defaults.
+        supplied = set(arg.split("=", 1)[0] for arg in (argv if argv is not None else sys.argv[1:])
+                       if arg.startswith("--"))
+        conflicting_options = {
+            "--route-trial", "--route-distance", "--route-speed", "--route-acceleration",
+            "--single-trial", "--single-trial-execute", "--single-trial-policy",
+            "--decision-dry-run", "--command-dry-run", "--physical-executor",
+            "--approach-script", "--engage-script", "--pause-route-script",
+            "--resume-route-script", "--stop-script", "--print-only",
+            "--sdk-capture", "--sdk-capture-only", "--camera-capture", "--model-provenance",
+            "--head-focus", "--no-head-focus",
+        }
+        conflicts = {option for option in conflicting_options
+                     if any(option.startswith(flag) for flag in supplied)}
+        if conflicts:
+            parser.error("--debug-action conflicts with " + ", ".join(sorted(conflicts)))
+        for name in ("decision_wait_timeout", "max_locomotion_age", "behaviour_timeout"):
+            value = getattr(args, name)
+            if not math.isfinite(value) or value <= 0 or (name == "behaviour_timeout" and value > 3600):
+                parser.error(f"--{name.replace('_', '-')} must be positive and finite"
+                             + (" and at most 3600" if name == "behaviour_timeout" else ""))
+        return args
     if args.route_trial and not args.single_trial:
         parser.error("--route-trial requires --single-trial and a dry-run or execution mode")
     if args.single_trial_execute and (not args.single_trial or args.decision_dry_run
@@ -750,7 +864,7 @@ def main() -> int:
             return 1
     except KeyboardInterrupt:
         logger.info("Navel sensor client stopped")
-        if args.single_trial:
+        if args.single_trial or args.debug_action is not None:
             return 130
     except (ValueError, TransportError) as error:
         logger.error("Trial/client configuration failed: %s", error)

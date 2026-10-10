@@ -3,9 +3,11 @@
 import unittest
 import asyncio
 from types import SimpleNamespace as NS
-from unittest.mock import patch
+from unittest.mock import AsyncMock, patch
 
+from robot.navel_client.approach import ApproachResult
 from robot.navel_client.behaviour_dispatch import BehaviourDispatcher, HANDLERS
+from robot.navel_client.head_focus import HeadFocusController
 from robot.navel_client.main import collect_and_stream, parse_args
 from robot.navel_client.single_trial import SingleTrial
 from robot.navel_client.trial_head import TrialHeadController
@@ -129,6 +131,113 @@ class TrialHeadControllerTests(unittest.IsolatedAsyncioTestCase):
                 self.assertEqual(events[-1], ("zero",))
                 self.assertEqual(trial.failure_reason, "BEHAVIOUR_FAILED")
 
+    async def test_successful_approach_stops_and_looks_at_its_target_through_one_greeting(self):
+        for use_trial_head in (False, True):
+            with self.subTest(trial_head=use_trial_head):
+                observation = frame()
+                trial = SingleTrial(monotonic_us=lambda: observation["timestamp"])
+                payload = response_for(observation, 1, "APPROACH", True)
+                payload["final_decision"] = {"action": "APPROACH", "reason": "Test."}
+                self.assertTrue(trial.accept_rule_response(payload, observation))
+                trial.note_observation({**observation, "people": [{**observation["people"][0], "uid": 19}]})
+                events = []
+                speaking, finish_speech = asyncio.Event(), asyncio.Event()
+
+                class Robot:
+                    def base_vel(self, x, r):
+                        events.append(("zero",))
+
+                    def head_overlay_degrees(self, x, y, z):
+                        events.append(("overlay", x, y, z))
+
+                    def look_at_cart(self, target, head):
+                        events.append(("neutral",))
+
+                    def look_at_person(self, uid, head):
+                        # The SDK setter is synchronous; the trial controller also
+                        # accepts this shape without treating it as an awaitable.
+                        events.append(("look", uid, head))
+
+                    def say(self, text):
+                        events.append(("say", text))
+
+                        async def speech():
+                            speaking.set()
+                            await finish_speech.wait()
+                            events.append(("speech_finished",))
+                        return asyncio.create_task(speech())
+
+                robot = Robot()
+                focus = HeadFocusController(robot)
+                focus.observe(NS(persons=[NS(uid=19)]))
+                events.clear()
+                sdk = NS(CoordSystem=NS(HEAD_STRAIGHT="HEAD_STRAIGHT"),
+                         CartSys3d=lambda *args: NS())
+                head = (TrialHeadController(robot, sdk, neutral_settle_s=0, look_settle_s=0)
+                        if use_trial_head else None)
+                dispatcher = BehaviourDispatcher(trial, robot, head=focus, trial_head=head)
+                runtime = dispatcher.context.approach
+                runtime.target = {"uid": 18}
+
+                async def settle():
+                    events.append(("stop",))
+
+                async def approach(runtime, uid):
+                    events.append(("approach", uid))
+                    return ApproachResult("APPROACHED_VERIFIED", .7, 0., True)
+
+                with patch.object(runtime, "wait_ready", new=AsyncMock()), \
+                        patch.object(runtime, "settle", new=AsyncMock(side_effect=settle)) as stopped, \
+                        patch("robot.navel_client.behaviour_dispatch.approach_human", side_effect=approach):
+                    execution = asyncio.create_task(dispatcher.dispatch())
+                    try:
+                        await asyncio.wait_for(speaking.wait(), 1)
+                        self.assertEqual(events[-5:], [("stop",), ("approach", 19), ("stop",),
+                            ("look", 18, 1.0), ("say", "Hi! Do you need any help?")])
+                        self.assertEqual(stopped.await_count, 2)
+                        self.assertEqual(trial.decision_person_uid, 17)
+                        self.assertEqual(trial.phase, "EXECUTING")
+                        self.assertFalse(execution.done())
+                        before = list(events)
+                        focus.observe(NS(persons=[NS(uid=20)]))
+                        self.assertFalse(await dispatcher.dispatch())
+                        self.assertEqual(events, before)
+                    finally:
+                        finish_speech.set()
+                    self.assertTrue(await asyncio.wait_for(execution, 1))
+                self.assertEqual(events[-2:], [("speech_finished",), ("zero",)])
+                self.assertEqual([event for event in events if event[0] == "look"], [("look", 18, 1.0)])
+                self.assertEqual(sum(event[0] == "say" for event in events), 1)
+                self.assertEqual(sum(event[0] == "neutral" for event in events), int(use_trial_head))
+                self.assertFalse(await dispatcher.dispatch())
+
+    async def test_interrupted_or_failed_completion_stop_does_not_look_or_greet(self):
+        for error, reason in ((RuntimeError("stop failed"), "BEHAVIOUR_FAILED"),
+                              (asyncio.CancelledError(), "BEHAVIOUR_CANCELLED")):
+            with self.subTest(reason=reason):
+                observation = frame()
+                trial = SingleTrial(monotonic_us=lambda: observation["timestamp"])
+                payload = response_for(observation, 1, "APPROACH", True)
+                payload["final_decision"] = {"action": "APPROACH", "reason": "Test."}
+                self.assertTrue(trial.accept_rule_response(payload, observation))
+                robot = NS(base_vel=lambda x, r: None,
+                           look_at_person=lambda *args: self.fail("Unconfirmed stop looked at a person"),
+                           say=lambda text: self.fail("Unconfirmed stop greeted"))
+                dispatcher = BehaviourDispatcher(trial, robot)
+                runtime = dispatcher.context.approach
+                runtime.target = {"uid": 18}
+                result = ApproachResult("APPROACHED_VERIFIED", .7, 0., True)
+                with patch.object(runtime, "wait_ready", new=AsyncMock()), \
+                        patch.object(runtime, "settle", new=AsyncMock(side_effect=[None, error])), \
+                        patch("robot.navel_client.behaviour_dispatch.approach_human", new=AsyncMock(return_value=result)):
+                    if reason == "BEHAVIOUR_FAILED":
+                        with self.assertLogs("robot.navel_client.behaviour_dispatch", level="ERROR"):
+                            self.assertFalse(await dispatcher.dispatch())
+                    else:
+                        self.assertFalse(await dispatcher.dispatch())
+                self.assertEqual(trial.failure_reason, reason)
+                self.assertFalse(await dispatcher.dispatch())
+
     async def test_executable_route_centres_head_before_starting_base(self):
         events = []
         route_started = asyncio.Event()
@@ -167,6 +276,9 @@ class TrialHeadControllerTests(unittest.IsolatedAsyncioTestCase):
                 raise AssertionError
 
             def say(self, text):
+                raise AssertionError
+
+            def look_at_person(self, uid, head):
                 raise AssertionError
 
         trial = SingleTrial(wait_timeout_s=0.01)
