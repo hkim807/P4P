@@ -75,9 +75,13 @@ APPROACH; attentive people already in conversation range can still ENGAGE.
 ## Versions and evaluation
 
 The versions are `uid-tracking-v3`, `temporal-social-v5`, `social-rules-v7`, and
-`social-state-llm-v12`. The LLM receives the same SocialState and effective
-parameters, with matching English guidance. Its result is neither replaced nor
-corrected by the rules. Model settings are `qwen2.5:7b`, temperature 0, seed 42,
+`social-state-llm-v13`. The LLM receives the same SocialState and effective
+parameters, with concise social objectives and evidence definitions. It uses
+its own judgment rather than being instructed to reproduce the rule conditions.
+Its result is neither replaced nor corrected by the rules. The original run-01
+and run-02 reports used v12 and remain historical results; the
+[v13 prompt comparison](../var/evaluation/llm-prompt-v13/README.md) is separate.
+Model settings are `qwen2.5:7b`, temperature 0, seed 42,
 8192 context tokens, and 192 output tokens. Trial timeout remains 30 s, model
 source age limit 10 s, and latest observation age limit 1 s.
 

@@ -1,0 +1,20 @@
+{
+  "legacy_commit": "af211ba6298cca7c568b7a139a8484cf4432084a",
+  "current_prompt_version": "social-state-llm-v13",
+  "legacy_system_words": 522,
+  "legacy_system_characters": 3546,
+  "legacy_example_user_characters": 7494,
+  "legacy_example_combined_characters": 11040,
+  "current_system_words": 363,
+  "current_system_characters": 2576,
+  "current_S4_user_characters": 3219,
+  "current_S4_combined_characters": 5795,
+  "caveat": "Legacy first-frame synthetic newcomer example and current SDK S4 are different states; character counts illustrate payload overhead, not a controlled timing comparison.",
+  "current_source_sha256": {
+    "app/policy/llm.py": "d8ad36eaf0d0914eaea36810869a644e1e8cb96d09ef4af2e5369fd68ac0ba56",
+    "app/inference/ollama.py": "2105d6becb2272aca9499a49659a464a4f4e24764992cd22f79c3b615bb498a6",
+    "app/inference/live.py": "c0d789abca53b75c1d8077d99c5b54717ebded37473b6cf2ca4e00affa9a40ef",
+    "robot/navel_client/single_trial.py": "f98155e4c841299448ce47febbc49f6e8f3887c96effb52d68fb9618f7081250",
+    "config/policy-comparison-final.json": "351320665bc3c8bfb483ba840060716fc53955d368ccb69798ddcbfae43076b5"
+  }
+}

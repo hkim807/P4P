@@ -98,13 +98,14 @@ true. The [final-scenario preset](final-scenario-tuning.md) disables it, uses a
 2 m interaction boundary, and requires stronger gaze scores beyond 2.75 m.
 The unavailable gaze sentinel (default 0.5) contributes no gaze evidence.
 
-The LLM prompt is `social-state-llm-v12`. Its YIELD guidance follows the same
-priority and evidence requirements: measured conflict first, PASS next, then
-the complete IN_WAY/face/closing/low-gaze trigger. Proximity alone never triggers
-YIELD. Nearby sustained or qualifying recurring attention supports ENGAGE,
-including TOO_CLOSE. The model receives the effective config and the same
-relative-distance evidence as the rules. Matching guidance does not guarantee
-matching model outputs; no rule correction or fallback is applied.
+The LLM prompt is `social-state-llm-v13`. It asks for an independent social
+judgment using the shared SocialState, readiness gate and four action meanings.
+It describes social objectives and evidence limits without reproducing the
+rule policy's conditions, numeric cutoffs or action precedence. The complete
+state and effective config still reach both policies. No rule correction or
+fallback is applied to model output. The explanation is requested as one sentence
+of at most 25 words; that is prompt guidance, not a new output-validation rule.
+See the [prompt revision and comparison](../var/evaluation/llm-prompt-v13/README.md).
 Target locks release on `RELATIVE_SEPARATION_INCREASING` outside conversation
 range, whether the robot is moving, stationary, or its velocity is unavailable.
 Historical reports and freeze manifests remain under their recorded versions.

@@ -35,6 +35,8 @@ def main():
     (ROOT / 'report.json').write_text(json.dumps(rows, indent=2) + '\n')
     lines = [
         '# Final-scenario tuning results', '',
+        'This report records prompt v12. The current v13 prompt and its separate comparison '
+        'are documented in [the prompt revision report](../llm-prompt-v13/README.md).', '',
         'All nine rule-based first actions match the requested options and were accepted by the live client. '
         'The actual `qwen2.5:7b` outputs are recorded separately below; they were not corrected by the rules.', '',
         'Primary run: [run-02 manifest](run-02/manifest.json), '

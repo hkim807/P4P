@@ -1,0 +1,18 @@
+[
+  {
+    "condition": "baseline-v12",
+    "calls": 9,
+    "successful": 9,
+    "median_http_s": 16.62629911499971,
+    "median_http_s_excluding_first": 14.963832654500948,
+    "mean_output_tokens": 71.11111111111111
+  },
+  {
+    "condition": "social-state-llm-v13",
+    "calls": 9,
+    "successful": 9,
+    "median_http_s": 10.370621066002059,
+    "median_http_s_excluding_first": 10.109227506001844,
+    "mean_output_tokens": 21
+  }
+]
