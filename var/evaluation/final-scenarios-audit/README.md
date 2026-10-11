@@ -37,15 +37,23 @@ Scenario 2 has two packets with duplicate entries for the same UID, rather than 
 
 SDK-only evaluation cannot verify pass gestures in scenario 9: the recordings have no gesture/path fields or images carrying that evidence. An intended gesture cannot be inferred from gaze or assigned as if measured.
 
-## Prepared evaluation copy
+## Prepared evaluation copies
 
-Only scenario 2 was approved and trimmed:
+All nine recordings were trimmed at robot motion onset, as requested. Scenario-alignment findings above remain documented separately.
 
-- [trimmed/final_scenario_2-sdk.jsonl](trimmed/final_scenario_2-sdk.jsonl)
-- Starts at the first recorded movement packet, 2.777035 seconds into the source.
-- Contains 48 perception and 48 locomotion packets, spanning 4.706534 seconds.
-- Preserves packet payloads, session ID and all timestamps. Per-stream sequences restart at 1 because the SDK replay loader requires it; the original sequence/line mapping and both file hashes are in `audit.json`.
-- Successfully loaded through `iter_replay_states(..., 'sdk')`, yielding all 48 perception states. Payload/timestamp equality against the retained source records was checked.
+| Scenario | Trimmed recording | Removed setup | Retained duration | Perception / locomotion packets |
+| --- | --- | ---: | ---: | ---: |
+| 1 | [final_scenario_1-sdk.jsonl](trimmed/final_scenario_1-sdk.jsonl) | 6.623 s | 10.514 s | 105 / 106 |
+| 2 | [final_scenario_2-sdk.jsonl](trimmed/final_scenario_2-sdk.jsonl) | 2.777 s | 4.707 s | 48 / 48 |
+| 3 | [final_scenario_3-sdk.jsonl](trimmed/final_scenario_3-sdk.jsonl) | 2.900 s | 4.699 s | 47 / 48 |
+| 4 | [final_scenario_4-sdk.jsonl](trimmed/final_scenario_4-sdk.jsonl) | 5.680 s | 6.081 s | 62 / 61 |
+| 5 | [final_scenario_5-sdk.jsonl](trimmed/final_scenario_5-sdk.jsonl) | 3.730 s | 6.911 s | 69 / 70 |
+| 6 | [final_scenario_6-sdk.jsonl](trimmed/final_scenario_6-sdk.jsonl) | 23.950 s | 4.674 s | 47 / 48 |
+| 7 | [final_scenario_7-sdk.jsonl](trimmed/final_scenario_7-sdk.jsonl) | 5.380 s | 8.901 s | 89 / 90 |
+| 8 | [final_scenario_8-sdk.jsonl](trimmed/final_scenario_8-sdk.jsonl) | 3.010 s | 7.162 s | 72 / 72 |
+| 9 | [final_scenario_9-sdk.jsonl](trimmed/final_scenario_9-sdk.jsonl) | 20.164 s | 3.458 s | 35 / 35 |
+
+All copies preserve packet payloads, session IDs and timestamps. Per-stream sequences restart at 1 because the SDK replay loader requires it; original sequence/line mappings and source/output hashes are in `audit.json`. All nine copies successfully loaded through `iter_replay_states(..., 'sdk')`, yielding every retained perception frame. Payload/timestamp equality against the retained source records was checked.
 
 The nine originals were preserved. No additional time was removed to force scenario alignment, and no alternate trim starting when the person first appears or enters range was substituted for the requested robot-motion start.
 

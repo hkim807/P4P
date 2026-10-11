@@ -9,7 +9,7 @@ from app.domain.model_decision import FinalDecision
 from app.state.social_models import SocialState, StrictModel, observation_hold_reason
 
 
-POLICY_VERSION = "social-rules-v5"
+POLICY_VERSION = "social-rules-v6"
 DecisionName = Literal["CONTINUE", "APPROACH", "ENGAGE", "YIELD"]
 
 
@@ -17,7 +17,7 @@ class PolicyDecision(StrictModel):
     decision_id: str
     source_state_id: str
     session_id: str
-    policy_version: Literal["social-rules-v2", "social-rules-v3", "social-rules-v4", "social-rules-v5"] = POLICY_VERSION
+    policy_version: Literal["social-rules-v2", "social-rules-v3", "social-rules-v4", "social-rules-v5", "social-rules-v6"] = POLICY_VERSION
     decision: DecisionName
     reason_code: str
     target_uid: int | None = Field(default=None, ge=0)
@@ -32,6 +32,8 @@ _FINAL_REASONS = {
     "RECURRING_ATTENTION_IN_INTERACTION_RANGE": "Repeated measured attention supports a conversation at the current distance.",
     "RECURRING_ATTENTION_IN_APPROACHABLE_RANGE": "Repeated measured attention supports approaching to conversation distance.",
     "CLOSING_DISTANCE_WITH_LOW_GAZE": "Measured separation is decreasing within the configured yield range, with a currently detected face and established low gaze towards the robot; give the person room to pass. Relative closing does not establish which participant is moving or a path conflict.",
+    "IN_WAY_CLOSING_WITH_LOW_GAZE": "The current nose position lies within the configured forward corridor, separation is decreasing within yield range, and face and low-gaze evidence are valid; give the person room to pass.",
+    "PERSON_TO_SIDE": "The current nose position is to the side of the configured forward corridor and gaze does not show attention; continue along the route.",
     "NO_INTERACTION_CUE": "Usable gaze evidence does not show sustained attention; continue along the fixed route.",
     "PERSON_FAR": "The person is outside the interaction and approach ranges; continue along the fixed route.",
     "NO_ATTENTION": "Gaze evidence is classified as no attention; continue along the fixed route.",
@@ -101,7 +103,10 @@ def decide(state: SocialState | dict, *, stale: bool = False,
             and e.gaze_valid and person.gaze_state == "NONE"
             and e.latest_gaze_looking is False
             and e.latest_gaze_overlap is not None and e.latest_gaze_overlap <= c.looking_exit):
-        return result("YIELD", "CLOSING_DISTANCE_WITH_LOW_GAZE")
+        if person.path_position == "IN_WAY":
+            return result("YIELD", "IN_WAY_CLOSING_WITH_LOW_GAZE")
+        if person.path_position == "TO_SIDE":
+            return result("CONTINUE", "PERSON_TO_SIDE")
     if person.evidence.latest_gaze_looking is False and person.gaze_state == "SUSTAINED":
         return result("CONTINUE", "ATTENTION_ENDED")
     recurring = (person.gaze_state == "INTERMITTENT" and e.latest_gaze_looking is True

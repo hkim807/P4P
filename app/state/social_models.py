@@ -8,6 +8,8 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
+from app.domain.models import RelativeHeadPosition
+
 
 class StrictModel(BaseModel):
     model_config = ConfigDict(extra="forbid", strict=True, allow_inf_nan=False)
@@ -33,6 +35,12 @@ class TemporalConfig(StrictModel):
     recurring_min_fraction: float = Field(default=0.45, gt=0, le=1)
     recurring_min_bouts: int = Field(default=2, ge=2)
     yield_closing_max_distance_m: float | None = Field(default=3.0, gt=0)
+    path_assume_fixed_head: bool = True
+    path_half_width_m: float = Field(default=0.5, gt=0)
+    path_hysteresis_m: float = Field(default=0.1, ge=0)
+    path_camera_x_m: float = 0.0
+    path_camera_y_m: float = 0.0
+    path_camera_yaw_deg: float = Field(default=0.0, ge=-180, le=180)
     distance_deadband_mps: float = Field(default=0.1, gt=0)
     max_distance_speed_mps: float = Field(default=3.0, gt=0)
     distance_jump_allowance_m: float = Field(default=0.05, ge=0)
@@ -47,6 +55,8 @@ class TemporalConfig(StrictModel):
 
     @model_validator(mode="after")
     def consistent(self):
+        if self.path_hysteresis_m >= self.path_half_width_m:
+            raise ValueError("path hysteresis must be smaller than path half width")
         if not self.looking_exit < self.looking_enter:
             raise ValueError("looking_exit must be below looking_enter")
         if not 0 <= self.none_enter < self.none_exit < self.sustained_exit < self.sustained_enter <= 1:
@@ -77,6 +87,7 @@ class TemporalConfig(StrictModel):
 Gaze = Literal["NONE", "INTERMITTENT", "SUSTAINED", "UNKNOWN"]
 Zone = Literal["TOO_CLOSE", "INTERACTION_RANGE", "APPROACHABLE", "FAR", "UNKNOWN"]
 Trend = Literal["DECREASING", "STABLE", "INCREASING", "UNKNOWN"]
+PathPosition = Literal["IN_WAY", "TO_SIDE", "BEHIND", "UNKNOWN"]
 
 
 class TemporalEvidence(StrictModel):
@@ -118,6 +129,10 @@ class PersonSocialState(StrictModel):
     pass_gesture: Literal["UNKNOWN", "PASS"] = "UNKNOWN"
     face_detected: bool | None = None
     relative_head_position: dict[str, str | float] | None = None
+    relative_nose_position: RelativeHeadPosition | None = None
+    path_position: PathPosition = "UNKNOWN"
+    nose_forward_m: float | None = None
+    nose_lateral_m: float | None = None
     validity_flags: list[str]
 
 
@@ -138,7 +153,7 @@ class CueChange(StrictModel):
 
 class SocialState(StrictModel):
     schema_version: Literal[1] = 1
-    estimator_version: Literal["temporal-social-v1", "temporal-social-v2", "temporal-social-v3"] = "temporal-social-v3"
+    estimator_version: Literal["temporal-social-v1", "temporal-social-v2", "temporal-social-v3", "temporal-social-v4"] = "temporal-social-v4"
     observation_readiness: Literal["READY", "NOT_READY"] = "NOT_READY"
     readiness_reason: str = "UNASSESSED"
     state_id: str

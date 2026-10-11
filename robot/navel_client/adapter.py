@@ -67,6 +67,9 @@ class NavelObservationAdapter:
             position = self._relative_head_position(getattr(person, "g_head_position", None))
             if position is not None:
                 converted["optional_relative_head_position"] = position
+            nose = self._relative_nose_position(getattr(person, "g_nose", None))
+            if nose is not None:
+                converted["optional_relative_nose_position"] = nose
             people.append(converted)
 
         velocity = getattr(getattr(locomotion, "odometry", None), "velocity", None)
@@ -92,6 +95,19 @@ class NavelObservationAdapter:
             if all(value is not None for value in vector.values()):
                 return {"coordinate_frame": "CAM_HEAD", **vector}
         return None
+
+    @staticmethod
+    def _relative_nose_position(positions: Any) -> dict[str, Any] | None:
+        # HEAD_STRAIGHT (used by APPROACH) is a different frame; never
+        # silently substitute it for the requested head-camera position.
+        matches = [p for p in positions or ()
+                   if _coordinate_name(getattr(p, "sys", None)) == "CAM_HEAD"]
+        if len(matches) != 1:
+            return None
+        vector = {axis: _finite_number(getattr(matches[0], axis, None)) for axis in "xyz"}
+        if any(value is None for value in vector.values()) or not any(vector.values()):
+            return None
+        return {"coordinate_frame": "CAM_HEAD", **vector}
 
     @staticmethod
     def _ranges(locomotion: Any, sensor: str) -> list[float | None] | None:

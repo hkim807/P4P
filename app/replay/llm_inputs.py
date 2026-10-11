@@ -223,15 +223,16 @@ def _perception(packet: dict[str, Any]) -> SimpleNamespace:
         if not isinstance(person, dict):
             raise ValueError("SDK perception person must be an object")
         item = dict(person)
-        positions = item.get("g_head_position")
-        if positions is not None and not isinstance(positions, list):
-            raise ValueError("SDK person.g_head_position must be an array or null")
-        if positions is not None:
-            item["g_head_position"] = []
-            for position in positions:
-                if not isinstance(position, dict):
-                    raise ValueError("SDK g_head_position entry must be an object")
-                item["g_head_position"].append(SimpleNamespace(**position))
+        for field in ("g_head_position", "g_nose"):
+            positions = item.get(field)
+            if positions is not None and not isinstance(positions, list):
+                raise ValueError(f"SDK person.{field} must be an array or null")
+            if positions is not None:
+                item[field] = []
+                for position in positions:
+                    if not isinstance(position, dict):
+                        raise ValueError(f"SDK {field} entry must be an object")
+                    item[field].append(SimpleNamespace(**position))
         converted.append(SimpleNamespace(**item))
     return SimpleNamespace(persons=converted)
 

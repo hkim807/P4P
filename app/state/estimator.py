@@ -6,11 +6,12 @@ from dataclasses import dataclass, field
 
 from app.recording import TimestampOrderError
 from app.state.features import GazeMemory, adjacent, extract_features, moving, stationary
+from app.state.path_position import classify_path_position
 from app.state.social_models import (CueChange, PersonSocialState, RobotState,
                                     SocialState, TemporalConfig)
 
 ZONES = ("TOO_CLOSE", "INTERACTION_RANGE", "APPROACHABLE", "FAR")
-CUES = ("gaze_state", "distance_zone", "relative_distance_trend")
+CUES = ("gaze_state", "distance_zone", "relative_distance_trend", "path_position")
 
 
 @dataclass
@@ -21,6 +22,8 @@ class PersonMemory:
     candidate_since: int = 0
     zone: str = "UNKNOWN"
     previous: dict = field(default_factory=dict)
+    path_position: str = "UNKNOWN"
+    path_timestamp_us: int | None = None
 
 
 class SocialStateEstimator:
@@ -99,6 +102,12 @@ class SocialStateEstimator:
                 slope = evidence.distance_slope_mps
                 trend = ("DECREASING" if slope < -self.config.distance_deadband_mps
                          else "INCREASING" if slope > self.config.distance_deadband_mps else "STABLE")
+            nose = (latest.get("optional_relative_nose_position")
+                    if latest and track["visibility"] == "OBSERVED" else None)
+            if memory.path_timestamp_us is not None and now - memory.path_timestamp_us > round(self.config.max_gap_s * 1e6):
+                memory.path_position = "UNKNOWN"
+            path_position, forward, lateral = classify_path_position(nose, self.config, memory.path_position)
+            memory.path_position, memory.path_timestamp_us = path_position, now
             person = PersonSocialState(
                 uid=key[0], track_epoch=key[1], visibility=track["visibility"],
                 track_age_s=track["track_age_s"], time_since_seen_s=track["time_since_seen_s"],
@@ -106,6 +115,8 @@ class SocialStateEstimator:
                 relative_distance_trend=trend,
                 evidence=evidence, validity_flags=flags,
                 relative_head_position=latest.get("optional_relative_head_position") if latest else None,
+                relative_nose_position=nose, path_position=path_position,
+                nose_forward_m=forward, nose_lateral_m=lateral,
                 path_relation=latest.get("path_relation", "UNKNOWN") if latest and track["visibility"] == "OBSERVED" else "UNKNOWN",
                 pass_gesture=latest.get("pass_gesture", "UNKNOWN") if latest and track["visibility"] == "OBSERVED" else "UNKNOWN",
                 face_detected=latest.get("face_detected") if latest and track["visibility"] == "OBSERVED" else None)

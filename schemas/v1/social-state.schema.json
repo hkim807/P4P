@@ -159,6 +159,52 @@
           "default": null,
           "title": "Relative Head Position"
         },
+        "relative_nose_position": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/RelativeHeadPosition"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "path_position": {
+          "default": "UNKNOWN",
+          "enum": [
+            "IN_WAY",
+            "TO_SIDE",
+            "BEHIND",
+            "UNKNOWN"
+          ],
+          "title": "Path Position",
+          "type": "string"
+        },
+        "nose_forward_m": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Nose Forward M"
+        },
+        "nose_lateral_m": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Nose Lateral M"
+        },
         "validity_flags": {
           "items": {
             "type": "string"
@@ -181,6 +227,37 @@
         "validity_flags"
       ],
       "title": "PersonSocialState",
+      "type": "object"
+    },
+    "RelativeHeadPosition": {
+      "additionalProperties": false,
+      "description": "Cartesian position in the head camera frame, in metres.",
+      "properties": {
+        "coordinate_frame": {
+          "const": "CAM_HEAD",
+          "title": "Coordinate Frame",
+          "type": "string"
+        },
+        "x": {
+          "title": "X",
+          "type": "number"
+        },
+        "y": {
+          "title": "Y",
+          "type": "number"
+        },
+        "z": {
+          "title": "Z",
+          "type": "number"
+        }
+      },
+      "required": [
+        "coordinate_frame",
+        "x",
+        "y",
+        "z"
+      ],
+      "title": "RelativeHeadPosition",
       "type": "object"
     },
     "RobotState": {
@@ -359,6 +436,40 @@
           ],
           "default": 3.0,
           "title": "Yield Closing Max Distance M"
+        },
+        "path_assume_fixed_head": {
+          "default": true,
+          "title": "Path Assume Fixed Head",
+          "type": "boolean"
+        },
+        "path_half_width_m": {
+          "default": 0.5,
+          "exclusiveMinimum": 0,
+          "title": "Path Half Width M",
+          "type": "number"
+        },
+        "path_hysteresis_m": {
+          "default": 0.1,
+          "minimum": 0,
+          "title": "Path Hysteresis M",
+          "type": "number"
+        },
+        "path_camera_x_m": {
+          "default": 0.0,
+          "title": "Path Camera X M",
+          "type": "number"
+        },
+        "path_camera_y_m": {
+          "default": 0.0,
+          "title": "Path Camera Y M",
+          "type": "number"
+        },
+        "path_camera_yaw_deg": {
+          "default": 0.0,
+          "maximum": 180,
+          "minimum": -180,
+          "title": "Path Camera Yaw Deg",
+          "type": "number"
         },
         "distance_deadband_mps": {
           "default": 0.1,
@@ -606,11 +717,12 @@
       "type": "integer"
     },
     "estimator_version": {
-      "default": "temporal-social-v3",
+      "default": "temporal-social-v4",
       "enum": [
         "temporal-social-v1",
         "temporal-social-v2",
-        "temporal-social-v3"
+        "temporal-social-v3",
+        "temporal-social-v4"
       ],
       "title": "Estimator Version",
       "type": "string"

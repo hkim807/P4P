@@ -1,7 +1,7 @@
-"""Audit the nine final SDK captures and prepare the accepted evaluation copy.
+"""Audit and trim all nine final SDK captures at robot motion onset.
 
 Run from the repository root: python3 var/evaluation/final-scenarios-audit/audit.py
-Only scenario 2 is approved by this review; source recordings are never changed.
+All scenarios are trimmed regardless of alignment verdict; sources are preserved.
 """
 import hashlib
 import json
@@ -137,26 +137,25 @@ def audit(n):
         'no_detection_intervals_relative_to_motion': intervals, 'one_second_bins': buckets,
         'trimmed_path': None,
     }
-    if n == 2:
-        target = OUT / 'trimmed' / path.name
-        target.parent.mkdir(exist_ok=True)
-        counts = Counter()
-        mapping = {}
-        trimmed = []
-        for ln, r in post:
-            counts[r['stream']] += 1
-            mapping.setdefault(r['stream'], {'first_original_sequence': r['sequence'], 'first_source_line': ln})
-            trimmed.append(dict(r, sequence=counts[r['stream']]))
-        output = ''.join(json.dumps(r, separators=(',', ':'), allow_nan=False)+'\n' for r in trimmed).encode()
-        if target.exists() and target.read_bytes() != output:
-            raise FileExistsError(f'Refusing to replace a different trim: {target}')
-        target.write_bytes(output)
-        states = list(iter_replay_states(target, 'sdk'))
-        assert len(states) == counts['perception']
-        for (_, original), cropped in zip(post, trimmed):
-            assert {k:v for k,v in original.items() if k != 'sequence'} == {k:v for k,v in cropped.items() if k != 'sequence'}
-        result.update(trimmed_path=str(target.relative_to(ROOT)), trimmed_sha256=sha(output),
-                      trim_sequence_mapping=mapping, replay_validated_perception_states=len(states))
+    target = OUT / 'trimmed' / path.name
+    target.parent.mkdir(exist_ok=True)
+    counts = Counter()
+    mapping = {}
+    trimmed = []
+    for ln, r in post:
+        counts[r['stream']] += 1
+        mapping.setdefault(r['stream'], {'first_original_sequence': r['sequence'], 'first_source_line': ln})
+        trimmed.append(dict(r, sequence=counts[r['stream']]))
+    output = ''.join(json.dumps(r, separators=(',', ':'), allow_nan=False)+'\n' for r in trimmed).encode()
+    if target.exists() and target.read_bytes() != output:
+        raise FileExistsError(f'Refusing to replace a different trim: {target}')
+    target.write_bytes(output)
+    states = list(iter_replay_states(target, 'sdk'))
+    assert len(states) == counts['perception']
+    for (_, original), cropped in zip(post, trimmed):
+        assert {k:v for k,v in original.items() if k != 'sequence'} == {k:v for k,v in cropped.items() if k != 'sequence'}
+    result.update(trimmed_path=str(target.relative_to(ROOT)), trimmed_sha256=sha(output),
+                  trim_sequence_mapping=mapping, replay_validated_perception_states=len(states))
     assert path.read_bytes() == data, f'Source changed during audit: {path}'
     return result
 

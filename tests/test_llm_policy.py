@@ -138,7 +138,7 @@ class LLMPromptTests(unittest.TestCase):
         second = build_llm_prompt(reordered)
         self.assertEqual(first, second)
         self.assertEqual(first.messages, second.messages)
-        self.assertEqual(first.prompt_version, "social-state-llm-v10")
+        self.assertEqual(first.prompt_version, "social-state-llm-v11")
         self.assertEqual(first.prompt_version, PROMPT_VERSION)
         self.assertEqual(first.instructions, SYSTEM_PROMPT)
         changed = social_state()
@@ -205,6 +205,8 @@ class LLMPromptTests(unittest.TestCase):
             "Use the current measured distance, not distance_zone, for the cutoff",
             "TOO_CLOSE or low gaze alone does not justify YIELD",
             "A current gaze score above config.looking_exit vetoes this trigger",
+            "path_position is IN_WAY", "TO_SIDE, BEHIND and UNKNOWN veto",
+            "IN_WAY alone does not require YIELD or bypass gaze readiness",
             "without claiming which participant is moving or a confirmed path conflict",
         ):
             with self.subTest(requirement=requirement):

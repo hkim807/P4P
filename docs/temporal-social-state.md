@@ -270,3 +270,12 @@ Run verification:
 ```bash
 .venv/bin/python -m unittest discover -s tests -v
 ```
+
+## Position relative to the route
+
+The `temporal-social-v4` estimator also derives `path_position` from the current
+CAM_HEAD nose coordinate, with configurable corridor width, hysteresis and
+camera offsets under a fixed-head assumption. It exposes the source nose point
+and transformed forward/lateral metres, and clears them when the person is
+missing. See [nose-based path position](path-position.md) for configuration and
+how IN_WAY gates the closing/low-gaze YIELD decision.

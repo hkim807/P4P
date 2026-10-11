@@ -37,20 +37,30 @@ identity-lock or distance-trend prerequisite is added to general readiness.
 Explicit path conflict can resolve before distance/gaze warmup, and PASS can
 resolve with valid current distance before gaze warmup. Proximity alone cannot.
 
-Eligible `social-rules-v5` observations use this order:
+Eligible `social-rules-v6` observations use this order:
 
 | Evidence | Action |
 | --- | --- |
 | Explicit upstream path CONFLICT | YIELD |
 | Measured PASS invitation | CONTINUE |
-| Current face detected, distance within `config.yield_closing_max_distance_m`, valid DECREASING trend, valid NONE gaze, latest looking false and latest gaze score ≤`config.looking_exit` | YIELD |
+| Current nose classified IN_WAY, face detected, distance within `config.yield_closing_max_distance_m`, valid DECREASING trend, valid NONE gaze, latest looking false and latest gaze score ≤`config.looking_exit` | YIELD |
+| Same closing/low-gaze evidence with nose classified TO_SIDE | CONTINUE |
 | Latest looking false while historical SUSTAINED category is held | CONTINUE |
 | Sustained or qualifying recurring attention in TOO_CLOSE or INTERACTION_RANGE | ENGAGE |
 | Reliable increasing relative separation outside conversation range | CONTINUE |
 | Sustained or qualifying recurring attention in APPROACHABLE | APPROACH |
 | Other eligible cases, including NONE, incidental INTERMITTENT or FAR | CONTINUE |
 
-The closing/low-gaze trigger replaces v3's distance-only TOO_CLOSE trigger.
+The nose corridor gates v5's closing/low-gaze trigger. `path_position` must be
+`IN_WAY`; `TO_SIDE`, `BEHIND` and `UNKNOWN` cannot activate that trigger.
+See [nose-based path position](path-position.md) for the fixed-head assumption,
+coordinate mapping, thresholds and hysteresis. An explicit upstream
+`path_relation: CONFLICT` still takes priority over the inferred corridor.
+Unknown position does not establish a clear route and does not prevent normal
+attention-based decisions. Older raw captures without nose geometry therefore
+cannot activate the corridor trigger; replay a full SDK capture to recover it.
+
+The closing/low-gaze trigger replaced v3's distance-only TOO_CLOSE trigger.
 TOO_CLOSE remains a distance category: attentive nearby people support ENGAGE,
 and eligible non-attentive people support CONTINUE unless the new closing trigger
 applies. A stationary person at 0.4 m does not cause YIELD solely through proximity.
@@ -68,7 +78,7 @@ distance, sufficient span/samples and acceptable residual.
 The SDK adapter sets `face_detected: true` only for a finite positive-size `face`
 bounding box. Missing/invalid boxes supply no detection evidence. Face evidence
 and `evidence.latest_gaze_overlap` clear immediately on missing observations.
-At 10 Hz with uninterrupted low gaze and smooth closing, the development config's 2 s
+At 10 Hz with a current IN_WAY position, uninterrupted low gaze and smooth closing, the development config's 2 s
 minimum span plus 0.1 s category dwell allows a first YIELD at approximately
 2.1 s. Gaps, missing readings and failed fits can delay or prevent it. The
 APPROACHABLE boundary is 6 m in that config, independent of the 3 m yield cutoff.
@@ -78,9 +88,9 @@ Relative closing describes decreasing separation regardless of which participant
 is moving; human motion is not estimated and closing does not establish a path conflict.
 No ego-motion compensation or physical handler is added.
 
-The LLM prompt is `social-state-llm-v10`. Its YIELD guidance follows the same
+The LLM prompt is `social-state-llm-v11`. Its YIELD guidance follows the same
 priority and evidence requirements: measured conflict first, PASS next, then
-the complete face/closing/low-gaze trigger. Proximity alone never triggers
+the complete IN_WAY/face/closing/low-gaze trigger. Proximity alone never triggers
 YIELD. Nearby sustained or qualifying recurring attention supports ENGAGE,
 including TOO_CLOSE. The model receives the effective config and the same
 relative-distance evidence as the rules. Matching guidance does not guarantee

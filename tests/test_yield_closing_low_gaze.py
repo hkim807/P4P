@@ -16,6 +16,8 @@ CONFIG = TemporalConfig.from_file(Path('config/temporal-development-frozen.json'
 def closing_observation(i, *, start=2.5, step=-.02, gaze=.1, face=True):
     observation = sample(i, distance=start + step*i, gaze=gaze, velocity=.1)
     observation['people'][0]['face_detected'] = face
+    observation['people'][0]['optional_relative_nose_position'] = {
+        'coordinate_frame': 'CAM_HEAD', 'x': start + step*i, 'y': 0.0, 'z': 0.1}
     return observation
 
 
@@ -37,7 +39,7 @@ class ClosingYieldTests(unittest.TestCase):
         self.assertEqual(person['relative_distance_trend'], 'DECREASING')
         self.assertTrue(person['face_detected'])
         self.assertEqual(person['evidence']['latest_gaze_overlap'], .1)
-        self.assertEqual(rows[-1]['policy_decision']['reason_code'], 'CLOSING_DISTANCE_WITH_LOW_GAZE')
+        self.assertEqual(rows[-1]['policy_decision']['reason_code'], 'IN_WAY_CLOSING_WITH_LOW_GAZE')
         observation = closing_observation(23)
         payload = {**rows[-1], 'accepted': True, 'processing_status': 'complete',
                    'timestamp': observation['timestamp']}
