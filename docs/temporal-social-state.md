@@ -36,6 +36,26 @@ Per observed or temporarily missing track, output includes:
   residual, segment span, detected jumps,
   and current `latest_gaze_overlap` (null when unavailable or missing).
 - `validity_flags`: why evidence is missing, insufficient, or unreliable.
+- `observation_labels` (version 1, added in estimator v6): shared readable
+  descriptions of the same observations, available to both rules and the LLM.
+  Original categories, measurements and configuration remain present.
+
+| Label | Examples | Interpretation |
+| --- | --- | --- |
+| `attention_over_time` | `LITTLE_OR_NO_LOOKING_AT_ROBOT`, `INTERMITTENT_LOOKING_AT_ROBOT`, `SUSTAINED_LOOKING_AT_ROBOT` | Valid temporal gaze category; low attention is distinct from unavailable evidence. |
+| `current_gaze` | `LOOKING_AT_ROBOT`, `NOT_LOOKING_AT_ROBOT` | Latest valid classified sample, which can differ from the history or precede sufficient temporal coverage. |
+| `proximity` | `WITHIN_CONVERSATION_DISTANCE`, `BEYOND_CONVERSATION_DISTANCE` | Existing distance zone under the effective configuration and hysteresis; says nothing about whether approach is appropriate. |
+| `corridor_position` | `IN_ROBOT_FORWARD_CORRIDOR`, `BESIDE_ROBOT_FORWARD_CORRIDOR`, `BEHIND_ROBOT` | Existing nose-based corridor category; not a collision prediction or clearance check. |
+| `relative_separation` | `GETTING_CLOSER`, `STEADY`, `GETTING_FARTHER` | Valid robot-relative distance trend; does not identify which participant moved. |
+
+All labels support `UNKNOWN`. Missing tracks have only unknown current labels;
+invalid temporal gaze, distance or trend evidence cannot produce a known label
+for that cue. Labels are recomputed when validating a person, including when
+loading an older recording or freezing an LLM input. Supplied aliases cannot
+override the source categories. They contain no desired action, inferred request,
+or claim that a person wants an interaction. Rules continue to use the original
+fields. These aliases add input tokens; they target interpretability, not an
+inference-speed improvement.
 
 At scene level, `cue_changes` identifies category transitions by UID/epoch and
 field; `track_events` retains acquisition/missing/reacquisition/loss information.

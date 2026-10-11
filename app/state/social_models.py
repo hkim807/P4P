@@ -124,6 +124,20 @@ class TemporalEvidence(StrictModel):
     latest_distance_valid: bool
 
 
+class ObservationLabels(StrictModel):
+    """Shared descriptive aliases, never interaction intent or policy advice."""
+
+    version: Literal[1] = 1
+    attention_over_time: Literal["LITTLE_OR_NO_LOOKING_AT_ROBOT", "INTERMITTENT_LOOKING_AT_ROBOT",
+                                 "SUSTAINED_LOOKING_AT_ROBOT", "UNKNOWN"] = "UNKNOWN"
+    current_gaze: Literal["LOOKING_AT_ROBOT", "NOT_LOOKING_AT_ROBOT", "UNKNOWN"] = "UNKNOWN"
+    proximity: Literal["CLOSER_THAN_CONVERSATION_DISTANCE", "WITHIN_CONVERSATION_DISTANCE",
+                       "BEYOND_CONVERSATION_DISTANCE", "BEYOND_CONFIGURED_SOCIAL_RANGE", "UNKNOWN"] = "UNKNOWN"
+    corridor_position: Literal["IN_ROBOT_FORWARD_CORRIDOR", "BESIDE_ROBOT_FORWARD_CORRIDOR",
+                               "BEHIND_ROBOT", "UNKNOWN"] = "UNKNOWN"
+    relative_separation: Literal["GETTING_CLOSER", "STEADY", "GETTING_FARTHER", "UNKNOWN"] = "UNKNOWN"
+
+
 class PersonSocialState(StrictModel):
     uid: int
     track_epoch: int
@@ -144,6 +158,46 @@ class PersonSocialState(StrictModel):
     nose_forward_m: float | None = None
     nose_lateral_m: float | None = None
     validity_flags: list[str]
+    observation_labels: ObservationLabels = Field(default_factory=ObservationLabels)
+
+    @model_validator(mode="after")
+    def derive_observation_labels(self):
+        # Recompute even when labels were supplied by a saved state. Categories
+        # and validity remain authoritative, so stale aliases cannot override them.
+        labels = ObservationLabels()
+        if self.visibility == "OBSERVED":
+            e = self.evidence
+            if e.gaze_valid:
+                labels.attention_over_time = {
+                    "NONE": "LITTLE_OR_NO_LOOKING_AT_ROBOT",
+                    "INTERMITTENT": "INTERMITTENT_LOOKING_AT_ROBOT",
+                    "SUSTAINED": "SUSTAINED_LOOKING_AT_ROBOT",
+                    "UNKNOWN": "UNKNOWN",
+                }[self.gaze_state]
+            # A valid current sample can exist before enough history accumulates.
+            if e.latest_gaze_looking is not None and e.latest_gaze_overlap is not None:
+                labels.current_gaze = ("LOOKING_AT_ROBOT" if e.latest_gaze_looking
+                                       else "NOT_LOOKING_AT_ROBOT")
+            if e.latest_distance_valid and self.latest_distance_m is not None and self.latest_distance_m >= 0:
+                labels.proximity = {
+                    "TOO_CLOSE": "CLOSER_THAN_CONVERSATION_DISTANCE",
+                    "INTERACTION_RANGE": "WITHIN_CONVERSATION_DISTANCE",
+                    "APPROACHABLE": "BEYOND_CONVERSATION_DISTANCE",
+                    "FAR": "BEYOND_CONFIGURED_SOCIAL_RANGE",
+                    "UNKNOWN": "UNKNOWN",
+                }[self.distance_zone]
+            labels.corridor_position = {
+                "IN_WAY": "IN_ROBOT_FORWARD_CORRIDOR",
+                "TO_SIDE": "BESIDE_ROBOT_FORWARD_CORRIDOR",
+                "BEHIND": "BEHIND_ROBOT", "UNKNOWN": "UNKNOWN",
+            }[self.path_position]
+            if e.distance_trend_valid:
+                labels.relative_separation = {
+                    "DECREASING": "GETTING_CLOSER", "STABLE": "STEADY",
+                    "INCREASING": "GETTING_FARTHER", "UNKNOWN": "UNKNOWN",
+                }[self.relative_distance_trend]
+        self.observation_labels = labels
+        return self
 
 
 class RobotState(StrictModel):
@@ -163,7 +217,7 @@ class CueChange(StrictModel):
 
 class SocialState(StrictModel):
     schema_version: Literal[1] = 1
-    estimator_version: Literal["temporal-social-v1", "temporal-social-v2", "temporal-social-v3", "temporal-social-v4", "temporal-social-v5"] = "temporal-social-v5"
+    estimator_version: Literal["temporal-social-v1", "temporal-social-v2", "temporal-social-v3", "temporal-social-v4", "temporal-social-v5", "temporal-social-v6"] = "temporal-social-v6"
     observation_readiness: Literal["READY", "NOT_READY"] = "NOT_READY"
     readiness_reason: str = "UNASSESSED"
     state_id: str

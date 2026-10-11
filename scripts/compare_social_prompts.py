@@ -44,10 +44,12 @@ def main():
         'current_prompt_version': PROMPT_VERSION, 'baseline_prompt': baseline,
         'current_prompt': SYSTEM_PROMPT, 'physical_execution': False,
         'design': 'One sequential baseline sweep, then one current-prompt sweep on identical frozen states. '
-                  'No labels or rule outputs supplied. Same model, schema and generation limits. '
+                  'Saved states are upgraded to the current shared descriptive labels for BOTH prompts. '
+                  'No expected-action labels or rule outputs supplied. Same model, schema and generation limits. '
                   'This measures offline decision latency, not live acceptance. Cache/load effects remain.',
         'source_sha256': {str(p): hashlib.sha256(p.read_bytes()).hexdigest() for p in (
-            Path('app/policy/llm.py'), Path('app/inference/ollama.py'), Path(__file__))}}
+            Path('app/policy/llm.py'), Path('app/state/social_models.py'),
+            Path('app/inference/ollama.py'), Path(__file__))}}
     with urlopen(config.base_url + '/api/tags', timeout=10) as response:
         manifest['ollama_tags'] = json.load(response)
     write(args.output / 'manifest.json', manifest)
@@ -56,7 +58,14 @@ def main():
         path = args.source_run / 'llm' / f'S{index}' / 'models.jsonl'
         audit = json.loads(path.read_text().splitlines()[0])
         prompt = build_llm_prompt(SocialState.model_validate(audit['social_state']))
-        assert json.loads(prompt.social_state_json) == json.loads(audit['social_state_json'])
+        # Historical audits predate descriptive aliases. Require every original
+        # measurement/category to survive; both prompt conditions get the upgrade.
+        upgraded = json.loads(prompt.social_state_json)
+        original = json.loads(audit['social_state_json'])
+        for payload in (upgraded, original):
+            for person in payload['people']:
+                person.pop('observation_labels', None)
+        assert upgraded == original
         inputs.append((f'S{index}', prompt, hashlib.sha256(path.read_bytes()).hexdigest()))
     results = []
     for label, system in [('baseline-v12', baseline), (PROMPT_VERSION, SYSTEM_PROMPT)]:

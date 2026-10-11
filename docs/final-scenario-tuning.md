@@ -74,8 +74,8 @@ APPROACH; attentive people already in conversation range can still ENGAGE.
 
 ## Versions and evaluation
 
-The versions are `uid-tracking-v3`, `temporal-social-v5`, `social-rules-v7`, and
-`social-state-llm-v13`. The LLM receives the same SocialState and effective
+The versions are `uid-tracking-v3`, `temporal-social-v6`, `social-rules-v7`, and
+`social-state-llm-v14`. The LLM receives the same SocialState and effective
 parameters, with concise social objectives and evidence definitions. It uses
 its own judgment rather than being instructed to reproduce the rule conditions.
 Its result is neither replaced nor corrected by the rules. The original run-01

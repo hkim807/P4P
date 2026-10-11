@@ -34,6 +34,75 @@
       "title": "CueChange",
       "type": "object"
     },
+    "ObservationLabels": {
+      "additionalProperties": false,
+      "description": "Shared descriptive aliases, never interaction intent or policy advice.",
+      "properties": {
+        "version": {
+          "const": 1,
+          "default": 1,
+          "title": "Version",
+          "type": "integer"
+        },
+        "attention_over_time": {
+          "default": "UNKNOWN",
+          "enum": [
+            "LITTLE_OR_NO_LOOKING_AT_ROBOT",
+            "INTERMITTENT_LOOKING_AT_ROBOT",
+            "SUSTAINED_LOOKING_AT_ROBOT",
+            "UNKNOWN"
+          ],
+          "title": "Attention Over Time",
+          "type": "string"
+        },
+        "current_gaze": {
+          "default": "UNKNOWN",
+          "enum": [
+            "LOOKING_AT_ROBOT",
+            "NOT_LOOKING_AT_ROBOT",
+            "UNKNOWN"
+          ],
+          "title": "Current Gaze",
+          "type": "string"
+        },
+        "proximity": {
+          "default": "UNKNOWN",
+          "enum": [
+            "CLOSER_THAN_CONVERSATION_DISTANCE",
+            "WITHIN_CONVERSATION_DISTANCE",
+            "BEYOND_CONVERSATION_DISTANCE",
+            "BEYOND_CONFIGURED_SOCIAL_RANGE",
+            "UNKNOWN"
+          ],
+          "title": "Proximity",
+          "type": "string"
+        },
+        "corridor_position": {
+          "default": "UNKNOWN",
+          "enum": [
+            "IN_ROBOT_FORWARD_CORRIDOR",
+            "BESIDE_ROBOT_FORWARD_CORRIDOR",
+            "BEHIND_ROBOT",
+            "UNKNOWN"
+          ],
+          "title": "Corridor Position",
+          "type": "string"
+        },
+        "relative_separation": {
+          "default": "UNKNOWN",
+          "enum": [
+            "GETTING_CLOSER",
+            "STEADY",
+            "GETTING_FARTHER",
+            "UNKNOWN"
+          ],
+          "title": "Relative Separation",
+          "type": "string"
+        }
+      },
+      "title": "ObservationLabels",
+      "type": "object"
+    },
     "PersonSocialState": {
       "additionalProperties": false,
       "properties": {
@@ -211,6 +280,9 @@
           },
           "title": "Validity Flags",
           "type": "array"
+        },
+        "observation_labels": {
+          "$ref": "#/$defs/ObservationLabels"
         }
       },
       "required": [
@@ -804,13 +876,14 @@
       "type": "integer"
     },
     "estimator_version": {
-      "default": "temporal-social-v5",
+      "default": "temporal-social-v6",
       "enum": [
         "temporal-social-v1",
         "temporal-social-v2",
         "temporal-social-v3",
         "temporal-social-v4",
-        "temporal-social-v5"
+        "temporal-social-v5",
+        "temporal-social-v6"
       ],
       "title": "Estimator Version",
       "type": "string"

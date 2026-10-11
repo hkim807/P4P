@@ -1,0 +1,109 @@
+{
+  "scenario_id": "S3",
+  "policy": "llm",
+  "status": "ACTION_RESOLVED",
+  "action": "ENGAGE",
+  "decision": {
+    "action": "ENGAGE",
+    "reason": "Sustained looking at robot within conversation distance."
+  },
+  "accepted_by_live_client": false,
+  "acceptance_details": {
+    "current_readiness": true,
+    "latest_observation_age_s": 8.825199,
+    "model_source_age_s": 12.310901,
+    "trial_phase": "OBSERVING",
+    "failure_reason": null
+  },
+  "resolved_elapsed_s": 13.437629483996716,
+  "stop_elapsed_s": 13.437629483996716,
+  "frames_ingested": 47,
+  "ready_frames": 36,
+  "readiness_counts": {
+    "INSUFFICIENT_GAZE_EVIDENCE": 11,
+    "READY": 36
+  },
+  "recording_exhausted": true,
+  "last_ingested_source_offset_s": 4.612433,
+  "last_ingested_line": 95,
+  "decision_source_offset_s": 1.126731,
+  "motion_start_monotonic_us": 2046106026,
+  "perception_origin_monotonic_us": 2046192337,
+  "decision_source_since_motion_s": 1.213042,
+  "max_dispatch_lag_s": 0.003681025995319942,
+  "model_failures": [
+    {
+      "decision": null,
+      "error": {
+        "category": "request_expired"
+      },
+      "policy": "llm",
+      "request_id": "e647327298d540ae95f2ce2c4ec7721b",
+      "session_id": "replay-7a43024a2619ec806420c762",
+      "source_robot_timestamp_us": 2047319068,
+      "source_state_id": "replay-7a43024a2619ec806420c762:12",
+      "status": "failed",
+      "trial_id": "ba444cc2d1ef47d19f1424727fd518c6"
+    }
+  ],
+  "first_model_request": {
+    "decision": null,
+    "error": null,
+    "policy": "llm",
+    "request_id": "e647327298d540ae95f2ce2c4ec7721b",
+    "session_id": "replay-7a43024a2619ec806420c762",
+    "source_robot_timestamp_us": 2047319068,
+    "source_state_id": "replay-7a43024a2619ec806420c762:12",
+    "status": "pending",
+    "trial_id": "ba444cc2d1ef47d19f1424727fd518c6"
+  },
+  "resolved_output": {
+    "decision": {
+      "action": "ENGAGE",
+      "reason": "Sustained looking at robot within conversation distance."
+    },
+    "error": null,
+    "policy": "llm",
+    "request_id": "e647327298d540ae95f2ce2c4ec7721b",
+    "session_id": "replay-7a43024a2619ec806420c762",
+    "source_robot_timestamp_us": 2047319068,
+    "source_state_id": "replay-7a43024a2619ec806420c762:12",
+    "status": "succeeded",
+    "trial_id": "ba444cc2d1ef47d19f1424727fd518c6",
+    "completed_at": "2026-10-11T07:19:11.936879+00:00",
+    "error_stage": null,
+    "ok": true,
+    "ollama_configuration": {
+      "base_url": "http://127.0.0.1:11434",
+      "generation_options": {
+        "num_ctx": 8192,
+        "num_predict": 192,
+        "seed": 42,
+        "temperature": 0.0
+      },
+      "model": "qwen2.5:7b",
+      "num_ctx": 8192,
+      "num_predict": 192,
+      "seed": 42,
+      "temperature": 0.0,
+      "timeout_seconds": 120.0
+    },
+    "prompt_version": "social-state-llm-v14",
+    "raw_content": "{\"action\":\"ENGAGE\",\"reason\":\"Sustained looking at robot within conversation distance.\"}",
+    "request_duration_s": 12.289199080001708,
+    "requested_model": "qwen2.5:7b",
+    "returned_model": "qwen2.5:7b",
+    "delivery_status": "failed",
+    "delivery_error": {
+      "category": "request_expired"
+    }
+  },
+  "last_readiness": {
+    "reason_code": null,
+    "status": "READY"
+  },
+  "source_sha256": "4281527e087f3bf89ac1e9c19a274ed1ca0892e5b509a2ec7dc6a2954ecaafb9",
+  "trial_id": "ba444cc2d1ef47d19f1424727fd518c6",
+  "clock_mapping": "original first perception receipt + real elapsed replay time",
+  "physical_execution": false
+}
