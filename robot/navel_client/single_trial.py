@@ -27,6 +27,7 @@ class SingleTrial:
         self.retry_request_id = None
         self._local_observation = None
         self._latest_trend_valid = False
+        self._empty_ready = False
         self._readiness_key = None
         self.policy = policy
         self.phase = "OBSERVING"
@@ -116,6 +117,7 @@ class SingleTrial:
         """Use current correlated SocialState evidence, with no identity lock."""
         self.tick()
         self.ready = False
+        self._empty_ready = False
         if self.phase != "OBSERVING" or payload.get("accepted") is not True or payload.get("processing_status") != "complete":
             return
         state = payload.get("social_state")
@@ -154,6 +156,24 @@ class SingleTrial:
                 coverage = evidence.get("gaze_valid_coverage_s") if isinstance(evidence, Mapping) else None
                 logger.info("single_trial policy_readiness=%s reason=%s gaze_state=%s gaze_valid_coverage_s=%s",
                             *key, person.get("gaze_state"), coverage)
+        if (self.policy != "vlm" and not observed and not local_people
+                and isinstance(readiness, Mapping) and readiness.get("status") == "READY"
+                and readiness.get("reason_code") is None):
+            config = state.get("config", {})
+            if not isinstance(config, Mapping):
+                return
+            threshold = config.get("no_person_continue_after_s")
+            duration = state.get("no_person_observed_s")
+            samples = state.get("no_person_observed_samples")
+            minimum = config.get("min_samples", 5)
+            if (type(threshold) in (int, float) and math.isfinite(threshold) and threshold > 0
+                    and type(duration) in (int, float) and math.isfinite(duration) and duration >= threshold
+                    and type(minimum) is int and minimum >= 3
+                    and type(samples) is int and samples >= minimum):
+                self._empty_ready = True
+                self._latest_trend_valid = False
+                self.ready = 0 <= self.monotonic_us() - timestamp <= self.max_age_us
+            return
         if len(observed) != 1 or len(local_people) != 1:
             return
         evidence = observed[0].get("evidence", {})
@@ -195,10 +215,14 @@ class SingleTrial:
                 or not 0 <= self.monotonic_us() - source["source_robot_timestamp_us"] <= age_limit):
             return False
         local = self._local_observation
-        if policy != "rules" and (local is None or len(local.get("people", [])) != 1
+        empty_continue = (self._empty_ready and local is not None and not local.get("people")
+                          and isinstance(decision, Mapping) and decision.get("action") == "CONTINUE")
+        if self._empty_ready and not empty_continue:
+            return False
+        if policy != "rules" and (local is None or (not empty_continue and len(local.get("people", [])) != 1)
                 or not 0 <= self.monotonic_us() - local["timestamp"] <= self.max_age_us):
             return False
-        if policy == "llm":
+        if policy == "llm" and not empty_continue:
             person = local["people"][0]
             distance = person.get("distance_m")
             gaze = person.get("gaze_overlap")

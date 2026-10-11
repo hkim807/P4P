@@ -138,7 +138,7 @@ class LLMPromptTests(unittest.TestCase):
         second = build_llm_prompt(reordered)
         self.assertEqual(first, second)
         self.assertEqual(first.messages, second.messages)
-        self.assertEqual(first.prompt_version, "social-state-llm-v11")
+        self.assertEqual(first.prompt_version, "social-state-llm-v12")
         self.assertEqual(first.prompt_version, PROMPT_VERSION)
         self.assertEqual(first.instructions, SYSTEM_PROMPT)
         changed = social_state()
@@ -201,10 +201,10 @@ class LLMPromptTests(unittest.TestCase):
             "face_detected is true", "evidence.latest_distance_valid and evidence.distance_trend_valid are true",
             "relative_distance_trend is DECREASING", "latest_distance_m <= config.yield_closing_max_distance_m",
             "a null cutoff removes only the distance limit", "evidence.gaze_valid is true", "gaze_state is NONE",
-            "evidence.latest_gaze_looking is false", "evidence.latest_gaze_overlap is available and <= config.looking_exit",
+            "evidence.latest_gaze_looking is false", "evidence.latest_gaze_overlap is available and <= evidence.looking_exit_threshold",
             "Use the current measured distance, not distance_zone, for the cutoff",
             "TOO_CLOSE or low gaze alone does not justify YIELD",
-            "A current gaze score above config.looking_exit vetoes this trigger",
+            "A current gaze score above the effective looking_exit_threshold vetoes this trigger",
             "path_position is IN_WAY", "TO_SIDE, BEHIND and UNKNOWN veto",
             "IN_WAY alone does not require YIELD or bypass gaze readiness",
             "without claiming which participant is moving or a confirmed path conflict",

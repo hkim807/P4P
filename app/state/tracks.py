@@ -15,7 +15,7 @@ from typing import Any
 from app.domain.models import RawObservationFrame
 from app.recording import TimestampOrderError
 
-TRACKER_VERSION = "uid-tracking-v2"
+TRACKER_VERSION = "uid-tracking-v3"
 
 @dataclass(frozen=True)
 class TrackConfig:
@@ -23,8 +23,16 @@ class TrackConfig:
     missing_grace_s: float = 0.75
     max_samples_per_track: int = 64
     max_tracks: int = 32
+    nose_reassociation_max_distance_m: float | None = None
+    nose_reassociation_max_gap_s: float = 0.25
 
     def __post_init__(self) -> None:
+        for name in ("nose_reassociation_max_distance_m", "nose_reassociation_max_gap_s"):
+            value = getattr(self, name)
+            if value is None and name == "nose_reassociation_max_distance_m":
+                continue
+            if type(value) not in (int, float) or not math.isfinite(value) or value <= 0:
+                raise ValueError(f"{name} must be finite and positive")
         for name in ("history_window_s", "missing_grace_s"):
             value = getattr(self, name)
             if (isinstance(value, bool) or not isinstance(value, (float, int))
@@ -68,6 +76,7 @@ class _Track:
     observation_count: int = 0
     visibility: str = "OBSERVED"
     samples: deque = field(default_factory=deque)
+    nose_reassociations: int = 0
 
 
 class TrackManager:
@@ -103,6 +112,30 @@ class TrackManager:
         def event(kind: str, track: _Track, reason: str) -> None:
             events.append({"type": kind, "uid": track.uid, "track_epoch": track.epoch,
                            "timestamp_us": now, "reason": reason})
+
+        # Optional single-person continuity, never a general identity match.
+        # Require adjacent observations, one previous track, one current person,
+        # and a small measured 3-D nose displacement in the same fixed frame.
+        gate = self.config.nose_reassociation_max_distance_m
+        if gate is not None and len(people) == 1 and len(self._tracks) == 1:
+            uid, person = next(iter(people.items()))
+            old_uid, old = next(iter(self._tracks.items()))
+            current = person.optional_relative_nose_position
+            previous = old.samples[-1].get("optional_relative_nose_position") if old.samples else None
+            if (uid != old_uid and old.visibility == "OBSERVED" and old.last_seen_us == self._last_timestamp
+                    and 0 < now - old.last_seen_us <= round(self.config.nose_reassociation_max_gap_s * 1e6)
+                    and current is not None and previous is not None
+                    and current.coordinate_frame == previous.get("coordinate_frame") == "CAM_HEAD"
+                    and any(current.model_dump()[axis] for axis in "xyz")
+                    and any(previous[axis] for axis in "xyz")
+                    and math.dist([getattr(current, axis) for axis in "xyz"],
+                                  [previous[axis] for axis in "xyz"]) <= gate):
+                del self._tracks[old_uid]
+                old.uid = uid
+                old.nose_reassociations += 1
+                self._tracks[uid] = old
+                event("REASSOCIATED", old, "adjacent_single_person_nose_match")
+                events[-1]["previous_uid"] = old_uid
 
         # Expire before matching, even if an old UID is visible in this frame.
         for uid, track in sorted(list(self._tracks.items())):
@@ -160,7 +193,8 @@ class TrackManager:
                 "retained_span_s": ((samples[-1]["timestamp_us"] - samples[0]["timestamp_us"])
                                     / 1_000_000 if samples else 0.0),
                 "samples_dropped_for_capacity": removed_for_capacity,
-                "identity_quality_flags": ["UID_ZERO_UNVERIFIED"] if uid == 0 else [],
+                "identity_quality_flags": (["UID_ZERO_UNVERIFIED"] if uid == 0 else [])
+                    + (["NOSE_REASSOCIATED_UNVERIFIED"] if track.nose_reassociations else []),
                 "samples": samples,
             })
         self._last_timestamp = now

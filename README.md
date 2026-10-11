@@ -1,5 +1,10 @@
 # Navel raw sensor HTTP stream
 
+The nine motion-trimmed final recordings now have a dedicated
+[tuning preset and run instructions](docs/final-scenario-tuning.md), with
+[first-action rule and actual LLM results](var/evaluation/final-scenario-tuning/README.md).
+Select this preset explicitly; the earlier study configurations remain separate.
+
 The refined development version is documented in
 [pipeline refinement](docs/pipeline-refinement.md), including the frozen
 configuration, verified human reference, causal evaluation contract and

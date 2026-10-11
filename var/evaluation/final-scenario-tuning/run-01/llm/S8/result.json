@@ -1,0 +1,91 @@
+{
+  "scenario_id": "S8",
+  "policy": "llm",
+  "status": "ACTION_RESOLVED",
+  "action": "CONTINUE",
+  "decision": {
+    "action": "CONTINUE",
+    "reason": "No person observed and readiness is READY, meeting the configured no_person_continue_after_s and min_samples criteria."
+  },
+  "accepted_by_live_client": false,
+  "acceptance_details": {
+    "current_readiness": false,
+    "latest_observation_age_s": 0.023583,
+    "model_source_age_s": 5.285851,
+    "trial_phase": "OBSERVING",
+    "failure_reason": null
+  },
+  "resolved_elapsed_s": 6.376012871000057,
+  "stop_elapsed_s": 6.376012871000057,
+  "frames_ingested": 65,
+  "ready_frames": 16,
+  "readiness_counts": {
+    "NO_VISIBLE_PERSON": 11,
+    "READY": 16,
+    "INSUFFICIENT_GAZE_EVIDENCE": 38
+  },
+  "recording_exhausted": false,
+  "last_ingested_source_offset_s": 6.352431,
+  "last_ingested_line": 130,
+  "decision_source_offset_s": 1.090163,
+  "max_dispatch_lag_s": 0.002385296000284143,
+  "model_failures": [],
+  "first_model_request": {
+    "decision": null,
+    "error": null,
+    "policy": "llm",
+    "request_id": "3d2a1efe618849508db01714d5e777b8",
+    "session_id": "replay-246b41a68d212a1d60d24467",
+    "source_robot_timestamp_us": 2292411385,
+    "source_state_id": "replay-246b41a68d212a1d60d24467:12",
+    "status": "pending",
+    "trial_id": "b7aec87078b0452096a252fd18f99edc"
+  },
+  "resolved_output": {
+    "decision": {
+      "action": "CONTINUE",
+      "reason": "No person observed and readiness is READY, meeting the configured no_person_continue_after_s and min_samples criteria."
+    },
+    "error": null,
+    "policy": "llm",
+    "request_id": "3d2a1efe618849508db01714d5e777b8",
+    "session_id": "replay-246b41a68d212a1d60d24467",
+    "source_robot_timestamp_us": 2292411385,
+    "source_state_id": "replay-246b41a68d212a1d60d24467:12",
+    "status": "succeeded",
+    "trial_id": "b7aec87078b0452096a252fd18f99edc",
+    "completed_at": "2026-10-11T06:19:18.235907+00:00",
+    "error_stage": null,
+    "ok": true,
+    "ollama_configuration": {
+      "base_url": "http://127.0.0.1:11434",
+      "generation_options": {
+        "num_ctx": 8192,
+        "num_predict": 192,
+        "seed": 42,
+        "temperature": 0.0
+      },
+      "model": "qwen2.5:7b",
+      "num_ctx": 8192,
+      "num_predict": 192,
+      "seed": 42,
+      "temperature": 0.0,
+      "timeout_seconds": 120.0
+    },
+    "prompt_version": "social-state-llm-v12",
+    "raw_content": "{\n  \"action\": \"CONTINUE\",\n  \"reason\": \"No person observed and readiness is READY, meeting the configured no_person_continue_after_s and min_samples criteria.\"\n}",
+    "request_duration_s": 5.282491122001375,
+    "requested_model": "qwen2.5:7b",
+    "returned_model": "qwen2.5:7b",
+    "delivery_status": "succeeded",
+    "delivery_error": null
+  },
+  "last_readiness": {
+    "reason_code": "INSUFFICIENT_GAZE_EVIDENCE",
+    "status": "OBSERVING"
+  },
+  "source_sha256": "240fff11df215f5bb491c93db59827a6b4dc507f7981e870a2abc77cd2b6d12f",
+  "trial_id": "b7aec87078b0452096a252fd18f99edc",
+  "clock_mapping": "original first perception receipt + real elapsed replay time",
+  "physical_execution": false
+}

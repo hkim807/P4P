@@ -1,0 +1,94 @@
+{
+  "created_utc": "2026-10-11T06:16:52.456276+00:00",
+  "git_head": "0c0869e6662fb4b85a97585cb9404041a0f3b89b",
+  "runner_sha256": "48b907332f25f4bc531b65f79492ff09c93956aadef2f92aecee08488f8b78ad",
+  "settings": {
+    "action_version": "social-actions-v3",
+    "rule_version": "social-rules-v7",
+    "prompt_version": "social-state-llm-v12",
+    "temporal_config": "config/temporal-final-scenarios.json",
+    "track_config": "config/person-tracking-final-scenarios.json",
+    "evaluation_contract": "config/final-scenarios.json",
+    "model": "qwen2.5:7b",
+    "temperature": 0.0,
+    "seed": 42,
+    "num_ctx": 8192,
+    "num_predict": 192,
+    "timeout_seconds": 120.0,
+    "diagnostic_interval_s": 1.0,
+    "model_trial_max_age_s": 10.0,
+    "design": "First-action fit to nine user-labelled motion-trimmed recordings; not held-out evaluation; no physical execution",
+    "base_url": "http://127.0.0.1:11434"
+  },
+  "rate": 1.0,
+  "stop": "first validated policy output (including expired delivery), or source exhausted with no pending/active inference",
+  "receiver": "production Flask endpoints using in-process HTTP test client",
+  "client": "production SingleTrial, 30s timeout, 1s latest observation age, 10s model source age",
+  "limitations": [
+    "SDK reconstruction cannot recover outgoing queue drops or collection delay",
+    "structured LLM/rules consume SDK observations; camera pixels are not a VLM condition",
+    "no physical actions; generated commands are recorded in events only",
+    "first action timing differs from the trimmed survey endpoint task"
+  ],
+  "warm_model": true,
+  "ollama_tags": {
+    "models": [
+      {
+        "name": "llama3.2:3b",
+        "model": "llama3.2:3b",
+        "modified_at": "2026-07-02T19:17:32.785960496+12:00",
+        "size": 2019393189,
+        "digest": "a80c4f17acd55265feec403c7aef86be0c25983ab279d83f3bcd3abbcb5b8b72",
+        "details": {
+          "parent_model": "",
+          "format": "gguf",
+          "family": "llama",
+          "families": [
+            "llama"
+          ],
+          "parameter_size": "3.2B",
+          "quantization_level": "Q4_K_M",
+          "context_length": 131072,
+          "embedding_length": 3072
+        },
+        "capabilities": [
+          "completion",
+          "tools"
+        ]
+      },
+      {
+        "name": "qwen2.5:7b",
+        "model": "qwen2.5:7b",
+        "modified_at": "2026-05-05T15:16:48.172496476+12:00",
+        "size": 4683087332,
+        "digest": "845dbda0ea48ed749caafd9e6037047aa19acfcfd82e704d7ca97d631a0b697e",
+        "details": {
+          "parent_model": "",
+          "format": "gguf",
+          "family": "qwen2",
+          "families": [
+            "qwen2"
+          ],
+          "parameter_size": "7.6B",
+          "quantization_level": "Q4_K_M",
+          "context_length": 32768,
+          "embedding_length": 3584
+        },
+        "capabilities": [
+          "completion",
+          "tools"
+        ]
+      }
+    ]
+  },
+  "ollama_version": {
+    "version": "0.34.0"
+  },
+  "warmup": {
+    "model": "qwen2.5:7b",
+    "created_at": "2026-10-11T06:16:56.571420978Z",
+    "response": "",
+    "done": true,
+    "done_reason": "load"
+  }
+}

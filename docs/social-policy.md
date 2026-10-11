@@ -29,21 +29,25 @@ DEFER and STOP are rejected in both rule and final contracts. Live and
 code, with both decisions null: the policy was not invoked. Processing errors
 and decision timeouts remain statuses.
 
-Readiness requires exactly one currently observed person, valid current distance
+With a person present, readiness requires exactly one currently observed person, valid current distance
 and usable NONE/INTERMITTENT/SUSTAINED gaze with existing coverage and category
 dwell, plus valid processing and freshness. No person, multiple people, invalid
-distance or UNKNOWN gaze keep observing. No stationary-window, human-motion,
+distance or UNKNOWN gaze keep observing. An optional `no_person_continue_after_s`
+permits CONTINUE after that duration of contiguous empty observations and at
+least `min_samples`; its default is disabled. Source gaps and detected people reset
+the empty interval. No stationary-window, human-motion,
 identity-lock or distance-trend prerequisite is added to general readiness.
 Explicit path conflict can resolve before distance/gaze warmup, and PASS can
 resolve with valid current distance before gaze warmup. Proximity alone cannot.
 
-Eligible `social-rules-v6` observations use this order:
+Eligible `social-rules-v7` observations use this order:
 
 | Evidence | Action |
 | --- | --- |
+| Configured continuous empty observation interval completed | CONTINUE |
 | Explicit upstream path CONFLICT | YIELD |
 | Measured PASS invitation | CONTINUE |
-| Current nose classified IN_WAY, face detected, distance within `config.yield_closing_max_distance_m`, valid DECREASING trend, valid NONE gaze, latest looking false and latest gaze score ≤`config.looking_exit` | YIELD |
+| Current nose classified IN_WAY, face detected, distance within `config.yield_closing_max_distance_m`, valid DECREASING trend, valid NONE gaze, latest looking false and latest gaze score ≤`evidence.looking_exit_threshold` (fallback `config.looking_exit`) | YIELD |
 | Same closing/low-gaze evidence with nose classified TO_SIDE | CONTINUE |
 | Latest looking false while historical SUSTAINED category is held | CONTINUE |
 | Sustained or qualifying recurring attention in TOO_CLOSE or INTERACTION_RANGE | ENGAGE |
@@ -67,7 +71,8 @@ applies. A stationary person at 0.4 m does not cause YIELD solely through proxim
 The exact current distance cutoff is `config.yield_closing_max_distance_m`,
 independent of distance-zone hysteresis. The development config sets it to 3 m,
 including exactly 3 m; null removes this distance limit while retaining every
-other required cue. Low gaze uses `config.looking_exit` (0.90 in
+other required cue. Low gaze uses the effective distance-aware exit threshold,
+falling back to `config.looking_exit` (0.90 in
 `config/temporal-development-frozen.json`); a score at or above `looking_enter`
 (0.93 in that config) establishes looking, while the band between those
 thresholds retains the previous per-sample state. NONE requires established low attention over the temporal
@@ -88,7 +93,12 @@ Relative closing describes decreasing separation regardless of which participant
 is moving; human motion is not estimated and closing does not establish a path conflict.
 No ego-motion compensation or physical handler is added.
 
-The LLM prompt is `social-state-llm-v11`. Its YIELD guidance follows the same
+Recurring attention qualifies only when `config.allow_recurring_attention` is
+true. The [final-scenario preset](final-scenario-tuning.md) disables it, uses a
+2 m interaction boundary, and requires stronger gaze scores beyond 2.75 m.
+The unavailable gaze sentinel (default 0.5) contributes no gaze evidence.
+
+The LLM prompt is `social-state-llm-v12`. Its YIELD guidance follows the same
 priority and evidence requirements: measured conflict first, PASS next, then
 the complete IN_WAY/face/closing/low-gaze trigger. Proximity alone never triggers
 YIELD. Nearby sustained or qualifying recurring attention supports ENGAGE,

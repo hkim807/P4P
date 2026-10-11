@@ -25,6 +25,10 @@ class TemporalConfig(StrictModel):
     min_gaze_coverage_fraction: float = Field(default=0.6, gt=0, le=1)
     looking_enter: float = Field(default=0.8, ge=0, le=1)
     looking_exit: float = Field(default=0.7, ge=0, le=1)
+    gaze_unavailable_score: float | None = Field(default=0.5, ge=0, le=1)
+    far_gaze_distance_m: float | None = Field(default=None, gt=0)
+    far_looking_enter: float = Field(default=0.97, ge=0, le=1)
+    far_looking_exit: float = Field(default=0.95, ge=0, le=1)
     sustained_enter: float = Field(default=0.8, ge=0, le=1)
     sustained_exit: float = Field(default=0.65, ge=0, le=1)
     none_enter: float = Field(default=0.2, ge=0, le=1)
@@ -34,6 +38,8 @@ class TemporalConfig(StrictModel):
     recurring_min_looking_s: float = Field(default=1.0, gt=0)
     recurring_min_fraction: float = Field(default=0.45, gt=0, le=1)
     recurring_min_bouts: int = Field(default=2, ge=2)
+    allow_recurring_attention: bool = True
+    no_person_continue_after_s: float | None = Field(default=None, gt=0)
     yield_closing_max_distance_m: float | None = Field(default=3.0, gt=0)
     path_assume_fixed_head: bool = True
     path_half_width_m: float = Field(default=0.5, gt=0)
@@ -55,6 +61,8 @@ class TemporalConfig(StrictModel):
 
     @model_validator(mode="after")
     def consistent(self):
+        if not self.far_looking_exit < self.far_looking_enter:
+            raise ValueError("far_looking_exit must be below far_looking_enter")
         if self.path_hysteresis_m >= self.path_half_width_m:
             raise ValueError("path hysteresis must be smaller than path half width")
         if not self.looking_exit < self.looking_enter:
@@ -95,6 +103,8 @@ class TemporalEvidence(StrictModel):
     mean_gaze_overlap: float | None = None
     latest_gaze_looking: bool | None = None
     latest_gaze_overlap: float | None = Field(default=None, ge=0, le=1)
+    looking_enter_threshold: float | None = Field(default=None, ge=0, le=1)
+    looking_exit_threshold: float | None = Field(default=None, ge=0, le=1)
     looking_time_s: float = 0.0
     looking_bouts: int = 0
     gaze_fraction: float | None
@@ -153,7 +163,7 @@ class CueChange(StrictModel):
 
 class SocialState(StrictModel):
     schema_version: Literal[1] = 1
-    estimator_version: Literal["temporal-social-v1", "temporal-social-v2", "temporal-social-v3", "temporal-social-v4"] = "temporal-social-v4"
+    estimator_version: Literal["temporal-social-v1", "temporal-social-v2", "temporal-social-v3", "temporal-social-v4", "temporal-social-v5"] = "temporal-social-v5"
     observation_readiness: Literal["READY", "NOT_READY"] = "NOT_READY"
     readiness_reason: str = "UNASSESSED"
     state_id: str
@@ -167,6 +177,8 @@ class SocialState(StrictModel):
     people: list[PersonSocialState]
     cue_changes: list[CueChange]
     track_events: list[dict[str, int | str]]
+    no_person_observed_s: float = Field(default=0.0, ge=0)
+    no_person_observed_samples: int = Field(default=0, ge=0)
 
     @model_validator(mode="after")
     def derive_readiness(self):
@@ -179,12 +191,16 @@ class SocialState(StrictModel):
 def observation_hold_reason(state: SocialState) -> str | None:
     """Identical eligibility for rules, structured LLM, production and replay.
 
-    Empty detections never establish that the encounter is socially clear.
+    Configured sustained empty observations permit a nominal CONTINUE.
     Explicit conflict and pass cues need no gaze history. Proximity alone
     does not establish a social action.
     """
     visible = [p for p in state.people if p.visibility == "OBSERVED"]
     if not visible:
+        if (state.config.no_person_continue_after_s is not None
+                and state.no_person_observed_s >= state.config.no_person_continue_after_s
+                and state.no_person_observed_samples >= state.config.min_samples):
+            return None
         return "NO_VISIBLE_PERSON"
     if len(visible) != 1:
         return "MULTIPLE_VISIBLE_PEOPLE"

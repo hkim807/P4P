@@ -1,0 +1,228 @@
+yield_failed stage=ESCAPE error=CancelledError
+yield_failed stage=WAIT error=CancelledError
+yield_failed stage=RETURN error=CancelledError
+yield_failed stage=ADVANCE error=CancelledError
+yield_failed stage=ESCAPE error=escape failed
+single_trial behaviour_failed action=YIELD
+Traceback (most recent call last):
+  File "/tmp/p4p-nose-baseline-61qc63sy/robot/navel_client/behaviour_dispatch.py", line 264, in _execute
+    succeeded = task.result()
+  File "/tmp/p4p-nose-baseline-61qc63sy/robot/navel_client/behaviour_dispatch.py", line 250, in run_handler
+    await handler(context)
+  File "/tmp/p4p-nose-baseline-61qc63sy/robot/navel_client/behaviour_dispatch.py", line 72, in yield_space
+    await movement("ESCAPE", lambda: context.robot.move_and_rotate_base(
+  File "/tmp/p4p-nose-baseline-61qc63sy/robot/navel_client/behaviour_dispatch.py", line 66, in movement
+    await runtime.motion(command, timeout=context.timeout_s,
+  File "/tmp/p4p-nose-baseline-61qc63sy/tests/test_client.py", line 1076, in supervised_motion
+    return await original_motion(runtime, *args, **kwargs)
+  File "/tmp/p4p-nose-baseline-61qc63sy/robot/navel_client/approach.py", line 275, in motion
+    await task
+  File "/tmp/p4p-nose-baseline-61qc63sy/tests/test_client.py", line 1019, in sender
+    raise OSError(stage+' failed')
+OSError: escape failed
+yield_failed stage=RETURN error=return failed
+single_trial behaviour_failed action=YIELD
+Traceback (most recent call last):
+  File "/tmp/p4p-nose-baseline-61qc63sy/robot/navel_client/behaviour_dispatch.py", line 264, in _execute
+    succeeded = task.result()
+  File "/tmp/p4p-nose-baseline-61qc63sy/robot/navel_client/behaviour_dispatch.py", line 250, in run_handler
+    await handler(context)
+  File "/tmp/p4p-nose-baseline-61qc63sy/robot/navel_client/behaviour_dispatch.py", line 80, in yield_space
+    await movement("RETURN", lambda: context.robot.move_and_rotate_base(
+  File "/tmp/p4p-nose-baseline-61qc63sy/robot/navel_client/behaviour_dispatch.py", line 66, in movement
+    await runtime.motion(command, timeout=context.timeout_s,
+  File "/tmp/p4p-nose-baseline-61qc63sy/tests/test_client.py", line 1076, in supervised_motion
+    return await original_motion(runtime, *args, **kwargs)
+  File "/tmp/p4p-nose-baseline-61qc63sy/robot/navel_client/approach.py", line 275, in motion
+    await task
+  File "/tmp/p4p-nose-baseline-61qc63sy/tests/test_client.py", line 1019, in sender
+    raise OSError(stage+' failed')
+OSError: return failed
+yield_failed stage=ADVANCE error=advance failed
+single_trial behaviour_failed action=YIELD
+Traceback (most recent call last):
+  File "/tmp/p4p-nose-baseline-61qc63sy/robot/navel_client/behaviour_dispatch.py", line 264, in _execute
+    succeeded = task.result()
+  File "/tmp/p4p-nose-baseline-61qc63sy/robot/navel_client/behaviour_dispatch.py", line 250, in run_handler
+    await handler(context)
+  File "/tmp/p4p-nose-baseline-61qc63sy/robot/navel_client/behaviour_dispatch.py", line 82, in yield_space
+    await movement("ADVANCE", lambda: context.robot.move_base(
+  File "/tmp/p4p-nose-baseline-61qc63sy/robot/navel_client/behaviour_dispatch.py", line 66, in movement
+    await runtime.motion(command, timeout=context.timeout_s,
+  File "/tmp/p4p-nose-baseline-61qc63sy/tests/test_client.py", line 1076, in supervised_motion
+    return await original_motion(runtime, *args, **kwargs)
+  File "/tmp/p4p-nose-baseline-61qc63sy/robot/navel_client/approach.py", line 275, in motion
+    await task
+  File "/tmp/p4p-nose-baseline-61qc63sy/tests/test_client.py", line 1019, in sender
+    raise OSError(stage+' failed')
+OSError: advance failed
+yield_failed stage=PASS_SPEECH error=speech failed
+single_trial behaviour_failed action=YIELD
+Traceback (most recent call last):
+  File "/tmp/p4p-nose-baseline-61qc63sy/robot/navel_client/behaviour_dispatch.py", line 264, in _execute
+    succeeded = task.result()
+  File "/tmp/p4p-nose-baseline-61qc63sy/robot/navel_client/behaviour_dispatch.py", line 250, in run_handler
+    await handler(context)
+  File "/tmp/p4p-nose-baseline-61qc63sy/robot/navel_client/behaviour_dispatch.py", line 76, in yield_space
+    await context.own_task(context.robot.say("Please go ahead."))
+  File "/tmp/p4p-nose-baseline-61qc63sy/tests/test_client.py", line 1053, in speech
+    raise OSError('speech failed')
+OSError: speech failed
+yield_failed stage=COMPLETE_SPEECH error=speech failed
+single_trial behaviour_failed action=YIELD
+Traceback (most recent call last):
+  File "/tmp/p4p-nose-baseline-61qc63sy/robot/navel_client/behaviour_dispatch.py", line 264, in _execute
+    succeeded = task.result()
+  File "/tmp/p4p-nose-baseline-61qc63sy/robot/navel_client/behaviour_dispatch.py", line 250, in run_handler
+    await handler(context)
+  File "/tmp/p4p-nose-baseline-61qc63sy/robot/navel_client/behaviour_dispatch.py", line 86, in yield_space
+    await context.own_task(context.robot.say("Yield complete."))
+  File "/tmp/p4p-nose-baseline-61qc63sy/tests/test_client.py", line 1053, in speech
+    raise OSError('speech failed')
+OSError: speech failed
+yield_failed stage=ESCAPE error=CancelledError
+
+======================================================================
+ERROR: test_production_yield_sequence_and_failure_cleanup (tests.test_client.ClientTests) (outcome='success')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/p4p-nose-baseline-61qc63sy/tests/test_client.py", line 1107, in test_production_yield_sequence_and_failure_cleanup
+    self.assertTrue(all(task.done() and task.cancelling() <= 1 for task in sdk_tasks))
+  File "/tmp/p4p-nose-baseline-61qc63sy/tests/test_client.py", line 1107, in <genexpr>
+    self.assertTrue(all(task.done() and task.cancelling() <= 1 for task in sdk_tasks))
+AttributeError: '_asyncio.Task' object has no attribute 'cancelling'
+
+======================================================================
+ERROR: test_production_yield_sequence_and_failure_cleanup (tests.test_client.ClientTests) (outcome='cancel_escape')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/p4p-nose-baseline-61qc63sy/tests/test_client.py", line 1107, in test_production_yield_sequence_and_failure_cleanup
+    self.assertTrue(all(task.done() and task.cancelling() <= 1 for task in sdk_tasks))
+  File "/tmp/p4p-nose-baseline-61qc63sy/tests/test_client.py", line 1107, in <genexpr>
+    self.assertTrue(all(task.done() and task.cancelling() <= 1 for task in sdk_tasks))
+AttributeError: '_asyncio.Task' object has no attribute 'cancelling'
+
+======================================================================
+ERROR: test_production_yield_sequence_and_failure_cleanup (tests.test_client.ClientTests) (outcome='cancel_wait')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/p4p-nose-baseline-61qc63sy/tests/test_client.py", line 1107, in test_production_yield_sequence_and_failure_cleanup
+    self.assertTrue(all(task.done() and task.cancelling() <= 1 for task in sdk_tasks))
+  File "/tmp/p4p-nose-baseline-61qc63sy/tests/test_client.py", line 1107, in <genexpr>
+    self.assertTrue(all(task.done() and task.cancelling() <= 1 for task in sdk_tasks))
+AttributeError: '_asyncio.Task' object has no attribute 'cancelling'
+
+======================================================================
+ERROR: test_production_yield_sequence_and_failure_cleanup (tests.test_client.ClientTests) (outcome='cancel_return')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/p4p-nose-baseline-61qc63sy/tests/test_client.py", line 1107, in test_production_yield_sequence_and_failure_cleanup
+    self.assertTrue(all(task.done() and task.cancelling() <= 1 for task in sdk_tasks))
+  File "/tmp/p4p-nose-baseline-61qc63sy/tests/test_client.py", line 1107, in <genexpr>
+    self.assertTrue(all(task.done() and task.cancelling() <= 1 for task in sdk_tasks))
+AttributeError: '_asyncio.Task' object has no attribute 'cancelling'
+
+======================================================================
+ERROR: test_production_yield_sequence_and_failure_cleanup (tests.test_client.ClientTests) (outcome='cancel_advance')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/p4p-nose-baseline-61qc63sy/tests/test_client.py", line 1107, in test_production_yield_sequence_and_failure_cleanup
+    self.assertTrue(all(task.done() and task.cancelling() <= 1 for task in sdk_tasks))
+  File "/tmp/p4p-nose-baseline-61qc63sy/tests/test_client.py", line 1107, in <genexpr>
+    self.assertTrue(all(task.done() and task.cancelling() <= 1 for task in sdk_tasks))
+AttributeError: '_asyncio.Task' object has no attribute 'cancelling'
+
+======================================================================
+ERROR: test_production_yield_sequence_and_failure_cleanup (tests.test_client.ClientTests) (outcome='motion_failure')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/p4p-nose-baseline-61qc63sy/tests/test_client.py", line 1107, in test_production_yield_sequence_and_failure_cleanup
+    self.assertTrue(all(task.done() and task.cancelling() <= 1 for task in sdk_tasks))
+  File "/tmp/p4p-nose-baseline-61qc63sy/tests/test_client.py", line 1107, in <genexpr>
+    self.assertTrue(all(task.done() and task.cancelling() <= 1 for task in sdk_tasks))
+AttributeError: '_asyncio.Task' object has no attribute 'cancelling'
+
+======================================================================
+ERROR: test_production_yield_sequence_and_failure_cleanup (tests.test_client.ClientTests) (outcome='return_failure')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/p4p-nose-baseline-61qc63sy/tests/test_client.py", line 1107, in test_production_yield_sequence_and_failure_cleanup
+    self.assertTrue(all(task.done() and task.cancelling() <= 1 for task in sdk_tasks))
+  File "/tmp/p4p-nose-baseline-61qc63sy/tests/test_client.py", line 1107, in <genexpr>
+    self.assertTrue(all(task.done() and task.cancelling() <= 1 for task in sdk_tasks))
+AttributeError: '_asyncio.Task' object has no attribute 'cancelling'
+
+======================================================================
+ERROR: test_production_yield_sequence_and_failure_cleanup (tests.test_client.ClientTests) (outcome='advance_failure')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/p4p-nose-baseline-61qc63sy/tests/test_client.py", line 1107, in test_production_yield_sequence_and_failure_cleanup
+    self.assertTrue(all(task.done() and task.cancelling() <= 1 for task in sdk_tasks))
+  File "/tmp/p4p-nose-baseline-61qc63sy/tests/test_client.py", line 1107, in <genexpr>
+    self.assertTrue(all(task.done() and task.cancelling() <= 1 for task in sdk_tasks))
+AttributeError: '_asyncio.Task' object has no attribute 'cancelling'
+
+======================================================================
+ERROR: test_production_yield_sequence_and_failure_cleanup (tests.test_client.ClientTests) (outcome='speech_failure')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/p4p-nose-baseline-61qc63sy/tests/test_client.py", line 1107, in test_production_yield_sequence_and_failure_cleanup
+    self.assertTrue(all(task.done() and task.cancelling() <= 1 for task in sdk_tasks))
+  File "/tmp/p4p-nose-baseline-61qc63sy/tests/test_client.py", line 1107, in <genexpr>
+    self.assertTrue(all(task.done() and task.cancelling() <= 1 for task in sdk_tasks))
+AttributeError: '_asyncio.Task' object has no attribute 'cancelling'
+
+======================================================================
+ERROR: test_production_yield_sequence_and_failure_cleanup (tests.test_client.ClientTests) (outcome='final_speech_failure')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/p4p-nose-baseline-61qc63sy/tests/test_client.py", line 1107, in test_production_yield_sequence_and_failure_cleanup
+    self.assertTrue(all(task.done() and task.cancelling() <= 1 for task in sdk_tasks))
+  File "/tmp/p4p-nose-baseline-61qc63sy/tests/test_client.py", line 1107, in <genexpr>
+    self.assertTrue(all(task.done() and task.cancelling() <= 1 for task in sdk_tasks))
+AttributeError: '_asyncio.Task' object has no attribute 'cancelling'
+
+======================================================================
+ERROR: test_production_yield_sequence_and_failure_cleanup (tests.test_client.ClientTests) (outcome='timeout')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/p4p-nose-baseline-61qc63sy/tests/test_client.py", line 1107, in test_production_yield_sequence_and_failure_cleanup
+    self.assertTrue(all(task.done() and task.cancelling() <= 1 for task in sdk_tasks))
+  File "/tmp/p4p-nose-baseline-61qc63sy/tests/test_client.py", line 1107, in <genexpr>
+    self.assertTrue(all(task.done() and task.cancelling() <= 1 for task in sdk_tasks))
+AttributeError: '_asyncio.Task' object has no attribute 'cancelling'
+
+======================================================================
+ERROR: test_interrupted_or_failed_completion_stop_does_not_look_or_greet (tests.test_trial_head.TrialHeadControllerTests) (reason='BEHAVIOUR_CANCELLED')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/p4p-nose-baseline-61qc63sy/robot/navel_client/behaviour_dispatch.py", line 250, in run_handler
+    await handler(context)
+  File "/tmp/p4p-nose-baseline-61qc63sy/robot/navel_client/behaviour_dispatch.py", line 39, in approach_person
+    await runtime.settle()
+  File "/usr/lib/python3.10/unittest/mock.py", line 2243, in _execute_mock_call
+    raise result
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/tmp/p4p-nose-baseline-61qc63sy/robot/navel_client/behaviour_dispatch.py", line 264, in _execute
+    succeeded = task.result()
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/tmp/p4p-nose-baseline-61qc63sy/tests/test_trial_head.py", line 237, in test_interrupted_or_failed_completion_stop_does_not_look_or_greet
+    self.assertFalse(await dispatcher.dispatch())
+  File "/tmp/p4p-nose-baseline-61qc63sy/robot/navel_client/behaviour_dispatch.py", line 185, in dispatch
+    return await self._execute(context.decision["action"])
+  File "/tmp/p4p-nose-baseline-61qc63sy/robot/navel_client/behaviour_dispatch.py", line 271, in _execute
+    if asyncio.current_task().cancelling():
+AttributeError: '_asyncio.Task' object has no attribute 'cancelling'
+
+----------------------------------------------------------------------
+Ran 2 tests in 10.796s
+
+FAILED (errors=12)

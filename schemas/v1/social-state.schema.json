@@ -365,6 +365,47 @@
           "title": "Looking Exit",
           "type": "number"
         },
+        "gaze_unavailable_score": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": 0.5,
+          "title": "Gaze Unavailable Score"
+        },
+        "far_gaze_distance_m": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Far Gaze Distance M"
+        },
+        "far_looking_enter": {
+          "default": 0.97,
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Far Looking Enter",
+          "type": "number"
+        },
+        "far_looking_exit": {
+          "default": 0.95,
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Far Looking Exit",
+          "type": "number"
+        },
         "sustained_enter": {
           "default": 0.8,
           "maximum": 1,
@@ -423,6 +464,24 @@
           "minimum": 2,
           "title": "Recurring Min Bouts",
           "type": "integer"
+        },
+        "allow_recurring_attention": {
+          "default": true,
+          "title": "Allow Recurring Attention",
+          "type": "boolean"
+        },
+        "no_person_continue_after_s": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "No Person Continue After S"
         },
         "yield_closing_max_distance_m": {
           "anyOf": [
@@ -587,6 +646,34 @@
           "default": null,
           "title": "Latest Gaze Overlap"
         },
+        "looking_enter_threshold": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Looking Enter Threshold"
+        },
+        "looking_exit_threshold": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Looking Exit Threshold"
+        },
         "looking_time_s": {
           "default": 0.0,
           "title": "Looking Time S",
@@ -717,12 +804,13 @@
       "type": "integer"
     },
     "estimator_version": {
-      "default": "temporal-social-v4",
+      "default": "temporal-social-v5",
       "enum": [
         "temporal-social-v1",
         "temporal-social-v2",
         "temporal-social-v3",
-        "temporal-social-v4"
+        "temporal-social-v4",
+        "temporal-social-v5"
       ],
       "title": "Estimator Version",
       "type": "string"
@@ -803,6 +891,18 @@
       },
       "title": "Track Events",
       "type": "array"
+    },
+    "no_person_observed_s": {
+      "default": 0.0,
+      "minimum": 0,
+      "title": "No Person Observed S",
+      "type": "number"
+    },
+    "no_person_observed_samples": {
+      "default": 0,
+      "minimum": 0,
+      "title": "No Person Observed Samples",
+      "type": "integer"
     }
   },
   "required": [

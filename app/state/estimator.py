@@ -1,7 +1,7 @@
 """Temporal evidence -> categorical SocialState, with stateful hysteresis."""
 from __future__ import annotations
 
-from bisect import bisect_right
+from bisect import bisect_left, bisect_right
 from dataclasses import dataclass, field
 
 from app.recording import TimestampOrderError
@@ -33,6 +33,8 @@ class SocialStateEstimator:
         self._last_timestamp = None
         self._last_sequence = 0
         self._people: dict[tuple[int, int], PersonMemory] = {}
+        self._empty_since = None
+        self._empty_samples = 0
 
     def _gaze_category(self, evidence, memory, now):
         c = self.config
@@ -41,7 +43,8 @@ class SocialStateEstimator:
             memory.candidate_since = now
             return "UNKNOWN"
         fraction = evidence.gaze_fraction
-        if (fraction >= (c.sustained_exit if memory.category == "SUSTAINED" else c.sustained_enter)
+        if (evidence.latest_gaze_looking is True
+                and fraction >= (c.sustained_exit if memory.category == "SUSTAINED" else c.sustained_enter)
                 and evidence.sustained_gaze_s + 1e-9 >= c.min_sustained_run_s):
             candidate = "SUSTAINED"
         elif fraction <= (c.none_exit if memory.category == "NONE" else c.none_enter):
@@ -60,6 +63,9 @@ class SocialStateEstimator:
             return memory.zone
         c = self.config
         bounds = (c.too_close_m, c.interaction_max_m, c.approachable_max_m)
+        if c.zone_hysteresis_m == 0:
+            memory.zone = ZONES[bisect_left(bounds, distance)]
+            return memory.zone
         if memory.zone == "UNKNOWN":
             index = bisect_right(bounds, distance)
         else:
@@ -78,6 +84,24 @@ class SocialStateEstimator:
         if session != self._session:
             self._people.clear()
             self._session = session
+            self._empty_since = None
+            self._empty_samples = 0
+        observed = any(t["visibility"] == "OBSERVED" for t in snapshot["tracks"])
+        if observed:
+            self._empty_since = None
+            self._empty_samples = 0
+        else:
+            if (self._empty_since is None or self._last_timestamp is None
+                    or now - self._last_timestamp > round(self.config.max_gap_s * 1e6)):
+                self._empty_since, self._empty_samples = now, 0
+            self._empty_samples += 1
+        # A guarded nose reassociation retains the epoch but changes SDK UID.
+        for event in snapshot["events"]:
+            if event["type"] == "REASSOCIATED":
+                old_key = (event["previous_uid"], event["track_epoch"])
+                new_key = (event["uid"], event["track_epoch"])
+                if old_key in self._people:
+                    self._people[new_key] = self._people.pop(old_key)
         current_keys = {(t["uid"], t["track_epoch"]) for t in snapshot["tracks"]}
         self._people = {k: v for k, v in self._people.items() if k in current_keys}
         people, changes = [], []
@@ -138,6 +162,8 @@ class SocialStateEstimator:
             robot=RobotState(**robot,
                 motion_state="MOVING" if robot_moving else "STATIONARY" if stationary(robot, self.config) else "UNKNOWN",
                 measurement_validity=validity), people=people, cue_changes=changes,
-            track_events=snapshot["events"])
+            track_events=snapshot["events"],
+            no_person_observed_s=(now-self._empty_since)/1e6 if self._empty_since is not None else 0.0,
+            no_person_observed_samples=self._empty_samples)
         self._last_timestamp, self._last_sequence = now, sequence
         return state

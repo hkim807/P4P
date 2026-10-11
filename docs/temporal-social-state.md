@@ -6,10 +6,10 @@ unchanged. Derived JSONL contains estimates, configuration, validity reasons,
 track lifecycle events, and cue changes. No interaction decisions, target
 selection, robot movement, or identity saving are performed.
 
-The implementation runs on the existing UID/epoch histories. A changed UID is
-still a separate person history; saving identities on Navel remains a robot-side
-prerequisite for improving continuity. This layer cannot reconstruct identity
-associations that the recorded input does not contain.
+The implementation runs on UID/epoch histories. By default, a changed UID starts
+a separate history. The optional [nose continuity gate](person-tracking.md#optional-nose-continuity-uid-tracking-v3)
+retains temporal memory across a guarded adjacent SDK UID change and marks that
+association as unverified. This does not establish personal identity.
 
 ## Components and outputs
 
@@ -162,8 +162,8 @@ remain limitations.
 ### 5. Identity, live integration, and failure behavior
 
 Feature/classification memory is keyed by UID and track epoch within a session,
-pruned when tracks expire, and reset for a different session. It cannot transfer
-attention evidence to a newly assigned SDK UID. Even a saved identity can have
+pruned when tracks expire, and reset for a different session. Only a guarded
+`REASSOCIATED` tracker event transfers memory to a newly assigned SDK UID. Even a saved identity can have
 a new observation epoch after a long absence. Hardware persistence/recognition
 must be evaluated separately before claiming continuous physical-person tracking.
 

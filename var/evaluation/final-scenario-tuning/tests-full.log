@@ -1,0 +1,1104 @@
+test_legacy_modules_share_canonical_module_objects (test_app_layout_compatibility.AppLayoutCompatibilityTests) ... ok
+test_raw_replay_keeps_its_existing_package_bindings (test_app_layout_compatibility.AppLayoutCompatibilityTests) ... ok
+test_identical_retry_and_invalid_dimensions (test_camera_capture.CameraCaptureTests) ... 127.0.0.1 - - [11/Oct/2026 19:23:34] "POST /api/v1/camera-frames HTTP/1.1" 200 -
+127.0.0.1 - - [11/Oct/2026 19:23:34] "POST /api/v1/camera-frames HTTP/1.1" 200 -
+127.0.0.1 - - [11/Oct/2026 19:23:34] "POST /api/v1/camera-frames HTTP/1.1" 400 -
+ok
+test_missing_and_unimplemented_camera_are_reported_separately (test_camera_capture.CameraCaptureTests) ... camera=head unavailable: camera class is absent from installed Navel SDK
+camera=chest unavailable: NotImplementedError: camera socket is not available
+127.0.0.1 - - [11/Oct/2026 19:23:34] "POST /api/v1/camera-frames HTTP/1.1" 200 -
+127.0.0.1 - - [11/Oct/2026 19:23:34] "POST /api/v1/camera-frames HTTP/1.1" 200 -
+ok
+test_streams_rgb_frame_to_ppm_and_jsonl_index (test_camera_capture.CameraCaptureTests) ... 127.0.0.1 - - [11/Oct/2026 19:23:34] "POST /api/v1/camera-frames HTTP/1.1" 200 -
+ok
+test_absolute_parent_and_null_paths_rejected (test_camera_recordings.CameraRecordingTests) ... ok
+test_empty_and_missing_manifests_fail_with_location (test_camera_recordings.CameraRecordingTests) ... ok
+test_explicit_manifest_order_preserved_without_sequence_deduplication (test_camera_recordings.CameraRecordingTests) ... ok
+test_file_read_is_bounded_by_existing_capture_limit (test_camera_recordings.CameraRecordingTests) ... ok
+test_image_directory_is_not_a_readable_image (test_camera_recordings.CameraRecordingTests) ... ok
+test_invalid_format_header_dimensions_and_payload_rejected (test_camera_recordings.CameraRecordingTests) ... ok
+test_invalid_utf8_reports_original_line_number (test_camera_recordings.CameraRecordingTests) ... ok
+test_json_rejects_duplicate_keys_nonfinite_and_non_objects (test_camera_recordings.CameraRecordingTests) ... ok
+test_loads_actual_writer_shape_preserving_all_events_and_lines (test_camera_recordings.CameraRecordingTests) ... ok
+test_manifest_image_dimension_disagreement_has_distinct_failure (test_camera_recordings.CameraRecordingTests) ... ok
+test_manifest_strict_fields_and_numeric_types (test_camera_recordings.CameraRecordingTests) ... ok
+test_manifest_symlink_loop_is_a_source_located_input_error (test_camera_recordings.CameraRecordingTests) ... ok
+test_missing_images_are_retained_for_selected_frame_failure (test_camera_recordings.CameraRecordingTests) ... ok
+test_ppm_header_comments_and_crlf_do_not_consume_raster (test_camera_recordings.CameraRecordingTests) ... ok
+test_ppm_preserves_initial_payload_whitespace_and_hash (test_camera_recordings.CameraRecordingTests) ... ok
+test_symlink_changed_after_loading_is_rechecked (test_camera_recordings.CameraRecordingTests) ... ok
+test_symlink_path_escape_rejected (test_camera_recordings.CameraRecordingTests) ... ok
+test_unavailable_manifest_requires_reason_and_no_image_reference (test_camera_recordings.CameraRecordingTests) ... ok
+test_unreadable_file_has_distinct_failure (test_camera_recordings.CameraRecordingTests) ... ok
+test_unreadable_manifest_error_is_source_located (test_camera_recordings.CameraRecordingTests) ... ok
+test_valid_image_dimensions_file_size_and_content_digest (test_camera_recordings.CameraRecordingTests) ... ok
+test_approach_bounded_corrections_and_unsuccessful_results (test_client.ClientTests) ... ok
+test_approach_final_arrival_symmetric_distance_and_heading_tolerances (test_client.ClientTests) ... ok
+test_approach_geometry_and_timestamped_uid_association (test_client.ClientTests) ... ok
+test_behaviour_dispatch_calls_selected_handler_once_and_freezes_lifecycle (test_client.ClientTests) ... ok
+test_behaviour_handoff_and_failure_cleanup_on_shared_client (test_client.ClientTests) ... single_trial behaviour_failed action=APPROACH
+Traceback (most recent call last):
+  File "/home/anyone/Documents/P4P/robot/navel_client/behaviour_dispatch.py", line 264, in _execute
+    succeeded = task.result()
+  File "/home/anyone/Documents/P4P/robot/navel_client/behaviour_dispatch.py", line 250, in run_handler
+    await handler(context)
+  File "/home/anyone/Documents/P4P/tests/test_client.py", line 547, in handler
+    raise RuntimeError("mock handler failed")
+RuntimeError: mock handler failed
+ok
+test_continue_route_completion_race_and_failure (test_client.ClientTests) ... single_trial behaviour_failed action=CONTINUE
+Traceback (most recent call last):
+  File "/home/anyone/Documents/P4P/robot/navel_client/behaviour_dispatch.py", line 264, in _execute
+    succeeded = task.result()
+  File "/home/anyone/Documents/P4P/robot/navel_client/behaviour_dispatch.py", line 250, in run_handler
+    await handler(context)
+  File "/home/anyone/Documents/P4P/robot/navel_client/behaviour_dispatch.py", line 22, in continue_route
+    await context.route.task
+  File "/home/anyone/Documents/P4P/tests/test_client.py", line 607, in move
+    raise OSError("movement failed")
+OSError: movement failed
+ok
+test_execution_preflight_and_current_person_fail_honestly (test_client.ClientTests) ... ok
+test_http_runs_in_worker_and_newest_frame_survives_slow_request (test_client.ClientTests) ... {
+  "timestamp": 1,
+  "people": [
+    {
+      "uid": 17,
+      "distance_m": 1.85,
+      "gaze_overlap": 0.75
+    }
+  ],
+  "robot": {
+    "linear_velocity": 0.2,
+    "angular_velocity": -0.1
+  },
+  "safety": {
+    "lidar": [
+      2.0,
+      1.0
+    ],
+    "sonar": [
+      0.5,
+      0.7,
+      1.2
+    ]
+  }
+}
+{
+  "timestamp": 3,
+  "people": [
+    {
+      "uid": 17,
+      "distance_m": 1.85,
+      "gaze_overlap": 0.75
+    }
+  ],
+  "robot": {
+    "linear_velocity": 0.2,
+    "angular_velocity": -0.1
+  },
+  "safety": {
+    "lidar": [
+      2.0,
+      1.0
+    ],
+    "sonar": [
+      0.5,
+      0.7,
+      1.2
+    ]
+  }
+}
+ok
+test_latest_frame_replaces_pending_frame (test_client.ClientTests) ... ok
+test_print_only_outputs_json_without_http (test_client.ClientTests) ... ok
+test_production_approach_on_shared_readers_and_cancellation (test_client.ClientTests) ... single_trial behaviour_failed action=APPROACH
+Traceback (most recent call last):
+  File "/home/anyone/Documents/P4P/robot/navel_client/approach.py", line 264, in motion
+    self.check(require_perception=require_perception)
+  File "/home/anyone/Documents/P4P/robot/navel_client/approach.py", line 149, in check
+    self.pose()
+  File "/home/anyone/Documents/P4P/robot/navel_client/approach.py", line 143, in pose
+    raise RuntimeError('Odometry unavailable/stale: '+str(self.errors))
+RuntimeError: Odometry unavailable/stale: {}
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/anyone/Documents/P4P/robot/navel_client/behaviour_dispatch.py", line 264, in _execute
+    succeeded = task.result()
+  File "/home/anyone/Documents/P4P/robot/navel_client/behaviour_dispatch.py", line 250, in run_handler
+    await handler(context)
+  File "/home/anyone/Documents/P4P/robot/navel_client/behaviour_dispatch.py", line 36, in approach_person
+    result = context.approach_result = await approach_human(runtime, uid)
+  File "/home/anyone/Documents/P4P/robot/navel_client/approach.py", line 427, in approach_human
+    await run_arc(rt, target, rt.cfg.stop_distance)
+  File "/home/anyone/Documents/P4P/robot/navel_client/approach.py", line 394, in run_arc
+    reason = await rt.motion(lambda: rt.robot.move_and_rotate_base(
+  File "/home/anyone/Documents/P4P/robot/navel_client/approach.py", line 286, in motion
+    await asyncio.shield(cleanup)
+  File "/home/anyone/Documents/P4P/robot/navel_client/approach.py", line 301, in _finish_motion
+    await self.settle()
+  File "/home/anyone/Documents/P4P/robot/navel_client/approach.py", line 240, in settle
+    pose = self.pose()
+  File "/home/anyone/Documents/P4P/robot/navel_client/approach.py", line 143, in pose
+    raise RuntimeError('Odometry unavailable/stale: '+str(self.errors))
+RuntimeError: Odometry unavailable/stale: {'perception': 'Odometry unavailable/stale: {}'}
+single_trial behaviour_failed action=APPROACH
+Traceback (most recent call last):
+  File "/home/anyone/Documents/P4P/robot/navel_client/behaviour_dispatch.py", line 264, in _execute
+    succeeded = task.result()
+  File "/home/anyone/Documents/P4P/robot/navel_client/behaviour_dispatch.py", line 250, in run_handler
+    await handler(context)
+  File "/home/anyone/Documents/P4P/robot/navel_client/behaviour_dispatch.py", line 48, in approach_person
+    await context.own_task(context.robot.say("Hi! Do you need any help?"))
+  File "/home/anyone/Documents/P4P/tests/test_client.py", line 881, in speech
+    raise OSError('speech failed')
+OSError: speech failed
+ok
+test_production_yield_sequence_and_failure_cleanup (test_client.ClientTests) ... yield_failed stage=ESCAPE error=CancelledError
+yield_failed stage=WAIT error=CancelledError
+yield_failed stage=RETURN error=CancelledError
+yield_failed stage=ADVANCE error=CancelledError
+yield_failed stage=ESCAPE error=escape failed
+single_trial behaviour_failed action=YIELD
+Traceback (most recent call last):
+  File "/home/anyone/Documents/P4P/robot/navel_client/behaviour_dispatch.py", line 264, in _execute
+    succeeded = task.result()
+  File "/home/anyone/Documents/P4P/robot/navel_client/behaviour_dispatch.py", line 250, in run_handler
+    await handler(context)
+  File "/home/anyone/Documents/P4P/robot/navel_client/behaviour_dispatch.py", line 72, in yield_space
+    await movement("ESCAPE", lambda: context.robot.move_and_rotate_base(
+  File "/home/anyone/Documents/P4P/robot/navel_client/behaviour_dispatch.py", line 66, in movement
+    await runtime.motion(command, timeout=context.timeout_s,
+  File "/home/anyone/Documents/P4P/tests/test_client.py", line 1076, in supervised_motion
+    return await original_motion(runtime, *args, **kwargs)
+  File "/home/anyone/Documents/P4P/robot/navel_client/approach.py", line 275, in motion
+    await task
+  File "/home/anyone/Documents/P4P/tests/test_client.py", line 1019, in sender
+    raise OSError(stage+' failed')
+OSError: escape failed
+yield_failed stage=RETURN error=return failed
+single_trial behaviour_failed action=YIELD
+Traceback (most recent call last):
+  File "/home/anyone/Documents/P4P/robot/navel_client/behaviour_dispatch.py", line 264, in _execute
+    succeeded = task.result()
+  File "/home/anyone/Documents/P4P/robot/navel_client/behaviour_dispatch.py", line 250, in run_handler
+    await handler(context)
+  File "/home/anyone/Documents/P4P/robot/navel_client/behaviour_dispatch.py", line 80, in yield_space
+    await movement("RETURN", lambda: context.robot.move_and_rotate_base(
+  File "/home/anyone/Documents/P4P/robot/navel_client/behaviour_dispatch.py", line 66, in movement
+    await runtime.motion(command, timeout=context.timeout_s,
+  File "/home/anyone/Documents/P4P/tests/test_client.py", line 1076, in supervised_motion
+    return await original_motion(runtime, *args, **kwargs)
+  File "/home/anyone/Documents/P4P/robot/navel_client/approach.py", line 275, in motion
+    await task
+  File "/home/anyone/Documents/P4P/tests/test_client.py", line 1019, in sender
+    raise OSError(stage+' failed')
+OSError: return failed
+yield_failed stage=ADVANCE error=advance failed
+single_trial behaviour_failed action=YIELD
+Traceback (most recent call last):
+  File "/home/anyone/Documents/P4P/robot/navel_client/behaviour_dispatch.py", line 264, in _execute
+    succeeded = task.result()
+  File "/home/anyone/Documents/P4P/robot/navel_client/behaviour_dispatch.py", line 250, in run_handler
+    await handler(context)
+  File "/home/anyone/Documents/P4P/robot/navel_client/behaviour_dispatch.py", line 82, in yield_space
+    await movement("ADVANCE", lambda: context.robot.move_base(
+  File "/home/anyone/Documents/P4P/robot/navel_client/behaviour_dispatch.py", line 66, in movement
+    await runtime.motion(command, timeout=context.timeout_s,
+  File "/home/anyone/Documents/P4P/tests/test_client.py", line 1076, in supervised_motion
+    return await original_motion(runtime, *args, **kwargs)
+  File "/home/anyone/Documents/P4P/robot/navel_client/approach.py", line 275, in motion
+    await task
+  File "/home/anyone/Documents/P4P/tests/test_client.py", line 1019, in sender
+    raise OSError(stage+' failed')
+OSError: advance failed
+yield_failed stage=PASS_SPEECH error=speech failed
+single_trial behaviour_failed action=YIELD
+Traceback (most recent call last):
+  File "/home/anyone/Documents/P4P/robot/navel_client/behaviour_dispatch.py", line 264, in _execute
+    succeeded = task.result()
+  File "/home/anyone/Documents/P4P/robot/navel_client/behaviour_dispatch.py", line 250, in run_handler
+    await handler(context)
+  File "/home/anyone/Documents/P4P/robot/navel_client/behaviour_dispatch.py", line 76, in yield_space
+    await context.own_task(context.robot.say("Please go ahead."))
+  File "/home/anyone/Documents/P4P/tests/test_client.py", line 1053, in speech
+    raise OSError('speech failed')
+OSError: speech failed
+yield_failed stage=COMPLETE_SPEECH error=speech failed
+single_trial behaviour_failed action=YIELD
+Traceback (most recent call last):
+  File "/home/anyone/Documents/P4P/robot/navel_client/behaviour_dispatch.py", line 264, in _execute
+    succeeded = task.result()
+  File "/home/anyone/Documents/P4P/robot/navel_client/behaviour_dispatch.py", line 250, in run_handler
+    await handler(context)
+  File "/home/anyone/Documents/P4P/robot/navel_client/behaviour_dispatch.py", line 86, in yield_space
+    await context.own_task(context.robot.say("Yield complete."))
+  File "/home/anyone/Documents/P4P/tests/test_client.py", line 1053, in speech
+    raise OSError('speech failed')
+OSError: speech failed
+yield_failed stage=ESCAPE error=CancelledError
+test_route_lifecycle_stops_one_sender_before_zero (test_client.ClientTests) ... timestamp=14708158218 transport_error=offline
+timestamp=14708164245 status=503 response={'accepted': False}
+single_trial stop_failed physical_stop_verified=false
+Traceback (most recent call last):
+  File "/home/anyone/Documents/P4P/robot/navel_client/main.py", line 485, in collect_and_stream
+    await asyncio.shield(cleanup)
+  File "/home/anyone/Documents/P4P/robot/navel_client/main.py", line 449, in collect_and_stream
+    task.result()
+  File "/home/anyone/Documents/P4P/robot/navel_client/head_focus.py", line 162, in watch_failures
+    raise self._command_error
+  File "/home/anyone/Documents/P4P/tests/test_client.py", line 230, in look_at_person
+    raise OSError("head failed")
+OSError: head failed
+ok
+test_sdk_disconnect_cancels_other_tasks (test_client.ClientTests) ... ok
+test_stale_locomotion_becomes_unavailable (test_client.ClientTests) ... ok
+test_transport_failure_does_not_stop_sender (test_client.ClientTests) ... {
+  "timestamp": 2,
+  "people": [
+    {
+      "uid": 17,
+      "distance_m": 1.85,
+      "gaze_overlap": 0.75
+    }
+  ],
+  "robot": {
+    "linear_velocity": 0.2,
+    "angular_velocity": -0.1
+  },
+  "safety": {
+    "lidar": [
+      2.0,
+      1.0
+    ],
+    "sonar": [
+      0.5,
+      0.7,
+      1.2
+    ]
+  }
+}
+ok
+test_trial_timeout_and_interruption_use_collector_cleanup (test_client.ClientTests) ... ok
+test_yield_preflight_requires_only_used_sdk_capabilities (test_client.ClientTests) ... ok
+test_invalid_urls_and_timeout_values_are_rejected (test_client.TransportTests) ... ok
+test_malformed_server_responses_are_reported (test_client.TransportTests) ... ok
+test_nonfinite_cli_settings_are_rejected (test_client.TransportTests) ... ok
+test_nonfinite_json_is_not_sent (test_client.TransportTests) ... ok
+test_robot_imports_do_not_need_server_packages_or_sdk (test_client.TransportTests) ... ok
+test_route_requires_explicit_opt_in_and_valid_settings (test_client.TransportTests) ... ok
+test_url_failure_is_reported (test_client.TransportTests) ... ok
+test_engage_is_issued_once_per_logical_lock (test_command_feedback.CommandFeedbackTests) ... ok
+test_missing_target_and_uid_zero_produce_no_command (test_command_feedback.CommandFeedbackTests) ... ok
+test_offline_replay_matches_live_command_proposals (test_command_feedback.CommandFeedbackTests) ... ok
+test_rejects_wrong_lock_expired_command_and_conflicting_feedback (test_command_feedback.CommandFeedbackTests) ... ok
+test_retry_feedback_deduplication_and_trace (test_command_feedback.CommandFeedbackTests) ... ok
+test_debug_rejects_unsupported_actions_and_conflicting_trial_options (test_debug_action.DebugActionArgumentTests) ... ok
+test_debug_validates_target_acquisition_and_action_timeouts (test_debug_action.DebugActionArgumentTests) ... ok
+test_approach_selects_first_valid_person_with_others_preserved (test_debug_action.DebugActionTests) ... ok
+test_approach_target_acquisition_timeout_never_moves_or_greets (test_debug_action.DebugActionTests) ... ok
+test_cancellation_retains_sensing_until_sender_stops_and_cleanup_finishes (test_debug_action.DebugActionTests) ... ok
+test_debug_run_never_initialises_server_decision_or_route_components (test_debug_action.DebugActionTests) ... ok
+test_engage_without_person_measures_stop_and_uses_existing_speech_once (test_debug_action.DebugActionTests) ... ok
+test_local_dispatch_claims_action_once_before_awaiting_stop (test_debug_action.DebugActionTests) ... ok
+test_normal_dispatch_still_requires_a_decision_and_one_current_person (test_debug_action.DebugActionTests) ... ok
+test_sensor_failure_stops_active_action_before_any_later_stage (test_debug_action.DebugActionTests) ... ok
+test_yield_failure_or_timeout_stops_sender_and_prevents_later_stages (test_debug_action.DebugActionTests) ... ok
+test_yield_uses_existing_sequence_once_without_starting_route (test_debug_action.DebugActionTests) ... ok
+test_calls_once_per_decision_and_target_transition (test_decision_dispatch.DecisionDispatchTests) ... ok
+test_cli_mode_and_timeouts (test_decision_dispatch.DecisionDispatchTests) ... ok
+test_live_server_response_reaches_robot_placeholder (test_decision_dispatch.DecisionDispatchTests) ... ok
+test_missing_decision_and_transport_error_clear_active (test_decision_dispatch.DecisionDispatchTests) ... ok
+test_rejects_stale_mismatched_target_and_changed_session (test_decision_dispatch.DecisionDispatchTests) ... ok
+test_single_trial_accepts_once_without_claiming_execution (test_decision_dispatch.DecisionDispatchTests) ... ok
+test_trial_sender_latches_pure_rule_and_keeps_observations_flowing (test_decision_dispatch.DecisionDispatchTests) ... ok
+test_trial_timeout_session_change_and_model_acceptance_boundary (test_decision_dispatch.DecisionDispatchTests) ... ok
+test_watchdog_expires_active_placeholder_without_new_frame (test_decision_dispatch.DecisionDispatchTests) ... ok
+test_all_trimmed_recordings_first_action_and_live_acceptance (test_final_scenario_tuning.FinalScenarioTuningTests) ... ok
+test_empty_interval_requires_continuity_and_resets_on_person_and_session (test_final_scenario_tuning.FinalScenarioTuningTests) ... ok
+test_empty_live_readiness_only_accepts_fresh_continue (test_final_scenario_tuning.FinalScenarioTuningTests) ... ok
+test_nose_reassociation_preserves_contiguous_evidence_and_marks_uncertainty (test_final_scenario_tuning.FinalScenarioTuningTests) ... ok
+test_reassociation_cannot_bridge_missing_gap_ambiguity_or_displacement (test_final_scenario_tuning.FinalScenarioTuningTests) ... ok
+test_recurring_attention_requires_explicit_opt_in (test_final_scenario_tuning.FinalScenarioTuningTests) ... ok
+test_same_gaze_score_has_distance_appropriate_threshold (test_final_scenario_tuning.FinalScenarioTuningTests) ... ok
+test_sentinel_is_unknown_and_raw_value_is_retained (test_final_scenario_tuning.FinalScenarioTuningTests) ... ok
+test_two_metre_boundary_and_current_attention (test_final_scenario_tuning.FinalScenarioTuningTests) ... ok
+test_new_observations_continue_during_inference_then_stop (test_first_action_replay.FirstActionReplayTests) ... ok
+test_output_after_eof_is_resolved_but_current_evidence_is_stale (test_first_action_replay.FirstActionReplayTests) ... ok
+test_recording_end_is_explicit_without_an_empty_scene_fallback (test_first_action_replay.FirstActionReplayTests) ... ok
+test_stops_without_reading_the_next_observation (test_first_action_replay.FirstActionReplayTests) ... ok
+test_waits_for_first_policy_output_even_when_delivery_has_expired (test_first_action_replay.FirstActionReplayTests) ... ok
+test_angular_math_normalizes_and_supports_reference (test_gaze_features.PersonFeatureTests) ... ok
+test_geometry_raw_fields_and_input_preserved (test_gaze_features.PersonFeatureTests) ... ok
+test_invalid_config (test_gaze_features.PersonFeatureTests) ... ok
+test_missing_nonfinite_and_zero_gaze_never_become_angles (test_gaze_features.PersonFeatureTests) ... ok
+test_suspected_default_unknown_but_half_overlap_alone_is_valid (test_gaze_features.PersonFeatureTests) ... ok
+test_bad_input_reports_line_and_never_writes_success_summary (test_gaze_features.RecordingTests) ... ok
+test_replay_preserves_empty_frames_provenance_and_refuses_overwrite (test_gaze_features.RecordingTests) ... ok
+test_invalid_and_duplicate_ids_do_not_share_temporal_state (test_gaze_features.TemporalFeatureTests) ... ok
+test_ordering_error_not_silently_smoothed (test_gaze_features.TemporalFeatureTests) ... ok
+test_receipt_window_and_uid_isolation (test_gaze_features.TemporalFeatureTests) ... ok
+test_session_sequence_gap_and_time_gap_reset (test_gaze_features.TemporalFeatureTests) ... ok
+test_unknown_or_disappearance_resets_window (test_gaze_features.TemporalFeatureTests) ... ok
+test_diagnostic_samples_do_not_affect_fit_and_boundary_is_trimmed (test_gaze_score.LabelAndReplayTests) ... ok
+test_labels_require_matching_recording_session_and_nonoverlap (test_gaze_score.LabelAndReplayTests) ... ok
+test_train_replay_roundtrip_preserves_predictions_and_refuses_overwrite (test_gaze_score.LabelAndReplayTests) ... ok
+test_ambiguous_is_distinct_from_unknown_and_old_overlap_is_unused (test_gaze_score.ModelTests) ... ok
+test_fit_is_bounded_monotone_and_separates_known_angles (test_gaze_score.ModelTests) ... ok
+test_missing_gaze_and_duplicate_uid_never_get_half_score (test_gaze_score.ModelTests) ... ok
+test_reversed_relationship_cannot_learn_increasing_score (test_gaze_score.ModelTests) ... ok
+test_roundtrip_and_bad_contract_rejection (test_gaze_score.ModelTests) ... ok
+test_joint_median_resets_when_head_pose_disappears (test_gaze_score_v2.FeatureTests) ... ok
+test_uid_session_gap_and_unknown_isolation (test_gaze_score_v2.FeatureTests) ... ok
+test_contract_serialization_and_basis_order (test_gaze_score_v2.ModelTests) ... ok
+test_interaction_can_distinguish_eye_head_combinations (test_gaze_score_v2.ModelTests) ... ok
+test_metrics_expose_abstention_and_unknown_coverage (test_gaze_score_v2.ModelTests) ... ok
+test_scaling_and_run_phase_weights_only_use_fitting_samples (test_gaze_score_v2.ModelTests) ... ok
+test_unknown_is_not_a_half_probability_and_raw_overlap_unused (test_gaze_score_v2.ModelTests) ... ok
+test_diagnostic_intervals_and_invalid_features_do_not_train (test_gaze_score_v2.ReplayTests) ... ok
+test_train_folds_replay_and_source_protection (test_gaze_score_v2.ReplayTests) ... ok
+test_async_head_failure_is_supervised_and_nonroute_retries (test_head_focus.CollectorFocusTests) ... ok
+test_head_handoff_settles_command_without_stopping_shared_reader (test_head_focus.CollectorFocusTests) ... ok
+test_live_route_supervises_head_error_and_shutdown_settles_pending_head (test_head_focus.CollectorFocusTests) ... single_trial stop_failed physical_stop_verified=false
+Traceback (most recent call last):
+  File "/home/anyone/Documents/P4P/robot/navel_client/main.py", line 485, in collect_and_stream
+    await asyncio.shield(cleanup)
+  File "/home/anyone/Documents/P4P/robot/navel_client/main.py", line 449, in collect_and_stream
+    task.result()
+  File "/home/anyone/Documents/P4P/robot/navel_client/head_focus.py", line 162, in watch_failures
+    raise self._command_error
+  File "/home/anyone/Documents/P4P/tests/test_head_focus.py", line 354, in command
+    raise OSError('async route head failure')
+OSError: async route head failure
+single_trial stop_failed physical_stop_verified=false
+Traceback (most recent call last):
+  File "/home/anyone/Documents/P4P/robot/navel_client/main.py", line 485, in collect_and_stream
+    await asyncio.shield(cleanup)
+  File "/home/anyone/Documents/P4P/robot/navel_client/main.py", line 477, in stop_local
+    await route.stop()
+  File "/home/anyone/Documents/P4P/robot/navel_client/straight_route.py", line 41, in stop
+    self.robot.base_vel(0.0, 0.0)
+  File "/home/anyone/Documents/P4P/tests/test_head_focus.py", line 374, in base_vel
+    raise OSError('mock stop failure')
+OSError: mock stop failure
+ok
+test_observation_is_published_before_head_submission (test_head_focus.CollectorFocusTests) ... ok
+test_slow_sdk_head_task_keeps_regular_perception_and_gaze_coverage (test_head_focus.CollectorFocusTests) ... ok
+test_cli_rejects_invalid_focus_settings (test_head_focus.HeadFocusTests) ... ok
+test_dropout_holds_uid_then_allows_new_single_candidate (test_head_focus.HeadFocusTests) ... ok
+test_expired_uid_does_not_switch_to_crowd (test_head_focus.HeadFocusTests) ... ok
+test_failed_command_is_retried_after_cooldown (test_head_focus.HeadFocusTests) ... ok
+test_no_arbitrary_acquisition_in_ambiguous_frame (test_head_focus.HeadFocusTests) ... ok
+test_route_refresh_is_rate_limited_and_can_be_suspended (test_head_focus.HeadFocusTests) ... ok
+test_server_lock_blocks_uid_switch_and_reacquires_known_target_in_crowd (test_head_focus.HeadFocusTests) ... ok
+test_server_pin_expires_if_responses_stop (test_head_focus.HeadFocusTests) ... ok
+test_server_rebind_redirects_head_to_new_uid (test_head_focus.HeadFocusTests) ... ok
+test_single_person_is_acquired_once_and_kept_in_crowd (test_head_focus.HeadFocusTests) ... ok
+test_timeout_expires_local_focus_and_stop_clears_it (test_head_focus.HeadFocusTests) ... ok
+test_bytearray_is_copied_and_pixels_preserved (test_image_encoding.ImageEncodingTests) ... ok
+test_codec_failure_remains_an_error_without_output (test_image_encoding.ImageEncodingTests) ... ok
+test_original_container_hash_and_size_remain_caller_supplied (test_image_encoding.ImageEncodingTests) ... ok
+test_rejects_invalid_or_excessive_dimensions_before_codec (test_image_encoding.ImageEncodingTests) ... ok
+test_rejects_invalid_source_digest_or_size (test_image_encoding.ImageEncodingTests) ... ok
+test_rejects_wrong_rgb_type_or_byte_count (test_image_encoding.ImageEncodingTests) ... ok
+test_replay_encoded_class_import_remains_identical (test_image_encoding.ImageEncodingTests) ... ok
+test_rgb_pixels_dimensions_hashes_and_raw_base64 (test_image_encoding.ImageEncodingTests) ... ok
+test_all_explicit_manifests_are_protected (test_image_match_cli.ImageMatchingRunnerTests) ... ok
+test_duplicate_keys_nonfinite_and_nonobject_input_are_rejected (test_image_match_cli.ImageMatchingRunnerTests) ... ok
+test_empty_replay_is_a_failed_run_without_successful_rows (test_image_match_cli.ImageMatchingRunnerTests) ... ok
+test_existing_image_matching_field_is_rejected_without_overwriting_it (test_image_match_cli.ImageMatchingRunnerTests) ... ok
+test_existing_output_and_symlink_to_output_are_refused (test_image_match_cli.ImageMatchingRunnerTests) ... ok
+test_existing_success_and_failure_inference_results_are_preserved (test_image_match_cli.ImageMatchingRunnerTests) ... ok
+test_explicit_chest_camera_does_not_borrow_head_frames (test_image_match_cli.ImageMatchingRunnerTests) ... ok
+test_first_write_failure_is_non_success_and_surfaces_error (test_image_match_cli.ImageMatchingRunnerTests) ... ok
+test_fractional_microsecond_maximum_never_rounds_up_to_older_frame (test_image_match_cli.ImageMatchingRunnerTests) ... ok
+test_invalid_snapshot_or_correlation_is_source_located_and_partial (test_image_match_cli.ImageMatchingRunnerTests) ... ok
+test_later_invalid_json_is_partial_with_exact_input_line (test_image_match_cli.ImageMatchingRunnerTests) ... ok
+test_missing_camera_session_retains_all_rows_and_counts_failures (test_image_match_cli.ImageMatchingRunnerTests) ... ok
+test_missing_image_is_a_matching_failure_and_does_not_drop_a_row (test_image_match_cli.ImageMatchingRunnerTests) ... ok
+test_missing_required_step_three_metadata_is_rejected_as_partial_input (test_image_match_cli.ImageMatchingRunnerTests) ... ok
+test_opt_in_receipt_matching_summary_is_separate_from_exact (test_image_match_cli.ImageMatchingRunnerTests) ... ok
+test_output_cannot_create_a_missing_referenced_camera_image (test_image_match_cli.ImageMatchingRunnerTests) ... ok
+test_output_cannot_resolve_to_replay_manifest_or_stored_image (test_image_match_cli.ImageMatchingRunnerTests) ... ok
+test_output_symlink_loop_is_reported_as_failed_without_exception (test_image_match_cli.ImageMatchingRunnerTests) ... ok
+test_overflowing_number_in_nonsocial_metadata_is_source_located_and_partial (test_image_match_cli.ImageMatchingRunnerTests) ... ok
+test_preparation_rows_preserve_every_original_field_and_canonical_snapshot (test_image_match_cli.ImageMatchingRunnerTests) ... ok
+test_reception_age_requires_explicit_opt_in_and_explicit_age (test_image_match_cli.ImageMatchingRunnerTests) ... ok
+test_second_write_failure_retains_first_row_and_reports_partial (test_image_match_cli.ImageMatchingRunnerTests) ... ok
+test_unmatched_rows_remain_in_order_and_complete_pass_returns_one (test_image_match_cli.ImageMatchingRunnerTests) ... ok
+test_approximation_age_boundary_is_inclusive (test_image_matching.CameraMatcherTests) ... ok
+test_approximation_cannot_choose_any_future_frame (test_image_matching.CameraMatcherTests) ... ok
+test_approximation_selects_latest_past_frame_and_excludes_future (test_image_matching.CameraMatcherTests) ... ok
+test_bad_selected_image_has_explicit_failure (test_image_matching.CameraMatcherTests) ... ok
+test_camera_selection_can_explicitly_select_chest (test_image_matching.CameraMatcherTests) ... ok
+test_camera_with_no_recorded_frame_does_not_borrow_other_camera (test_image_matching.CameraMatcherTests) ... ok
+test_constructor_rejects_unsupported_camera_and_nonboolean_opt_in (test_image_matching.CameraMatcherTests) ... ok
+test_constructor_requires_explicit_nonnegative_integer_age_for_approximation (test_image_matching.CameraMatcherTests) ... ok
+test_default_does_not_use_reception_approximation (test_image_matching.CameraMatcherTests) ... ok
+test_deterministic_selection_ignores_event_iteration_order (test_image_matching.CameraMatcherTests) ... ok
+test_different_camera_capture_session_cannot_be_borrowed (test_image_matching.CameraMatcherTests) ... ok
+test_distinct_exact_candidates_are_ambiguous_without_receipt_fallback (test_image_matching.CameraMatcherTests) ... ok
+test_equal_receipt_candidates_with_different_sdk_frames_are_ambiguous (test_image_matching.CameraMatcherTests) ... ok
+test_equivalent_duplicate_records_resolve_deterministically (test_image_matching.CameraMatcherTests) ... ok
+test_estimation_and_processing_timestamps_do_not_affect_matching (test_image_matching.CameraMatcherTests) ... ok
+test_exact_future_reception_is_visible_and_explicitly_limited (test_image_matching.CameraMatcherTests) ... ok
+test_exact_match_uses_capture_session_and_selected_camera (test_image_matching.CameraMatcherTests) ... ok
+test_exact_preference_over_more_recent_receipt_frame_and_age_cap (test_image_matching.CameraMatcherTests) ... ok
+test_exact_recorded_sdk_equality_does_not_claim_exposure_sync (test_image_matching.CameraMatcherTests) ... ok
+test_head_unavailable_has_explicit_failure (test_image_matching.CameraMatcherTests) ... ok
+test_identical_record_metadata_at_different_image_paths_is_not_equivalent (test_image_matching.CameraMatcherTests) ... ok
+test_invalid_sdk_timestamp_is_not_guessed_or_converted_for_exact_match (test_image_matching.CameraMatcherTests) ... ok
+test_manifest_and_selected_ppm_dimensions_must_agree (test_image_matching.CameraMatcherTests) ... ok
+test_matching_does_not_modify_frozen_state_or_original_result (test_image_matching.CameraMatcherTests) ... ok
+test_missing_original_capture_session_is_not_processing_session (test_image_matching.CameraMatcherTests) ... ok
+test_missing_selected_image_is_failure_without_substitution (test_image_matching.CameraMatcherTests) ... ok
+test_no_sdk_timestamp_can_still_use_supported_receipt_clock_when_opted_in (test_image_matching.CameraMatcherTests) ... ok
+test_non_perception_sdk_packet_is_not_a_decision_capture_moment (test_image_matching.CameraMatcherTests) ... ok
+test_original_session_must_agree_with_sdk_capture_record (test_image_matching.CameraMatcherTests) ... ok
+test_raw_and_social_rows_lack_supported_capture_clock_provenance (test_image_matching.CameraMatcherTests) ... ok
+test_receipt_match_preserves_original_float_sdk_timestamp_without_conversion (test_image_matching.CameraMatcherTests) ... ok
+test_same_image_and_sdk_key_with_different_recorded_receipt_is_ambiguous (test_image_matching.CameraMatcherTests) ... ok
+test_selected_image_must_be_a_readable_regular_file (test_image_matching.CameraMatcherTests) ... ok
+test_source_receipt_must_agree_with_original_capture_envelope (test_image_matching.CameraMatcherTests) ... ok
+test_source_sdk_timestamp_must_agree_with_original_capture_envelope (test_image_matching.CameraMatcherTests) ... ok
+test_source_sdk_timestamp_type_must_agree_with_original_capture_envelope (test_image_matching.CameraMatcherTests) ... ok
+test_truncated_selected_ppm_has_explicit_failure (test_image_matching.CameraMatcherTests) ... ok
+test_unsupported_or_malformed_sdk_capture_envelope_is_not_clock_provenance (test_image_matching.CameraMatcherTests) ... ok
+test_zero_age_allows_only_equal_receipt (test_image_matching.CameraMatcherTests) ... ok
+test_changed_last_retry_is_rejected (test_live_camera.LiveCameraTests) ... ok
+test_chest_image_is_not_used_for_head_inference (test_live_camera.LiveCameraTests) ... ok
+test_concurrent_identical_ingestion_is_one_frame_and_one_duplicate (test_live_camera.LiveCameraTests) ... ok
+test_constructor_and_association_options_are_strict (test_live_camera.LiveCameraTests) ... ok
+test_duplicate_last_event_is_idempotent_with_new_receiver_receipts (test_live_camera.LiveCameraTests) ... ok
+test_exact_age_limit_applies_in_both_directions_and_boundary_is_inclusive (test_live_camera.LiveCameraTests) ... ok
+test_exact_and_receipt_distinct_candidates_are_ambiguous (test_live_camera.LiveCameraTests) ... ok
+test_exact_future_receipt_within_age_is_explicitly_limited (test_live_camera.LiveCameraTests) ... ok
+test_exact_is_preferred_to_a_closer_receipt_candidate (test_live_camera.LiveCameraTests) ... ok
+test_exact_source_session_timestamp_match_and_receipts_separate (test_live_camera.LiveCameraTests) ... ok
+test_frame_count_and_byte_limits_evict_oldest (test_live_camera.LiveCameraTests) ... ok
+test_frame_over_byte_budget_is_rejected_without_cache_mutation (test_live_camera.LiveCameraTests) ... ok
+test_head_unavailable_event_is_saved_without_rgb (test_live_camera.LiveCameraTests) ... ok
+test_invalid_transport_or_rgb_disagreement_does_not_mutate_cache (test_live_camera.LiveCameraTests) ... ok
+test_join_midstream_then_require_contiguous_progress (test_live_camera.LiveCameraTests) ... ok
+test_live_frame_encoding_preserves_rgb_pixels_without_payload_metadata (test_live_camera.LiveCameraTests) ... ok
+test_malformed_direct_model_source_becomes_unavailable_not_exception (test_live_camera.LiveCameraTests) ... ok
+test_missing_source_empty_cache_cross_session_and_unmapped_clock (test_live_camera.LiveCameraTests) ... ok
+test_new_session_resets_frames_and_order_counters (test_live_camera.LiveCameraTests) ... ok
+test_receipt_can_preserve_noninteger_sdk_time_without_conversion (test_live_camera.LiveCameraTests) ... ok
+test_receipt_no_prior_and_too_old_are_explicit (test_live_camera.LiveCameraTests) ... ok
+test_receipt_requires_opt_in_selects_latest_prior_and_excludes_future (test_live_camera.LiveCameraTests) ... ok
+test_snapshot_metadata_is_detached_and_frame_survives_cache_eviction (test_live_camera.LiveCameraTests) ... ok
+test_stale_exact_does_not_silently_fall_back_to_closer_receipt (test_live_camera.LiveCameraTests) ... ok
+test_unavailable_events_are_also_bounded (test_live_camera.LiveCameraTests) ... ok
+test_known_clock_receipt_cannot_follow_collection_but_equal_is_valid (test_live_camera.ModelSourceTests) ... ok
+test_known_source_is_detached_and_keeps_all_capture_fields (test_live_camera.ModelSourceTests) ... ok
+test_rejects_bad_shapes_versions_clocks_and_nonperception (test_live_camera.ModelSourceTests) ... ok
+test_rejects_capture_duplicate_types_and_nonfinite_packet (test_live_camera.ModelSourceTests) ... ok
+test_unknown_clock_is_preserved_without_comparing_to_raw_clock (test_live_camera.ModelSourceTests) ... ok
+test_bad_provenance_rejected_before_recording (test_live_model_receiver.LiveReceiverTests) ... ok
+test_camera_budget_rejection_precedes_optional_camera_recording (test_live_model_receiver.LiveReceiverTests) ... ok
+test_disabled_mode_preserves_exact_response_and_has_no_worker (test_live_model_receiver.LiveReceiverTests) ... ok
+test_failed_trial_request_retries_and_close_ignores_late_completion (test_live_model_receiver.LiveReceiverTests) ... ok
+test_invalid_cli_configuration_never_serves (test_live_model_receiver.LiveReceiverTests) ... ok
+test_output_protection_precedes_creation (test_live_model_receiver.LiveReceiverTests) ... ok
+test_paired_llm_vlm_and_rule_command_path_are_independent (test_live_model_receiver.LiveReceiverTests) ... ok
+test_raw_without_provenance_saves_unavailable_vision_and_keeps_processing (test_live_model_receiver.LiveReceiverTests) ... ok
+test_selected_trial_round_trip_preserves_source_and_current_readiness (test_live_model_receiver.LiveReceiverTests) ... ok
+test_slow_models_do_not_hold_estimator_lock_or_block_http_ingestion (test_live_model_receiver.LiveReceiverTests) ... ok
+test_default_is_disabled_frozen_and_finite (test_live_models.LiveModelConfigTests) ... ok
+test_invalid_settings_rejected (test_live_models.LiveModelConfigTests) ... ok
+test_selected_policies_require_independent_valid_configs (test_live_models.LiveModelConfigTests) ... ok
+test_all_ollama_errors_preserve_raw_duration_models_and_no_fallback (test_live_models.LiveModelRunnerTests) ... ok
+test_audit_failure_does_not_raise_from_submit_or_make_more_requests (test_live_models.LiveModelRunnerTests) ... ok
+test_both_freeze_state_source_and_selected_image_before_slow_llm (test_live_models.LiveModelRunnerTests) ... ok
+test_bounded_queue_drop_is_audited_while_network_waits_and_consumes_sample (test_live_models.LiveModelRunnerTests) ... ok
+test_client_creation_failure_isolated_and_other_policy_still_runs (test_live_models.LiveModelRunnerTests) ... ok
+test_default_client_factory_respects_patch_and_is_reused (test_live_models.LiveModelRunnerTests) ... ok
+test_disabled_mode_creates_no_output_thread_or_client (test_live_models.LiveModelRunnerTests) ... ok
+test_exclusive_output_and_duplicate_start_and_fork_guards (test_live_models.LiveModelRunnerTests) ... ok
+test_image_encoding_error_does_not_call_model_or_replace_llm_result (test_live_models.LiveModelRunnerTests) ... ok
+test_invalid_mutated_state_and_rule_metadata_do_not_escape_ingestion (test_live_models.LiveModelRunnerTests) ... ok
+test_llm_receives_full_state_and_original_diagnostics_in_background (test_live_models.LiveModelRunnerTests) ... ok
+test_missing_stale_cross_session_and_clock_inputs_never_call_vlm (test_live_models.LiveModelRunnerTests) ... ok
+test_shutdown_audits_pending_jobs_before_worker_closes_output (test_live_models.LiveModelRunnerTests) ... ok
+test_source_time_sampling_resets_at_session_boundary (test_live_models.LiveModelRunnerTests) ... ok
+test_wait_and_close_timeout_explicit_then_flush_on_release (test_live_models.LiveModelRunnerTests) ... ok
+test_each_arbitrary_valid_model_action_is_preserved_with_exactly_one_call (test_llm_policy.LLMPolicyTests) ... ok
+test_failures_preserve_original_results_and_all_diagnostics_without_fallback (test_llm_policy.LLMPolicyTests) ... ok
+test_invalid_mutated_state_is_revalidated_before_client_call (test_llm_policy.LLMPolicyTests) ... ok
+test_snapshot_and_correlation_freeze_before_client_mutates_source (test_llm_policy.LLMPolicyTests) ... ok
+test_unavailable_failure_diagnostics_remain_null (test_llm_policy.LLMPolicyTests) ... ok
+test_unvalidated_inputs_are_rejected_without_client_call (test_llm_policy.LLMPolicyTests) ... ok
+test_building_prompt_does_not_mutate_source_and_snapshot_is_detached (test_llm_policy.LLMPromptTests) ... ok
+test_complete_canonical_json_preserves_every_supplied_value (test_llm_policy.LLMPromptTests) ... ok
+test_custom_config_unknown_null_and_invalid_evidence_are_not_simplified (test_llm_policy.LLMPromptTests) ... ok
+test_fixed_route_task_and_exact_four_action_definitions (test_llm_policy.LLMPromptTests) ... ok
+test_motion_units_signs_and_temporal_meanings_are_explicit (test_llm_policy.LLMPromptTests) ... ok
+test_only_static_system_message_and_single_state_text_are_supplied (test_llm_policy.LLMPromptTests) ... ok
+test_prompt_is_static_versioned_and_reproducible_across_input_key_order (test_llm_policy.LLMPromptTests) ... ok
+test_uncertainty_data_boundary_and_grounded_explanation_are_explicit (test_llm_policy.LLMPromptTests) ... ok
+test_yield_guidance_requires_measured_evidence_and_matches_rule_priority (test_llm_policy.LLMPromptTests) ... ok
+test_every_observation_builds_history_before_source_time_sampling (test_llm_replay.ReplayRunnerTests) ... ok
+test_existing_output_is_refused_and_preserved (test_llm_replay.ReplayRunnerTests) ... ok
+test_inference_failures_are_rows_without_fallback_and_exit_one (test_llm_replay.ReplayRunnerTests) ... ok
+test_inference_rows_correlate_exact_prompt_and_keep_metadata_outside_messages (test_llm_replay.ReplayRunnerTests) ... ok
+test_invalid_replay_or_model_configuration_prevents_writing_and_calls (test_llm_replay.ReplayRunnerTests) ... ok
+test_later_malformed_record_reports_partial_output_and_source_location (test_llm_replay.ReplayRunnerTests) ... ok
+test_later_write_failure_preserves_first_row_and_reports_partial (test_llm_replay.ReplayRunnerTests) ... ok
+test_max_calls_caps_selection_and_still_validates_all_observations (test_llm_replay.ReplayRunnerTests) ... ok
+test_output_cannot_resolve_to_any_input_including_symlinks (test_llm_replay.ReplayRunnerTests) ... ok
+test_output_uses_returned_frozen_prompt_when_input_mutates_during_chat (test_llm_replay.ReplayRunnerTests) ... ok
+test_prepare_only_writes_complete_snapshots_and_never_constructs_client (test_llm_replay.ReplayRunnerTests) ... ok
+test_sampling_and_tracker_history_reset_for_each_input (test_llm_replay.ReplayRunnerTests) ... ok
+test_sampling_is_deterministic_and_ignores_model_latency (test_llm_replay.ReplayRunnerTests) ... ok
+test_saved_states_are_used_exactly_and_session_sampling_resets (test_llm_replay.ReplayRunnerTests) ... ok
+test_warmup_processes_prior_history_and_selects_using_recorded_time (test_llm_replay.ReplayRunnerTests) ... ok
+test_write_error_is_reported_without_success_summary (test_llm_replay.ReplayRunnerTests) ... ok
+test_closed_source_sessions_cannot_silently_reappear (test_llm_replay_inputs.ReplayInputTests) ... ok
+test_duplicate_json_keys_and_nonfinite_numbers_are_rejected (test_llm_replay_inputs.ReplayInputTests) ... ok
+test_empty_files_and_wrong_explicit_formats_are_rejected (test_llm_replay_inputs.ReplayInputTests) ... ok
+test_generated_raw_session_is_opaque_deterministic_and_filename_independent (test_llm_replay_inputs.ReplayInputTests) ... ok
+test_generated_sdk_session_is_filename_independent (test_llm_replay_inputs.ReplayInputTests) ... ok
+test_historical_behaviour_intent_and_monitor_are_explicitly_incompatible (test_llm_replay_inputs.ReplayInputTests) ... ok
+test_invalid_json_and_nonobject_records_have_source_line_errors (test_llm_replay_inputs.ReplayInputTests) ... ok
+test_locomotion_only_sdk_recording_does_not_prepare_fabricated_observations (test_llm_replay_inputs.ReplayInputTests) ... ok
+test_malformed_sdk_payload_containers_are_rejected (test_llm_replay_inputs.ReplayInputTests) ... ok
+test_raw_backward_and_duplicate_timestamps_preserve_source_location (test_llm_replay_inputs.ReplayInputTests) ... ok
+test_raw_history_uses_recorded_time_and_effective_configuration (test_llm_replay_inputs.ReplayInputTests) ... ok
+test_raw_missing_grace_and_expiry_follow_source_time (test_llm_replay_inputs.ReplayInputTests) ... ok
+test_raw_provenance_keeps_original_payload_and_actual_line (test_llm_replay_inputs.ReplayInputTests) ... ok
+test_saved_social_configuration_cannot_be_overridden (test_llm_replay_inputs.ReplayInputTests) ... ok
+test_saved_social_source_sessions_and_order_are_preserved (test_llm_replay_inputs.ReplayInputTests) ... ok
+test_saved_social_states_are_used_directly_with_every_recorded_value (test_llm_replay_inputs.ReplayInputTests) ... ok
+test_sdk_conversion_has_exact_live_adapter_semantics (test_llm_replay_inputs.ReplayInputTests) ... ok
+test_sdk_missing_future_and_stale_locomotion_remain_unavailable (test_llm_replay_inputs.ReplayInputTests) ... ok
+test_sdk_provenance_preserves_distinct_clocks_and_original_records (test_llm_replay_inputs.ReplayInputTests) ... ok
+test_sdk_same_receipt_locomotion_only_applies_after_its_file_record (test_llm_replay_inputs.ReplayInputTests) ... ok
+test_sdk_sequence_and_receipt_order_errors_are_not_repaired (test_llm_replay_inputs.ReplayInputTests) ... ok
+test_sdk_session_boundary_resets_history_and_locomotion (test_llm_replay_inputs.ReplayInputTests) ... ok
+test_sdk_source_clock_values_do_not_control_estimation_or_order (test_llm_replay_inputs.ReplayInputTests) ... ok
+test_separate_raw_recordings_have_independent_history (test_llm_replay_inputs.ReplayInputTests) ... ok
+test_all_inference_failures_preserve_diagnostics_and_return_one (test_llm_runner.SingleSnapshotRunnerTests) ... ok
+test_input_is_validated_before_invalid_configuration (test_llm_runner.SingleSnapshotRunnerTests) ... ok
+test_invalid_configuration_never_constructs_client (test_llm_runner.SingleSnapshotRunnerTests) ... ok
+test_invalid_generation_argument_is_rejected_without_constructing_client (test_llm_runner.SingleSnapshotRunnerTests) ... ok
+test_reader_accepts_one_complete_object_with_every_value_preserved (test_llm_runner.SingleSnapshotRunnerTests) ... ok
+test_reader_and_cli_reject_malformed_nonobject_jsonl_and_duplicate_keys (test_llm_runner.SingleSnapshotRunnerTests) ... ok
+test_reader_and_cli_reject_nonstandard_constants (test_llm_runner.SingleSnapshotRunnerTests) ... ok
+test_schema_errors_are_detected_before_client_construction (test_llm_runner.SingleSnapshotRunnerTests) ... ok
+test_success_passes_caller_config_and_whole_snapshot_once_without_writing (test_llm_runner.SingleSnapshotRunnerTests) ... ok
+test_unreadable_and_non_utf8_input_never_constructs_client (test_llm_runner.SingleSnapshotRunnerTests) ... ok
+test_all_four_actions_are_accepted (test_model_decision.ModelDecisionTests) ... ok
+test_all_python_whitespace_has_matching_schema_and_runtime_validation (test_model_decision.ModelDecisionTests) ... ok
+test_contract_is_frozen_and_validation_error_is_a_value_error (test_model_decision.ModelDecisionTests) ... ok
+test_duplicate_keys_are_rejected_including_identical_values (test_model_decision.ModelDecisionTests) ... ok
+test_empty_and_whitespace_only_reasons_are_rejected (test_model_decision.ModelDecisionTests) ... ok
+test_incorrect_field_types_are_not_coerced (test_model_decision.ModelDecisionTests) ... ok
+test_invalid_actions_are_rejected_without_normalization (test_model_decision.ModelDecisionTests) ... ok
+test_malformed_and_nonstandard_json_is_rejected (test_model_decision.ModelDecisionTests) ... ok
+test_missing_and_extra_fields_are_rejected (test_model_decision.ModelDecisionTests) ... ok
+test_non_object_json_is_rejected (test_model_decision.ModelDecisionTests) ... ok
+test_non_whitespace_reason_is_preserved_exactly (test_model_decision.ModelDecisionTests) ... ok
+test_prose_and_code_fences_are_not_repaired (test_model_decision.ModelDecisionTests) ... ok
+test_schema_artifact_matches_generated_runtime_schema (test_model_decision.ModelDecisionTests) ... ok
+test_schema_calls_return_independent_mutable_dictionaries (test_model_decision.ModelDecisionTests) ... ok
+test_schema_exposes_the_same_field_constraints (test_model_decision.ModelDecisionTests) ... ok
+test_all_existing_handlers_receive_only_the_unchanged_raw_observation (test_model_provenance_sender.ModelProvenanceSenderTests) ... ok
+test_collector_keeps_default_raw_shape_even_with_sdk_capture_enabled (test_model_provenance_sender.ModelProvenanceSenderTests) ... ok
+test_collector_pairs_latest_raw_with_its_exact_full_capture_record (test_model_provenance_sender.ModelProvenanceSenderTests) ... ok
+test_latest_replacement_preserves_raw_and_capture_pair_during_slow_send (test_model_provenance_sender.ModelProvenanceSenderTests) ... ok
+test_print_only_still_prints_raw_and_never_posts (test_model_provenance_sender.ModelProvenanceSenderTests) ... ok
+test_provenance_collection_without_capture_fails_before_robot_read (test_model_provenance_sender.ModelProvenanceSenderTests) ... ok
+test_sdk_and_camera_captures_share_one_session_when_provenance_enabled (test_model_provenance_sender.ModelProvenanceSenderTests) ... ok
+test_capture_returns_a_full_detached_snapshot (test_model_provenance_sender.SenderConfigurationTests) ... ok
+test_default_is_disabled_and_explicit_capture_prerequisites_are_required (test_model_provenance_sender.SenderConfigurationTests) ... ok
+test_plain_send_contract_is_unchanged_and_opt_in_envelope_is_exact (test_model_provenance_sender.SenderConfigurationTests) ... ok
+test_bad_ranges_preserve_sensor_slots (test_navel_adapter.NavelObservationAdapterTests) ... ok
+test_cartesian_camera_position_is_used_instead_of_head_angles (test_navel_adapter.NavelObservationAdapterTests) ... ok
+test_complete_sdk_packet_matches_raw_contract (test_navel_adapter.NavelObservationAdapterTests) ... ok
+test_face_detection_requires_a_finite_positive_sdk_bounding_box (test_navel_adapter.NavelObservationAdapterTests) ... ok
+test_invalid_and_duplicate_ids_do_not_become_people (test_navel_adapter.NavelObservationAdapterTests) ... ok
+test_invalid_measurements_are_unavailable_without_clamping (test_navel_adapter.NavelObservationAdapterTests) ... ok
+test_missing_empty_and_string_keyed_ranges_are_distinct (test_navel_adapter.NavelObservationAdapterTests) ... ok
+test_missing_person_measurements_are_null_and_position_omitted (test_navel_adapter.NavelObservationAdapterTests) ... ok
+test_no_people_and_no_locomotion_still_produce_frame (test_navel_adapter.NavelObservationAdapterTests) ... ok
+test_other_coordinates_and_invalid_positions_are_not_relabelled (test_navel_adapter.NavelObservationAdapterTests) ... ok
+test_partial_velocity_does_not_fabricate_zero_values (test_navel_adapter.NavelObservationAdapterTests) ... ok
+test_command_and_fake_feedback_round_trip_over_http (test_navel_server_e2e.NavelServerEndToEndTests) ... 127.0.0.1 - - [11/Oct/2026 19:24:04] "POST /api/v1/observations HTTP/1.1" 200 -
+127.0.0.1 - - [11/Oct/2026 19:24:04] "POST /api/v1/observations HTTP/1.1" 200 -
+127.0.0.1 - - [11/Oct/2026 19:24:04] "POST /api/v1/observations HTTP/1.1" 200 -
+127.0.0.1 - - [11/Oct/2026 19:24:04] "POST /api/v1/observations HTTP/1.1" 200 -
+127.0.0.1 - - [11/Oct/2026 19:24:04] "POST /api/v1/observations HTTP/1.1" 200 -
+127.0.0.1 - - [11/Oct/2026 19:24:04] "POST /api/v1/observations HTTP/1.1" 200 -
+127.0.0.1 - - [11/Oct/2026 19:24:04] "POST /api/v1/observations HTTP/1.1" 200 -
+127.0.0.1 - - [11/Oct/2026 19:24:04] "POST /api/v1/observations HTTP/1.1" 200 -
+127.0.0.1 - - [11/Oct/2026 19:24:04] "POST /api/v1/observations HTTP/1.1" 200 -
+127.0.0.1 - - [11/Oct/2026 19:24:04] "POST /api/v1/observations HTTP/1.1" 200 -
+127.0.0.1 - - [11/Oct/2026 19:24:04] "POST /api/v1/observations HTTP/1.1" 200 -
+127.0.0.1 - - [11/Oct/2026 19:24:04] "POST /api/v1/observations HTTP/1.1" 200 -
+127.0.0.1 - - [11/Oct/2026 19:24:04] "POST /api/v1/observations HTTP/1.1" 200 -
+127.0.0.1 - - [11/Oct/2026 19:24:04] "POST /api/v1/observations HTTP/1.1" 200 -
+127.0.0.1 - - [11/Oct/2026 19:24:04] "POST /api/v1/execution-events HTTP/1.1" 200 -
+127.0.0.1 - - [11/Oct/2026 19:24:04] "POST /api/v1/execution-events HTTP/1.1" 200 -
+127.0.0.1 - - [11/Oct/2026 19:24:04] "POST /api/v1/observations HTTP/1.1" 200 -
+ok
+test_concurrent_collectors_stream_to_computer_receiver (test_navel_server_e2e.NavelServerEndToEndTests) ... 127.0.0.1 - - [11/Oct/2026 19:24:04] "POST /api/v1/observations HTTP/1.1" 200 -
+{
+  "timestamp": 14718892769,
+  "people": [
+    {
+      "uid": 17,
+      "distance_m": 1.85,
+      "gaze_overlap": 0.75,
+      "optional_relative_head_position": {
+        "coordinate_frame": "CAM_HEAD",
+        "x": 1.8,
+        "y": 0.3,
+        "z": 0.1
+      }
+    }
+  ],
+  "robot": {
+    "linear_velocity": 0.2,
+    "angular_velocity": -0.1
+  },
+  "safety": {
+    "lidar": [
+      2.0,
+      1.0
+    ],
+    "sonar": [
+      0.5,
+      0.7,
+      1.2
+    ]
+  }
+}
+ok
+test_http_recording_can_be_replayed_to_a_fresh_receiver (test_navel_server_e2e.NavelServerEndToEndTests) ... 127.0.0.1 - - [11/Oct/2026 19:24:04] "POST /api/v1/observations HTTP/1.1" 200 -
+127.0.0.1 - - [11/Oct/2026 19:24:04] "POST /api/v1/observations HTTP/1.1" 200 -
+127.0.0.1 - - [11/Oct/2026 19:24:04] "POST /api/v1/observations HTTP/1.1" 200 -
+127.0.0.1 - - [11/Oct/2026 19:24:04] "POST /api/v1/observations HTTP/1.1" 200 -
+ok
+test_http_validation_error_is_returned_to_client (test_navel_server_e2e.NavelServerEndToEndTests) ... 127.0.0.1 - - [11/Oct/2026 19:24:04] "POST /api/v1/observations HTTP/1.1" 400 -
+ok
+test_sdk_mapping_round_trips_via_real_http (test_navel_server_e2e.NavelServerEndToEndTests) ... 127.0.0.1 - - [11/Oct/2026 19:24:04] "POST /api/v1/observations HTTP/1.1" 200 -
+ok
+test_all_four_decisions_preserve_content_identity_and_duration (test_ollama.OllamaClientTests) ... ok
+test_connection_and_timeout_failures_do_not_retry_or_fabricate_decisions (test_ollama.OllamaClientTests) ... ok
+test_default_options_and_optional_images_are_omitted (test_ollama.OllamaClientTests) ... ok
+test_http_failure_preserves_available_model_and_raw_content (test_ollama.OllamaClientTests) ... ok
+test_http_protocol_failure_is_response_format_failure (test_ollama.OllamaClientTests) ... ok
+test_invalid_caller_messages_fail_before_transport (test_ollama.OllamaClientTests) ... ok
+test_invalid_decision_preserves_raw_content_without_retry_or_fallback (test_ollama.OllamaClientTests) ... ok
+test_invalid_json_utf8_and_nonobject_ollama_responses (test_ollama.OllamaClientTests) ... ok
+test_missing_or_invalid_ollama_envelope_fields (test_ollama.OllamaClientTests) ... ok
+test_non_success_http_json_and_plain_text_errors (test_ollama.OllamaClientTests) ... ok
+test_request_passes_exact_caller_messages_and_encoded_images (test_ollama.OllamaClientTests) ... ok
+test_generation_settings_reject_incorrect_types_and_ranges (test_ollama.OllamaConfigurationTests) ... ok
+test_invalid_base_urls_and_model_names (test_ollama.OllamaConfigurationTests) ... ok
+test_origins_and_minimal_settings (test_ollama.OllamaConfigurationTests) ... ok
+test_timeout_is_finite_positive_and_strict (test_ollama.OllamaConfigurationTests) ... ok
+test_extraction_leaves_decision_parsing_to_contract (test_ollama.OllamaContentExtractionTests) ... ok
+test_server_error_is_reported_without_requiring_model_identity (test_ollama.OllamaContentExtractionTests) ... ok
+test_connection_failure_is_propagated_without_retry (test_ollama.UrllibTransportTests) ... ok
+test_http_error_status_and_body_are_preserved (test_ollama.UrllibTransportTests) ... ok
+test_request_headers_body_timeout_and_http_success (test_ollama.UrllibTransportTests) ... ok
+test_adapter_preserves_camera_nose_separately_from_head (test_path_position.PathPositionTests) ... ok
+test_configurable_camera_transform_width_and_disabled_assumption (test_path_position.PathPositionTests) ... ok
+test_corridor_bounds_both_sides_behind_and_unknown (test_path_position.PathPositionTests) ... ok
+test_hysteresis_and_reset_on_missing_geometry_detection_or_gap (test_path_position.PathPositionTests) ... ok
+test_missing_invalid_or_ambiguous_nose_never_uses_head_position (test_path_position.PathPositionTests) ... ok
+test_position_alone_does_not_yield_or_override_attention (test_path_position.PathPositionTests) ... ok
+test_same_closing_low_gaze_front_yields_side_continues (test_path_position.PathPositionTests) ... ok
+test_sdk_replay_carries_nose_geometry_and_matches_live_pipeline (test_path_position.PathPositionTests) ... ok
+test_approach_needs_stationary_base_and_front_ranges (test_physical_executor.PhysicalExecutorTests) ... ok
+test_cli_requires_all_scripts_and_excludes_dry_run (test_physical_executor.PhysicalExecutorTests) ... ok
+test_engage_completes_once_and_releases_lock_after_stop (test_physical_executor.PhysicalExecutorTests) ... ok
+test_execution_lease_terminates_slow_script (test_physical_executor.PhysicalExecutorTests) ... ok
+test_failed_route_pause_rejects_without_starting_action (test_physical_executor.PhysicalExecutorTests) ... ok
+test_idle_route_lock_stops_once_on_transport_loss (test_physical_executor.PhysicalExecutorTests) ... ok
+test_response_watchdog_cancels_action (test_physical_executor.PhysicalExecutorTests) ... ok
+test_sender_runs_script_and_posts_outcomes (test_physical_executor.PhysicalExecutorTests) ... ok
+test_slow_route_pause_cannot_launch_expired_command (test_physical_executor.PhysicalExecutorTests) ... ok
+test_stop_failure_latches_fault_and_blocks_route_resume (test_physical_executor.PhysicalExecutorTests) ... ok
+test_target_loss_cancels_script_and_calls_stop (test_physical_executor.PhysicalExecutorTests) ... ok
+test_explicit_context_limit_is_transmitted (test_pipeline_refinement.EvaluationContractTests) ... ok
+test_identical_bytes_and_errors_not_scored (test_pipeline_refinement.EvaluationContractTests) ... ok
+test_preference_and_rating_are_independent_and_coverage_visible (test_pipeline_refinement.EvaluationContractTests) ... ok
+test_prior_selection_never_uses_future_or_last_ready (test_pipeline_refinement.EvaluationContractTests) ... ok
+test_unmapped_endpoints_are_explicit_and_changed_sources_rejected (test_pipeline_refinement.EvaluationContractTests) ... ok
+test_attention_ends_before_category_dwell (test_pipeline_refinement.RefinedCueTests) ... ok
+test_brief_glance_is_not_interaction (test_pipeline_refinement.RefinedCueTests) ... ok
+test_conflict_and_pass_precede_gaze (test_pipeline_refinement.RefinedCueTests) ... ok
+test_distance_transition_uses_hysteresis (test_pipeline_refinement.RefinedCueTests) ... ok
+test_gaps_do_not_invent_attention_bouts (test_pipeline_refinement.RefinedCueTests) ... ok
+test_missing_and_null_observations_remain_not_ready (test_pipeline_refinement.RefinedCueTests) ... ok
+test_raw_explicit_cues_roundtrip_and_are_not_retained_when_missing (test_pipeline_refinement.RefinedCueTests) ... ok
+test_recorded_replay_matches_full_production_pipeline (test_pipeline_refinement.RefinedCueTests) ... ok
+test_recurring_attention_requires_multiple_bouts_and_duration (test_pipeline_refinement.RefinedCueTests) ... ok
+test_retreat_nearby_greeting_differs_from_distant_pursuit (test_pipeline_refinement.RefinedCueTests) ... ok
+test_sustained_attention_while_robot_moves (test_pipeline_refinement.RefinedCueTests) ... ok
+test_decision_schema_and_invalid_trace (test_policy_rules.PolicyRulesTests) ... ok
+test_live_response_matches_decision_replay (test_policy_rules.PolicyRulesTests) ... ok
+test_moving_gaze_and_nearby_attention_pass_trial_acceptance (test_policy_rules.PolicyRulesTests) ... ok
+test_not_ready_observations_do_not_invoke_policy (test_policy_rules.PolicyRulesTests) ... ok
+test_precedence_and_clear_non_engagement (test_policy_rules.PolicyRulesTests) ... ok
+test_rule_normalisation_and_four_actions (test_policy_rules.PolicyRulesTests) ... ok
+test_sustained_gaze_selects_one_target (test_policy_rules.PolicyRulesTests) ... ok
+test_duplicate_concurrent_requests_write_exactly_one_frame (test_recording.RecordingTests) ... ok
+test_empty_recording_fails (test_recording.RecordingTests) ... ok
+test_error_identifies_bad_line_and_stops_at_invalid_frame (test_recording.RecordingTests) ... ok
+test_fresh_recordings_have_independent_timestamp_order (test_recording.RecordingTests) ... ok
+test_http_replay_validates_entire_file_before_sending (test_recording.RecordingTests) ... ok
+test_pretty_output_and_missing_file_errors (test_recording.RecordingTests) ... ok
+test_reader_preserves_missing_optional_fields_and_explicit_nulls (test_recording.RecordingTests) ... ok
+test_replay_cli_prints_jsonl_deterministically_without_network (test_recording.RecordingTests) ... ok
+test_wrong_schema_and_out_of_order_input_fail (test_recording.RecordingTests) ... ok
+test_fast_replay_never_sleeps (test_recording.ReplayTimingTests) ... ok
+test_invalid_speed_fails (test_recording.ReplayTimingTests) ... ok
+test_timestamp_gaps_and_speed_without_accumulating_send_delays (test_recording.ReplayTimingTests) ... ok
+test_expected_action_and_response (test_script_contract.ScriptContractTests) ... ok
+test_capture_only_never_runs_observation_pipeline (test_sdk_capture.CaptureTests) ... 127.0.0.1 - - [11/Oct/2026 19:24:06] "POST /api/v1/sdk-packets HTTP/1.1" 200 -
+127.0.0.1 - - [11/Oct/2026 19:24:06] "POST /api/v1/sdk-packets HTTP/1.1" 200 -
+ok
+test_queue_overflow_is_visible (test_sdk_capture.CaptureTests) ... ok
+test_real_http_capture_of_both_streams (test_sdk_capture.CaptureTests) ... 127.0.0.1 - - [11/Oct/2026 19:24:06] "POST /api/v1/sdk-packets HTTP/1.1" 200 -
+127.0.0.1 - - [11/Oct/2026 19:24:06] "POST /api/v1/sdk-packets HTTP/1.1" 200 -
+127.0.0.1 - - [11/Oct/2026 19:24:06] "POST /api/v1/sdk-packets HTTP/1.1" 200 -
+127.0.0.1 - - [11/Oct/2026 19:24:06] "POST /api/v1/sdk-packets HTTP/1.1" 409 -
+ok
+test_receiver_refuses_existing_sdk_output (test_sdk_capture.CaptureTests) ... ok
+test_sdk_serializer_retains_nested_data_and_enum_names (test_sdk_capture.CaptureTests) ... ok
+test_unsupported_cameras_do_not_stop_sdk_packets (test_sdk_capture.CaptureTests) ... 127.0.0.1 - - [11/Oct/2026 19:24:06] "POST /api/v1/sdk-packets HTTP/1.1" 200 -
+127.0.0.1 - - [11/Oct/2026 19:24:06] "POST /api/v1/sdk-packets HTTP/1.1" 200 -
+127.0.0.1 - - [11/Oct/2026 19:24:06] "POST /api/v1/camera-frames HTTP/1.1" 200 -
+127.0.0.1 - - [11/Oct/2026 19:24:06] "POST /api/v1/camera-frames HTTP/1.1" 200 -
+ok
+test_accepts_and_appends_raw_frames (test_server.ServerTests) ... ok
+test_committed_schema_matches_contract (test_server.ServerTests) ... ok
+test_duplicate_and_backward_timestamps_are_not_recorded (test_server.ServerTests) ... ok
+test_existing_recording_is_not_modified_on_startup (test_server.ServerTests) ... ok
+test_failed_write_does_not_advance_timestamp (test_server.ServerTests) ... ok
+test_health_needs_no_model_or_robot (test_server.ServerTests) ... ok
+test_malformed_json_and_wrong_content_type_return_json_errors (test_server.ServerTests) ... ok
+test_nulls_remain_nulls_in_storage (test_server.ServerTests) ... ok
+test_oversized_body_is_rejected (test_server.ServerTests) ... ok
+test_rejects_invalid_person_and_duplicate_ids (test_server.ServerTests) ... ok
+test_rejects_invalid_timestamp_and_negative_sensor_ranges (test_server.ServerTests) ... ok
+test_rejects_missing_fields_and_old_contract (test_server.ServerTests) ... ok
+test_rejects_nonfinite_and_coerced_velocity_values (test_server.ServerTests) ... ok
+test_storage_failure_is_not_acknowledged_as_accepted (test_server.ServerTests) ... ok
+test_all_recordings_live_receiver_matches_offline (test_social_integration.SocialIntegrationTests) ... ok
+test_all_recordings_schema_validity_and_speed_determinism (test_social_integration.SocialIntegrationTests) ... ok
+test_cli_bad_input_creates_no_output (test_social_integration.SocialIntegrationTests) ... ok
+test_cli_refuses_existing_paths_and_produces_valid_jsonl (test_social_integration.SocialIntegrationTests) ... ok
+test_duplicate_frame_cannot_advance_social_state (test_social_integration.SocialIntegrationTests) ... ok
+test_effective_config_file_matches_defaults (test_social_integration.SocialIntegrationTests) ... ok
+test_social_failure_preserves_raw_and_reports_failed_stage (test_social_integration.SocialIntegrationTests) ... ok
+test_trace_paths_must_be_distinct (test_social_integration.SocialIntegrationTests) ... ok
+test_all_missing_cues_do_not_mean_no_attention_or_stationary (test_social_state.SocialTests) ... ok
+test_category_dwell_does_not_bridge_direct_transport_gap (test_social_state.SocialTests) ... ok
+test_category_requires_source_time_dwell_after_minimum_evidence (test_social_state.SocialTests) ... ok
+test_configuration_and_schema_contract (test_social_state.SocialTests) ... ok
+test_distance_zone_hysteresis_and_missing_distance (test_social_state.SocialTests) ... ok
+test_estimator_ordering_session_reset_and_memory_pruning (test_social_state.SocialTests) ... ok
+test_gaze_fraction_is_weighted_by_time_not_sample_count (test_social_state.SocialTests) ... ok
+test_known_changing_patterns_from_recorded_template (test_social_state.SocialTests) ... ok
+test_long_time_gap_below_tracking_grace_does_not_join_feature_windows (test_social_state.SocialTests) ... ok
+test_null_and_absence_do_not_add_gaze_support (test_social_state.SocialTests) ... ok
+test_relative_distance_trends_are_independent_of_robot_velocity (test_social_state.SocialTests) ... ok
+test_robust_fit_tolerates_small_outlier_and_large_jump_breaks_segment (test_social_state.SocialTests) ... ok
+test_sample_hysteresis_survives_window_eviction_and_resets_after_gap (test_social_state.SocialTests) ... ok
+test_uid_change_and_new_epoch_do_not_inherit_categories (test_social_state.SocialTests) ... ok
+test_unreliable_fit_is_exposed_but_not_classified (test_social_state.SocialTests) ... ok
+test_warmup_then_sustained_then_null_immediately_unknown (test_social_state.SocialTests) ... ok
+test_accepted_response_pins_robot_head_to_server_lock (test_target_lock.HeadLockIntegrationTests) ... ok
+test_competing_person_blocks_rebind_even_after_leaving (test_target_lock.TargetLockTests) ... ok
+test_config_file_matches_defaults (test_target_lock.TargetLockTests) ... ok
+test_distance_mismatch_never_rebinds (test_target_lock.TargetLockTests) ... ok
+test_exclusive_plausible_new_uid_rebinds_to_same_logical_lock (test_target_lock.TargetLockTests) ... ok
+test_increasing_separation_releases_lock_without_robot_motion_attribution (test_target_lock.TargetLockTests) ... ok
+test_live_response_and_replay_trace_match (test_target_lock.TargetLockTests) ... ok
+test_new_epoch_and_crowd_never_rebind_old_lock (test_target_lock.TargetLockTests) ... ok
+test_robot_uses_lock_decision_and_rejects_tampering (test_target_lock.TargetLockTests) ... ok
+test_same_track_returns_but_new_uid_stays_tentative (test_target_lock.TargetLockTests) ... ok
+test_stream_gap_releases_even_if_tracker_retains_same_uid (test_target_lock.TargetLockTests) ... ok
+test_switching_return_candidates_blocks_handoff (test_target_lock.TargetLockTests) ... ok
+test_timeout_cooldown_then_new_lock (test_target_lock.TargetLockTests) ... ok
+test_uid_zero_cannot_be_automatic_rebind (test_target_lock.TargetLockTests) ... ok
+test_valid_no_attention_releases_lock (test_target_lock.TargetLockTests) ... ok
+test_cli_invalid_recording_creates_no_trace (test_tracking_pipeline.PipelineTests) ... ok
+test_cli_replays_and_refuses_to_overwrite_raw_or_output (test_tracking_pipeline.PipelineTests) ... ok
+test_cli_session_keys_are_stable_per_file_and_distinct_across_files (test_tracking_pipeline.PipelineTests) ... ok
+test_concurrent_requests_keep_raw_and_tracking_order_identical (test_tracking_pipeline.PipelineTests) ... ok
+test_duplicate_requests_do_not_duplicate_trace (test_tracking_pipeline.PipelineTests) ... ok
+test_live_trace_equals_offline_pipeline_and_preserves_raw (test_tracking_pipeline.PipelineTests) ... ok
+test_path_collisions_and_existing_trace_are_refused (test_tracking_pipeline.PipelineTests) ... ok
+test_raw_failure_does_not_advance_tracking (test_tracking_pipeline.PipelineTests) ... ok
+test_trace_failure_keeps_raw_and_reports_separate_processing_status (test_tracking_pipeline.PipelineTests) ... ok
+test_tracking_failure_keeps_raw_without_claiming_success (test_tracking_pipeline.PipelineTests) ... ok
+test_all_seven_recordings_preserve_source_samples_and_replay_deterministically (test_tracking_recordings.RecordingTrackingTests) ... ok
+test_history_and_grace_sensitivity_retain_contract (test_tracking_recordings.RecordingTrackingTests) ... ok
+test_http_receiver_and_offline_replay_match_for_every_pilot_frame (test_tracking_recordings.RecordingTrackingTests) ... ok
+test_alternating_uids_never_share_samples (test_tracks.TrackTests) ... ok
+test_bad_configuration_and_session_fail (test_tracks.TrackTests) ... ok
+test_continuous_history_prunes_by_source_time_not_track_age (test_tracks.TrackTests) ... ok
+test_empty_frames_emit_missing_once_then_loss_once (test_tracks.TrackTests) ... ok
+test_exact_grace_keeps_epoch_but_one_microsecond_later_expires (test_tracks.TrackTests) ... ok
+test_excess_observed_people_rejected_before_mutation (test_tracks.TrackTests) ... ok
+test_invalid_duplicate_and_regressing_frames_do_not_mutate (test_tracks.TrackTests) ... ok
+test_large_uid_churn_stays_bounded (test_tracks.TrackTests) ... ok
+test_long_gap_expires_before_same_uid_matching (test_tracks.TrackTests) ... ok
+test_missing_history_is_pruned_even_without_new_person_samples (test_tracks.TrackTests) ... ok
+test_mutated_model_is_revalidated (test_tracks.TrackTests) ... ok
+test_new_session_resets_timestamp_history_and_epoch (test_tracks.TrackTests) ... ok
+test_null_measurements_and_zero_uid_are_observed_not_absent (test_tracks.TrackTests) ... ok
+test_sample_cap_and_active_cap_evict_absent_oldest_deterministically (test_tracks.TrackTests) ... ok
+test_snapshot_and_input_mutation_do_not_change_tracker (test_tracks.TrackTests) ... ok
+test_dispatcher_sequences_each_action_around_normal_handler (test_trial_head.TrialHeadControllerTests) ... ok
+test_executable_route_centres_head_before_starting_base (test_trial_head.TrialHeadControllerTests) ... ok
+test_failed_approach_does_not_look_and_failed_yield_returns_neutral (test_trial_head.TrialHeadControllerTests) ... ok
+test_interrupted_or_failed_completion_stop_does_not_look_or_greet (test_trial_head.TrialHeadControllerTests) ... test_neutral_replaces_focus_and_glance_returns_to_neutral (test_trial_head.TrialHeadControllerTests) ... ok
+test_successful_approach_stops_and_looks_at_its_target_through_one_greeting (test_trial_head.TrialHeadControllerTests) ... ok
+test_absent_null_sdk_time_is_a_located_provenance_error (test_vlm_inputs.AssociatedReplayReaderTests) ... ok
+test_accepts_original_matching_failure_for_unavailable_image (test_vlm_inputs.AssociatedReplayReaderTests) ... ok
+test_accepts_prepared_succeeded_and_failed_llm_results (test_vlm_inputs.AssociatedReplayReaderTests) ... ok
+test_actual_raw_and_saved_social_sources_are_accepted_without_camera (test_vlm_inputs.AssociatedReplayReaderTests) ... ok
+test_empty_and_missing_inputs_are_errors (test_vlm_inputs.AssociatedReplayReaderTests) ... ok
+test_exact_match_allows_recorded_frame_received_later (test_vlm_inputs.AssociatedReplayReaderTests) ... ok
+test_preserves_complete_original_rows_and_canonical_strings (test_vlm_inputs.AssociatedReplayReaderTests) ... ok
+test_receipt_match_keeps_signed_delta_and_unverified_sdk_values (test_vlm_inputs.AssociatedReplayReaderTests) ... ok
+test_rejects_already_inferred_rows (test_vlm_inputs.AssociatedReplayReaderTests) ... ok
+test_rejects_changed_canonical_state_or_correlation (test_vlm_inputs.AssociatedReplayReaderTests) ... ok
+test_rejects_frame_provenance_duplicates_that_disagree (test_vlm_inputs.AssociatedReplayReaderTests) ... ok
+test_rejects_invalid_recorded_image_validation (test_vlm_inputs.AssociatedReplayReaderTests) ... ok
+test_rejects_malformed_matching_status_policy_or_image_metadata (test_vlm_inputs.AssociatedReplayReaderTests) ... ok
+test_rejects_missing_nonstring_or_relative_source_paths (test_vlm_inputs.AssociatedReplayReaderTests) ... ok
+test_rejects_receipt_match_without_opt_in_or_with_impossible_age (test_vlm_inputs.AssociatedReplayReaderTests) ... ok
+test_rejects_sdk_estimation_different_from_receipt_even_if_source_record_agrees (test_vlm_inputs.AssociatedReplayReaderTests) ... ok
+test_rejects_source_clock_provenance_and_signed_delta_changes (test_vlm_inputs.AssociatedReplayReaderTests) ... ok
+test_rejects_source_estimation_session_and_reconstruction_disagreement (test_vlm_inputs.AssociatedReplayReaderTests) ... ok
+test_step4_reader_still_rejects_already_associated_rows (test_vlm_inputs.AssociatedReplayReaderTests) ... ok
+test_strict_json_errors_are_located_and_lazy (test_vlm_inputs.AssociatedReplayReaderTests) ... ok
+test_unmatched_candidate_references_require_absolute_paths_and_positive_lines (test_vlm_inputs.AssociatedReplayReaderTests) ... ok
+test_unmatched_requires_explicit_null_frame_and_method_fields (test_vlm_inputs.AssociatedReplayReaderTests) ... ok
+test_unmatched_requires_failure_and_no_selected_frame (test_vlm_inputs.AssociatedReplayReaderTests) ... ok
+test_changed_image_symlink_escape_is_rejected (test_vlm_inputs.VLMImageInputTests) ... ok
+test_changed_rgb_pixels_are_rejected_against_step4_hash (test_vlm_inputs.VLMImageInputTests) ... ok
+test_dimensions_disagreeing_with_manifest_are_input_failure (test_vlm_inputs.VLMImageInputTests) ... ok
+test_encoding_uses_the_same_validated_read_not_a_second_file_read (test_vlm_inputs.VLMImageInputTests) ... ok
+test_image_directory_is_unreadable_failure (test_vlm_inputs.VLMImageInputTests) ... ok
+test_image_permission_error_is_input_failure (test_vlm_inputs.VLMImageInputTests) ... ok
+test_in_memory_encoding_failure_is_separate_input_failure (test_vlm_inputs.VLMImageInputTests) ... ok
+test_invalid_image_is_input_failure (test_vlm_inputs.VLMImageInputTests) ... ok
+test_invalid_manifest_is_input_failure (test_vlm_inputs.VLMImageInputTests) ... ok
+test_missing_image_is_input_failure (test_vlm_inputs.VLMImageInputTests) ... ok
+test_missing_manifest_is_input_failure (test_vlm_inputs.VLMImageInputTests) ... ok
+test_pixel_fidelity_for_comments_crlf_and_initial_whitespace_or_hash (test_vlm_inputs.VLMImageInputTests) ... ok
+test_png_raw_base64_pixels_dimensions_and_digests (test_vlm_inputs.VLMImageInputTests) ... ok
+test_read_helper_returns_exact_validated_hash_bytes_in_one_read (test_vlm_inputs.VLMImageInputTests) ... ok
+test_selected_event_reader_uses_only_exact_line_including_blanks (test_vlm_inputs.VLMImageInputTests) ... ok
+test_shifted_source_line_is_rejected (test_vlm_inputs.VLMImageInputTests) ... ok
+test_truncated_image_is_input_failure (test_vlm_inputs.VLMImageInputTests) ... ok
+test_unmatched_image_is_unavailable (test_vlm_inputs.VLMImageInputTests) ... ok
+test_unrelated_image_symlink_loop_does_not_invalidate_selected_frame (test_vlm_inputs.VLMImageInputTests) ... ok
+test_valid_changed_manifest_provenance_is_rejected_without_rematching (test_vlm_inputs.VLMImageInputTests) ... ok
+test_valid_changed_ppm_header_and_size_are_rejected (test_vlm_inputs.VLMImageInputTests) ... ok
+test_fake_http_requests_contain_static_text_exact_png_bytes_and_four_action_schema (test_vlm_policy.VLMOllamaRequestTests) ... ok
+test_invalid_model_outputs_remain_failures_without_action_substitution (test_vlm_policy.VLMOllamaRequestTests) ... ok
+test_request_failures_remain_ollama_failures_without_retries (test_vlm_policy.VLMOllamaRequestTests) ... ok
+test_absent_model_error_diagnostics_stay_null (test_vlm_policy.VLMPolicyTests) ... ok
+test_all_four_actions_original_result_identity_and_one_call_are_preserved (test_vlm_policy.VLMPolicyTests) ... ok
+test_all_ollama_errors_and_original_diagnostics_survive_without_fallback (test_vlm_policy.VLMPolicyTests) ... ok
+test_invalid_encoded_image_fails_before_any_client_call (test_vlm_policy.VLMPolicyTests) ... ok
+test_model_diagnostics_do_not_serialize_images_or_source_correlation (test_vlm_policy.VLMPolicyTests) ... ok
+test_prompt_retains_encoded_image_when_client_mutates_message_images (test_vlm_policy.VLMPolicyTests) ... ok
+test_builder_accepts_only_encoded_image_input (test_vlm_policy.VLMPromptTests) ... ok
+test_invalid_encoding_types_data_urls_whitespace_and_non_png_are_rejected (test_vlm_policy.VLMPromptTests) ... ok
+test_messages_contain_only_static_instructions_and_one_raw_png_base64 (test_vlm_policy.VLMPromptTests) ... ok
+test_prompt_is_immutable_and_message_image_lists_are_detached (test_vlm_policy.VLMPromptTests) ... ok
+test_prompt_is_static_english_versioned_and_reproducible (test_vlm_policy.VLMPromptTests) ... ok
+test_task_context_and_definitions_match_llm_verbatim (test_vlm_policy.VLMPromptTests) ... ok
+test_visible_evidence_limits_and_strict_output_are_explicit (test_vlm_policy.VLMPromptTests) ... ok
+test_all_four_actions_preserve_rows_order_and_independent_source_correlation (test_vlm_replay.VLMReplayRunnerTests) ... ok
+test_all_original_ollama_error_categories_survive_without_fallback (test_vlm_replay.VLMReplayRunnerTests) ... ok
+test_approximate_match_provenance_and_signed_difference_are_not_changed (test_vlm_replay.VLMReplayRunnerTests) ... ok
+test_call_cap_counts_failed_requests_but_not_unavailable_or_invalid_images (test_vlm_replay.VLMReplayRunnerTests) ... ok
+test_caller_selected_model_and_generation_configuration_are_recorded (test_vlm_replay.VLMReplayRunnerTests) ... ok
+test_changed_missing_and_invalid_images_are_separate_input_failures (test_vlm_replay.VLMReplayRunnerTests) ... ok
+test_empty_input_is_failed_without_calls_or_output (test_vlm_replay.VLMReplayRunnerTests) ... ok
+test_existing_llm_decisions_errors_and_preparation_fields_are_unchanged (test_vlm_replay.VLMReplayRunnerTests) ... ok
+test_existing_output_symlink_and_all_referenced_sources_are_protected (test_vlm_replay.VLMReplayRunnerTests) ... ok
+test_first_write_failure_is_non_success_and_surfaces_output_error (test_vlm_replay.VLMReplayRunnerTests) ... ok
+test_interrupted_second_inference_preserves_first_row_and_reports_partial (test_vlm_replay.VLMReplayRunnerTests) ... ok
+test_invalid_configuration_and_nonpositive_caps_do_not_create_output (test_vlm_replay.VLMReplayRunnerTests) ... ok
+test_malformed_first_and_later_rows_fail_preflight_before_output_or_calls (test_vlm_replay.VLMReplayRunnerTests) ... ok
+test_missing_matching_invalid_source_correlation_and_previous_vlm_are_rejected (test_vlm_replay.VLMReplayRunnerTests) ... ok
+test_missing_source_manifest_and_later_image_references_cannot_be_created_as_output (test_vlm_replay.VLMReplayRunnerTests) ... ok
+test_missing_unmatched_candidate_image_is_protected_before_valid_row_calls (test_vlm_replay.VLMReplayRunnerTests) ... ok
+test_missing_unmatched_candidate_is_protected_when_another_image_path_cannot_resolve (test_vlm_replay.VLMReplayRunnerTests) ... ok
+test_no_new_sampling_or_rematching_and_limit_preserves_all_rows (test_vlm_replay.VLMReplayRunnerTests) ... ok
+test_output_parent_creation_cannot_replace_missing_protected_files_with_directories (test_vlm_replay.VLMReplayRunnerTests) ... ok
+test_output_symlink_loop_is_failed_and_preserved (test_vlm_replay.VLMReplayRunnerTests) ... ok
+test_requests_have_static_text_and_exact_png_pixels_without_metadata (test_vlm_replay.VLMReplayRunnerTests) ... ok
+test_second_write_failure_retains_first_row_and_reports_partial (test_vlm_replay.VLMReplayRunnerTests) ... ok
+test_selected_image_symlink_loop_is_one_row_input_failure_without_source_mutation (test_vlm_replay.VLMReplayRunnerTests) ... ok
+test_unmatched_rows_make_no_calls_and_remain_available_for_audit (test_vlm_replay.VLMReplayRunnerTests) ... ok
+test_closing_low_gaze_resolves_after_warmup_and_robot_accepts_current_policy (test_yield_closing_low_gaze.ClosingYieldTests) ... ok
+test_configured_gaze_entry_exit_and_initial_hysteresis_band (test_yield_closing_low_gaze.ClosingYieldTests) ... ok
+test_cue_combinations_do_not_replace_missing_evidence (test_yield_closing_low_gaze.ClosingYieldTests) ... ok
+test_current_low_gaze_required_even_when_history_holds_none (test_yield_closing_low_gaze.ClosingYieldTests) ... ok
+test_custom_cutoff_and_null_cutoff_control_yield_independently_of_zone (test_yield_closing_low_gaze.ClosingYieldTests) ... ok
+test_implausible_jump_breaks_closing_trend (test_yield_closing_low_gaze.ClosingYieldTests) ... ok
+test_missing_face_gaze_distance_and_detection_are_current_only (test_yield_closing_low_gaze.ClosingYieldTests) ... ok
+test_pass_overrides_closing_trigger_and_conflict_overrides_pass (test_yield_closing_low_gaze.ClosingYieldTests) ... ok
+test_proximity_alone_no_longer_yields_or_bypasses_gaze_readiness (test_yield_closing_low_gaze.ClosingYieldTests) ... ok
+test_three_metre_cutoff_uses_current_distance_without_zone_hysteresis (test_yield_closing_low_gaze.ClosingYieldTests) ... ok
+
+======================================================================
+ERROR: test_production_yield_sequence_and_failure_cleanup (test_client.ClientTests) (outcome='success')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/anyone/Documents/P4P/tests/test_client.py", line 1107, in test_production_yield_sequence_and_failure_cleanup
+    self.assertTrue(all(task.done() and task.cancelling() <= 1 for task in sdk_tasks))
+  File "/home/anyone/Documents/P4P/tests/test_client.py", line 1107, in <genexpr>
+    self.assertTrue(all(task.done() and task.cancelling() <= 1 for task in sdk_tasks))
+AttributeError: '_asyncio.Task' object has no attribute 'cancelling'
+
+======================================================================
+ERROR: test_production_yield_sequence_and_failure_cleanup (test_client.ClientTests) (outcome='cancel_escape')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/anyone/Documents/P4P/tests/test_client.py", line 1107, in test_production_yield_sequence_and_failure_cleanup
+    self.assertTrue(all(task.done() and task.cancelling() <= 1 for task in sdk_tasks))
+  File "/home/anyone/Documents/P4P/tests/test_client.py", line 1107, in <genexpr>
+    self.assertTrue(all(task.done() and task.cancelling() <= 1 for task in sdk_tasks))
+AttributeError: '_asyncio.Task' object has no attribute 'cancelling'
+
+======================================================================
+ERROR: test_production_yield_sequence_and_failure_cleanup (test_client.ClientTests) (outcome='cancel_wait')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/anyone/Documents/P4P/tests/test_client.py", line 1107, in test_production_yield_sequence_and_failure_cleanup
+    self.assertTrue(all(task.done() and task.cancelling() <= 1 for task in sdk_tasks))
+  File "/home/anyone/Documents/P4P/tests/test_client.py", line 1107, in <genexpr>
+    self.assertTrue(all(task.done() and task.cancelling() <= 1 for task in sdk_tasks))
+AttributeError: '_asyncio.Task' object has no attribute 'cancelling'
+
+======================================================================
+ERROR: test_production_yield_sequence_and_failure_cleanup (test_client.ClientTests) (outcome='cancel_return')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/anyone/Documents/P4P/tests/test_client.py", line 1107, in test_production_yield_sequence_and_failure_cleanup
+    self.assertTrue(all(task.done() and task.cancelling() <= 1 for task in sdk_tasks))
+  File "/home/anyone/Documents/P4P/tests/test_client.py", line 1107, in <genexpr>
+    self.assertTrue(all(task.done() and task.cancelling() <= 1 for task in sdk_tasks))
+AttributeError: '_asyncio.Task' object has no attribute 'cancelling'
+
+======================================================================
+ERROR: test_production_yield_sequence_and_failure_cleanup (test_client.ClientTests) (outcome='cancel_advance')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/anyone/Documents/P4P/tests/test_client.py", line 1107, in test_production_yield_sequence_and_failure_cleanup
+    self.assertTrue(all(task.done() and task.cancelling() <= 1 for task in sdk_tasks))
+  File "/home/anyone/Documents/P4P/tests/test_client.py", line 1107, in <genexpr>
+    self.assertTrue(all(task.done() and task.cancelling() <= 1 for task in sdk_tasks))
+AttributeError: '_asyncio.Task' object has no attribute 'cancelling'
+
+======================================================================
+ERROR: test_production_yield_sequence_and_failure_cleanup (test_client.ClientTests) (outcome='motion_failure')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/anyone/Documents/P4P/tests/test_client.py", line 1107, in test_production_yield_sequence_and_failure_cleanup
+    self.assertTrue(all(task.done() and task.cancelling() <= 1 for task in sdk_tasks))
+  File "/home/anyone/Documents/P4P/tests/test_client.py", line 1107, in <genexpr>
+    self.assertTrue(all(task.done() and task.cancelling() <= 1 for task in sdk_tasks))
+AttributeError: '_asyncio.Task' object has no attribute 'cancelling'
+
+======================================================================
+ERROR: test_production_yield_sequence_and_failure_cleanup (test_client.ClientTests) (outcome='return_failure')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/anyone/Documents/P4P/tests/test_client.py", line 1107, in test_production_yield_sequence_and_failure_cleanup
+    self.assertTrue(all(task.done() and task.cancelling() <= 1 for task in sdk_tasks))
+  File "/home/anyone/Documents/P4P/tests/test_client.py", line 1107, in <genexpr>
+    self.assertTrue(all(task.done() and task.cancelling() <= 1 for task in sdk_tasks))
+AttributeError: '_asyncio.Task' object has no attribute 'cancelling'
+
+======================================================================
+ERROR: test_production_yield_sequence_and_failure_cleanup (test_client.ClientTests) (outcome='advance_failure')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/anyone/Documents/P4P/tests/test_client.py", line 1107, in test_production_yield_sequence_and_failure_cleanup
+    self.assertTrue(all(task.done() and task.cancelling() <= 1 for task in sdk_tasks))
+  File "/home/anyone/Documents/P4P/tests/test_client.py", line 1107, in <genexpr>
+    self.assertTrue(all(task.done() and task.cancelling() <= 1 for task in sdk_tasks))
+AttributeError: '_asyncio.Task' object has no attribute 'cancelling'
+
+======================================================================
+ERROR: test_production_yield_sequence_and_failure_cleanup (test_client.ClientTests) (outcome='speech_failure')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/anyone/Documents/P4P/tests/test_client.py", line 1107, in test_production_yield_sequence_and_failure_cleanup
+    self.assertTrue(all(task.done() and task.cancelling() <= 1 for task in sdk_tasks))
+  File "/home/anyone/Documents/P4P/tests/test_client.py", line 1107, in <genexpr>
+    self.assertTrue(all(task.done() and task.cancelling() <= 1 for task in sdk_tasks))
+AttributeError: '_asyncio.Task' object has no attribute 'cancelling'
+
+======================================================================
+ERROR: test_production_yield_sequence_and_failure_cleanup (test_client.ClientTests) (outcome='final_speech_failure')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/anyone/Documents/P4P/tests/test_client.py", line 1107, in test_production_yield_sequence_and_failure_cleanup
+    self.assertTrue(all(task.done() and task.cancelling() <= 1 for task in sdk_tasks))
+  File "/home/anyone/Documents/P4P/tests/test_client.py", line 1107, in <genexpr>
+    self.assertTrue(all(task.done() and task.cancelling() <= 1 for task in sdk_tasks))
+AttributeError: '_asyncio.Task' object has no attribute 'cancelling'
+
+======================================================================
+ERROR: test_production_yield_sequence_and_failure_cleanup (test_client.ClientTests) (outcome='timeout')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/anyone/Documents/P4P/tests/test_client.py", line 1107, in test_production_yield_sequence_and_failure_cleanup
+    self.assertTrue(all(task.done() and task.cancelling() <= 1 for task in sdk_tasks))
+  File "/home/anyone/Documents/P4P/tests/test_client.py", line 1107, in <genexpr>
+    self.assertTrue(all(task.done() and task.cancelling() <= 1 for task in sdk_tasks))
+AttributeError: '_asyncio.Task' object has no attribute 'cancelling'
+
+======================================================================
+ERROR: test_interrupted_or_failed_completion_stop_does_not_look_or_greet (test_trial_head.TrialHeadControllerTests) (reason='BEHAVIOUR_CANCELLED')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/anyone/Documents/P4P/robot/navel_client/behaviour_dispatch.py", line 250, in run_handler
+    await handler(context)
+  File "/home/anyone/Documents/P4P/robot/navel_client/behaviour_dispatch.py", line 39, in approach_person
+    await runtime.settle()
+  File "/usr/lib/python3.10/unittest/mock.py", line 2243, in _execute_mock_call
+    raise result
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/anyone/Documents/P4P/robot/navel_client/behaviour_dispatch.py", line 264, in _execute
+    succeeded = task.result()
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/anyone/Documents/P4P/tests/test_trial_head.py", line 237, in test_interrupted_or_failed_completion_stop_does_not_look_or_greet
+    self.assertFalse(await dispatcher.dispatch())
+  File "/home/anyone/Documents/P4P/robot/navel_client/behaviour_dispatch.py", line 185, in dispatch
+    return await self._execute(context.decision["action"])
+  File "/home/anyone/Documents/P4P/robot/navel_client/behaviour_dispatch.py", line 271, in _execute
+    if asyncio.current_task().cancelling():
+AttributeError: '_asyncio.Task' object has no attribute 'cancelling'
+
+----------------------------------------------------------------------
+Ran 632 tests in 35.948s
+
+FAILED (errors=12)

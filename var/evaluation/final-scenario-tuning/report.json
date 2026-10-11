@@ -1,0 +1,1872 @@
+[
+  {
+    "scenario_id": "S1",
+    "expected_actions": [
+      "CONTINUE"
+    ],
+    "rules": {
+      "scenario_id": "S1",
+      "policy": "rules",
+      "status": "ACTION_RESOLVED",
+      "action": "CONTINUE",
+      "decision": {
+        "action": "CONTINUE",
+        "reason": "Gaze evidence is classified as no attention; continue along the fixed route."
+      },
+      "accepted_by_live_client": true,
+      "acceptance_details": {
+        "current_readiness": true,
+        "latest_observation_age_s": 0.001555,
+        "model_source_age_s": 0.001555,
+        "trial_phase": "DECIDED",
+        "failure_reason": null
+      },
+      "resolved_elapsed_s": 1.077381738999975,
+      "stop_elapsed_s": 1.077381738999975,
+      "frames_ingested": 12,
+      "ready_frames": 1,
+      "readiness_counts": {
+        "INSUFFICIENT_GAZE_EVIDENCE": 11,
+        "READY": 1
+      },
+      "recording_exhausted": false,
+      "last_ingested_source_offset_s": 1.075828,
+      "last_ingested_line": 24,
+      "decision_source_offset_s": 1.075828,
+      "motion_start_monotonic_us": 1896788380,
+      "perception_origin_monotonic_us": 1896890996,
+      "decision_source_since_motion_s": 1.178444,
+      "max_dispatch_lag_s": 0.0002683590009837644,
+      "model_failures": [],
+      "first_model_request": null,
+      "resolved_output": {
+        "decision": {
+          "action": "CONTINUE",
+          "reason": "Gaze evidence is classified as no attention; continue along the fixed route."
+        },
+        "source_robot_timestamp_us": 1897966824,
+        "source_state_id": "replay-c185d8773106dd7263c9682d:12"
+      },
+      "last_readiness": {
+        "reason_code": null,
+        "status": "READY"
+      },
+      "source_sha256": "0bfc5da545ab0634876c584913affcd5d697af9d4ad912aca0e8a72c9fc8e21a",
+      "trial_id": "091e0fd3635f4a3ab4cd03890081c784",
+      "clock_mapping": "original first perception receipt + real elapsed replay time",
+      "physical_execution": false
+    },
+    "llm": {
+      "scenario_id": "S1",
+      "policy": "llm",
+      "status": "ACTION_RESOLVED",
+      "action": "CONTINUE",
+      "decision": {
+        "action": "CONTINUE",
+        "reason": "The person is in the APPROACHABLE distance zone, and the relative distance trend is DECREASING. However, the latest_gaze_looking is false, and the gaze_state is NONE, which does not meet the criteria for YIELD. Therefore, the robot should continue along its existing route."
+      },
+      "accepted_by_live_client": false,
+      "acceptance_details": {
+        "current_readiness": true,
+        "latest_observation_age_s": 4.671003,
+        "model_source_age_s": 13.965254,
+        "trial_phase": "OBSERVING",
+        "failure_reason": null
+      },
+      "resolved_elapsed_s": 15.041079265000008,
+      "stop_elapsed_s": 15.041079265000008,
+      "frames_ingested": 105,
+      "ready_frames": 76,
+      "readiness_counts": {
+        "INSUFFICIENT_GAZE_EVIDENCE": 18,
+        "READY": 76,
+        "DISTANCE_UNKNOWN": 1,
+        "NO_VISIBLE_PERSON": 10
+      },
+      "recording_exhausted": true,
+      "last_ingested_source_offset_s": 10.370079,
+      "last_ingested_line": 210,
+      "decision_source_offset_s": 1.075828,
+      "motion_start_monotonic_us": 1896788380,
+      "perception_origin_monotonic_us": 1896890996,
+      "decision_source_since_motion_s": 1.178444,
+      "max_dispatch_lag_s": 0.0038102790003904374,
+      "model_failures": [
+        {
+          "decision": null,
+          "error": {
+            "category": "request_expired"
+          },
+          "policy": "llm",
+          "request_id": "01a27d3bafcd44da9f1d6eac2f1e88e7",
+          "session_id": "replay-c185d8773106dd7263c9682d",
+          "source_robot_timestamp_us": 1897966824,
+          "source_state_id": "replay-c185d8773106dd7263c9682d:12",
+          "status": "failed",
+          "trial_id": "b91c074f939e46f8a90c31555640557a"
+        }
+      ],
+      "first_model_request": {
+        "decision": null,
+        "error": null,
+        "policy": "llm",
+        "request_id": "01a27d3bafcd44da9f1d6eac2f1e88e7",
+        "session_id": "replay-c185d8773106dd7263c9682d",
+        "source_robot_timestamp_us": 1897966824,
+        "source_state_id": "replay-c185d8773106dd7263c9682d:12",
+        "status": "pending",
+        "trial_id": "b91c074f939e46f8a90c31555640557a"
+      },
+      "resolved_output": {
+        "decision": {
+          "action": "CONTINUE",
+          "reason": "The person is in the APPROACHABLE distance zone, and the relative distance trend is DECREASING. However, the latest_gaze_looking is false, and the gaze_state is NONE, which does not meet the criteria for YIELD. Therefore, the robot should continue along its existing route."
+        },
+        "error": null,
+        "policy": "llm",
+        "request_id": "01a27d3bafcd44da9f1d6eac2f1e88e7",
+        "session_id": "replay-c185d8773106dd7263c9682d",
+        "source_robot_timestamp_us": 1897966824,
+        "source_state_id": "replay-c185d8773106dd7263c9682d:12",
+        "status": "succeeded",
+        "trial_id": "b91c074f939e46f8a90c31555640557a",
+        "completed_at": "2026-10-11T06:23:57.452718+00:00",
+        "error_stage": null,
+        "ok": true,
+        "ollama_configuration": {
+          "base_url": "http://127.0.0.1:11434",
+          "generation_options": {
+            "num_ctx": 8192,
+            "num_predict": 192,
+            "seed": 42,
+            "temperature": 0.0
+          },
+          "model": "qwen2.5:7b",
+          "num_ctx": 8192,
+          "num_predict": 192,
+          "seed": 42,
+          "temperature": 0.0,
+          "timeout_seconds": 120.0
+        },
+        "prompt_version": "social-state-llm-v12",
+        "raw_content": "{\n  \"action\": \"CONTINUE\",\n  \"reason\": \"The person is in the APPROACHABLE distance zone, and the relative distance trend is DECREASING. However, the latest_gaze_looking is false, and the gaze_state is NONE, which does not meet the criteria for YIELD. Therefore, the robot should continue along its existing route.\"\n}",
+        "request_duration_s": 13.946699591999277,
+        "requested_model": "qwen2.5:7b",
+        "returned_model": "qwen2.5:7b",
+        "delivery_status": "failed",
+        "delivery_error": {
+          "category": "request_expired"
+        }
+      },
+      "last_readiness": {
+        "reason_code": null,
+        "status": "READY"
+      },
+      "source_sha256": "0bfc5da545ab0634876c584913affcd5d697af9d4ad912aca0e8a72c9fc8e21a",
+      "trial_id": "b91c074f939e46f8a90c31555640557a",
+      "clock_mapping": "original first perception receipt + real elapsed replay time",
+      "physical_execution": false
+    },
+    "rule_evidence": [
+      {
+        "distance_zone": "APPROACHABLE",
+        "evidence": {
+          "distance_fit_residual_m": 0.07766777765631583,
+          "distance_fit_samples": 12,
+          "distance_jump_count": 0,
+          "distance_slope_mps": -0.13739978137084732,
+          "distance_trend_valid": true,
+          "distance_valid_samples": 12,
+          "distance_valid_span_s": 1.075828,
+          "distance_window_start_us": 1896890996,
+          "gaze_coverage_fraction": 1.0,
+          "gaze_fraction": 0.0,
+          "gaze_valid": true,
+          "gaze_valid_coverage_s": 1.075828,
+          "gaze_valid_samples": 12,
+          "latest_distance_valid": true,
+          "latest_gaze_looking": false,
+          "latest_gaze_overlap": 0.9212693572044373,
+          "looking_bouts": 0,
+          "looking_enter_threshold": 0.97,
+          "looking_exit_threshold": 0.95,
+          "looking_time_s": 0.0,
+          "mean_gaze_overlap": 0.9430984010299047,
+          "sustained_gaze_s": 0.0,
+          "window_span_s": 1.075828
+        },
+        "face_detected": true,
+        "gaze_state": "NONE",
+        "latest_distance_m": 3.501176513671875,
+        "nose_forward_m": 3.155548828125,
+        "nose_lateral_m": 0.6326134643554687,
+        "pass_gesture": "UNKNOWN",
+        "path_position": "TO_SIDE",
+        "path_relation": "UNKNOWN",
+        "relative_distance_trend": "DECREASING",
+        "relative_head_position": null,
+        "relative_nose_position": {
+          "coordinate_frame": "CAM_HEAD",
+          "x": 3.155548828125,
+          "y": 0.6326134643554687,
+          "z": -1.4212919921875
+        },
+        "time_since_seen_s": 0.0,
+        "track_age_s": 1.075828,
+        "track_epoch": 1,
+        "uid": 1449020857,
+        "validity_flags": [
+          "NOSE_REASSOCIATED_UNVERIFIED"
+        ],
+        "visibility": "OBSERVED"
+      }
+    ],
+    "empty_observed_s": 0.0
+  },
+  {
+    "scenario_id": "S2",
+    "expected_actions": [
+      "APPROACH"
+    ],
+    "rules": {
+      "scenario_id": "S2",
+      "policy": "rules",
+      "status": "ACTION_RESOLVED",
+      "action": "APPROACH",
+      "decision": {
+        "action": "APPROACH",
+        "reason": "The person is looking steadily at the robot and is within approach distance."
+      },
+      "accepted_by_live_client": true,
+      "acceptance_details": {
+        "current_readiness": true,
+        "latest_observation_age_s": 0.001274,
+        "model_source_age_s": 0.001274,
+        "trial_phase": "DECIDED",
+        "failure_reason": null
+      },
+      "resolved_elapsed_s": 1.0732377250005811,
+      "stop_elapsed_s": 1.0732377250005811,
+      "frames_ingested": 12,
+      "ready_frames": 1,
+      "readiness_counts": {
+        "INSUFFICIENT_GAZE_EVIDENCE": 11,
+        "READY": 1
+      },
+      "recording_exhausted": false,
+      "last_ingested_source_offset_s": 1.071965,
+      "last_ingested_line": 24,
+      "decision_source_offset_s": 1.071965,
+      "motion_start_monotonic_us": 2009906601,
+      "perception_origin_monotonic_us": 2009938706,
+      "decision_source_since_motion_s": 1.10407,
+      "max_dispatch_lag_s": 0.00033522600097057875,
+      "model_failures": [],
+      "first_model_request": null,
+      "resolved_output": {
+        "decision": {
+          "action": "APPROACH",
+          "reason": "The person is looking steadily at the robot and is within approach distance."
+        },
+        "source_robot_timestamp_us": 2011010671,
+        "source_state_id": "replay-bd5e83b6a4070146c505ec1e:12"
+      },
+      "last_readiness": {
+        "reason_code": null,
+        "status": "READY"
+      },
+      "source_sha256": "08a9f4e035e8ff1b5ca4ad5f807dd5b9a4e94bc55c916da9412365813df506bb",
+      "trial_id": "cbb9f2a719594f8cbee4b4371c65cc79",
+      "clock_mapping": "original first perception receipt + real elapsed replay time",
+      "physical_execution": false
+    },
+    "llm": {
+      "scenario_id": "S2",
+      "policy": "llm",
+      "status": "ACTION_RESOLVED",
+      "action": "CONTINUE",
+      "decision": {
+        "action": "CONTINUE",
+        "reason": "The person is in the APPROACHABLE distance zone, and the latest distance is 2.315m, which is outside the interaction range. The gaze state is SUSTAINED, and the latest gaze looking state is true, but the relative distance trend is DECREASING, not meeting the criteria for YIELD. Therefore, the robot should continue along the existing route."
+      },
+      "accepted_by_live_client": false,
+      "acceptance_details": {
+        "current_readiness": true,
+        "latest_observation_age_s": 14.422297,
+        "model_source_age_s": 18.024761,
+        "trial_phase": "OBSERVING",
+        "failure_reason": null
+      },
+      "resolved_elapsed_s": 19.096724126999106,
+      "stop_elapsed_s": 19.096724126999106,
+      "frames_ingested": 48,
+      "ready_frames": 37,
+      "readiness_counts": {
+        "INSUFFICIENT_GAZE_EVIDENCE": 11,
+        "READY": 37
+      },
+      "recording_exhausted": true,
+      "last_ingested_source_offset_s": 4.674429,
+      "last_ingested_line": 96,
+      "decision_source_offset_s": 1.071965,
+      "motion_start_monotonic_us": 2009906601,
+      "perception_origin_monotonic_us": 2009938706,
+      "decision_source_since_motion_s": 1.10407,
+      "max_dispatch_lag_s": 0.002264131000629277,
+      "model_failures": [
+        {
+          "decision": null,
+          "error": {
+            "category": "request_expired"
+          },
+          "policy": "llm",
+          "request_id": "9a4c8c9c0e564db382ecc9e0d34f6162",
+          "session_id": "replay-bd5e83b6a4070146c505ec1e",
+          "source_robot_timestamp_us": 2011010671,
+          "source_state_id": "replay-bd5e83b6a4070146c505ec1e:12",
+          "status": "failed",
+          "trial_id": "a453cc3629c14b1fa420329912b2b338"
+        }
+      ],
+      "first_model_request": {
+        "decision": null,
+        "error": null,
+        "policy": "llm",
+        "request_id": "9a4c8c9c0e564db382ecc9e0d34f6162",
+        "session_id": "replay-bd5e83b6a4070146c505ec1e",
+        "source_robot_timestamp_us": 2011010671,
+        "source_state_id": "replay-bd5e83b6a4070146c505ec1e:12",
+        "status": "pending",
+        "trial_id": "a453cc3629c14b1fa420329912b2b338"
+      },
+      "resolved_output": {
+        "decision": {
+          "action": "CONTINUE",
+          "reason": "The person is in the APPROACHABLE distance zone, and the latest distance is 2.315m, which is outside the interaction range. The gaze state is SUSTAINED, and the latest gaze looking state is true, but the relative distance trend is DECREASING, not meeting the criteria for YIELD. Therefore, the robot should continue along the existing route."
+        },
+        "error": null,
+        "policy": "llm",
+        "request_id": "9a4c8c9c0e564db382ecc9e0d34f6162",
+        "session_id": "replay-bd5e83b6a4070146c505ec1e",
+        "source_robot_timestamp_us": 2011010671,
+        "source_state_id": "replay-bd5e83b6a4070146c505ec1e:12",
+        "status": "succeeded",
+        "trial_id": "a453cc3629c14b1fa420329912b2b338",
+        "completed_at": "2026-10-11T06:24:16.547535+00:00",
+        "error_stage": null,
+        "ok": true,
+        "ollama_configuration": {
+          "base_url": "http://127.0.0.1:11434",
+          "generation_options": {
+            "num_ctx": 8192,
+            "num_predict": 192,
+            "seed": 42,
+            "temperature": 0.0
+          },
+          "model": "qwen2.5:7b",
+          "num_ctx": 8192,
+          "num_predict": 192,
+          "seed": 42,
+          "temperature": 0.0,
+          "timeout_seconds": 120.0
+        },
+        "prompt_version": "social-state-llm-v12",
+        "raw_content": "{\n  \"action\": \"CONTINUE\",\n  \"reason\": \"The person is in the APPROACHABLE distance zone, and the latest distance is 2.315m, which is outside the interaction range. The gaze state is SUSTAINED, and the latest gaze looking state is true, but the relative distance trend is DECREASING, not meeting the criteria for YIELD. Therefore, the robot should continue along the existing route.\"\n}",
+        "request_duration_s": 18.00294822900105,
+        "requested_model": "qwen2.5:7b",
+        "returned_model": "qwen2.5:7b",
+        "delivery_status": "failed",
+        "delivery_error": {
+          "category": "request_expired"
+        }
+      },
+      "last_readiness": {
+        "reason_code": null,
+        "status": "READY"
+      },
+      "source_sha256": "08a9f4e035e8ff1b5ca4ad5f807dd5b9a4e94bc55c916da9412365813df506bb",
+      "trial_id": "a453cc3629c14b1fa420329912b2b338",
+      "clock_mapping": "original first perception receipt + real elapsed replay time",
+      "physical_execution": false
+    },
+    "rule_evidence": [
+      {
+        "distance_zone": "APPROACHABLE",
+        "evidence": {
+          "distance_fit_residual_m": 0.044152950814541916,
+          "distance_fit_samples": 12,
+          "distance_jump_count": 0,
+          "distance_slope_mps": -0.14571253104254167,
+          "distance_trend_valid": true,
+          "distance_valid_samples": 12,
+          "distance_valid_span_s": 1.071965,
+          "distance_window_start_us": 2009938706,
+          "gaze_coverage_fraction": 0.8403987070473382,
+          "gaze_fraction": 1.0,
+          "gaze_valid": true,
+          "gaze_valid_coverage_s": 0.900878,
+          "gaze_valid_samples": 11,
+          "latest_distance_valid": true,
+          "latest_gaze_looking": true,
+          "latest_gaze_overlap": 0.9685008525848389,
+          "looking_bouts": 1,
+          "looking_enter_threshold": 0.93,
+          "looking_exit_threshold": 0.9,
+          "looking_time_s": 0.900878,
+          "mean_gaze_overlap": 0.9660313671285455,
+          "sustained_gaze_s": 0.0,
+          "window_span_s": 1.071965
+        },
+        "face_detected": true,
+        "gaze_state": "SUSTAINED",
+        "latest_distance_m": 2.31546337890625,
+        "nose_forward_m": 2.070431884765625,
+        "nose_lateral_m": 0.8554520874023438,
+        "pass_gesture": "UNKNOWN",
+        "path_position": "TO_SIDE",
+        "path_relation": "UNKNOWN",
+        "relative_distance_trend": "DECREASING",
+        "relative_head_position": null,
+        "relative_nose_position": {
+          "coordinate_frame": "CAM_HEAD",
+          "x": 2.070431884765625,
+          "y": 0.8554520874023438,
+          "z": -0.6741882934570312
+        },
+        "time_since_seen_s": 0.0,
+        "track_age_s": 1.071965,
+        "track_epoch": 1,
+        "uid": 1250574755,
+        "validity_flags": [
+          "NOSE_REASSOCIATED_UNVERIFIED"
+        ],
+        "visibility": "OBSERVED"
+      }
+    ],
+    "empty_observed_s": 0.0
+  },
+  {
+    "scenario_id": "S3",
+    "expected_actions": [
+      "ENGAGE",
+      "APPROACH"
+    ],
+    "rules": {
+      "scenario_id": "S3",
+      "policy": "rules",
+      "status": "ACTION_RESOLVED",
+      "action": "ENGAGE",
+      "decision": {
+        "action": "ENGAGE",
+        "reason": "The person is looking steadily at the robot and is within conversation distance."
+      },
+      "accepted_by_live_client": true,
+      "acceptance_details": {
+        "current_readiness": true,
+        "latest_observation_age_s": 0.001585,
+        "model_source_age_s": 0.001585,
+        "trial_phase": "DECIDED",
+        "failure_reason": null
+      },
+      "resolved_elapsed_s": 1.1283147029989777,
+      "stop_elapsed_s": 1.1283147029989777,
+      "frames_ingested": 12,
+      "ready_frames": 1,
+      "readiness_counts": {
+        "INSUFFICIENT_GAZE_EVIDENCE": 11,
+        "READY": 1
+      },
+      "recording_exhausted": false,
+      "last_ingested_source_offset_s": 1.126731,
+      "last_ingested_line": 25,
+      "decision_source_offset_s": 1.126731,
+      "motion_start_monotonic_us": 2046106026,
+      "perception_origin_monotonic_us": 2046192337,
+      "decision_source_since_motion_s": 1.213042,
+      "max_dispatch_lag_s": 0.00040439199983666185,
+      "model_failures": [],
+      "first_model_request": null,
+      "resolved_output": {
+        "decision": {
+          "action": "ENGAGE",
+          "reason": "The person is looking steadily at the robot and is within conversation distance."
+        },
+        "source_robot_timestamp_us": 2047319068,
+        "source_state_id": "replay-7a43024a2619ec806420c762:12"
+      },
+      "last_readiness": {
+        "reason_code": null,
+        "status": "READY"
+      },
+      "source_sha256": "4281527e087f3bf89ac1e9c19a274ed1ca0892e5b509a2ec7dc6a2954ecaafb9",
+      "trial_id": "47484490f63e427b997897cfcbf65ee7",
+      "clock_mapping": "original first perception receipt + real elapsed replay time",
+      "physical_execution": false
+    },
+    "llm": {
+      "scenario_id": "S3",
+      "policy": "llm",
+      "status": "ACTION_RESOLVED",
+      "action": "CONTINUE",
+      "decision": {
+        "action": "CONTINUE",
+        "reason": "SUSTAINED gaze and STABLE relative distance trend, with INTERACTION_RANGE distance zone, support CONTINUE. IN_WAY path_position does not require YIELD given the current evidence."
+      },
+      "accepted_by_live_client": false,
+      "acceptance_details": {
+        "current_readiness": true,
+        "latest_observation_age_s": 8.270014,
+        "model_source_age_s": 11.755716,
+        "trial_phase": "OBSERVING",
+        "failure_reason": null
+      },
+      "resolved_elapsed_s": 12.88244415400004,
+      "stop_elapsed_s": 12.88244415400004,
+      "frames_ingested": 47,
+      "ready_frames": 36,
+      "readiness_counts": {
+        "INSUFFICIENT_GAZE_EVIDENCE": 11,
+        "READY": 36
+      },
+      "recording_exhausted": true,
+      "last_ingested_source_offset_s": 4.612433,
+      "last_ingested_line": 95,
+      "decision_source_offset_s": 1.126731,
+      "motion_start_monotonic_us": 2046106026,
+      "perception_origin_monotonic_us": 2046192337,
+      "decision_source_since_motion_s": 1.213042,
+      "max_dispatch_lag_s": 0.0012541889991553035,
+      "model_failures": [
+        {
+          "decision": null,
+          "error": {
+            "category": "request_expired"
+          },
+          "policy": "llm",
+          "request_id": "42c95d59810642ff86dae525161d5dcc",
+          "session_id": "replay-7a43024a2619ec806420c762",
+          "source_robot_timestamp_us": 2047319068,
+          "source_state_id": "replay-7a43024a2619ec806420c762:12",
+          "status": "failed",
+          "trial_id": "3db118a7be6a44c6a230fedc772c9d28"
+        }
+      ],
+      "first_model_request": {
+        "decision": null,
+        "error": null,
+        "policy": "llm",
+        "request_id": "42c95d59810642ff86dae525161d5dcc",
+        "session_id": "replay-7a43024a2619ec806420c762",
+        "source_robot_timestamp_us": 2047319068,
+        "source_state_id": "replay-7a43024a2619ec806420c762:12",
+        "status": "pending",
+        "trial_id": "3db118a7be6a44c6a230fedc772c9d28"
+      },
+      "resolved_output": {
+        "decision": {
+          "action": "CONTINUE",
+          "reason": "SUSTAINED gaze and STABLE relative distance trend, with INTERACTION_RANGE distance zone, support CONTINUE. IN_WAY path_position does not require YIELD given the current evidence."
+        },
+        "error": null,
+        "policy": "llm",
+        "request_id": "42c95d59810642ff86dae525161d5dcc",
+        "session_id": "replay-7a43024a2619ec806420c762",
+        "source_robot_timestamp_us": 2047319068,
+        "source_state_id": "replay-7a43024a2619ec806420c762:12",
+        "status": "succeeded",
+        "trial_id": "3db118a7be6a44c6a230fedc772c9d28",
+        "completed_at": "2026-10-11T06:24:29.439182+00:00",
+        "error_stage": null,
+        "ok": true,
+        "ollama_configuration": {
+          "base_url": "http://127.0.0.1:11434",
+          "generation_options": {
+            "num_ctx": 8192,
+            "num_predict": 192,
+            "seed": 42,
+            "temperature": 0.0
+          },
+          "model": "qwen2.5:7b",
+          "num_ctx": 8192,
+          "num_predict": 192,
+          "seed": 42,
+          "temperature": 0.0,
+          "timeout_seconds": 120.0
+        },
+        "prompt_version": "social-state-llm-v12",
+        "raw_content": "{\n  \"action\": \"CONTINUE\",\n  \"reason\": \"SUSTAINED gaze and STABLE relative distance trend, with INTERACTION_RANGE distance zone, support CONTINUE. IN_WAY path_position does not require YIELD given the current evidence.\"\n}",
+        "request_duration_s": 11.731042449999222,
+        "requested_model": "qwen2.5:7b",
+        "returned_model": "qwen2.5:7b",
+        "delivery_status": "failed",
+        "delivery_error": {
+          "category": "request_expired"
+        }
+      },
+      "last_readiness": {
+        "reason_code": null,
+        "status": "READY"
+      },
+      "source_sha256": "4281527e087f3bf89ac1e9c19a274ed1ca0892e5b509a2ec7dc6a2954ecaafb9",
+      "trial_id": "3db118a7be6a44c6a230fedc772c9d28",
+      "clock_mapping": "original first perception receipt + real elapsed replay time",
+      "physical_execution": false
+    },
+    "rule_evidence": [
+      {
+        "distance_zone": "INTERACTION_RANGE",
+        "evidence": {
+          "distance_fit_residual_m": 0.04387583204666704,
+          "distance_fit_samples": 12,
+          "distance_jump_count": 0,
+          "distance_slope_mps": -0.0653323278051699,
+          "distance_trend_valid": true,
+          "distance_valid_samples": 12,
+          "distance_valid_span_s": 1.126731,
+          "distance_window_start_us": 2046192337,
+          "gaze_coverage_fraction": 0.808344671443317,
+          "gaze_fraction": 1.0,
+          "gaze_valid": true,
+          "gaze_valid_coverage_s": 0.910787,
+          "gaze_valid_samples": 11,
+          "latest_distance_valid": true,
+          "latest_gaze_looking": true,
+          "latest_gaze_overlap": 0.9824550747871399,
+          "looking_bouts": 1,
+          "looking_enter_threshold": 0.93,
+          "looking_exit_threshold": 0.9,
+          "looking_time_s": 0.910787,
+          "mean_gaze_overlap": 0.963342238556255,
+          "sustained_gaze_s": 0.6971930000000001,
+          "window_span_s": 1.126731
+        },
+        "face_detected": true,
+        "gaze_state": "SUSTAINED",
+        "latest_distance_m": 1.663083740234375,
+        "nose_forward_m": 1.6361153564453126,
+        "nose_lateral_m": 0.06379397201538085,
+        "pass_gesture": "UNKNOWN",
+        "path_position": "IN_WAY",
+        "path_relation": "UNKNOWN",
+        "relative_distance_trend": "STABLE",
+        "relative_head_position": null,
+        "relative_nose_position": {
+          "coordinate_frame": "CAM_HEAD",
+          "x": 1.6361153564453126,
+          "y": 0.06379397201538085,
+          "z": -0.29180615234375
+        },
+        "time_since_seen_s": 0.0,
+        "track_age_s": 1.126731,
+        "track_epoch": 1,
+        "uid": 23824037,
+        "validity_flags": [],
+        "visibility": "OBSERVED"
+      }
+    ],
+    "empty_observed_s": 0.0
+  },
+  {
+    "scenario_id": "S4",
+    "expected_actions": [
+      "YIELD"
+    ],
+    "rules": {
+      "scenario_id": "S4",
+      "policy": "rules",
+      "status": "ACTION_RESOLVED",
+      "action": "YIELD",
+      "decision": {
+        "action": "YIELD",
+        "reason": "The current nose position lies within the configured forward corridor, separation is decreasing within yield range, and face and low-gaze evidence are valid; give the person room to pass."
+      },
+      "accepted_by_live_client": true,
+      "acceptance_details": {
+        "current_readiness": true,
+        "latest_observation_age_s": 0.00141,
+        "model_source_age_s": 0.00141,
+        "trial_phase": "DECIDED",
+        "failure_reason": null
+      },
+      "resolved_elapsed_s": 1.0872397319999436,
+      "stop_elapsed_s": 1.0872397319999436,
+      "frames_ingested": 12,
+      "ready_frames": 1,
+      "readiness_counts": {
+        "INSUFFICIENT_GAZE_EVIDENCE": 11,
+        "READY": 1
+      },
+      "recording_exhausted": false,
+      "last_ingested_source_offset_s": 1.08583,
+      "last_ingested_line": 24,
+      "decision_source_offset_s": 1.08583,
+      "motion_start_monotonic_us": 2096080866,
+      "perception_origin_monotonic_us": 2096097493,
+      "decision_source_since_motion_s": 1.102457,
+      "max_dispatch_lag_s": 0.00033777499993448146,
+      "model_failures": [],
+      "first_model_request": null,
+      "resolved_output": {
+        "decision": {
+          "action": "YIELD",
+          "reason": "The current nose position lies within the configured forward corridor, separation is decreasing within yield range, and face and low-gaze evidence are valid; give the person room to pass."
+        },
+        "source_robot_timestamp_us": 2097183323,
+        "source_state_id": "replay-6c13d1e775b7489493285686:12"
+      },
+      "last_readiness": {
+        "reason_code": null,
+        "status": "READY"
+      },
+      "source_sha256": "37a122fd2fa1aa2e62772c10a9d88152e0dcc1d3ba08f84428c59ae7d8d290d6",
+      "trial_id": "c7074bb1c9b348a2ba2fb0f6ef407968",
+      "clock_mapping": "original first perception receipt + real elapsed replay time",
+      "physical_execution": false
+    },
+    "llm": {
+      "scenario_id": "S4",
+      "policy": "llm",
+      "status": "ACTION_RESOLVED",
+      "action": "CONTINUE",
+      "decision": {
+        "action": "CONTINUE",
+        "reason": "The person is in the APPROACHABLE distance zone, and the relative distance trend is DECREASING. However, the latest gaze looking state is false, and the gaze overlap is above the exit threshold, vetoing the YIELD action. The path_position is IN_WAY, but there is no measured path conflict or pass gesture, so CONTINUE is appropriate."
+      },
+      "accepted_by_live_client": false,
+      "acceptance_details": {
+        "current_readiness": false,
+        "latest_observation_age_s": 11.016002,
+        "model_source_age_s": 15.994929,
+        "trial_phase": "OBSERVING",
+        "failure_reason": null
+      },
+      "resolved_elapsed_s": 17.080756024000948,
+      "stop_elapsed_s": 17.080756024000948,
+      "frames_ingested": 62,
+      "ready_frames": 11,
+      "readiness_counts": {
+        "INSUFFICIENT_GAZE_EVIDENCE": 50,
+        "READY": 11,
+        "NO_VISIBLE_PERSON": 1
+      },
+      "recording_exhausted": true,
+      "last_ingested_source_offset_s": 6.064757,
+      "last_ingested_line": 123,
+      "decision_source_offset_s": 1.08583,
+      "motion_start_monotonic_us": 2096080866,
+      "perception_origin_monotonic_us": 2096097493,
+      "decision_source_since_motion_s": 1.102457,
+      "max_dispatch_lag_s": 0.0016519480013812426,
+      "model_failures": [
+        {
+          "decision": null,
+          "error": {
+            "category": "request_expired"
+          },
+          "policy": "llm",
+          "request_id": "779c529aa58d41bf8fdff866e98646d6",
+          "session_id": "replay-6c13d1e775b7489493285686",
+          "source_robot_timestamp_us": 2097183323,
+          "source_state_id": "replay-6c13d1e775b7489493285686:12",
+          "status": "failed",
+          "trial_id": "ccf0c665135c4847bfe2161a6846d715"
+        }
+      ],
+      "first_model_request": {
+        "decision": null,
+        "error": null,
+        "policy": "llm",
+        "request_id": "779c529aa58d41bf8fdff866e98646d6",
+        "session_id": "replay-6c13d1e775b7489493285686",
+        "source_robot_timestamp_us": 2097183323,
+        "source_state_id": "replay-6c13d1e775b7489493285686:12",
+        "status": "pending",
+        "trial_id": "ccf0c665135c4847bfe2161a6846d715"
+      },
+      "resolved_output": {
+        "decision": {
+          "action": "CONTINUE",
+          "reason": "The person is in the APPROACHABLE distance zone, and the relative distance trend is DECREASING. However, the latest gaze looking state is false, and the gaze overlap is above the exit threshold, vetoing the YIELD action. The path_position is IN_WAY, but there is no measured path conflict or pass gesture, so CONTINUE is appropriate."
+        },
+        "error": null,
+        "policy": "llm",
+        "request_id": "779c529aa58d41bf8fdff866e98646d6",
+        "session_id": "replay-6c13d1e775b7489493285686",
+        "source_robot_timestamp_us": 2097183323,
+        "source_state_id": "replay-6c13d1e775b7489493285686:12",
+        "status": "succeeded",
+        "trial_id": "ccf0c665135c4847bfe2161a6846d715",
+        "completed_at": "2026-10-11T06:24:46.543849+00:00",
+        "error_stage": null,
+        "ok": true,
+        "ollama_configuration": {
+          "base_url": "http://127.0.0.1:11434",
+          "generation_options": {
+            "num_ctx": 8192,
+            "num_predict": 192,
+            "seed": 42,
+            "temperature": 0.0
+          },
+          "model": "qwen2.5:7b",
+          "num_ctx": 8192,
+          "num_predict": 192,
+          "seed": 42,
+          "temperature": 0.0,
+          "timeout_seconds": 120.0
+        },
+        "prompt_version": "social-state-llm-v12",
+        "raw_content": "{\n  \"action\": \"CONTINUE\",\n  \"reason\": \"The person is in the APPROACHABLE distance zone, and the relative distance trend is DECREASING. However, the latest gaze looking state is false, and the gaze overlap is above the exit threshold, vetoing the YIELD action. The path_position is IN_WAY, but there is no measured path conflict or pass gesture, so CONTINUE is appropriate.\"\n}",
+        "request_duration_s": 15.991677152000193,
+        "requested_model": "qwen2.5:7b",
+        "returned_model": "qwen2.5:7b",
+        "delivery_status": "failed",
+        "delivery_error": {
+          "category": "request_expired"
+        }
+      },
+      "last_readiness": {
+        "reason_code": "NO_VISIBLE_PERSON",
+        "status": "OBSERVING"
+      },
+      "source_sha256": "37a122fd2fa1aa2e62772c10a9d88152e0dcc1d3ba08f84428c59ae7d8d290d6",
+      "trial_id": "ccf0c665135c4847bfe2161a6846d715",
+      "clock_mapping": "original first perception receipt + real elapsed replay time",
+      "physical_execution": false
+    },
+    "rule_evidence": [
+      {
+        "distance_zone": "APPROACHABLE",
+        "evidence": {
+          "distance_fit_residual_m": 0.09263065031506869,
+          "distance_fit_samples": 12,
+          "distance_jump_count": 0,
+          "distance_slope_mps": -0.3132622696787195,
+          "distance_trend_valid": true,
+          "distance_valid_samples": 12,
+          "distance_valid_span_s": 1.08583,
+          "distance_window_start_us": 2096097493,
+          "gaze_coverage_fraction": 0.6391985854139229,
+          "gaze_fraction": 0.12288833402251387,
+          "gaze_valid": true,
+          "gaze_valid_coverage_s": 0.694061,
+          "gaze_valid_samples": 8,
+          "latest_distance_valid": true,
+          "latest_gaze_looking": false,
+          "latest_gaze_overlap": 0.8351539373397827,
+          "looking_bouts": 1,
+          "looking_enter_threshold": 0.97,
+          "looking_exit_threshold": 0.95,
+          "looking_time_s": 0.085292,
+          "mean_gaze_overlap": 0.9324542383352915,
+          "sustained_gaze_s": 0.0,
+          "window_span_s": 1.08583
+        },
+        "face_detected": true,
+        "gaze_state": "NONE",
+        "latest_distance_m": 3.33460498046875,
+        "nose_forward_m": 3.08677099609375,
+        "nose_lateral_m": 0.27337481689453125,
+        "pass_gesture": "UNKNOWN",
+        "path_position": "IN_WAY",
+        "path_relation": "UNKNOWN",
+        "relative_distance_trend": "DECREASING",
+        "relative_head_position": null,
+        "relative_nose_position": {
+          "coordinate_frame": "CAM_HEAD",
+          "x": 3.08677099609375,
+          "y": 0.27337481689453125,
+          "z": -1.239302001953125
+        },
+        "time_since_seen_s": 0.0,
+        "track_age_s": 1.08583,
+        "track_epoch": 1,
+        "uid": 807582389,
+        "validity_flags": [
+          "NOSE_REASSOCIATED_UNVERIFIED"
+        ],
+        "visibility": "OBSERVED"
+      }
+    ],
+    "empty_observed_s": 0.0
+  },
+  {
+    "scenario_id": "S5",
+    "expected_actions": [
+      "CONTINUE"
+    ],
+    "rules": {
+      "scenario_id": "S5",
+      "policy": "rules",
+      "status": "ACTION_RESOLVED",
+      "action": "CONTINUE",
+      "decision": {
+        "action": "CONTINUE",
+        "reason": "No person has been detected throughout the configured observation interval; continue along the route without initiating interaction."
+      },
+      "accepted_by_live_client": true,
+      "acceptance_details": {
+        "current_readiness": true,
+        "latest_observation_age_s": 0.001213,
+        "model_source_age_s": 0.001213,
+        "trial_phase": "DECIDED",
+        "failure_reason": null
+      },
+      "resolved_elapsed_s": 1.1239065810004831,
+      "stop_elapsed_s": 1.1239065810004831,
+      "frames_ingested": 12,
+      "ready_frames": 1,
+      "readiness_counts": {
+        "NO_VISIBLE_PERSON": 11,
+        "READY": 1
+      },
+      "recording_exhausted": false,
+      "last_ingested_source_offset_s": 1.122694,
+      "last_ingested_line": 24,
+      "decision_source_offset_s": 1.122694,
+      "motion_start_monotonic_us": 2138305845,
+      "perception_origin_monotonic_us": 2138350000,
+      "decision_source_since_motion_s": 1.166849,
+      "max_dispatch_lag_s": 0.0002899230003094999,
+      "model_failures": [],
+      "first_model_request": null,
+      "resolved_output": {
+        "decision": {
+          "action": "CONTINUE",
+          "reason": "No person has been detected throughout the configured observation interval; continue along the route without initiating interaction."
+        },
+        "source_robot_timestamp_us": 2139472694,
+        "source_state_id": "replay-f9e815a071393de98a4bc3d1:12"
+      },
+      "last_readiness": {
+        "reason_code": null,
+        "status": "READY"
+      },
+      "source_sha256": "8598b85db20dc43044da5392b69a14b55ff7a3ea080ec53663765670287fba4c",
+      "trial_id": "a127f91321bb4b659c08fe4a62df7d47",
+      "clock_mapping": "original first perception receipt + real elapsed replay time",
+      "physical_execution": false
+    },
+    "llm": {
+      "scenario_id": "S5",
+      "policy": "llm",
+      "status": "ACTION_RESOLVED",
+      "action": "CONTINUE",
+      "decision": {
+        "action": "CONTINUE",
+        "reason": "No person observed and readiness is READY, meeting the configured no_person_continue_after_s and min_samples criteria."
+      },
+      "accepted_by_live_client": true,
+      "acceptance_details": {
+        "current_readiness": true,
+        "latest_observation_age_s": 0.043572,
+        "model_source_age_s": 4.751968,
+        "trial_phase": "DECIDED",
+        "failure_reason": null
+      },
+      "resolved_elapsed_s": 5.874660707000658,
+      "stop_elapsed_s": 5.874660707000658,
+      "frames_ingested": 59,
+      "ready_frames": 48,
+      "readiness_counts": {
+        "NO_VISIBLE_PERSON": 11,
+        "READY": 48
+      },
+      "recording_exhausted": false,
+      "last_ingested_source_offset_s": 5.83109,
+      "last_ingested_line": 119,
+      "decision_source_offset_s": 1.122694,
+      "motion_start_monotonic_us": 2138305845,
+      "perception_origin_monotonic_us": 2138350000,
+      "decision_source_since_motion_s": 1.166849,
+      "max_dispatch_lag_s": 0.003412906999074039,
+      "model_failures": [],
+      "first_model_request": {
+        "decision": null,
+        "error": null,
+        "policy": "llm",
+        "request_id": "5a12179ca07e4692abfc50530ef794cf",
+        "session_id": "replay-f9e815a071393de98a4bc3d1",
+        "source_robot_timestamp_us": 2139472694,
+        "source_state_id": "replay-f9e815a071393de98a4bc3d1:12",
+        "status": "pending",
+        "trial_id": "bd758b33c9aa43fc8dbb29d9d9cd8d5d"
+      },
+      "resolved_output": {
+        "decision": {
+          "action": "CONTINUE",
+          "reason": "No person observed and readiness is READY, meeting the configured no_person_continue_after_s and min_samples criteria."
+        },
+        "error": null,
+        "policy": "llm",
+        "request_id": "5a12179ca07e4692abfc50530ef794cf",
+        "session_id": "replay-f9e815a071393de98a4bc3d1",
+        "source_robot_timestamp_us": 2139472694,
+        "source_state_id": "replay-f9e815a071393de98a4bc3d1:12",
+        "status": "succeeded",
+        "trial_id": "bd758b33c9aa43fc8dbb29d9d9cd8d5d",
+        "completed_at": "2026-10-11T06:24:52.415972+00:00",
+        "error_stage": null,
+        "ok": true,
+        "ollama_configuration": {
+          "base_url": "http://127.0.0.1:11434",
+          "generation_options": {
+            "num_ctx": 8192,
+            "num_predict": 192,
+            "seed": 42,
+            "temperature": 0.0
+          },
+          "model": "qwen2.5:7b",
+          "num_ctx": 8192,
+          "num_predict": 192,
+          "seed": 42,
+          "temperature": 0.0,
+          "timeout_seconds": 120.0
+        },
+        "prompt_version": "social-state-llm-v12",
+        "raw_content": "{\n  \"action\": \"CONTINUE\",\n  \"reason\": \"No person observed and readiness is READY, meeting the configured no_person_continue_after_s and min_samples criteria.\"\n}",
+        "request_duration_s": 4.7406395959988,
+        "requested_model": "qwen2.5:7b",
+        "returned_model": "qwen2.5:7b",
+        "delivery_status": "succeeded",
+        "delivery_error": null
+      },
+      "last_readiness": {
+        "reason_code": null,
+        "status": "READY"
+      },
+      "source_sha256": "8598b85db20dc43044da5392b69a14b55ff7a3ea080ec53663765670287fba4c",
+      "trial_id": "bd758b33c9aa43fc8dbb29d9d9cd8d5d",
+      "clock_mapping": "original first perception receipt + real elapsed replay time",
+      "physical_execution": false
+    },
+    "rule_evidence": [],
+    "empty_observed_s": 1.122694
+  },
+  {
+    "scenario_id": "S6",
+    "expected_actions": [
+      "CONTINUE"
+    ],
+    "rules": {
+      "scenario_id": "S6",
+      "policy": "rules",
+      "status": "ACTION_RESOLVED",
+      "action": "CONTINUE",
+      "decision": {
+        "action": "CONTINUE",
+        "reason": "Gaze evidence is classified as no attention; continue along the fixed route."
+      },
+      "accepted_by_live_client": true,
+      "acceptance_details": {
+        "current_readiness": true,
+        "latest_observation_age_s": 0.001295,
+        "model_source_age_s": 0.001295,
+        "trial_phase": "DECIDED",
+        "failure_reason": null
+      },
+      "resolved_elapsed_s": 1.067946942999697,
+      "stop_elapsed_s": 1.067946942999697,
+      "frames_ingested": 12,
+      "ready_frames": 1,
+      "readiness_counts": {
+        "INSUFFICIENT_GAZE_EVIDENCE": 9,
+        "DISTANCE_UNKNOWN": 2,
+        "READY": 1
+      },
+      "recording_exhausted": false,
+      "last_ingested_source_offset_s": 1.066653,
+      "last_ingested_line": 24,
+      "decision_source_offset_s": 1.066653,
+      "motion_start_monotonic_us": 2198112528,
+      "perception_origin_monotonic_us": 2198154257,
+      "decision_source_since_motion_s": 1.108382,
+      "max_dispatch_lag_s": 0.00029730099959124345,
+      "model_failures": [],
+      "first_model_request": null,
+      "resolved_output": {
+        "decision": {
+          "action": "CONTINUE",
+          "reason": "Gaze evidence is classified as no attention; continue along the fixed route."
+        },
+        "source_robot_timestamp_us": 2199220910,
+        "source_state_id": "replay-c868e15ffc810edd0c196acc:12"
+      },
+      "last_readiness": {
+        "reason_code": null,
+        "status": "READY"
+      },
+      "source_sha256": "81d07a1936abdf41ae7a6d740ec2288ccedb2806cc7c40dfb2d66941783b43da",
+      "trial_id": "557e7ea22a5e4213b480c0a5efbfd892",
+      "clock_mapping": "original first perception receipt + real elapsed replay time",
+      "physical_execution": false
+    },
+    "llm": {
+      "scenario_id": "S6",
+      "policy": "llm",
+      "status": "ACTION_RESOLVED",
+      "action": "CONTINUE",
+      "decision": {
+        "action": "CONTINUE",
+        "reason": "The person is observed in the APPROACHABLE distance zone, but the latest distance is 3.634m, which exceeds the config.yield_closing_max_distance_m of 3.5m. The gaze_state is NONE and latest_gaze_looking is false, so there is no justification for YIELD. The relative_distance_trend is UNKNOWN, and the path_position is TO_SIDE, which does not require yielding."
+      },
+      "accepted_by_live_client": false,
+      "acceptance_details": {
+        "current_readiness": false,
+        "latest_observation_age_s": 12.789295,
+        "model_source_age_s": 16.296209,
+        "trial_phase": "OBSERVING",
+        "failure_reason": null
+      },
+      "resolved_elapsed_s": 17.362858807999146,
+      "stop_elapsed_s": 17.362858807999146,
+      "frames_ingested": 47,
+      "ready_frames": 31,
+      "readiness_counts": {
+        "INSUFFICIENT_GAZE_EVIDENCE": 13,
+        "DISTANCE_UNKNOWN": 3,
+        "READY": 31
+      },
+      "recording_exhausted": true,
+      "last_ingested_source_offset_s": 4.573567,
+      "last_ingested_line": 94,
+      "decision_source_offset_s": 1.066653,
+      "motion_start_monotonic_us": 2198112528,
+      "perception_origin_monotonic_us": 2198154257,
+      "decision_source_since_motion_s": 1.108382,
+      "max_dispatch_lag_s": 0.006332884999210364,
+      "model_failures": [
+        {
+          "decision": null,
+          "error": {
+            "category": "request_expired"
+          },
+          "policy": "llm",
+          "request_id": "b895d1847ace472dba0921a0bf380644",
+          "session_id": "replay-c868e15ffc810edd0c196acc",
+          "source_robot_timestamp_us": 2199220910,
+          "source_state_id": "replay-c868e15ffc810edd0c196acc:12",
+          "status": "failed",
+          "trial_id": "5447fc9c3b164dd9acdab6e6ac15f427"
+        }
+      ],
+      "first_model_request": {
+        "decision": null,
+        "error": null,
+        "policy": "llm",
+        "request_id": "b895d1847ace472dba0921a0bf380644",
+        "session_id": "replay-c868e15ffc810edd0c196acc",
+        "source_robot_timestamp_us": 2199220910,
+        "source_state_id": "replay-c868e15ffc810edd0c196acc:12",
+        "status": "pending",
+        "trial_id": "5447fc9c3b164dd9acdab6e6ac15f427"
+      },
+      "resolved_output": {
+        "decision": {
+          "action": "CONTINUE",
+          "reason": "The person is observed in the APPROACHABLE distance zone, but the latest distance is 3.634m, which exceeds the config.yield_closing_max_distance_m of 3.5m. The gaze_state is NONE and latest_gaze_looking is false, so there is no justification for YIELD. The relative_distance_trend is UNKNOWN, and the path_position is TO_SIDE, which does not require yielding."
+        },
+        "error": null,
+        "policy": "llm",
+        "request_id": "b895d1847ace472dba0921a0bf380644",
+        "session_id": "replay-c868e15ffc810edd0c196acc",
+        "source_robot_timestamp_us": 2199220910,
+        "source_state_id": "replay-c868e15ffc810edd0c196acc:12",
+        "status": "succeeded",
+        "trial_id": "5447fc9c3b164dd9acdab6e6ac15f427",
+        "completed_at": "2026-10-11T06:25:09.784274+00:00",
+        "error_stage": null,
+        "ok": true,
+        "ollama_configuration": {
+          "base_url": "http://127.0.0.1:11434",
+          "generation_options": {
+            "num_ctx": 8192,
+            "num_predict": 192,
+            "seed": 42,
+            "temperature": 0.0
+          },
+          "model": "qwen2.5:7b",
+          "num_ctx": 8192,
+          "num_predict": 192,
+          "seed": 42,
+          "temperature": 0.0,
+          "timeout_seconds": 120.0
+        },
+        "prompt_version": "social-state-llm-v12",
+        "raw_content": "{\n  \"action\": \"CONTINUE\",\n  \"reason\": \"The person is observed in the APPROACHABLE distance zone, but the latest distance is 3.634m, which exceeds the config.yield_closing_max_distance_m of 3.5m. The gaze_state is NONE and latest_gaze_looking is false, so there is no justification for YIELD. The relative_distance_trend is UNKNOWN, and the path_position is TO_SIDE, which does not require yielding.\"\n}",
+        "request_duration_s": 16.286189567999827,
+        "requested_model": "qwen2.5:7b",
+        "returned_model": "qwen2.5:7b",
+        "delivery_status": "failed",
+        "delivery_error": {
+          "category": "request_expired"
+        }
+      },
+      "last_readiness": {
+        "reason_code": "INSUFFICIENT_GAZE_EVIDENCE",
+        "status": "OBSERVING"
+      },
+      "source_sha256": "81d07a1936abdf41ae7a6d740ec2288ccedb2806cc7c40dfb2d66941783b43da",
+      "trial_id": "5447fc9c3b164dd9acdab6e6ac15f427",
+      "clock_mapping": "original first perception receipt + real elapsed replay time",
+      "physical_execution": false
+    },
+    "rule_evidence": [
+      {
+        "distance_zone": "APPROACHABLE",
+        "evidence": {
+          "distance_fit_residual_m": null,
+          "distance_fit_samples": 2,
+          "distance_jump_count": 2,
+          "distance_slope_mps": null,
+          "distance_trend_valid": false,
+          "distance_valid_samples": 2,
+          "distance_valid_span_s": 0.085787,
+          "distance_window_start_us": 2199135123,
+          "gaze_coverage_fraction": 1.0,
+          "gaze_fraction": 0.16017580225246636,
+          "gaze_valid": true,
+          "gaze_valid_coverage_s": 1.066653,
+          "gaze_valid_samples": 12,
+          "latest_distance_valid": true,
+          "latest_gaze_looking": false,
+          "latest_gaze_overlap": 0.9539706110954285,
+          "looking_bouts": 1,
+          "looking_enter_threshold": 0.97,
+          "looking_exit_threshold": 0.95,
+          "looking_time_s": 0.170852,
+          "mean_gaze_overlap": 0.9434004227320353,
+          "sustained_gaze_s": 0.0,
+          "window_span_s": 1.066653
+        },
+        "face_detected": true,
+        "gaze_state": "NONE",
+        "latest_distance_m": 3.6344609375,
+        "nose_forward_m": 3.316475341796875,
+        "nose_lateral_m": 0.5130154418945313,
+        "pass_gesture": "UNKNOWN",
+        "path_position": "TO_SIDE",
+        "path_relation": "UNKNOWN",
+        "relative_distance_trend": "UNKNOWN",
+        "relative_head_position": null,
+        "relative_nose_position": {
+          "coordinate_frame": "CAM_HEAD",
+          "x": 3.316475341796875,
+          "y": 0.5130154418945313,
+          "z": -1.4215853271484375
+        },
+        "time_since_seen_s": 0.0,
+        "track_age_s": 1.066653,
+        "track_epoch": 1,
+        "uid": 1783940805,
+        "validity_flags": [
+          "INSUFFICIENT_DISTANCE_EVIDENCE",
+          "DISTANCE_SEGMENT_BROKEN_BY_JUMP"
+        ],
+        "visibility": "OBSERVED"
+      }
+    ],
+    "empty_observed_s": 0.0
+  },
+  {
+    "scenario_id": "S7",
+    "expected_actions": [
+      "CONTINUE"
+    ],
+    "rules": {
+      "scenario_id": "S7",
+      "policy": "rules",
+      "status": "ACTION_RESOLVED",
+      "action": "CONTINUE",
+      "decision": {
+        "action": "CONTINUE",
+        "reason": "Usable gaze evidence does not show sustained attention; continue along the fixed route."
+      },
+      "accepted_by_live_client": true,
+      "acceptance_details": {
+        "current_readiness": true,
+        "latest_observation_age_s": 0.001375,
+        "model_source_age_s": 0.001375,
+        "trial_phase": "DECIDED",
+        "failure_reason": null
+      },
+      "resolved_elapsed_s": 2.091610777000824,
+      "stop_elapsed_s": 2.091610777000824,
+      "frames_ingested": 22,
+      "ready_frames": 1,
+      "readiness_counts": {
+        "INSUFFICIENT_GAZE_EVIDENCE": 15,
+        "NO_VISIBLE_PERSON": 6,
+        "READY": 1
+      },
+      "recording_exhausted": false,
+      "last_ingested_source_offset_s": 2.090237,
+      "last_ingested_line": 44,
+      "decision_source_offset_s": 2.090237,
+      "motion_start_monotonic_us": 2247095821,
+      "perception_origin_monotonic_us": 2247139027,
+      "decision_source_since_motion_s": 2.133443,
+      "max_dispatch_lag_s": 0.00028646499958995264,
+      "model_failures": [],
+      "first_model_request": null,
+      "resolved_output": {
+        "decision": {
+          "action": "CONTINUE",
+          "reason": "Usable gaze evidence does not show sustained attention; continue along the fixed route."
+        },
+        "source_robot_timestamp_us": 2249229264,
+        "source_state_id": "replay-e25f14f5c9126f586b63f9e9:22"
+      },
+      "last_readiness": {
+        "reason_code": null,
+        "status": "READY"
+      },
+      "source_sha256": "b9f1f06c611c7d01c2c225095d193118ecc029c8202ca5635a963952fe9eb405",
+      "trial_id": "2e295bee892e46729f97af8fc390dc3d",
+      "clock_mapping": "original first perception receipt + real elapsed replay time",
+      "physical_execution": false
+    },
+    "llm": {
+      "scenario_id": "S7",
+      "policy": "llm",
+      "status": "ACTION_RESOLVED",
+      "action": "CONTINUE",
+      "decision": {
+        "action": "CONTINUE",
+        "reason": "IN_WAY and INCREASING relative distance, with a face detected and APPROACHABLE distance, do not meet the YIELD criteria."
+      },
+      "accepted_by_live_client": false,
+      "acceptance_details": {
+        "current_readiness": true,
+        "latest_observation_age_s": 5.146528,
+        "model_source_age_s": 11.828489,
+        "trial_phase": "OBSERVING",
+        "failure_reason": null
+      },
+      "resolved_elapsed_s": 13.918722903001253,
+      "stop_elapsed_s": 13.918722903001253,
+      "frames_ingested": 89,
+      "ready_frames": 11,
+      "readiness_counts": {
+        "INSUFFICIENT_GAZE_EVIDENCE": 67,
+        "NO_VISIBLE_PERSON": 10,
+        "READY": 11,
+        "DISTANCE_UNKNOWN": 1
+      },
+      "recording_exhausted": true,
+      "last_ingested_source_offset_s": 8.772198,
+      "last_ingested_line": 177,
+      "decision_source_offset_s": 2.090237,
+      "motion_start_monotonic_us": 2247095821,
+      "perception_origin_monotonic_us": 2247139027,
+      "decision_source_since_motion_s": 2.133443,
+      "max_dispatch_lag_s": 0.0013652150009875186,
+      "model_failures": [
+        {
+          "decision": null,
+          "error": {
+            "category": "request_expired"
+          },
+          "policy": "llm",
+          "request_id": "75e2c999eed047f29658529721c06c1e",
+          "session_id": "replay-e25f14f5c9126f586b63f9e9",
+          "source_robot_timestamp_us": 2249229264,
+          "source_state_id": "replay-e25f14f5c9126f586b63f9e9:22",
+          "status": "failed",
+          "trial_id": "60017ebf39ad4eec976ff06152e8cd86"
+        }
+      ],
+      "first_model_request": {
+        "decision": null,
+        "error": null,
+        "policy": "llm",
+        "request_id": "75e2c999eed047f29658529721c06c1e",
+        "session_id": "replay-e25f14f5c9126f586b63f9e9",
+        "source_robot_timestamp_us": 2249229264,
+        "source_state_id": "replay-e25f14f5c9126f586b63f9e9:22",
+        "status": "pending",
+        "trial_id": "60017ebf39ad4eec976ff06152e8cd86"
+      },
+      "resolved_output": {
+        "decision": {
+          "action": "CONTINUE",
+          "reason": "IN_WAY and INCREASING relative distance, with a face detected and APPROACHABLE distance, do not meet the YIELD criteria."
+        },
+        "error": null,
+        "policy": "llm",
+        "request_id": "75e2c999eed047f29658529721c06c1e",
+        "session_id": "replay-e25f14f5c9126f586b63f9e9",
+        "source_robot_timestamp_us": 2249229264,
+        "source_state_id": "replay-e25f14f5c9126f586b63f9e9:22",
+        "status": "succeeded",
+        "trial_id": "60017ebf39ad4eec976ff06152e8cd86",
+        "completed_at": "2026-10-11T06:25:23.704760+00:00",
+        "error_stage": null,
+        "ok": true,
+        "ollama_configuration": {
+          "base_url": "http://127.0.0.1:11434",
+          "generation_options": {
+            "num_ctx": 8192,
+            "num_predict": 192,
+            "seed": 42,
+            "temperature": 0.0
+          },
+          "model": "qwen2.5:7b",
+          "num_ctx": 8192,
+          "num_predict": 192,
+          "seed": 42,
+          "temperature": 0.0,
+          "timeout_seconds": 120.0
+        },
+        "prompt_version": "social-state-llm-v12",
+        "raw_content": "{\n  \"action\": \"CONTINUE\",\n  \"reason\": \"IN_WAY and INCREASING relative distance, with a face detected and APPROACHABLE distance, do not meet the YIELD criteria.\"\n}",
+        "request_duration_s": 11.816424156999346,
+        "requested_model": "qwen2.5:7b",
+        "returned_model": "qwen2.5:7b",
+        "delivery_status": "failed",
+        "delivery_error": {
+          "category": "request_expired"
+        }
+      },
+      "last_readiness": {
+        "reason_code": null,
+        "status": "READY"
+      },
+      "source_sha256": "b9f1f06c611c7d01c2c225095d193118ecc029c8202ca5635a963952fe9eb405",
+      "trial_id": "60017ebf39ad4eec976ff06152e8cd86",
+      "clock_mapping": "original first perception receipt + real elapsed replay time",
+      "physical_execution": false
+    },
+    "rule_evidence": [
+      {
+        "distance_zone": "APPROACHABLE",
+        "evidence": {
+          "distance_fit_residual_m": null,
+          "distance_fit_samples": 5,
+          "distance_jump_count": 0,
+          "distance_slope_mps": null,
+          "distance_trend_valid": false,
+          "distance_valid_samples": 5,
+          "distance_valid_span_s": 0.425819,
+          "distance_window_start_us": 2248803445,
+          "gaze_coverage_fraction": 0.5146124578217685,
+          "gaze_fraction": 0.7576069434450599,
+          "gaze_valid": true,
+          "gaze_valid_coverage_s": 1.075662,
+          "gaze_valid_samples": 13,
+          "latest_distance_valid": true,
+          "latest_gaze_looking": true,
+          "latest_gaze_overlap": 0.9743298292160034,
+          "looking_bouts": 2,
+          "looking_enter_threshold": 0.93,
+          "looking_exit_threshold": 0.9,
+          "looking_time_s": 0.8149289999999999,
+          "mean_gaze_overlap": 0.9282952226125277,
+          "sustained_gaze_s": 0.127135,
+          "window_span_s": 2.090237
+        },
+        "face_detected": true,
+        "gaze_state": "INTERMITTENT",
+        "latest_distance_m": 2.31546337890625,
+        "nose_forward_m": 2.0496474609375,
+        "nose_lateral_m": 0.9351019287109374,
+        "pass_gesture": "UNKNOWN",
+        "path_position": "TO_SIDE",
+        "path_relation": "UNKNOWN",
+        "relative_distance_trend": "UNKNOWN",
+        "relative_head_position": null,
+        "relative_nose_position": {
+          "coordinate_frame": "CAM_HEAD",
+          "x": 2.0496474609375,
+          "y": 0.9351019287109374,
+          "z": -0.6349682006835937
+        },
+        "time_since_seen_s": 0.0,
+        "track_age_s": 2.090237,
+        "track_epoch": 1,
+        "uid": 2074741639,
+        "validity_flags": [
+          "NOSE_REASSOCIATED_UNVERIFIED",
+          "INSUFFICIENT_DISTANCE_EVIDENCE"
+        ],
+        "visibility": "OBSERVED"
+      }
+    ],
+    "empty_observed_s": 0.0
+  },
+  {
+    "scenario_id": "S8",
+    "expected_actions": [
+      "APPROACH",
+      "ENGAGE",
+      "CONTINUE"
+    ],
+    "rules": {
+      "scenario_id": "S8",
+      "policy": "rules",
+      "status": "ACTION_RESOLVED",
+      "action": "CONTINUE",
+      "decision": {
+        "action": "CONTINUE",
+        "reason": "No person has been detected throughout the configured observation interval; continue along the route without initiating interaction."
+      },
+      "accepted_by_live_client": true,
+      "acceptance_details": {
+        "current_readiness": true,
+        "latest_observation_age_s": 0.00127,
+        "model_source_age_s": 0.00127,
+        "trial_phase": "DECIDED",
+        "failure_reason": null
+      },
+      "resolved_elapsed_s": 1.091431618999195,
+      "stop_elapsed_s": 1.091431618999195,
+      "frames_ingested": 12,
+      "ready_frames": 1,
+      "readiness_counts": {
+        "NO_VISIBLE_PERSON": 11,
+        "READY": 1
+      },
+      "recording_exhausted": false,
+      "last_ingested_source_offset_s": 1.090163,
+      "last_ingested_line": 25,
+      "decision_source_offset_s": 1.090163,
+      "motion_start_monotonic_us": 2291237477,
+      "perception_origin_monotonic_us": 2291321222,
+      "decision_source_since_motion_s": 1.173908,
+      "max_dispatch_lag_s": 0.0010238670001854189,
+      "model_failures": [],
+      "first_model_request": null,
+      "resolved_output": {
+        "decision": {
+          "action": "CONTINUE",
+          "reason": "No person has been detected throughout the configured observation interval; continue along the route without initiating interaction."
+        },
+        "source_robot_timestamp_us": 2292411385,
+        "source_state_id": "replay-246b41a68d212a1d60d24467:12"
+      },
+      "last_readiness": {
+        "reason_code": null,
+        "status": "READY"
+      },
+      "source_sha256": "240fff11df215f5bb491c93db59827a6b4dc507f7981e870a2abc77cd2b6d12f",
+      "trial_id": "355012e9f9fd41d49b3c946d3e41c16b",
+      "clock_mapping": "original first perception receipt + real elapsed replay time",
+      "physical_execution": false
+    },
+    "llm": {
+      "scenario_id": "S8",
+      "policy": "llm",
+      "status": "ACTION_RESOLVED",
+      "action": "CONTINUE",
+      "decision": {
+        "action": "CONTINUE",
+        "reason": "No person observed and readiness is READY, meeting the configured no_person_continue_after_s and min_samples criteria."
+      },
+      "accepted_by_live_client": false,
+      "acceptance_details": {
+        "current_readiness": false,
+        "latest_observation_age_s": 0.085523,
+        "model_source_age_s": 5.091506,
+        "trial_phase": "OBSERVING",
+        "failure_reason": null
+      },
+      "resolved_elapsed_s": 6.181668250999792,
+      "stop_elapsed_s": 6.181668250999792,
+      "frames_ingested": 62,
+      "ready_frames": 16,
+      "readiness_counts": {
+        "NO_VISIBLE_PERSON": 11,
+        "READY": 16,
+        "INSUFFICIENT_GAZE_EVIDENCE": 35
+      },
+      "recording_exhausted": false,
+      "last_ingested_source_offset_s": 6.096146,
+      "last_ingested_line": 124,
+      "decision_source_offset_s": 1.090163,
+      "motion_start_monotonic_us": 2291237477,
+      "perception_origin_monotonic_us": 2291321222,
+      "decision_source_since_motion_s": 1.173908,
+      "max_dispatch_lag_s": 0.002916102999733994,
+      "model_failures": [],
+      "first_model_request": {
+        "decision": null,
+        "error": null,
+        "policy": "llm",
+        "request_id": "17bec5c60d7b421fb68ef4ff21aad39c",
+        "session_id": "replay-246b41a68d212a1d60d24467",
+        "source_robot_timestamp_us": 2292411385,
+        "source_state_id": "replay-246b41a68d212a1d60d24467:12",
+        "status": "pending",
+        "trial_id": "49dbb81af0254730be9a5041d75ef4de"
+      },
+      "resolved_output": {
+        "decision": {
+          "action": "CONTINUE",
+          "reason": "No person observed and readiness is READY, meeting the configured no_person_continue_after_s and min_samples criteria."
+        },
+        "error": null,
+        "policy": "llm",
+        "request_id": "17bec5c60d7b421fb68ef4ff21aad39c",
+        "session_id": "replay-246b41a68d212a1d60d24467",
+        "source_robot_timestamp_us": 2292411385,
+        "source_state_id": "replay-246b41a68d212a1d60d24467:12",
+        "status": "succeeded",
+        "trial_id": "49dbb81af0254730be9a5041d75ef4de",
+        "completed_at": "2026-10-11T06:25:29.898478+00:00",
+        "error_stage": null,
+        "ok": true,
+        "ollama_configuration": {
+          "base_url": "http://127.0.0.1:11434",
+          "generation_options": {
+            "num_ctx": 8192,
+            "num_predict": 192,
+            "seed": 42,
+            "temperature": 0.0
+          },
+          "model": "qwen2.5:7b",
+          "num_ctx": 8192,
+          "num_predict": 192,
+          "seed": 42,
+          "temperature": 0.0,
+          "timeout_seconds": 120.0
+        },
+        "prompt_version": "social-state-llm-v12",
+        "raw_content": "{\n  \"action\": \"CONTINUE\",\n  \"reason\": \"No person observed and readiness is READY, meeting the configured no_person_continue_after_s and min_samples criteria.\"\n}",
+        "request_duration_s": 5.086611163000271,
+        "requested_model": "qwen2.5:7b",
+        "returned_model": "qwen2.5:7b",
+        "delivery_status": "succeeded",
+        "delivery_error": null
+      },
+      "last_readiness": {
+        "reason_code": "INSUFFICIENT_GAZE_EVIDENCE",
+        "status": "OBSERVING"
+      },
+      "source_sha256": "240fff11df215f5bb491c93db59827a6b4dc507f7981e870a2abc77cd2b6d12f",
+      "trial_id": "49dbb81af0254730be9a5041d75ef4de",
+      "clock_mapping": "original first perception receipt + real elapsed replay time",
+      "physical_execution": false
+    },
+    "rule_evidence": [],
+    "empty_observed_s": 1.090163
+  },
+  {
+    "scenario_id": "S9",
+    "expected_actions": [
+      "APPROACH"
+    ],
+    "rules": {
+      "scenario_id": "S9",
+      "policy": "rules",
+      "status": "ACTION_RESOLVED",
+      "action": "APPROACH",
+      "decision": {
+        "action": "APPROACH",
+        "reason": "The person is looking steadily at the robot and is within approach distance."
+      },
+      "accepted_by_live_client": true,
+      "acceptance_details": {
+        "current_readiness": true,
+        "latest_observation_age_s": 0.001486,
+        "model_source_age_s": 0.001486,
+        "trial_phase": "DECIDED",
+        "failure_reason": null
+      },
+      "resolved_elapsed_s": 1.0751765839995642,
+      "stop_elapsed_s": 1.0751765839995642,
+      "frames_ingested": 12,
+      "ready_frames": 1,
+      "readiness_counts": {
+        "INSUFFICIENT_GAZE_EVIDENCE": 11,
+        "READY": 1
+      },
+      "recording_exhausted": false,
+      "last_ingested_source_offset_s": 1.073692,
+      "last_ingested_line": 24,
+      "decision_source_offset_s": 1.073692,
+      "motion_start_monotonic_us": 2338007134,
+      "perception_origin_monotonic_us": 2338074249,
+      "decision_source_since_motion_s": 1.140807,
+      "max_dispatch_lag_s": 0.00026764400172396563,
+      "model_failures": [],
+      "first_model_request": null,
+      "resolved_output": {
+        "decision": {
+          "action": "APPROACH",
+          "reason": "The person is looking steadily at the robot and is within approach distance."
+        },
+        "source_robot_timestamp_us": 2339147941,
+        "source_state_id": "replay-077ff210a4441c83a39ff4a6:12"
+      },
+      "last_readiness": {
+        "reason_code": null,
+        "status": "READY"
+      },
+      "source_sha256": "56793886eec65c069a2861f87ad0f01b67dc8445d8b3dfa756a5a86c0b8c57d8",
+      "trial_id": "529a8f01ce7a4750bef4d35fb53e3bcc",
+      "clock_mapping": "original first perception receipt + real elapsed replay time",
+      "physical_execution": false
+    },
+    "llm": {
+      "scenario_id": "S9",
+      "policy": "llm",
+      "status": "ACTION_RESOLVED",
+      "action": "CONTINUE",
+      "decision": {
+        "action": "CONTINUE",
+        "reason": "The person is in the APPROACHABLE distance zone, and the latest distance is 2.286m, which is outside the INTERACTION_RANGE. The gaze state is SUSTAINED, and the latest gaze looking state is true, but the relative distance trend is STABLE, and the latest distance is greater than the yield closing max distance of 3.5m. Therefore, CONTINUE is the appropriate action."
+      },
+      "accepted_by_live_client": false,
+      "acceptance_details": {
+        "current_readiness": true,
+        "latest_observation_age_s": 14.240445,
+        "model_source_age_s": 16.557208,
+        "trial_phase": "OBSERVING",
+        "failure_reason": null
+      },
+      "resolved_elapsed_s": 17.630896934000702,
+      "stop_elapsed_s": 17.630896934000702,
+      "frames_ingested": 35,
+      "ready_frames": 24,
+      "readiness_counts": {
+        "INSUFFICIENT_GAZE_EVIDENCE": 11,
+        "READY": 24
+      },
+      "recording_exhausted": true,
+      "last_ingested_source_offset_s": 3.390455,
+      "last_ingested_line": 70,
+      "decision_source_offset_s": 1.073692,
+      "motion_start_monotonic_us": 2338007134,
+      "perception_origin_monotonic_us": 2338074249,
+      "decision_source_since_motion_s": 1.140807,
+      "max_dispatch_lag_s": 0.0029042660007689847,
+      "model_failures": [
+        {
+          "decision": null,
+          "error": {
+            "category": "request_expired"
+          },
+          "policy": "llm",
+          "request_id": "a98be2ddc8d546d8bcd9635d6e7ef1d6",
+          "session_id": "replay-077ff210a4441c83a39ff4a6",
+          "source_robot_timestamp_us": 2339147941,
+          "source_state_id": "replay-077ff210a4441c83a39ff4a6:12",
+          "status": "failed",
+          "trial_id": "3fd36a1365e94fa6807a6261abbcc091"
+        }
+      ],
+      "first_model_request": {
+        "decision": null,
+        "error": null,
+        "policy": "llm",
+        "request_id": "a98be2ddc8d546d8bcd9635d6e7ef1d6",
+        "session_id": "replay-077ff210a4441c83a39ff4a6",
+        "source_robot_timestamp_us": 2339147941,
+        "source_state_id": "replay-077ff210a4441c83a39ff4a6:12",
+        "status": "pending",
+        "trial_id": "3fd36a1365e94fa6807a6261abbcc091"
+      },
+      "resolved_output": {
+        "decision": {
+          "action": "CONTINUE",
+          "reason": "The person is in the APPROACHABLE distance zone, and the latest distance is 2.286m, which is outside the INTERACTION_RANGE. The gaze state is SUSTAINED, and the latest gaze looking state is true, but the relative distance trend is STABLE, and the latest distance is greater than the yield closing max distance of 3.5m. Therefore, CONTINUE is the appropriate action."
+        },
+        "error": null,
+        "policy": "llm",
+        "request_id": "a98be2ddc8d546d8bcd9635d6e7ef1d6",
+        "session_id": "replay-077ff210a4441c83a39ff4a6",
+        "source_robot_timestamp_us": 2339147941,
+        "source_state_id": "replay-077ff210a4441c83a39ff4a6:12",
+        "status": "succeeded",
+        "trial_id": "3fd36a1365e94fa6807a6261abbcc091",
+        "completed_at": "2026-10-11T06:25:47.528511+00:00",
+        "error_stage": null,
+        "ok": true,
+        "ollama_configuration": {
+          "base_url": "http://127.0.0.1:11434",
+          "generation_options": {
+            "num_ctx": 8192,
+            "num_predict": 192,
+            "seed": 42,
+            "temperature": 0.0
+          },
+          "model": "qwen2.5:7b",
+          "num_ctx": 8192,
+          "num_predict": 192,
+          "seed": 42,
+          "temperature": 0.0,
+          "timeout_seconds": 120.0
+        },
+        "prompt_version": "social-state-llm-v12",
+        "raw_content": "{\n  \"action\": \"CONTINUE\",\n  \"reason\": \"The person is in the APPROACHABLE distance zone, and the latest distance is 2.286m, which is outside the INTERACTION_RANGE. The gaze state is SUSTAINED, and the latest gaze looking state is true, but the relative distance trend is STABLE, and the latest distance is greater than the yield closing max distance of 3.5m. Therefore, CONTINUE is the appropriate action.\"\n}",
+        "request_duration_s": 16.546367406999707,
+        "requested_model": "qwen2.5:7b",
+        "returned_model": "qwen2.5:7b",
+        "delivery_status": "failed",
+        "delivery_error": {
+          "category": "request_expired"
+        }
+      },
+      "last_readiness": {
+        "reason_code": null,
+        "status": "READY"
+      },
+      "source_sha256": "56793886eec65c069a2861f87ad0f01b67dc8445d8b3dfa756a5a86c0b8c57d8",
+      "trial_id": "3fd36a1365e94fa6807a6261abbcc091",
+      "clock_mapping": "original first perception receipt + real elapsed replay time",
+      "physical_execution": false
+    },
+    "rule_evidence": [
+      {
+        "distance_zone": "APPROACHABLE",
+        "evidence": {
+          "distance_fit_residual_m": 0.0834926781504748,
+          "distance_fit_samples": 12,
+          "distance_jump_count": 0,
+          "distance_slope_mps": 0.0,
+          "distance_trend_valid": true,
+          "distance_valid_samples": 12,
+          "distance_valid_span_s": 1.073692,
+          "distance_window_start_us": 2338074249,
+          "gaze_coverage_fraction": 1.0,
+          "gaze_fraction": 1.0,
+          "gaze_valid": true,
+          "gaze_valid_coverage_s": 1.073692,
+          "gaze_valid_samples": 12,
+          "latest_distance_valid": true,
+          "latest_gaze_looking": true,
+          "latest_gaze_overlap": 0.9324391484260559,
+          "looking_bouts": 1,
+          "looking_enter_threshold": 0.93,
+          "looking_exit_threshold": 0.9,
+          "looking_time_s": 1.073692,
+          "mean_gaze_overlap": 0.9496765981117884,
+          "sustained_gaze_s": 1.073692,
+          "window_span_s": 1.073692
+        },
+        "face_detected": true,
+        "gaze_state": "SUSTAINED",
+        "latest_distance_m": 2.286056884765625,
+        "nose_forward_m": 2.0400211181640624,
+        "nose_lateral_m": 0.8843683471679687,
+        "pass_gesture": "UNKNOWN",
+        "path_position": "TO_SIDE",
+        "path_relation": "UNKNOWN",
+        "relative_distance_trend": "STABLE",
+        "relative_head_position": null,
+        "relative_nose_position": {
+          "coordinate_frame": "CAM_HEAD",
+          "x": 2.0400211181640624,
+          "y": 0.8843683471679687,
+          "z": -0.6213234252929688
+        },
+        "time_since_seen_s": 0.0,
+        "track_age_s": 1.073692,
+        "track_epoch": 1,
+        "uid": 1603742625,
+        "validity_flags": [],
+        "visibility": "OBSERVED"
+      }
+    ],
+    "empty_observed_s": 0.0
+  }
+]
