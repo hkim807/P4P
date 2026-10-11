@@ -1,0 +1,1496 @@
+{
+  "analysis_config": {
+    "window_s": 3.0,
+    "max_gap_s": 0.25,
+    "min_span_s": 2.0,
+    "min_samples": 5,
+    "min_gaze_coverage_s": 0.6,
+    "min_gaze_coverage_fraction": 0.6,
+    "looking_enter": 0.93,
+    "looking_exit": 0.9,
+    "sustained_enter": 0.8,
+    "sustained_exit": 0.65,
+    "none_enter": 0.2,
+    "none_exit": 0.35,
+    "category_dwell_s": 0.1,
+    "min_sustained_run_s": 0.4,
+    "distance_deadband_mps": 0.1,
+    "max_distance_speed_mps": 3.0,
+    "distance_jump_allowance_m": 0.05,
+    "max_fit_residual_m": 0.1,
+    "max_fit_samples": 32,
+    "too_close_m": 0.6,
+    "interaction_max_m": 1.5,
+    "approachable_max_m": 6.0,
+    "zone_hysteresis_m": 0.1,
+    "stationary_linear_tolerance_mps": 0.02,
+    "stationary_angular_tolerance_rps": 0.03,
+    "recurring_min_looking_s": 1.0,
+    "recurring_min_fraction": 0.45,
+    "recurring_min_bouts": 2,
+    "yield_closing_max_distance_m": 3.0
+  },
+  "motion_start_method": "First nonzero planar/yaw velocity in the contiguous ramp leading to three packets above 0.02 m/s or 0.03 rad/s.",
+  "trim_method": "Remove earlier packets; preserve session, timestamps and payloads; restart each stream sequence at 1 for SDK replay compatibility.",
+  "limitations": [
+    "No camera frames with matching final-capture sessions were found.",
+    "Contiguous saved sequences do not prove every upstream sensor frame arrived or that the intended trial finished.",
+    "Usable gaze means a finite nonzero vector and finite overlap, not validated eye contact. Suspected default bundles are UNKNOWN for this audit; this does not modify live policy.",
+    "Gaze high/low counts are instantaneous diagnostics, not temporal gaze categories or time fractions.",
+    "Intent labels require independent observation; sensor agreement is not behavioral ground truth."
+  ],
+  "scenarios": [
+    {
+      "scenario": 1,
+      "source_path": "var/recordings/final_scenario_1-sdk.jsonl",
+      "source_sha256": "91519faf46e607878196dbe181ea8da775dda7065dc5c9dd5f721d3fbac418aa",
+      "session_id": "44d0d977d0cd40dfb25f41f894dcc4a4",
+      "verdict": "NOT_ALIGNED",
+      "assessment": "Closing and disappearance are compatible with passing, but gaze is mostly high until late. Human passing is not established by relative distance alone.",
+      "total_duration_s": 17.136911,
+      "motion_start_offset_s": 6.622893,
+      "motion_start_source_line": 134,
+      "motion_start_monotonic_us": 1896788380,
+      "confirmed_motion_offset_s": 6.704997,
+      "post_motion_duration_s": 10.514018,
+      "full_streams": {
+        "perception": {
+          "packets": 172,
+          "first_sequence": 1,
+          "last_sequence": 172,
+          "sequence_discontinuities": [],
+          "nonincreasing_receipt_times": 0,
+          "median_receipt_gap_s": 0.086739,
+          "max_receipt_gap_s": 0.13071,
+          "gaps_over_0_25_s": 0,
+          "repeated_source_timestamps": 0,
+          "backwards_source_timestamps": 0
+        },
+        "locomotion": {
+          "packets": 172,
+          "first_sequence": 1,
+          "last_sequence": 172,
+          "sequence_discontinuities": [],
+          "nonincreasing_receipt_times": 0,
+          "median_receipt_gap_s": 0.085533,
+          "max_receipt_gap_s": 0.128995,
+          "gaps_over_0_25_s": 0,
+          "repeated_source_timestamps": 0,
+          "backwards_source_timestamps": 0
+        }
+      },
+      "post_motion_streams": {
+        "perception": {
+          "packets": 105,
+          "first_sequence": 68,
+          "last_sequence": 172,
+          "sequence_discontinuities": [],
+          "nonincreasing_receipt_times": 0,
+          "median_receipt_gap_s": 0.086534,
+          "max_receipt_gap_s": 0.130335,
+          "gaps_over_0_25_s": 0,
+          "repeated_source_timestamps": 0,
+          "backwards_source_timestamps": 0
+        },
+        "locomotion": {
+          "packets": 106,
+          "first_sequence": 67,
+          "last_sequence": 172,
+          "sequence_discontinuities": [],
+          "nonincreasing_receipt_times": 0,
+          "median_receipt_gap_s": 0.085726,
+          "max_receipt_gap_s": 0.128995,
+          "gaps_over_0_25_s": 0,
+          "repeated_source_timestamps": 0,
+          "backwards_source_timestamps": 0
+        }
+      },
+      "post_motion_person_count_histogram": {
+        "1": 65,
+        "2": 2,
+        "0": 38
+      },
+      "post_motion_duplicate_uid_frames": 2,
+      "post_motion_person_instances": 69,
+      "post_motion_distinct_uids": 9,
+      "gaze_usable": 63,
+      "gaze_unknown_reasons": {
+        "suspected_sdk_default": 6
+      },
+      "gaze_high_count": 33,
+      "gaze_low_count": 12,
+      "gaze_median": 0.9327996373176575,
+      "distance_min_m": 1.19500341796875,
+      "distance_max_m": 5.887865234375,
+      "distance_interaction_samples": 9,
+      "no_detection_intervals_relative_to_motion": [
+        {
+          "start_s": 6.795318,
+          "end_s": 10.514018,
+          "ends_at_capture_end": true
+        }
+      ],
+      "one_second_bins": [
+        {
+          "start_s": 0,
+          "perception_packets": 9,
+          "person_instances": 9,
+          "distance_median_m": 3.615806640625,
+          "gaze_median": 0.9497557878494263,
+          "gaze_high": 7,
+          "gaze_low": 0,
+          "gaze_unknown": 0
+        },
+        {
+          "start_s": 1,
+          "perception_packets": 10,
+          "person_instances": 11,
+          "distance_median_m": 3.315412841796875,
+          "gaze_median": 0.9345883727073669,
+          "gaze_high": 7,
+          "gaze_low": 0,
+          "gaze_unknown": 0
+        },
+        {
+          "start_s": 2,
+          "perception_packets": 11,
+          "person_instances": 11,
+          "distance_median_m": 3.148214111328125,
+          "gaze_median": 0.9481456279754639,
+          "gaze_high": 8,
+          "gaze_low": 1,
+          "gaze_unknown": 0
+        },
+        {
+          "start_s": 3,
+          "perception_packets": 9,
+          "person_instances": 9,
+          "distance_median_m": 2.51318017578125,
+          "gaze_median": 0.9367738962173462,
+          "gaze_high": 5,
+          "gaze_low": 2,
+          "gaze_unknown": 0
+        },
+        {
+          "start_s": 4,
+          "perception_packets": 11,
+          "person_instances": 12,
+          "distance_median_m": 2.069468200683594,
+          "gaze_median": 0.9281160235404968,
+          "gaze_high": 5,
+          "gaze_low": 1,
+          "gaze_unknown": 2
+        },
+        {
+          "start_s": 5,
+          "perception_packets": 10,
+          "person_instances": 10,
+          "distance_median_m": 1.541662780761719,
+          "gaze_median": 0.9117735326290131,
+          "gaze_high": 1,
+          "gaze_low": 2,
+          "gaze_unknown": 4
+        },
+        {
+          "start_s": 6,
+          "perception_packets": 9,
+          "person_instances": 7,
+          "distance_median_m": 1.3094757080078125,
+          "gaze_median": 0.8484901785850525,
+          "gaze_high": 0,
+          "gaze_low": 6,
+          "gaze_unknown": 0
+        },
+        {
+          "start_s": 7,
+          "perception_packets": 11,
+          "person_instances": 0,
+          "distance_median_m": null,
+          "gaze_median": null,
+          "gaze_high": 0,
+          "gaze_low": 0,
+          "gaze_unknown": 0
+        },
+        {
+          "start_s": 8,
+          "perception_packets": 10,
+          "person_instances": 0,
+          "distance_median_m": null,
+          "gaze_median": null,
+          "gaze_high": 0,
+          "gaze_low": 0,
+          "gaze_unknown": 0
+        },
+        {
+          "start_s": 9,
+          "perception_packets": 10,
+          "person_instances": 0,
+          "distance_median_m": null,
+          "gaze_median": null,
+          "gaze_high": 0,
+          "gaze_low": 0,
+          "gaze_unknown": 0
+        },
+        {
+          "start_s": 10,
+          "perception_packets": 5,
+          "person_instances": 0,
+          "distance_median_m": null,
+          "gaze_median": null,
+          "gaze_high": 0,
+          "gaze_low": 0,
+          "gaze_unknown": 0
+        }
+      ],
+      "trimmed_path": null
+    },
+    {
+      "scenario": 2,
+      "source_path": "var/recordings/final_scenario_2-sdk.jsonl",
+      "source_sha256": "dcd6e49db87d4249ee45160e5dc7383c245aac1907d67de176f377d02b6c6a93",
+      "session_id": "452221626cc04764a10b0d078c82ba77",
+      "verdict": "ALIGNED",
+      "assessment": "Sustained high gaze at 2.11\u20132.56 m, within approach distance. Two perception packets contain duplicate entries for the same UID; one gaze vector is unavailable.",
+      "total_duration_s": 7.483569,
+      "motion_start_offset_s": 2.777035,
+      "motion_start_source_line": 56,
+      "motion_start_monotonic_us": 2009906601,
+      "confirmed_motion_offset_s": 2.777035,
+      "post_motion_duration_s": 4.706534,
+      "full_streams": {
+        "perception": {
+          "packets": 76,
+          "first_sequence": 1,
+          "last_sequence": 76,
+          "sequence_discontinuities": [],
+          "nonincreasing_receipt_times": 0,
+          "median_receipt_gap_s": 0.087303,
+          "max_receipt_gap_s": 0.128705,
+          "gaps_over_0_25_s": 0,
+          "repeated_source_timestamps": 0,
+          "backwards_source_timestamps": 0
+        },
+        "locomotion": {
+          "packets": 75,
+          "first_sequence": 1,
+          "last_sequence": 75,
+          "sequence_discontinuities": [],
+          "nonincreasing_receipt_times": 0,
+          "median_receipt_gap_s": 0.0848955,
+          "max_receipt_gap_s": 0.132108,
+          "gaps_over_0_25_s": 0,
+          "repeated_source_timestamps": 0,
+          "backwards_source_timestamps": 0
+        }
+      },
+      "post_motion_streams": {
+        "perception": {
+          "packets": 48,
+          "first_sequence": 29,
+          "last_sequence": 76,
+          "sequence_discontinuities": [],
+          "nonincreasing_receipt_times": 0,
+          "median_receipt_gap_s": 0.087015,
+          "max_receipt_gap_s": 0.128705,
+          "gaps_over_0_25_s": 0,
+          "repeated_source_timestamps": 0,
+          "backwards_source_timestamps": 0
+        },
+        "locomotion": {
+          "packets": 48,
+          "first_sequence": 28,
+          "last_sequence": 75,
+          "sequence_discontinuities": [],
+          "nonincreasing_receipt_times": 0,
+          "median_receipt_gap_s": 0.084946,
+          "max_receipt_gap_s": 0.132108,
+          "gaps_over_0_25_s": 0,
+          "repeated_source_timestamps": 0,
+          "backwards_source_timestamps": 0
+        }
+      },
+      "post_motion_person_count_histogram": {
+        "2": 2,
+        "1": 46
+      },
+      "post_motion_duplicate_uid_frames": 2,
+      "post_motion_person_instances": 50,
+      "post_motion_distinct_uids": 2,
+      "gaze_usable": 49,
+      "gaze_unknown_reasons": {
+        "missing_or_nonfinite_gaze": 1
+      },
+      "gaze_high_count": 49,
+      "gaze_low_count": 0,
+      "gaze_median": 0.9685008525848389,
+      "distance_min_m": 2.11421240234375,
+      "distance_max_m": 2.55894580078125,
+      "distance_interaction_samples": 0,
+      "no_detection_intervals_relative_to_motion": [],
+      "one_second_bins": [
+        {
+          "start_s": 0,
+          "perception_packets": 10,
+          "person_instances": 11,
+          "distance_median_m": 2.45807080078125,
+          "gaze_median": 0.960634171962738,
+          "gaze_high": 11,
+          "gaze_low": 0,
+          "gaze_unknown": 0
+        },
+        {
+          "start_s": 1,
+          "perception_packets": 10,
+          "person_instances": 11,
+          "distance_median_m": 2.404617919921875,
+          "gaze_median": 0.9707014262676239,
+          "gaze_high": 10,
+          "gaze_low": 0,
+          "gaze_unknown": 1
+        },
+        {
+          "start_s": 2,
+          "perception_packets": 10,
+          "person_instances": 10,
+          "distance_median_m": 2.31546337890625,
+          "gaze_median": 0.9679693877696991,
+          "gaze_high": 10,
+          "gaze_low": 0,
+          "gaze_unknown": 0
+        },
+        {
+          "start_s": 3,
+          "perception_packets": 10,
+          "person_instances": 10,
+          "distance_median_m": 2.2413984375,
+          "gaze_median": 0.9756121337413788,
+          "gaze_high": 10,
+          "gaze_low": 0,
+          "gaze_unknown": 0
+        },
+        {
+          "start_s": 4,
+          "perception_packets": 8,
+          "person_instances": 8,
+          "distance_median_m": 2.232631591796875,
+          "gaze_median": 0.9686430096626282,
+          "gaze_high": 8,
+          "gaze_low": 0,
+          "gaze_unknown": 0
+        }
+      ],
+      "trimmed_path": "var/evaluation/final-scenarios-audit/trimmed/final_scenario_2-sdk.jsonl",
+      "trimmed_sha256": "08a9f4e035e8ff1b5ca4ad5f807dd5b9a4e94bc55c916da9412365813df506bb",
+      "trim_sequence_mapping": {
+        "locomotion": {
+          "first_original_sequence": 28,
+          "first_source_line": 56
+        },
+        "perception": {
+          "first_original_sequence": 29,
+          "first_source_line": 57
+        }
+      },
+      "replay_validated_perception_states": 48
+    },
+    {
+      "scenario": 3,
+      "source_path": "var/recordings/final_scenario_3-sdk.jsonl",
+      "source_sha256": "a1bd0d9665869c9eac2e98ba1aa9725f64b9c51679b2f2a6121eea32a07ca067",
+      "session_id": "33136d0d0ed841c098dedb5175a90e72",
+      "verdict": "PARTIAL",
+      "assessment": "Sustained high gaze, but starts around 1.7 m, outside the configured 1.5 m interaction range; reaches that range later.",
+      "total_duration_s": 7.59906,
+      "motion_start_offset_s": 2.900316,
+      "motion_start_source_line": 60,
+      "motion_start_monotonic_us": 2046106026,
+      "confirmed_motion_offset_s": 2.900316,
+      "post_motion_duration_s": 4.698744,
+      "full_streams": {
+        "perception": {
+          "packets": 77,
+          "first_sequence": 1,
+          "last_sequence": 77,
+          "sequence_discontinuities": [],
+          "nonincreasing_receipt_times": 0,
+          "median_receipt_gap_s": 0.0875325,
+          "max_receipt_gap_s": 0.129731,
+          "gaps_over_0_25_s": 0,
+          "repeated_source_timestamps": 0,
+          "backwards_source_timestamps": 0
+        },
+        "locomotion": {
+          "packets": 77,
+          "first_sequence": 1,
+          "last_sequence": 77,
+          "sequence_discontinuities": [],
+          "nonincreasing_receipt_times": 0,
+          "median_receipt_gap_s": 0.0873575,
+          "max_receipt_gap_s": 0.1341,
+          "gaps_over_0_25_s": 0,
+          "repeated_source_timestamps": 0,
+          "backwards_source_timestamps": 0
+        }
+      },
+      "post_motion_streams": {
+        "perception": {
+          "packets": 47,
+          "first_sequence": 31,
+          "last_sequence": 77,
+          "sequence_discontinuities": [],
+          "nonincreasing_receipt_times": 0,
+          "median_receipt_gap_s": 0.08753050000000001,
+          "max_receipt_gap_s": 0.129731,
+          "gaps_over_0_25_s": 0,
+          "repeated_source_timestamps": 0,
+          "backwards_source_timestamps": 0
+        },
+        "locomotion": {
+          "packets": 48,
+          "first_sequence": 30,
+          "last_sequence": 77,
+          "sequence_discontinuities": [],
+          "nonincreasing_receipt_times": 0,
+          "median_receipt_gap_s": 0.087404,
+          "max_receipt_gap_s": 0.1341,
+          "gaps_over_0_25_s": 0,
+          "repeated_source_timestamps": 0,
+          "backwards_source_timestamps": 0
+        }
+      },
+      "post_motion_person_count_histogram": {
+        "1": 47
+      },
+      "post_motion_duplicate_uid_frames": 0,
+      "post_motion_person_instances": 47,
+      "post_motion_distinct_uids": 1,
+      "gaze_usable": 46,
+      "gaze_unknown_reasons": {
+        "missing_or_nonfinite_gaze": 1
+      },
+      "gaze_high_count": 45,
+      "gaze_low_count": 0,
+      "gaze_median": 0.9647354185581207,
+      "distance_min_m": 1.3376136474609375,
+      "distance_max_m": 1.73504248046875,
+      "distance_interaction_samples": 17,
+      "no_detection_intervals_relative_to_motion": [],
+      "one_second_bins": [
+        {
+          "start_s": 0,
+          "perception_packets": 10,
+          "person_instances": 10,
+          "distance_median_m": 1.6532060546875,
+          "gaze_median": 0.9649426937103271,
+          "gaze_high": 9,
+          "gaze_low": 0,
+          "gaze_unknown": 1
+        },
+        {
+          "start_s": 1,
+          "perception_packets": 10,
+          "person_instances": 10,
+          "distance_median_m": 1.619804443359375,
+          "gaze_median": 0.9635105431079865,
+          "gaze_high": 9,
+          "gaze_low": 0,
+          "gaze_unknown": 0
+        },
+        {
+          "start_s": 2,
+          "perception_packets": 10,
+          "person_instances": 10,
+          "distance_median_m": 1.5588095703125,
+          "gaze_median": 0.9573784172534943,
+          "gaze_high": 10,
+          "gaze_low": 0,
+          "gaze_unknown": 0
+        },
+        {
+          "start_s": 3,
+          "perception_packets": 9,
+          "person_instances": 9,
+          "distance_median_m": 1.451384033203125,
+          "gaze_median": 0.9738034605979919,
+          "gaze_high": 9,
+          "gaze_low": 0,
+          "gaze_unknown": 0
+        },
+        {
+          "start_s": 4,
+          "perception_packets": 8,
+          "person_instances": 8,
+          "distance_median_m": 1.3803428955078125,
+          "gaze_median": 0.9678566753864288,
+          "gaze_high": 8,
+          "gaze_low": 0,
+          "gaze_unknown": 0
+        }
+      ],
+      "trimmed_path": null
+    },
+    {
+      "scenario": 4,
+      "source_path": "var/recordings/final_scenario_4-sdk.jsonl",
+      "source_sha256": "6a3e10575de2817a8799eb1f4a27500c67daba7e05d5f4bc8fcb59391d5ae7d7",
+      "session_id": "07b46842b60a4390a4b6fe0d29dbd788",
+      "verdict": "NOT_ALIGNED",
+      "assessment": "Closing and final disappearance, but frequent high gaze and many unavailable estimates do not support a clean no-look pass.",
+      "total_duration_s": 11.761335,
+      "motion_start_offset_s": 5.679951,
+      "motion_start_source_line": 115,
+      "motion_start_monotonic_us": 2096080866,
+      "confirmed_motion_offset_s": 5.679951,
+      "post_motion_duration_s": 6.081384,
+      "full_streams": {
+        "perception": {
+          "packets": 119,
+          "first_sequence": 1,
+          "last_sequence": 119,
+          "sequence_discontinuities": [],
+          "nonincreasing_receipt_times": 0,
+          "median_receipt_gap_s": 0.0875145,
+          "max_receipt_gap_s": 0.133188,
+          "gaps_over_0_25_s": 0,
+          "repeated_source_timestamps": 0,
+          "backwards_source_timestamps": 0
+        },
+        "locomotion": {
+          "packets": 118,
+          "first_sequence": 1,
+          "last_sequence": 118,
+          "sequence_discontinuities": [],
+          "nonincreasing_receipt_times": 0,
+          "median_receipt_gap_s": 0.085936,
+          "max_receipt_gap_s": 0.130773,
+          "gaps_over_0_25_s": 0,
+          "repeated_source_timestamps": 0,
+          "backwards_source_timestamps": 0
+        }
+      },
+      "post_motion_streams": {
+        "perception": {
+          "packets": 62,
+          "first_sequence": 58,
+          "last_sequence": 119,
+          "sequence_discontinuities": [],
+          "nonincreasing_receipt_times": 0,
+          "median_receipt_gap_s": 0.087283,
+          "max_receipt_gap_s": 0.133188,
+          "gaps_over_0_25_s": 0,
+          "repeated_source_timestamps": 0,
+          "backwards_source_timestamps": 0
+        },
+        "locomotion": {
+          "packets": 61,
+          "first_sequence": 58,
+          "last_sequence": 118,
+          "sequence_discontinuities": [],
+          "nonincreasing_receipt_times": 0,
+          "median_receipt_gap_s": 0.085613,
+          "max_receipt_gap_s": 0.129095,
+          "gaps_over_0_25_s": 0,
+          "repeated_source_timestamps": 0,
+          "backwards_source_timestamps": 0
+        }
+      },
+      "post_motion_person_count_histogram": {
+        "2": 2,
+        "1": 59,
+        "0": 1
+      },
+      "post_motion_duplicate_uid_frames": 2,
+      "post_motion_person_instances": 63,
+      "post_motion_distinct_uids": 6,
+      "gaze_usable": 38,
+      "gaze_unknown_reasons": {
+        "suspected_sdk_default": 25
+      },
+      "gaze_high_count": 22,
+      "gaze_low_count": 9,
+      "gaze_median": 0.943546861410141,
+      "distance_min_m": 1.1644739990234374,
+      "distance_max_m": 3.615806640625,
+      "distance_interaction_samples": 10,
+      "no_detection_intervals_relative_to_motion": [
+        {
+          "start_s": 6.081384,
+          "end_s": 6.081384,
+          "ends_at_capture_end": true
+        }
+      ],
+      "one_second_bins": [
+        {
+          "start_s": 0,
+          "perception_packets": 10,
+          "person_instances": 12,
+          "distance_median_m": 3.4784937744140625,
+          "gaze_median": 0.9507432579994202,
+          "gaze_high": 10,
+          "gaze_low": 1,
+          "gaze_unknown": 0
+        },
+        {
+          "start_s": 1,
+          "perception_packets": 10,
+          "person_instances": 10,
+          "distance_median_m": 3.23960888671875,
+          "gaze_median": 0.9017730355262756,
+          "gaze_high": 2,
+          "gaze_low": 2,
+          "gaze_unknown": 5
+        },
+        {
+          "start_s": 2,
+          "perception_packets": 11,
+          "person_instances": 11,
+          "distance_median_m": 2.73395947265625,
+          "gaze_median": 0.9552153646945953,
+          "gaze_high": 4,
+          "gaze_low": 0,
+          "gaze_unknown": 7
+        },
+        {
+          "start_s": 3,
+          "perception_packets": 10,
+          "person_instances": 10,
+          "distance_median_m": 2.2247105712890622,
+          "gaze_median": 0.8976594507694244,
+          "gaze_high": 2,
+          "gaze_low": 3,
+          "gaze_unknown": 4
+        },
+        {
+          "start_s": 4,
+          "perception_packets": 9,
+          "person_instances": 9,
+          "distance_median_m": 1.842418212890625,
+          "gaze_median": 0.9208654165267944,
+          "gaze_high": 3,
+          "gaze_low": 3,
+          "gaze_unknown": 1
+        },
+        {
+          "start_s": 5,
+          "perception_packets": 11,
+          "person_instances": 11,
+          "distance_median_m": 1.3536734619140625,
+          "gaze_median": 0.9256053566932678,
+          "gaze_high": 1,
+          "gaze_low": 0,
+          "gaze_unknown": 8
+        },
+        {
+          "start_s": 6,
+          "perception_packets": 1,
+          "person_instances": 0,
+          "distance_median_m": null,
+          "gaze_median": null,
+          "gaze_high": 0,
+          "gaze_low": 0,
+          "gaze_unknown": 0
+        }
+      ],
+      "trimmed_path": null
+    },
+    {
+      "scenario": 5,
+      "source_path": "var/recordings/final_scenario_5-sdk.jsonl",
+      "source_sha256": "212fe9df98bfd900ae3cb7c520b29ddcebe3bdde6dbcc71123d3b84ec62ab9a2",
+      "session_id": "393a20cdb19a447d8387eea25819dad8",
+      "verdict": "UNOBSERVABLE",
+      "assessment": "No detected person in any post-motion perception frame; walking away and gaze cannot be assessed.",
+      "total_duration_s": 10.640808,
+      "motion_start_offset_s": 3.729626,
+      "motion_start_source_line": 76,
+      "motion_start_monotonic_us": 2138305845,
+      "confirmed_motion_offset_s": 3.729626,
+      "post_motion_duration_s": 6.911182,
+      "full_streams": {
+        "perception": {
+          "packets": 107,
+          "first_sequence": 1,
+          "last_sequence": 107,
+          "sequence_discontinuities": [],
+          "nonincreasing_receipt_times": 0,
+          "median_receipt_gap_s": 0.08428849999999999,
+          "max_receipt_gap_s": 0.128146,
+          "gaps_over_0_25_s": 0,
+          "repeated_source_timestamps": 0,
+          "backwards_source_timestamps": 0
+        },
+        "locomotion": {
+          "packets": 107,
+          "first_sequence": 1,
+          "last_sequence": 107,
+          "sequence_discontinuities": [],
+          "nonincreasing_receipt_times": 0,
+          "median_receipt_gap_s": 0.08472450000000001,
+          "max_receipt_gap_s": 0.134574,
+          "gaps_over_0_25_s": 0,
+          "repeated_source_timestamps": 0,
+          "backwards_source_timestamps": 0
+        }
+      },
+      "post_motion_streams": {
+        "perception": {
+          "packets": 69,
+          "first_sequence": 39,
+          "last_sequence": 107,
+          "sequence_discontinuities": [],
+          "nonincreasing_receipt_times": 0,
+          "median_receipt_gap_s": 0.0840805,
+          "max_receipt_gap_s": 0.126671,
+          "gaps_over_0_25_s": 0,
+          "repeated_source_timestamps": 0,
+          "backwards_source_timestamps": 0
+        },
+        "locomotion": {
+          "packets": 70,
+          "first_sequence": 38,
+          "last_sequence": 107,
+          "sequence_discontinuities": [],
+          "nonincreasing_receipt_times": 0,
+          "median_receipt_gap_s": 0.084478,
+          "max_receipt_gap_s": 0.127613,
+          "gaps_over_0_25_s": 0,
+          "repeated_source_timestamps": 0,
+          "backwards_source_timestamps": 0
+        }
+      },
+      "post_motion_person_count_histogram": {
+        "0": 69
+      },
+      "post_motion_duplicate_uid_frames": 0,
+      "post_motion_person_instances": 0,
+      "post_motion_distinct_uids": 0,
+      "gaze_usable": 0,
+      "gaze_unknown_reasons": {},
+      "gaze_high_count": 0,
+      "gaze_low_count": 0,
+      "gaze_median": null,
+      "distance_min_m": null,
+      "distance_max_m": null,
+      "distance_interaction_samples": 0,
+      "no_detection_intervals_relative_to_motion": [
+        {
+          "start_s": 0.044155,
+          "end_s": 6.911182,
+          "ends_at_capture_end": true
+        }
+      ],
+      "one_second_bins": [
+        {
+          "start_s": 0,
+          "perception_packets": 10,
+          "person_instances": 0,
+          "distance_median_m": null,
+          "gaze_median": null,
+          "gaze_high": 0,
+          "gaze_low": 0,
+          "gaze_unknown": 0
+        },
+        {
+          "start_s": 1,
+          "perception_packets": 10,
+          "person_instances": 0,
+          "distance_median_m": null,
+          "gaze_median": null,
+          "gaze_high": 0,
+          "gaze_low": 0,
+          "gaze_unknown": 0
+        },
+        {
+          "start_s": 2,
+          "perception_packets": 10,
+          "person_instances": 0,
+          "distance_median_m": null,
+          "gaze_median": null,
+          "gaze_high": 0,
+          "gaze_low": 0,
+          "gaze_unknown": 0
+        },
+        {
+          "start_s": 3,
+          "perception_packets": 10,
+          "person_instances": 0,
+          "distance_median_m": null,
+          "gaze_median": null,
+          "gaze_high": 0,
+          "gaze_low": 0,
+          "gaze_unknown": 0
+        },
+        {
+          "start_s": 4,
+          "perception_packets": 10,
+          "person_instances": 0,
+          "distance_median_m": null,
+          "gaze_median": null,
+          "gaze_high": 0,
+          "gaze_low": 0,
+          "gaze_unknown": 0
+        },
+        {
+          "start_s": 5,
+          "perception_packets": 10,
+          "person_instances": 0,
+          "distance_median_m": null,
+          "gaze_median": null,
+          "gaze_high": 0,
+          "gaze_low": 0,
+          "gaze_unknown": 0
+        },
+        {
+          "start_s": 6,
+          "perception_packets": 9,
+          "person_instances": 0,
+          "distance_median_m": null,
+          "gaze_median": null,
+          "gaze_high": 0,
+          "gaze_low": 0,
+          "gaze_unknown": 0
+        }
+      ],
+      "trimmed_path": null
+    },
+    {
+      "scenario": 6,
+      "source_path": "var/recordings/final_scenario_6-sdk.jsonl",
+      "source_sha256": "4b7f1e6cffaa700d4fbe89e3462958b95186dbf4dd3a866e9128a70eb27e4b1b",
+      "session_id": "16cfef6a68734f41b3c70b3505bc93c0",
+      "verdict": "NOT_ALIGNED",
+      "assessment": "High gaze occurs across most of the recorded pass, with almost no usable low gaze. The file ends without a reliable look-ahead-again phase or completion of the pass.",
+      "total_duration_s": 28.624092,
+      "motion_start_offset_s": 23.950488,
+      "motion_start_source_line": 480,
+      "motion_start_monotonic_us": 2198112528,
+      "confirmed_motion_offset_s": 24.122354,
+      "post_motion_duration_s": 4.673604,
+      "full_streams": {
+        "perception": {
+          "packets": 287,
+          "first_sequence": 1,
+          "last_sequence": 287,
+          "sequence_discontinuities": [],
+          "nonincreasing_receipt_times": 0,
+          "median_receipt_gap_s": 0.08611250000000001,
+          "max_receipt_gap_s": 0.131676,
+          "gaps_over_0_25_s": 0,
+          "repeated_source_timestamps": 0,
+          "backwards_source_timestamps": 0
+        },
+        "locomotion": {
+          "packets": 287,
+          "first_sequence": 1,
+          "last_sequence": 287,
+          "sequence_discontinuities": [],
+          "nonincreasing_receipt_times": 0,
+          "median_receipt_gap_s": 0.084801,
+          "max_receipt_gap_s": 0.13033,
+          "gaps_over_0_25_s": 0,
+          "repeated_source_timestamps": 0,
+          "backwards_source_timestamps": 0
+        }
+      },
+      "post_motion_streams": {
+        "perception": {
+          "packets": 47,
+          "first_sequence": 241,
+          "last_sequence": 287,
+          "sequence_discontinuities": [],
+          "nonincreasing_receipt_times": 0,
+          "median_receipt_gap_s": 0.08636,
+          "max_receipt_gap_s": 0.12853,
+          "gaps_over_0_25_s": 0,
+          "repeated_source_timestamps": 0,
+          "backwards_source_timestamps": 0
+        },
+        "locomotion": {
+          "packets": 48,
+          "first_sequence": 240,
+          "last_sequence": 287,
+          "sequence_discontinuities": [],
+          "nonincreasing_receipt_times": 0,
+          "median_receipt_gap_s": 0.085714,
+          "max_receipt_gap_s": 0.13033,
+          "gaps_over_0_25_s": 0,
+          "repeated_source_timestamps": 0,
+          "backwards_source_timestamps": 0
+        }
+      },
+      "post_motion_person_count_histogram": {
+        "1": 45,
+        "2": 2
+      },
+      "post_motion_duplicate_uid_frames": 2,
+      "post_motion_person_instances": 49,
+      "post_motion_distinct_uids": 5,
+      "gaze_usable": 45,
+      "gaze_unknown_reasons": {
+        "suspected_sdk_default": 4
+      },
+      "gaze_high_count": 27,
+      "gaze_low_count": 1,
+      "gaze_median": 0.9362937808036804,
+      "distance_min_m": 1.7892979736328125,
+      "distance_max_m": 3.99099755859375,
+      "distance_interaction_samples": 0,
+      "no_detection_intervals_relative_to_motion": [],
+      "one_second_bins": [
+        {
+          "start_s": 0,
+          "perception_packets": 10,
+          "person_instances": 10,
+          "distance_median_m": 3.5848702392578122,
+          "gaze_median": 0.9391532838344574,
+          "gaze_high": 8,
+          "gaze_low": 0,
+          "gaze_unknown": 0
+        },
+        {
+          "start_s": 1,
+          "perception_packets": 10,
+          "person_instances": 12,
+          "distance_median_m": 3.4842327880859374,
+          "gaze_median": 0.9280436933040619,
+          "gaze_high": 5,
+          "gaze_low": 0,
+          "gaze_unknown": 0
+        },
+        {
+          "start_s": 2,
+          "perception_packets": 10,
+          "person_instances": 10,
+          "distance_median_m": 3.09077099609375,
+          "gaze_median": 0.9301308393478394,
+          "gaze_high": 5,
+          "gaze_low": 0,
+          "gaze_unknown": 0
+        },
+        {
+          "start_s": 3,
+          "perception_packets": 10,
+          "person_instances": 10,
+          "distance_median_m": 2.108106811523437,
+          "gaze_median": 0.9668488800525665,
+          "gaze_high": 8,
+          "gaze_low": 1,
+          "gaze_unknown": 0
+        },
+        {
+          "start_s": 4,
+          "perception_packets": 7,
+          "person_instances": 7,
+          "distance_median_m": 1.9023638916015626,
+          "gaze_median": 0.9145305156707764,
+          "gaze_high": 1,
+          "gaze_low": 0,
+          "gaze_unknown": 4
+        }
+      ],
+      "trimmed_path": null
+    },
+    {
+      "scenario": 7,
+      "source_path": "var/recordings/final_scenario_7-sdk.jsonl",
+      "source_sha256": "e70ef01cf0e320bc8f24d76e811b41ecfac953f16a2cb13b8c60f351624bb72b",
+      "session_id": "4bdb1eb5d1524b8f8b81207eab43435e",
+      "verdict": "PARTIAL",
+      "assessment": "Alternating high and low usable gaze is compatible with intermittent attention, but detection/default-gaze gaps and UID changes break continuity. Standing to the side is unverified.",
+      "total_duration_s": 14.280458,
+      "motion_start_offset_s": 5.379927,
+      "motion_start_source_line": 109,
+      "motion_start_monotonic_us": 2247095821,
+      "confirmed_motion_offset_s": 5.379927,
+      "post_motion_duration_s": 8.900531,
+      "full_streams": {
+        "perception": {
+          "packets": 143,
+          "first_sequence": 1,
+          "last_sequence": 143,
+          "sequence_discontinuities": [],
+          "nonincreasing_receipt_times": 0,
+          "median_receipt_gap_s": 0.08743,
+          "max_receipt_gap_s": 0.131068,
+          "gaps_over_0_25_s": 0,
+          "repeated_source_timestamps": 0,
+          "backwards_source_timestamps": 0
+        },
+        "locomotion": {
+          "packets": 144,
+          "first_sequence": 1,
+          "last_sequence": 144,
+          "sequence_discontinuities": [],
+          "nonincreasing_receipt_times": 0,
+          "median_receipt_gap_s": 0.086503,
+          "max_receipt_gap_s": 0.13506,
+          "gaps_over_0_25_s": 0,
+          "repeated_source_timestamps": 0,
+          "backwards_source_timestamps": 0
+        }
+      },
+      "post_motion_streams": {
+        "perception": {
+          "packets": 89,
+          "first_sequence": 55,
+          "last_sequence": 143,
+          "sequence_discontinuities": [],
+          "nonincreasing_receipt_times": 0,
+          "median_receipt_gap_s": 0.0870255,
+          "max_receipt_gap_s": 0.131068,
+          "gaps_over_0_25_s": 0,
+          "repeated_source_timestamps": 0,
+          "backwards_source_timestamps": 0
+        },
+        "locomotion": {
+          "packets": 90,
+          "first_sequence": 55,
+          "last_sequence": 144,
+          "sequence_discontinuities": [],
+          "nonincreasing_receipt_times": 0,
+          "median_receipt_gap_s": 0.086422,
+          "max_receipt_gap_s": 0.13506,
+          "gaps_over_0_25_s": 0,
+          "repeated_source_timestamps": 0,
+          "backwards_source_timestamps": 0
+        }
+      },
+      "post_motion_person_count_histogram": {
+        "1": 78,
+        "2": 1,
+        "0": 10
+      },
+      "post_motion_duplicate_uid_frames": 1,
+      "post_motion_person_instances": 80,
+      "post_motion_distinct_uids": 5,
+      "gaze_usable": 50,
+      "gaze_unknown_reasons": {
+        "suspected_sdk_default": 29,
+        "missing_or_nonfinite_gaze": 1
+      },
+      "gaze_high_count": 36,
+      "gaze_low_count": 10,
+      "gaze_median": 0.949126660823822,
+      "distance_min_m": 1.408835693359375,
+      "distance_max_m": 2.668381103515625,
+      "distance_interaction_samples": 1,
+      "no_detection_intervals_relative_to_motion": [
+        {
+          "start_s": 1.120694,
+          "end_s": 1.707624,
+          "ends_at_capture_end": false
+        },
+        {
+          "start_s": 3.329329,
+          "end_s": 3.414077,
+          "ends_at_capture_end": false
+        },
+        {
+          "start_s": 3.539632,
+          "end_s": 3.623998,
+          "ends_at_capture_end": false
+        },
+        {
+          "start_s": 5.812056,
+          "end_s": 5.936879,
+          "ends_at_capture_end": false
+        },
+        {
+          "start_s": 8.002976,
+          "end_s": 8.128814,
+          "ends_at_capture_end": false
+        }
+      ],
+      "one_second_bins": [
+        {
+          "start_s": 0,
+          "perception_packets": 10,
+          "person_instances": 11,
+          "distance_median_m": 2.404617919921875,
+          "gaze_median": 0.949126660823822,
+          "gaze_high": 8,
+          "gaze_low": 2,
+          "gaze_unknown": 1
+        },
+        {
+          "start_s": 1,
+          "perception_packets": 10,
+          "person_instances": 4,
+          "distance_median_m": 2.451341552734375,
+          "gaze_median": 0.8610996603965759,
+          "gaze_high": 0,
+          "gaze_low": 2,
+          "gaze_unknown": 2
+        },
+        {
+          "start_s": 2,
+          "perception_packets": 10,
+          "person_instances": 10,
+          "distance_median_m": 2.31546337890625,
+          "gaze_median": 0.9545019268989563,
+          "gaze_high": 9,
+          "gaze_low": 1,
+          "gaze_unknown": 0
+        },
+        {
+          "start_s": 3,
+          "perception_packets": 10,
+          "person_instances": 8,
+          "distance_median_m": 2.2426175537109376,
+          "gaze_median": null,
+          "gaze_high": 0,
+          "gaze_low": 0,
+          "gaze_unknown": 8
+        },
+        {
+          "start_s": 4,
+          "perception_packets": 10,
+          "person_instances": 10,
+          "distance_median_m": 2.17667529296875,
+          "gaze_median": 0.960323303937912,
+          "gaze_high": 8,
+          "gaze_low": 0,
+          "gaze_unknown": 0
+        },
+        {
+          "start_s": 5,
+          "perception_packets": 10,
+          "person_instances": 9,
+          "distance_median_m": 2.206935546875,
+          "gaze_median": 0.8301132917404175,
+          "gaze_high": 0,
+          "gaze_low": 1,
+          "gaze_unknown": 8
+        },
+        {
+          "start_s": 6,
+          "perception_packets": 10,
+          "person_instances": 10,
+          "distance_median_m": 2.122900146484375,
+          "gaze_median": 0.9463972449302673,
+          "gaze_high": 5,
+          "gaze_low": 1,
+          "gaze_unknown": 3
+        },
+        {
+          "start_s": 7,
+          "perception_packets": 10,
+          "person_instances": 10,
+          "distance_median_m": 2.04000390625,
+          "gaze_median": 0.946715772151947,
+          "gaze_high": 3,
+          "gaze_low": 2,
+          "gaze_unknown": 5
+        },
+        {
+          "start_s": 8,
+          "perception_packets": 9,
+          "person_instances": 8,
+          "distance_median_m": 1.9489631347656249,
+          "gaze_median": 0.9667112231254578,
+          "gaze_high": 3,
+          "gaze_low": 1,
+          "gaze_unknown": 3
+        }
+      ],
+      "trimmed_path": null
+    },
+    {
+      "scenario": 8,
+      "source_path": "var/recordings/final_scenario_8-sdk.jsonl",
+      "source_sha256": "39ff392ae731673b1324c37c5f66f2a1e362d0b9998c5f8bfeb1456ca034b992",
+      "session_id": "c0ccd1be0e724eb6ab9e5bee0e3300e4",
+      "verdict": "PARTIAL",
+      "assessment": "Relative separation grows from about 1.12 to 2.10 m, consistent with moving away. Continuous looking is not supported: many low or unavailable gaze estimates, and an initial no-detection period.",
+      "total_duration_s": 10.172538,
+      "motion_start_offset_s": 3.010339,
+      "motion_start_source_line": 61,
+      "motion_start_monotonic_us": 2291237477,
+      "confirmed_motion_offset_s": 3.093437,
+      "post_motion_duration_s": 7.162199,
+      "full_streams": {
+        "perception": {
+          "packets": 102,
+          "first_sequence": 1,
+          "last_sequence": 102,
+          "sequence_discontinuities": [],
+          "nonincreasing_receipt_times": 0,
+          "median_receipt_gap_s": 0.08624,
+          "max_receipt_gap_s": 0.127694,
+          "gaps_over_0_25_s": 0,
+          "repeated_source_timestamps": 0,
+          "backwards_source_timestamps": 0
+        },
+        "locomotion": {
+          "packets": 102,
+          "first_sequence": 1,
+          "last_sequence": 102,
+          "sequence_discontinuities": [],
+          "nonincreasing_receipt_times": 0,
+          "median_receipt_gap_s": 0.084924,
+          "max_receipt_gap_s": 0.128972,
+          "gaps_over_0_25_s": 0,
+          "repeated_source_timestamps": 0,
+          "backwards_source_timestamps": 0
+        }
+      },
+      "post_motion_streams": {
+        "perception": {
+          "packets": 72,
+          "first_sequence": 31,
+          "last_sequence": 102,
+          "sequence_discontinuities": [],
+          "nonincreasing_receipt_times": 0,
+          "median_receipt_gap_s": 0.08657,
+          "max_receipt_gap_s": 0.127694,
+          "gaps_over_0_25_s": 0,
+          "repeated_source_timestamps": 0,
+          "backwards_source_timestamps": 0
+        },
+        "locomotion": {
+          "packets": 72,
+          "first_sequence": 31,
+          "last_sequence": 102,
+          "sequence_discontinuities": [],
+          "nonincreasing_receipt_times": 0,
+          "median_receipt_gap_s": 0.085327,
+          "max_receipt_gap_s": 0.128291,
+          "gaps_over_0_25_s": 0,
+          "repeated_source_timestamps": 0,
+          "backwards_source_timestamps": 0
+        }
+      },
+      "post_motion_person_count_histogram": {
+        "0": 27,
+        "1": 45
+      },
+      "post_motion_duplicate_uid_frames": 0,
+      "post_motion_person_instances": 45,
+      "post_motion_distinct_uids": 2,
+      "gaze_usable": 27,
+      "gaze_unknown_reasons": {
+        "suspected_sdk_default": 18
+      },
+      "gaze_high_count": 3,
+      "gaze_low_count": 19,
+      "gaze_median": 0.8868286609649658,
+      "distance_min_m": 1.1163157958984375,
+      "distance_max_m": 2.0953486328125,
+      "distance_interaction_samples": 21,
+      "no_detection_intervals_relative_to_motion": [
+        {
+          "start_s": 0.083745,
+          "end_s": 2.763182,
+          "ends_at_capture_end": false
+        }
+      ],
+      "one_second_bins": [
+        {
+          "start_s": 0,
+          "perception_packets": 10,
+          "person_instances": 0,
+          "distance_median_m": null,
+          "gaze_median": null,
+          "gaze_high": 0,
+          "gaze_low": 0,
+          "gaze_unknown": 0
+        },
+        {
+          "start_s": 1,
+          "perception_packets": 10,
+          "person_instances": 0,
+          "distance_median_m": null,
+          "gaze_median": null,
+          "gaze_high": 0,
+          "gaze_low": 0,
+          "gaze_unknown": 0
+        },
+        {
+          "start_s": 2,
+          "perception_packets": 10,
+          "person_instances": 3,
+          "distance_median_m": 1.1276529541015625,
+          "gaze_median": null,
+          "gaze_high": 0,
+          "gaze_low": 0,
+          "gaze_unknown": 3
+        },
+        {
+          "start_s": 3,
+          "perception_packets": 10,
+          "person_instances": 10,
+          "distance_median_m": 1.2630322875976563,
+          "gaze_median": 0.9056919515132904,
+          "gaze_high": 2,
+          "gaze_low": 3,
+          "gaze_unknown": 4
+        },
+        {
+          "start_s": 4,
+          "perception_packets": 10,
+          "person_instances": 10,
+          "distance_median_m": 1.4405573120117188,
+          "gaze_median": 0.8805803656578064,
+          "gaze_high": 0,
+          "gaze_low": 2,
+          "gaze_unknown": 8
+        },
+        {
+          "start_s": 5,
+          "perception_packets": 10,
+          "person_instances": 10,
+          "distance_median_m": 1.737094970703125,
+          "gaze_median": 0.8762403726577759,
+          "gaze_high": 0,
+          "gaze_low": 7,
+          "gaze_unknown": 2
+        },
+        {
+          "start_s": 6,
+          "perception_packets": 10,
+          "person_instances": 10,
+          "distance_median_m": 1.9873615112304686,
+          "gaze_median": 0.8804492354393005,
+          "gaze_high": 1,
+          "gaze_low": 6,
+          "gaze_unknown": 1
+        },
+        {
+          "start_s": 7,
+          "perception_packets": 2,
+          "person_instances": 2,
+          "distance_median_m": 2.0740989990234375,
+          "gaze_median": 0.8963455855846405,
+          "gaze_high": 0,
+          "gaze_low": 1,
+          "gaze_unknown": 0
+        }
+      ],
+      "trimmed_path": null
+    },
+    {
+      "scenario": 9,
+      "source_path": "var/recordings/final_scenario_9-sdk.jsonl",
+      "source_sha256": "926beadd5d9abbe0bdab97f89b81a676ffe905c7142fce0285c25d4f9f74733a",
+      "session_id": "e1f3996f5422479b917903e2dbc0db7c",
+      "verdict": "PARTIAL",
+      "assessment": "Looking is supported at roughly 2.0\u20132.4 m. No gesture or path-relation measurements, and no matching video, establish the pass gesture or placement in front of the route.",
+      "total_duration_s": 23.621366,
+      "motion_start_offset_s": 20.163796,
+      "motion_start_source_line": 405,
+      "motion_start_monotonic_us": 2338007134,
+      "confirmed_motion_offset_s": 20.163796,
+      "post_motion_duration_s": 3.45757,
+      "full_streams": {
+        "perception": {
+          "packets": 237,
+          "first_sequence": 1,
+          "last_sequence": 237,
+          "sequence_discontinuities": [],
+          "nonincreasing_receipt_times": 0,
+          "median_receipt_gap_s": 0.085739,
+          "max_receipt_gap_s": 0.130459,
+          "gaps_over_0_25_s": 0,
+          "repeated_source_timestamps": 0,
+          "backwards_source_timestamps": 0
+        },
+        "locomotion": {
+          "packets": 237,
+          "first_sequence": 1,
+          "last_sequence": 237,
+          "sequence_discontinuities": [],
+          "nonincreasing_receipt_times": 0,
+          "median_receipt_gap_s": 0.08449899999999999,
+          "max_receipt_gap_s": 0.129811,
+          "gaps_over_0_25_s": 0,
+          "repeated_source_timestamps": 0,
+          "backwards_source_timestamps": 0
+        }
+      },
+      "post_motion_streams": {
+        "perception": {
+          "packets": 35,
+          "first_sequence": 203,
+          "last_sequence": 237,
+          "sequence_discontinuities": [],
+          "nonincreasing_receipt_times": 0,
+          "median_receipt_gap_s": 0.086824,
+          "max_receipt_gap_s": 0.129964,
+          "gaps_over_0_25_s": 0,
+          "repeated_source_timestamps": 0,
+          "backwards_source_timestamps": 0
+        },
+        "locomotion": {
+          "packets": 35,
+          "first_sequence": 203,
+          "last_sequence": 237,
+          "sequence_discontinuities": [],
+          "nonincreasing_receipt_times": 0,
+          "median_receipt_gap_s": 0.084512,
+          "max_receipt_gap_s": 0.129432,
+          "gaps_over_0_25_s": 0,
+          "repeated_source_timestamps": 0,
+          "backwards_source_timestamps": 0
+        }
+      },
+      "post_motion_person_count_histogram": {
+        "1": 35
+      },
+      "post_motion_duplicate_uid_frames": 0,
+      "post_motion_person_instances": 35,
+      "post_motion_distinct_uids": 2,
+      "gaze_usable": 35,
+      "gaze_unknown_reasons": {},
+      "gaze_high_count": 26,
+      "gaze_low_count": 0,
+      "gaze_median": 0.9393973350524902,
+      "distance_min_m": 2.022484130859375,
+      "distance_max_m": 2.42297412109375,
+      "distance_interaction_samples": 0,
+      "no_detection_intervals_relative_to_motion": [],
+      "one_second_bins": [
+        {
+          "start_s": 0,
+          "perception_packets": 10,
+          "person_instances": 10,
+          "distance_median_m": 2.3056519775390623,
+          "gaze_median": 0.9585358500480652,
+          "gaze_high": 9,
+          "gaze_low": 0,
+          "gaze_unknown": 0
+        },
+        {
+          "start_s": 1,
+          "perception_packets": 10,
+          "person_instances": 10,
+          "distance_median_m": 2.2231162109375,
+          "gaze_median": 0.9424363374710083,
+          "gaze_high": 9,
+          "gaze_low": 0,
+          "gaze_unknown": 0
+        },
+        {
+          "start_s": 2,
+          "perception_packets": 10,
+          "person_instances": 10,
+          "distance_median_m": 2.1633642578125,
+          "gaze_median": 0.9292174279689789,
+          "gaze_high": 5,
+          "gaze_low": 0,
+          "gaze_unknown": 0
+        },
+        {
+          "start_s": 3,
+          "perception_packets": 5,
+          "person_instances": 5,
+          "distance_median_m": 2.09056201171875,
+          "gaze_median": 0.9357254505157471,
+          "gaze_high": 3,
+          "gaze_low": 0,
+          "gaze_unknown": 0
+        }
+      ],
+      "trimmed_path": null
+    }
+  ]
+}
