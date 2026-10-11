@@ -1,0 +1,7 @@
+{
+  "scenario_id": "S1",
+  "policy": "llm",
+  "status": "NOT_RUN",
+  "action": null,
+  "reason": "<urlopen error [Errno 1] Operation not permitted>; start Ollama at http://127.0.0.1:11434 with qwen2.5:7b."
+}

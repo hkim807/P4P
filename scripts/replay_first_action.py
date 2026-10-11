@@ -173,7 +173,9 @@ def replay(scene, policy, output, settings, *, iterator=None, now=time.monotonic
                 body = {'observation': raw, 'model_source': {
                     'version': 1, 'clock': 'robot-host-monotonic-us',
                     'capture': current.source['source_record']}, 'trial': identity}
+            request_started = time.perf_counter()
             response = client.post('/api/v1/observations', json=body)
+            receiver_request_duration_s = time.perf_counter() - request_started
             if response.status_code != 200 or response.json.get('processing_status') != 'complete':
                 raise RuntimeError(response.json)
             last_response, last_source = response.json, current.source
@@ -182,7 +184,8 @@ def replay(scene, policy, output, settings, *, iterator=None, now=time.monotonic
             ready_frames += readiness['status'] == 'READY'
             holds[readiness['reason_code'] or 'READY'] += 1
             event('observation', line_number=last_source['line_number'],
-                  source_timestamp_us=raw['timestamp'], response=last_response)
+                  source_timestamp_us=raw['timestamp'], response=last_response,
+                  receiver_request_duration_s=receiver_request_duration_s)
             if policy == 'rules':
                 accepted = trial.accept_rule_response(last_response, raw)
                 if last_response['final_decision'] is not None:

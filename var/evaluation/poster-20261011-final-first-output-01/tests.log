@@ -1,0 +1,19 @@
+test_new_observations_continue_during_inference_then_stop (tests.test_first_action_replay.FirstActionReplayTests) ... ok
+test_output_after_eof_is_resolved_but_current_evidence_is_stale (tests.test_first_action_replay.FirstActionReplayTests) ... ok
+test_recording_end_is_explicit_without_an_empty_scene_fallback (tests.test_first_action_replay.FirstActionReplayTests) ... ok
+test_stops_without_reading_the_next_observation (tests.test_first_action_replay.FirstActionReplayTests) ... ok
+test_waits_for_first_policy_output_even_when_delivery_has_expired (tests.test_first_action_replay.FirstActionReplayTests) ... ok
+test_all_trimmed_recordings_first_action_and_live_acceptance (tests.test_final_scenario_tuning.FinalScenarioTuningTests) ... ok
+test_empty_interval_requires_continuity_and_resets_on_person_and_session (tests.test_final_scenario_tuning.FinalScenarioTuningTests) ... ok
+test_empty_live_readiness_only_accepts_fresh_continue (tests.test_final_scenario_tuning.FinalScenarioTuningTests) ... ok
+test_nose_reassociation_preserves_contiguous_evidence_and_marks_uncertainty (tests.test_final_scenario_tuning.FinalScenarioTuningTests) ... ok
+test_reassociation_cannot_bridge_missing_gap_ambiguity_or_displacement (tests.test_final_scenario_tuning.FinalScenarioTuningTests) ... ok
+test_recurring_attention_requires_explicit_opt_in (tests.test_final_scenario_tuning.FinalScenarioTuningTests) ... ok
+test_same_gaze_score_has_distance_appropriate_threshold (tests.test_final_scenario_tuning.FinalScenarioTuningTests) ... ok
+test_sentinel_is_unknown_and_raw_value_is_retained (tests.test_final_scenario_tuning.FinalScenarioTuningTests) ... ok
+test_two_metre_boundary_and_current_attention (tests.test_final_scenario_tuning.FinalScenarioTuningTests) ... ok
+
+----------------------------------------------------------------------
+Ran 14 tests in 1.816s
+
+OK

@@ -1,0 +1,10 @@
+{
+  "status": "WORKBOOK_MISSING",
+  "respondents": null,
+  "scenarios": {},
+  "source_expected_respondents": 42,
+  "historical_reference_respondents": 37,
+  "expected_sha256": "0f9ee6940c8c1687d38c00565e1f0e46b44e4b3fcafea960be1e4aa3640be0f2",
+  "verification": "No workbook in supplied attachments, repository or accessible Downloads search. Counts, ratings and preparation checks NOT_VERIFIED; historical counts not substituted.",
+  "protocol_verification": "NOT_PERFORMED_NO_PROTOCOL"
+}

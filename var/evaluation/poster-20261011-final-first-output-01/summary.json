@@ -1,0 +1,445 @@
+{
+  "condition": "first_validated_policy_output",
+  "settings_path": "config/policy-comparison-final.json",
+  "independent_scenarios": 9,
+  "repetitions": 3,
+  "scenario_policy_runs": 54,
+  "ready_scenarios": 9,
+  "total_frames": 574,
+  "ready_frames": 304,
+  "paired_first_state_matches": 27,
+  "paired_first_state_unavailable": 0,
+  "operational": [
+    {
+      "repeat": 1,
+      "policy": "rules",
+      "scenarios": 9,
+      "outputs": 9,
+      "accepted": 9,
+      "rejections": {},
+      "statuses": {
+        "ACTION_RESOLVED": 9
+      },
+      "model_request_duration_s": {
+        "n": 0,
+        "median": null,
+        "min": null,
+        "max": null
+      },
+      "output_elapsed_s": {
+        "n": 9,
+        "median": 1.0906987599992135,
+        "min": 1.0678373519986053,
+        "max": 2.091740314997878
+      }
+    },
+    {
+      "repeat": 1,
+      "policy": "llm",
+      "scenarios": 9,
+      "outputs": 9,
+      "accepted": 1,
+      "rejections": {
+        "DELIVERY_REQUEST_EXPIRED|MODEL_SOURCE_EXPIRED|LATEST_OBSERVATION_STALE": 4,
+        "LATEST_OBSERVATION_STALE": 1,
+        "DELIVERY_REQUEST_EXPIRED|MODEL_SOURCE_EXPIRED|LATEST_OBSERVATION_STALE|CURRENT_STATE_NOT_READY": 2,
+        "CURRENT_STATE_NOT_READY": 1
+      },
+      "statuses": {
+        "ACTION_RESOLVED": 9
+      },
+      "model_request_duration_s": {
+        "n": 9,
+        "median": 10.500320402999932,
+        "min": 3.2202168840012746,
+        "max": 17.019800635000138
+      },
+      "output_elapsed_s": {
+        "n": 9,
+        "median": 11.59227547199771,
+        "min": 4.350873516003048,
+        "max": 18.10972748199856
+      }
+    },
+    {
+      "repeat": 2,
+      "policy": "rules",
+      "scenarios": 9,
+      "outputs": 9,
+      "accepted": 9,
+      "rejections": {},
+      "statuses": {
+        "ACTION_RESOLVED": 9
+      },
+      "model_request_duration_s": {
+        "n": 0,
+        "median": null,
+        "min": null,
+        "max": null
+      },
+      "output_elapsed_s": {
+        "n": 9,
+        "median": 1.0877057760008029,
+        "min": 1.0682556169995223,
+        "max": 2.091835429000639
+      }
+    },
+    {
+      "repeat": 2,
+      "policy": "llm",
+      "scenarios": 9,
+      "outputs": 9,
+      "accepted": 1,
+      "rejections": {
+        "DELIVERY_REQUEST_EXPIRED|MODEL_SOURCE_EXPIRED|LATEST_OBSERVATION_STALE": 3,
+        "LATEST_OBSERVATION_STALE": 2,
+        "DELIVERY_REQUEST_EXPIRED|MODEL_SOURCE_EXPIRED|LATEST_OBSERVATION_STALE|CURRENT_STATE_NOT_READY": 2,
+        "CURRENT_STATE_NOT_READY": 1
+      },
+      "statuses": {
+        "ACTION_RESOLVED": 9
+      },
+      "model_request_duration_s": {
+        "n": 9,
+        "median": 10.028464089002227,
+        "min": 2.6674524449990713,
+        "max": 11.043752235000284
+      },
+      "output_elapsed_s": {
+        "n": 9,
+        "median": 11.37240238799859,
+        "min": 3.811413117000484,
+        "max": 12.132385167999018
+      }
+    },
+    {
+      "repeat": 3,
+      "policy": "rules",
+      "scenarios": 9,
+      "outputs": 9,
+      "accepted": 9,
+      "rejections": {},
+      "statuses": {
+        "ACTION_RESOLVED": 9
+      },
+      "model_request_duration_s": {
+        "n": 0,
+        "median": null,
+        "min": null,
+        "max": null
+      },
+      "output_elapsed_s": {
+        "n": 9,
+        "median": 1.0873626520005928,
+        "min": 1.0682568450029066,
+        "max": 2.0917731759982416
+      }
+    },
+    {
+      "repeat": 3,
+      "policy": "llm",
+      "scenarios": 9,
+      "outputs": 9,
+      "accepted": 1,
+      "rejections": {
+        "DELIVERY_REQUEST_EXPIRED|MODEL_SOURCE_EXPIRED|LATEST_OBSERVATION_STALE": 4,
+        "DELIVERY_REQUEST_EXPIRED|MODEL_SOURCE_EXPIRED|LATEST_OBSERVATION_STALE|CURRENT_STATE_NOT_READY": 2,
+        "LATEST_OBSERVATION_STALE": 1,
+        "CURRENT_STATE_NOT_READY": 1
+      },
+      "statuses": {
+        "ACTION_RESOLVED": 9
+      },
+      "model_request_duration_s": {
+        "n": 9,
+        "median": 10.027040642002248,
+        "min": 2.6615948430007847,
+        "max": 11.013985081997816
+      },
+      "output_elapsed_s": {
+        "n": 9,
+        "median": 11.178915763000987,
+        "min": 3.788886325997737,
+        "max": 12.094611532000272
+      }
+    }
+  ],
+  "scenario_comparison": [
+    {
+      "scenario_id": "S1",
+      "condition": "first_validated_policy_output",
+      "human_alignment_status": "UNAVAILABLE",
+      "intended_actions_context_only": [
+        "CONTINUE"
+      ],
+      "rules_actions_by_repeat": [
+        "CONTINUE",
+        "CONTINUE",
+        "CONTINUE"
+      ],
+      "rules_action_distribution": {
+        "CONTINUE": 3
+      },
+      "rules_outputs": 3,
+      "rules_accepted": 3,
+      "rules_median_output_elapsed_s": 1.0773774579974997,
+      "llm_actions_by_repeat": [
+        "APPROACH",
+        "YIELD",
+        "YIELD"
+      ],
+      "llm_action_distribution": {
+        "APPROACH": 1,
+        "YIELD": 2
+      },
+      "llm_outputs": 3,
+      "llm_accepted": 0,
+      "llm_median_output_elapsed_s": 12.132385167999018
+    },
+    {
+      "scenario_id": "S2",
+      "condition": "first_validated_policy_output",
+      "human_alignment_status": "UNAVAILABLE",
+      "intended_actions_context_only": [
+        "APPROACH"
+      ],
+      "rules_actions_by_repeat": [
+        "APPROACH",
+        "APPROACH",
+        "APPROACH"
+      ],
+      "rules_action_distribution": {
+        "APPROACH": 3
+      },
+      "rules_outputs": 3,
+      "rules_accepted": 3,
+      "rules_median_output_elapsed_s": 1.0735994999995455,
+      "llm_actions_by_repeat": [
+        "APPROACH",
+        "APPROACH",
+        "APPROACH"
+      ],
+      "llm_action_distribution": {
+        "APPROACH": 3
+      },
+      "llm_outputs": 3,
+      "llm_accepted": 0,
+      "llm_median_output_elapsed_s": 11.967542566999327
+    },
+    {
+      "scenario_id": "S3",
+      "condition": "first_validated_policy_output",
+      "human_alignment_status": "UNAVAILABLE",
+      "intended_actions_context_only": [
+        "ENGAGE",
+        "APPROACH"
+      ],
+      "rules_actions_by_repeat": [
+        "ENGAGE",
+        "ENGAGE",
+        "ENGAGE"
+      ],
+      "rules_action_distribution": {
+        "ENGAGE": 3
+      },
+      "rules_outputs": 3,
+      "rules_accepted": 3,
+      "rules_median_output_elapsed_s": 1.1282391009990533,
+      "llm_actions_by_repeat": [
+        "ENGAGE",
+        "ENGAGE",
+        "ENGAGE"
+      ],
+      "llm_action_distribution": {
+        "ENGAGE": 3
+      },
+      "llm_outputs": 3,
+      "llm_accepted": 0,
+      "llm_median_output_elapsed_s": 11.11612618700019
+    },
+    {
+      "scenario_id": "S4",
+      "condition": "first_validated_policy_output",
+      "human_alignment_status": "UNAVAILABLE",
+      "intended_actions_context_only": [
+        "YIELD"
+      ],
+      "rules_actions_by_repeat": [
+        "YIELD",
+        "YIELD",
+        "YIELD"
+      ],
+      "rules_action_distribution": {
+        "YIELD": 3
+      },
+      "rules_outputs": 3,
+      "rules_accepted": 3,
+      "rules_median_output_elapsed_s": 1.0877057760008029,
+      "llm_actions_by_repeat": [
+        "APPROACH",
+        "APPROACH",
+        "APPROACH"
+      ],
+      "llm_action_distribution": {
+        "APPROACH": 3
+      },
+      "llm_outputs": 3,
+      "llm_accepted": 0,
+      "llm_median_output_elapsed_s": 11.612657833000412
+    },
+    {
+      "scenario_id": "S5",
+      "condition": "first_validated_policy_output",
+      "human_alignment_status": "UNAVAILABLE",
+      "intended_actions_context_only": [
+        "CONTINUE"
+      ],
+      "rules_actions_by_repeat": [
+        "CONTINUE",
+        "CONTINUE",
+        "CONTINUE"
+      ],
+      "rules_action_distribution": {
+        "CONTINUE": 3
+      },
+      "rules_outputs": 3,
+      "rules_accepted": 3,
+      "rules_median_output_elapsed_s": 1.123848839000857,
+      "llm_actions_by_repeat": [
+        "CONTINUE",
+        "CONTINUE",
+        "CONTINUE"
+      ],
+      "llm_action_distribution": {
+        "CONTINUE": 3
+      },
+      "llm_outputs": 3,
+      "llm_accepted": 3,
+      "llm_median_output_elapsed_s": 3.811413117000484
+    },
+    {
+      "scenario_id": "S6",
+      "condition": "first_validated_policy_output",
+      "human_alignment_status": "UNAVAILABLE",
+      "intended_actions_context_only": [
+        "CONTINUE"
+      ],
+      "rules_actions_by_repeat": [
+        "CONTINUE",
+        "CONTINUE",
+        "CONTINUE"
+      ],
+      "rules_action_distribution": {
+        "CONTINUE": 3
+      },
+      "rules_outputs": 3,
+      "rules_accepted": 3,
+      "rules_median_output_elapsed_s": 1.0682556169995223,
+      "llm_actions_by_repeat": [
+        "CONTINUE",
+        "CONTINUE",
+        "CONTINUE"
+      ],
+      "llm_action_distribution": {
+        "CONTINUE": 3
+      },
+      "llm_outputs": 3,
+      "llm_accepted": 0,
+      "llm_median_output_elapsed_s": 11.37240238799859
+    },
+    {
+      "scenario_id": "S7",
+      "condition": "first_validated_policy_output",
+      "human_alignment_status": "UNAVAILABLE",
+      "intended_actions_context_only": [
+        "CONTINUE"
+      ],
+      "rules_actions_by_repeat": [
+        "CONTINUE",
+        "CONTINUE",
+        "CONTINUE"
+      ],
+      "rules_action_distribution": {
+        "CONTINUE": 3
+      },
+      "rules_outputs": 3,
+      "rules_accepted": 3,
+      "rules_median_output_elapsed_s": 2.0917731759982416,
+      "llm_actions_by_repeat": [
+        "CONTINUE",
+        "CONTINUE",
+        "CONTINUE"
+      ],
+      "llm_action_distribution": {
+        "CONTINUE": 3
+      },
+      "llm_outputs": 3,
+      "llm_accepted": 0,
+      "llm_median_output_elapsed_s": 11.914229472997249
+    },
+    {
+      "scenario_id": "S8",
+      "condition": "first_validated_policy_output",
+      "human_alignment_status": "UNAVAILABLE",
+      "intended_actions_context_only": [
+        "APPROACH",
+        "ENGAGE",
+        "CONTINUE"
+      ],
+      "rules_actions_by_repeat": [
+        "CONTINUE",
+        "CONTINUE",
+        "CONTINUE"
+      ],
+      "rules_action_distribution": {
+        "CONTINUE": 3
+      },
+      "rules_outputs": 3,
+      "rules_accepted": 3,
+      "rules_median_output_elapsed_s": 1.091371168000478,
+      "llm_actions_by_repeat": [
+        "CONTINUE",
+        "CONTINUE",
+        "CONTINUE"
+      ],
+      "llm_action_distribution": {
+        "CONTINUE": 3
+      },
+      "llm_outputs": 3,
+      "llm_accepted": 0,
+      "llm_median_output_elapsed_s": 3.8990117979992647
+    },
+    {
+      "scenario_id": "S9",
+      "condition": "first_validated_policy_output",
+      "human_alignment_status": "UNAVAILABLE",
+      "intended_actions_context_only": [
+        "APPROACH"
+      ],
+      "rules_actions_by_repeat": [
+        "APPROACH",
+        "APPROACH",
+        "APPROACH"
+      ],
+      "rules_action_distribution": {
+        "APPROACH": 3
+      },
+      "rules_outputs": 3,
+      "rules_accepted": 3,
+      "rules_median_output_elapsed_s": 1.0753301500008092,
+      "llm_actions_by_repeat": [
+        "CONTINUE",
+        "CONTINUE",
+        "CONTINUE"
+      ],
+      "llm_action_distribution": {
+        "CONTINUE": 3
+      },
+      "llm_outputs": 3,
+      "llm_accepted": 0,
+      "llm_median_output_elapsed_s": 11.122411906999332
+    }
+  ],
+  "human_alignment_status": "UNAVAILABLE",
+  "physical_execution": false
+}

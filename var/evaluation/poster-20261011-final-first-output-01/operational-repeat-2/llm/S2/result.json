@@ -1,0 +1,109 @@
+{
+  "scenario_id": "S2",
+  "policy": "llm",
+  "status": "ACTION_RESOLVED",
+  "action": "APPROACH",
+  "decision": {
+    "action": "APPROACH",
+    "reason": "Person is getting closer and looking at the robot."
+  },
+  "accepted_by_live_client": false,
+  "acceptance_details": {
+    "current_readiness": true,
+    "latest_observation_age_s": 7.293116,
+    "model_source_age_s": 10.89558,
+    "trial_phase": "OBSERVING",
+    "failure_reason": null
+  },
+  "resolved_elapsed_s": 11.967542566999327,
+  "stop_elapsed_s": 11.967542566999327,
+  "frames_ingested": 48,
+  "ready_frames": 37,
+  "readiness_counts": {
+    "INSUFFICIENT_GAZE_EVIDENCE": 11,
+    "READY": 37
+  },
+  "recording_exhausted": true,
+  "last_ingested_source_offset_s": 4.674429,
+  "last_ingested_line": 96,
+  "decision_source_offset_s": 1.071965,
+  "motion_start_monotonic_us": 2009906601,
+  "perception_origin_monotonic_us": 2009938706,
+  "decision_source_since_motion_s": 1.10407,
+  "max_dispatch_lag_s": 0.0007180140019045211,
+  "model_failures": [
+    {
+      "decision": null,
+      "error": {
+        "category": "request_expired"
+      },
+      "policy": "llm",
+      "request_id": "2f2259b914a14e5b8fe5f1ff7e7e9abf",
+      "session_id": "replay-bd5e83b6a4070146c505ec1e",
+      "source_robot_timestamp_us": 2011010671,
+      "source_state_id": "replay-bd5e83b6a4070146c505ec1e:12",
+      "status": "failed",
+      "trial_id": "ee4ac2beac624e98a55b8c241560f2ab"
+    }
+  ],
+  "first_model_request": {
+    "decision": null,
+    "error": null,
+    "policy": "llm",
+    "request_id": "2f2259b914a14e5b8fe5f1ff7e7e9abf",
+    "session_id": "replay-bd5e83b6a4070146c505ec1e",
+    "source_robot_timestamp_us": 2011010671,
+    "source_state_id": "replay-bd5e83b6a4070146c505ec1e:12",
+    "status": "pending",
+    "trial_id": "ee4ac2beac624e98a55b8c241560f2ab"
+  },
+  "resolved_output": {
+    "decision": {
+      "action": "APPROACH",
+      "reason": "Person is getting closer and looking at the robot."
+    },
+    "error": null,
+    "policy": "llm",
+    "request_id": "2f2259b914a14e5b8fe5f1ff7e7e9abf",
+    "session_id": "replay-bd5e83b6a4070146c505ec1e",
+    "source_robot_timestamp_us": 2011010671,
+    "source_state_id": "replay-bd5e83b6a4070146c505ec1e:12",
+    "status": "succeeded",
+    "trial_id": "ee4ac2beac624e98a55b8c241560f2ab",
+    "completed_at": "2026-10-11T08:11:32.703066+00:00",
+    "error_stage": null,
+    "ok": true,
+    "ollama_configuration": {
+      "base_url": "http://127.0.0.1:11434",
+      "generation_options": {
+        "num_ctx": 8192,
+        "num_predict": 192,
+        "seed": 42,
+        "temperature": 0.0
+      },
+      "model": "qwen2.5:7b",
+      "num_ctx": 8192,
+      "num_predict": 192,
+      "seed": 42,
+      "temperature": 0.0,
+      "timeout_seconds": 120.0
+    },
+    "prompt_version": "social-state-llm-v14",
+    "raw_content": "{\"action\":\"APPROACH\",\"reason\":\"Person is getting closer and looking at the robot.\"}",
+    "request_duration_s": 10.87887859699913,
+    "requested_model": "qwen2.5:7b",
+    "returned_model": "qwen2.5:7b",
+    "delivery_status": "failed",
+    "delivery_error": {
+      "category": "request_expired"
+    }
+  },
+  "last_readiness": {
+    "reason_code": null,
+    "status": "READY"
+  },
+  "source_sha256": "08a9f4e035e8ff1b5ca4ad5f807dd5b9a4e94bc55c916da9412365813df506bb",
+  "trial_id": "ee4ac2beac624e98a55b8c241560f2ab",
+  "clock_mapping": "original first perception receipt + real elapsed replay time",
+  "physical_execution": false
+}

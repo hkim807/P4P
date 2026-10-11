@@ -1,0 +1,18 @@
+test_exact_state_five_serial_calls_and_no_human_scores (tests.test_poster_evaluation.EndpointTests) ... ok
+test_freshness_and_unready_avoid_model_calls (tests.test_poster_evaluation.EndpointTests) ... ok
+test_selection_last_prior_not_last_ready_or_future (tests.test_poster_evaluation.EndpointTests) ... ok
+test_only_disclosed_reporting_helper_change_is_permitted (tests.test_poster_evaluation.IntegrityTests) ... ok
+test_repeat_aggregation_excludes_failures_without_fabrication (tests.test_poster_evaluation.ReportingTests) ... ok
+test_workbook_xml_uses_named_sheet_and_full_headers (tests.test_poster_evaluation.ReportingTests) ... ok
+test_denominators_missingness_modal_ties_and_privacy (tests.test_poster_evaluation.WorkbookTests) ... ok
+test_proxy_and_first_action_cannot_get_survey_scores (tests.test_poster_evaluation.WorkbookTests) ... ok
+test_new_observations_continue_during_inference_then_stop (tests.test_first_action_replay.FirstActionReplayTests) ... ok
+test_output_after_eof_is_resolved_but_current_evidence_is_stale (tests.test_first_action_replay.FirstActionReplayTests) ... ok
+test_recording_end_is_explicit_without_an_empty_scene_fallback (tests.test_first_action_replay.FirstActionReplayTests) ... ok
+test_stops_without_reading_the_next_observation (tests.test_first_action_replay.FirstActionReplayTests) ... ok
+test_waits_for_first_policy_output_even_when_delivery_has_expired (tests.test_first_action_replay.FirstActionReplayTests) ... ok
+
+----------------------------------------------------------------------
+Ran 13 tests in 1.702s
+
+OK

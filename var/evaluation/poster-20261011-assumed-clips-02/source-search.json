@@ -1,0 +1,79 @@
+{
+  "session_comparison": [
+    {
+      "scenario_id": "S1",
+      "original_session": "bb414cc5b139453885f52d9895b1f97a",
+      "selected_session": "44d0d977d0cd40dfb25f41f894dcc4a4",
+      "same_session": false
+    },
+    {
+      "scenario_id": "S2",
+      "original_session": "c7c78bdcd4534653ba9e4826e9f3dd75",
+      "selected_session": "452221626cc04764a10b0d078c82ba77",
+      "same_session": false
+    },
+    {
+      "scenario_id": "S3",
+      "original_session": "3425596259d0482da6d9275fa8b10c83",
+      "selected_session": "33136d0d0ed841c098dedb5175a90e72",
+      "same_session": false
+    },
+    {
+      "scenario_id": "S4",
+      "original_session": "02c47e877dd54a68a56ad6099b503783",
+      "selected_session": "07b46842b60a4390a4b6fe0d29dbd788",
+      "same_session": false
+    },
+    {
+      "scenario_id": "S5",
+      "original_session": "de3643062cab4790bb0eb331a739fa15",
+      "selected_session": "393a20cdb19a447d8387eea25819dad8",
+      "same_session": false
+    },
+    {
+      "scenario_id": "S6",
+      "original_session": "f29e8470090c4bfcb2551f61615196d4",
+      "selected_session": "16cfef6a68734f41b3c70b3505bc93c0",
+      "same_session": false
+    },
+    {
+      "scenario_id": "S7",
+      "original_session": "d9e943aae88d421c8581fa1c2322c178",
+      "selected_session": "4bdb1eb5d1524b8f8b81207eab43435e",
+      "same_session": false
+    },
+    {
+      "scenario_id": "S8",
+      "original_session": "f2be67f3489a4f78919f5c16e13b8457",
+      "selected_session": "c0ccd1be0e724eb6ab9e5bee0e3300e4",
+      "same_session": false
+    },
+    {
+      "scenario_id": "S9",
+      "original_session": "62f64e4e89da4f06bcc373742f34d14e",
+      "selected_session": "e1f3996f5422479b917903e2dbc0db7c",
+      "same_session": false
+    }
+  ],
+  "possible_protocol_pdfs": [
+    {
+      "path": "/home/anyone/Downloads/Final Plan.pdf",
+      "protocol_phrase_matches": []
+    },
+    {
+      "path": "/home/anyone/Downloads/Final Plan-1.pdf",
+      "protocol_phrase_matches": []
+    },
+    {
+      "path": "/home/anyone/Downloads/Calm robot.pdf",
+      "protocol_phrase_matches": []
+    }
+  ],
+  "workbook_search_roots": [
+    "repository",
+    "/home/anyone/.codex/attachments",
+    "/home/anyone/Downloads",
+    "/home/anyone/Documents"
+  ],
+  "workbook_matches": []
+}

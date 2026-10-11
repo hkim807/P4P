@@ -1,0 +1,394 @@
+{
+  "independent_scenarios": 9,
+  "verified_endpoints": 0,
+  "assumed_endpoints": 9,
+  "assumed_endpoint_ready": 4,
+  "verified_endpoint_readiness_denominator": 0,
+  "human_reference_status": "WORKBOOK_MISSING",
+  "RQ2_status": "BLOCKED_WORKBOOK_MAPPING_ASSUMED",
+  "user_selected_trimmed": {
+    "perception_frames": 574,
+    "detected_frames": 429,
+    "ready_frames": 66,
+    "ready_scenarios": 5
+  },
+  "original_nine_separate_audit": {
+    "perception_frames": 730,
+    "detected_frames": 229,
+    "ready_frames": 102,
+    "ready_scenarios": 2
+  },
+  "endpoint_rules_valid": 4,
+  "endpoint_llm_valid_calls": 20,
+  "endpoint_llm_failed_calls": 0,
+  "endpoint_llm_requested_calls": 20,
+  "endpoint_llm_repeat_timing": {
+    "n": 20,
+    "median": 1.744089981999423,
+    "min": 1.2967272970017802,
+    "max": 20.41549213700273
+  },
+  "paired_human_scored_scenarios": 0,
+  "paired_preference_difference_equal_scenario_mean": null,
+  "paired_appropriateness_difference_equal_scenario_mean": null,
+  "operational": [
+    {
+      "repeat": 1,
+      "policy": "rules",
+      "scenarios": 9,
+      "outputs": 5,
+      "accepted": 5,
+      "statuses": {
+        "RECORDING_ENDED_NO_ACTION": 4,
+        "ACTION_RESOLVED": 5
+      },
+      "rejections": {},
+      "output_elapsed_s": {
+        "n": 5,
+        "median": 2.2727768320000905,
+        "min": 2.270464051998715,
+        "max": 7.080023627000628
+      },
+      "model_request_duration_s": {
+        "n": 0,
+        "median": null,
+        "min": null,
+        "max": null
+      },
+      "receiver_request_duration_s": {
+        "n": 5,
+        "median": 0.0013213770034781191,
+        "min": 0.0011574540003493894,
+        "max": 0.0014327169992611744
+      },
+      "source_age_at_delivery_s": {
+        "n": 5,
+        "median": 0.001653,
+        "min": 0.001492,
+        "max": 0.001769
+      }
+    },
+    {
+      "repeat": 1,
+      "policy": "llm",
+      "scenarios": 9,
+      "outputs": 5,
+      "accepted": 0,
+      "statuses": {
+        "RECORDING_ENDED_NO_ACTION": 4,
+        "ACTION_RESOLVED": 5
+      },
+      "rejections": {
+        "LATEST_OBSERVATION_STALE": 4,
+        "LATEST_OBSERVATION_STALE|CURRENT_STATE_NOT_READY": 1
+      },
+      "output_elapsed_s": {
+        "n": 5,
+        "median": 10.833037025000522,
+        "min": 10.646643857002346,
+        "max": 15.789499055998022
+      },
+      "model_request_duration_s": {
+        "n": 5,
+        "median": 8.555839745997218,
+        "min": 8.371801564000634,
+        "max": 8.981577293001465
+      },
+      "receiver_request_duration_s": {
+        "n": 5,
+        "median": 0.0017263469999306835,
+        "min": 0.0016600029994151555,
+        "max": 0.0021022710025135893
+      },
+      "source_age_at_delivery_s": {
+        "n": 5,
+        "median": 8.561984,
+        "min": 8.37795,
+        "max": 8.99708
+      }
+    },
+    {
+      "repeat": 2,
+      "policy": "rules",
+      "scenarios": 9,
+      "outputs": 5,
+      "accepted": 5,
+      "statuses": {
+        "RECORDING_ENDED_NO_ACTION": 4,
+        "ACTION_RESOLVED": 5
+      },
+      "rejections": {},
+      "output_elapsed_s": {
+        "n": 5,
+        "median": 2.2728981969994493,
+        "min": 2.270253018999938,
+        "max": 7.08011347700085
+      },
+      "model_request_duration_s": {
+        "n": 0,
+        "median": null,
+        "min": null,
+        "max": null
+      },
+      "receiver_request_duration_s": {
+        "n": 5,
+        "median": 0.0013573510004789568,
+        "min": 0.001216870001371717,
+        "max": 0.002072960000077728
+      },
+      "source_age_at_delivery_s": {
+        "n": 5,
+        "median": 0.001624,
+        "min": 0.001542,
+        "max": 0.002613
+      }
+    },
+    {
+      "repeat": 2,
+      "policy": "llm",
+      "scenarios": 9,
+      "outputs": 5,
+      "accepted": 0,
+      "statuses": {
+        "RECORDING_ENDED_NO_ACTION": 4,
+        "ACTION_RESOLVED": 5
+      },
+      "rejections": {
+        "LATEST_OBSERVATION_STALE": 4,
+        "LATEST_OBSERVATION_STALE|CURRENT_STATE_NOT_READY": 1
+      },
+      "output_elapsed_s": {
+        "n": 5,
+        "median": 10.983450031999382,
+        "min": 10.594989714998519,
+        "max": 15.924262275002548
+      },
+      "model_request_duration_s": {
+        "n": 5,
+        "median": 8.702582187001099,
+        "min": 8.317641090001416,
+        "max": 9.266939711000305
+      },
+      "receiver_request_duration_s": {
+        "n": 5,
+        "median": 0.0017085899999074172,
+        "min": 0.0016840009993757121,
+        "max": 0.0020627680023608264
+      },
+      "source_age_at_delivery_s": {
+        "n": 5,
+        "median": 8.713166,
+        "min": 8.323937,
+        "max": 9.2854
+      }
+    },
+    {
+      "repeat": 3,
+      "policy": "rules",
+      "scenarios": 9,
+      "outputs": 5,
+      "accepted": 5,
+      "statuses": {
+        "RECORDING_ENDED_NO_ACTION": 4,
+        "ACTION_RESOLVED": 5
+      },
+      "rejections": {},
+      "output_elapsed_s": {
+        "n": 5,
+        "median": 2.2726260279996495,
+        "min": 2.2703897219980718,
+        "max": 7.080259936003131
+      },
+      "model_request_duration_s": {
+        "n": 0,
+        "median": null,
+        "min": null,
+        "max": null
+      },
+      "receiver_request_duration_s": {
+        "n": 5,
+        "median": 0.0014400059990293812,
+        "min": 0.0013459000001603272,
+        "max": 0.0015015419994597323
+      },
+      "source_age_at_delivery_s": {
+        "n": 5,
+        "median": 0.001699,
+        "min": 0.001573,
+        "max": 0.001855
+      }
+    },
+    {
+      "repeat": 3,
+      "policy": "llm",
+      "scenarios": 9,
+      "outputs": 5,
+      "accepted": 0,
+      "statuses": {
+        "RECORDING_ENDED_NO_ACTION": 4,
+        "ACTION_RESOLVED": 5
+      },
+      "rejections": {
+        "LATEST_OBSERVATION_STALE": 4,
+        "LATEST_OBSERVATION_STALE|CURRENT_STATE_NOT_READY": 1
+      },
+      "output_elapsed_s": {
+        "n": 5,
+        "median": 11.657852545002243,
+        "min": 10.79374302299766,
+        "max": 15.753612029002397
+      },
+      "model_request_duration_s": {
+        "n": 5,
+        "median": 8.689444324998476,
+        "min": 8.512330724999629,
+        "max": 9.526590868001222
+      },
+      "receiver_request_duration_s": {
+        "n": 5,
+        "median": 0.0017300860017712694,
+        "min": 0.0015758959998493083,
+        "max": 0.001972334001038689
+      },
+      "source_age_at_delivery_s": {
+        "n": 5,
+        "median": 8.714304,
+        "min": 8.523458,
+        "max": 9.537865
+      }
+    }
+  ],
+  "operational_hash_pairs": {
+    "matched": 15,
+    "mismatched": 0,
+    "unavailable": 12
+  },
+  "operational_consistency": [
+    {
+      "scenario_id": "S1",
+      "policy": "rules",
+      "action_distribution": {
+        "NO_OUTPUT": 3
+      }
+    },
+    {
+      "scenario_id": "S1",
+      "policy": "llm",
+      "action_distribution": {
+        "NO_OUTPUT": 3
+      }
+    },
+    {
+      "scenario_id": "S2",
+      "policy": "rules",
+      "action_distribution": {
+        "APPROACH": 3
+      }
+    },
+    {
+      "scenario_id": "S2",
+      "policy": "llm",
+      "action_distribution": {
+        "CONTINUE": 3
+      }
+    },
+    {
+      "scenario_id": "S3",
+      "policy": "rules",
+      "action_distribution": {
+        "APPROACH": 3
+      }
+    },
+    {
+      "scenario_id": "S3",
+      "policy": "llm",
+      "action_distribution": {
+        "APPROACH": 3
+      }
+    },
+    {
+      "scenario_id": "S4",
+      "policy": "rules",
+      "action_distribution": {
+        "NO_OUTPUT": 3
+      }
+    },
+    {
+      "scenario_id": "S4",
+      "policy": "llm",
+      "action_distribution": {
+        "NO_OUTPUT": 3
+      }
+    },
+    {
+      "scenario_id": "S5",
+      "policy": "rules",
+      "action_distribution": {
+        "NO_OUTPUT": 3
+      }
+    },
+    {
+      "scenario_id": "S5",
+      "policy": "llm",
+      "action_distribution": {
+        "NO_OUTPUT": 3
+      }
+    },
+    {
+      "scenario_id": "S6",
+      "policy": "rules",
+      "action_distribution": {
+        "APPROACH": 3
+      }
+    },
+    {
+      "scenario_id": "S6",
+      "policy": "llm",
+      "action_distribution": {
+        "CONTINUE": 3
+      }
+    },
+    {
+      "scenario_id": "S7",
+      "policy": "rules",
+      "action_distribution": {
+        "NO_OUTPUT": 3
+      }
+    },
+    {
+      "scenario_id": "S7",
+      "policy": "llm",
+      "action_distribution": {
+        "NO_OUTPUT": 3
+      }
+    },
+    {
+      "scenario_id": "S8",
+      "policy": "rules",
+      "action_distribution": {
+        "CONTINUE": 3
+      }
+    },
+    {
+      "scenario_id": "S8",
+      "policy": "llm",
+      "action_distribution": {
+        "CONTINUE": 3
+      }
+    },
+    {
+      "scenario_id": "S9",
+      "policy": "rules",
+      "action_distribution": {
+        "APPROACH": 3
+      }
+    },
+    {
+      "scenario_id": "S9",
+      "policy": "llm",
+      "action_distribution": {
+        "CONTINUE": 3
+      }
+    }
+  ]
+}

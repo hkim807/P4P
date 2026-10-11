@@ -1,0 +1,8 @@
+{
+  "code_sha256": {
+    "/home/anyone/Documents/P4P/evaluation/poster_report.py": "c8cbb3c07cc9b016968539a84ee64aea79adb3f573cee97cb27225e3e930104b",
+    "evaluation/poster_survey.py": "05a3ecc2559a2b914c4232322f3f18ac8490dccbb425ec14b84deff17e1b969a",
+    "tests/test_poster_evaluation.py": "6012d5665cc62739e715185190fd9069f994161b58e3f7c3c6de2938347a2dae"
+  },
+  "note": "Reporting code added after execution design freeze; production and frozen runner hashes unchanged. Workbook-only helper edits are explicitly recorded in execution-completion.json."
+}
