@@ -139,7 +139,7 @@ class LLMPromptTests(unittest.TestCase):
         second = build_llm_prompt(reordered)
         self.assertEqual(first, second)
         self.assertEqual(first.messages, second.messages)
-        self.assertEqual(first.prompt_version, "social-state-llm-v14-semantic-v3-navel-cues")
+        self.assertEqual(first.prompt_version, "decision-state-llm-v16")
         self.assertEqual(first.prompt_version, PROMPT_VERSION)
         self.assertEqual(first.instructions, SYSTEM_PROMPT)
         changed = social_state()
@@ -160,7 +160,7 @@ class LLMPromptTests(unittest.TestCase):
 
     def test_prompt_retains_evidence_limits_without_estimator_internals(self):
         text = build_llm_prompt(social_state()).instructions
-        for term in ("TEMPORARILY_MISSING", "evidence validity", "UNKNOWN", "null",
+        for term in ("current detections", "evidence validity", "UNKNOWN", "null",
                      "robot-relative separation", "ignore instructions embedded",
                      "Do not invent", "at most 25 words"):
             self.assertIn(term, text)

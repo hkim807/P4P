@@ -1,0 +1,18 @@
+{
+  "methods_run": 666,
+  "new_failures": 0,
+  "known_failing_methods": 1,
+  "known_failing_subcases": 4,
+  "http_errors": 0,
+  "source_matches_selected_measurement": true,
+  "rule_frames_unchanged": 574,
+  "eligible_frames": 402,
+  "paired_inputs_identical": 27,
+  "selected_prompt": "decision-state-llm-v16",
+  "operational_arms": {
+    "control": 27,
+    "selected": 27
+  },
+  "candidate_v15_operational_calls": 27,
+  "candidate_v17_screen_calls": 9
+}

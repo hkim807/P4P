@@ -1,0 +1,32 @@
+[
+  {
+    "source_state_id": null,
+    "source_robot_timestamp_us": null,
+    "state_sha256": "1d52101a732de6669958f720696b7de9d5d957f2070ee0b80b9e8bf9dc7aacd0",
+    "request_sha256": "14fca0afbe344250ec7263d49f80c3f1a23552271790fbb124652860ec9b4c98",
+    "request_bytes": 5341,
+    "input_characters": 4645,
+    "chat_start_elapsed_s": null,
+    "chat_end_elapsed_s": null,
+    "client_call_duration_s": 3.0561290830373764,
+    "request_preparation_s": 0.0015055830590426922,
+    "transport_duration_s": 3.0542461248114705,
+    "response_validation_s": 0.00037737516686320305,
+    "ollama_metrics": {
+      "total_duration": 3052434958,
+      "load_duration": 2264875,
+      "prompt_eval_count": 942,
+      "prompt_eval_cached_count": 630,
+      "prompt_eval_duration": 1650307000,
+      "eval_count": 23,
+      "eval_duration": 1380596000
+    },
+    "request_duration_s": 3.0542492498643696,
+    "ok": true,
+    "decision": {
+      "action": "APPROACH",
+      "reason": "Intermittent looking and proximity within interaction range justify approaching."
+    },
+    "error": null
+  }
+]

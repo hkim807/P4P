@@ -1,0 +1,32 @@
+[
+  {
+    "source_state_id": null,
+    "source_robot_timestamp_us": null,
+    "state_sha256": "6bedc687fbd36b684b15544a5f8d2a85a201df3fac1efcabc24929e2d1d719f4",
+    "request_sha256": "cff6524b3d1e0f3f3f56f0132f25a97f64f96234aad231b1c29416f740e5dcd2",
+    "request_bytes": 4764,
+    "input_characters": 4068,
+    "chat_start_elapsed_s": null,
+    "chat_end_elapsed_s": null,
+    "client_call_duration_s": 3.2735550003126264,
+    "request_preparation_s": 0.00020283320918679237,
+    "transport_duration_s": 3.272637582849711,
+    "response_validation_s": 0.0007145842537283897,
+    "ollama_metrics": {
+      "total_duration": 3269548166,
+      "load_duration": 702458,
+      "prompt_eval_count": 829,
+      "prompt_eval_cached_count": 511,
+      "prompt_eval_duration": 1943027000,
+      "eval_count": 23,
+      "eval_duration": 1321153000
+    },
+    "request_duration_s": 3.2726708333939314,
+    "ok": true,
+    "decision": {
+      "action": "APPROACH",
+      "reason": "Face detected within interaction range, intermittent looking suggests potential interaction."
+    },
+    "error": null
+  }
+]

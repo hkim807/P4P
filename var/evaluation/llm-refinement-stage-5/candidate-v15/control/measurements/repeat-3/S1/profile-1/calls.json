@@ -1,0 +1,32 @@
+[
+  {
+    "source_state_id": null,
+    "source_robot_timestamp_us": null,
+    "state_sha256": "349cc6d4229926a9c2ae0552404253eea702058e526b77644d07ad74588c6fbc",
+    "request_sha256": "59109214e71ba0d4add87720f014c9d02e86f8164e26ef916fc5cc71061f09ae",
+    "request_bytes": 4776,
+    "input_characters": 4080,
+    "chat_start_elapsed_s": 1.1026639589108527,
+    "chat_end_elapsed_s": 3.898386458866298,
+    "client_call_duration_s": 2.7957224999554455,
+    "request_preparation_s": 0.0004719160497188568,
+    "transport_duration_s": 2.7951087919063866,
+    "response_validation_s": 0.00014179199934005737,
+    "ollama_metrics": {
+      "total_duration": 2794060250,
+      "load_duration": 2166500,
+      "prompt_eval_count": 831,
+      "prompt_eval_cached_count": 545,
+      "prompt_eval_duration": 1694479000,
+      "eval_count": 19,
+      "eval_duration": 1079690000
+    },
+    "request_duration_s": 2.7951117921620607,
+    "ok": true,
+    "decision": {
+      "action": "CONTINUE",
+      "reason": "Person beyond conversation distance, decreasing relative distance."
+    },
+    "error": null
+  }
+]

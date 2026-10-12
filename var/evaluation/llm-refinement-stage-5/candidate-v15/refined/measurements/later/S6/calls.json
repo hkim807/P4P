@@ -1,0 +1,32 @@
+[
+  {
+    "source_state_id": null,
+    "source_robot_timestamp_us": null,
+    "state_sha256": "6bedc687fbd36b684b15544a5f8d2a85a201df3fac1efcabc24929e2d1d719f4",
+    "request_sha256": "10beeae9785367cf48122bc330c4971bcb68719dce1a881e310a181e9466c47f",
+    "request_bytes": 5316,
+    "input_characters": 4620,
+    "chat_start_elapsed_s": null,
+    "chat_end_elapsed_s": null,
+    "client_call_duration_s": 2.9614680842496455,
+    "request_preparation_s": 0.0003628339618444443,
+    "transport_duration_s": 2.960964458063245,
+    "response_validation_s": 0.00014079222455620766,
+    "ollama_metrics": {
+      "total_duration": 2959920792,
+      "load_duration": 3555292,
+      "prompt_eval_count": 913,
+      "prompt_eval_cached_count": 595,
+      "prompt_eval_duration": 1729933000,
+      "eval_count": 19,
+      "eval_duration": 1211889000
+    },
+    "request_duration_s": 2.96096875006333,
+    "ok": true,
+    "decision": {
+      "action": "YIELD",
+      "reason": "Low looking and close proximity justify yielding space."
+    },
+    "error": null
+  }
+]

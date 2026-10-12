@@ -1,0 +1,32 @@
+[
+  {
+    "source_state_id": null,
+    "source_robot_timestamp_us": null,
+    "state_sha256": "f9127de9913dc53e096f89b3056e91d6a8e25ea59c096e4a5417d0fd1eb71c4b",
+    "request_sha256": "e165b241352075c16ba326bcafb220aee2afa46ff70e1c1000e98678fa03a633",
+    "request_bytes": 5361,
+    "input_characters": 4665,
+    "chat_start_elapsed_s": 1.1013034582138062,
+    "chat_end_elapsed_s": 4.696356125175953,
+    "client_call_duration_s": 3.5950526669621468,
+    "request_preparation_s": 0.0002303747460246086,
+    "transport_duration_s": 3.5943930419161916,
+    "response_validation_s": 0.0004292502999305725,
+    "ollama_metrics": {
+      "total_duration": 3591581291,
+      "load_duration": 2034166,
+      "prompt_eval_count": 927,
+      "prompt_eval_cached_count": 595,
+      "prompt_eval_duration": 2025547000,
+      "eval_count": 21,
+      "eval_duration": 1548242000
+    },
+    "request_duration_s": 3.594421582762152,
+    "ok": true,
+    "decision": {
+      "action": "YIELD",
+      "reason": "Sustained looking and steady separation justify yielding space."
+    },
+    "error": null
+  }
+]

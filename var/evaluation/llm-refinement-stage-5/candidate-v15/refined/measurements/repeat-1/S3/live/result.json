@@ -1,0 +1,93 @@
+{
+  "scenario_id": "S3",
+  "policy": "llm",
+  "status": "ACTION_RESOLVED",
+  "action": "ENGAGE",
+  "decision": {
+    "action": "ENGAGE",
+    "reason": "Sustained gaze and proximity within interaction range."
+  },
+  "accepted_by_live_client": true,
+  "acceptance_details": {
+    "current_readiness": true,
+    "latest_observation_age_s": 0.033961,
+    "model_source_age_s": 3.304321,
+    "trial_phase": "DECIDED",
+    "failure_reason": null
+  },
+  "resolved_elapsed_s": 4.431050916202366,
+  "stop_elapsed_s": 4.431050916202366,
+  "frames_ingested": 45,
+  "ready_frames": 34,
+  "readiness_counts": {
+    "INSUFFICIENT_GAZE_EVIDENCE": 11,
+    "READY": 34
+  },
+  "recording_exhausted": false,
+  "last_ingested_source_offset_s": 4.397091,
+  "last_ingested_line": 90,
+  "decision_source_offset_s": 1.126731,
+  "motion_start_monotonic_us": 2046106026,
+  "perception_origin_monotonic_us": 2046192337,
+  "decision_source_since_motion_s": 1.213042,
+  "max_dispatch_lag_s": 0.01028820825740695,
+  "model_failures": [],
+  "first_model_request": {
+    "decision": null,
+    "error": null,
+    "policy": "llm",
+    "request_id": "56f51f37fec44bb6b5ff214ce073b24e",
+    "session_id": "replay-7a43024a2619ec806420c762",
+    "source_robot_timestamp_us": 2047319068,
+    "source_state_id": "replay-7a43024a2619ec806420c762:12",
+    "status": "pending",
+    "trial_id": "6b090e6aeb3a4c4d9f6906906ce82992"
+  },
+  "resolved_output": {
+    "decision": {
+      "action": "ENGAGE",
+      "reason": "Sustained gaze and proximity within interaction range."
+    },
+    "error": null,
+    "policy": "llm",
+    "request_id": "56f51f37fec44bb6b5ff214ce073b24e",
+    "session_id": "replay-7a43024a2619ec806420c762",
+    "source_robot_timestamp_us": 2047319068,
+    "source_state_id": "replay-7a43024a2619ec806420c762:12",
+    "status": "succeeded",
+    "trial_id": "6b090e6aeb3a4c4d9f6906906ce82992",
+    "completed_at": "2026-10-12T18:44:08.763144+00:00",
+    "error_stage": null,
+    "ok": true,
+    "ollama_configuration": {
+      "base_url": "http://127.0.0.1:11434",
+      "generation_options": {
+        "num_ctx": 8192,
+        "num_predict": 192,
+        "seed": 42,
+        "temperature": 0.0
+      },
+      "model": "qwen2.5:7b",
+      "num_ctx": 8192,
+      "num_predict": 192,
+      "seed": 42,
+      "temperature": 0.0,
+      "timeout_seconds": 120.0
+    },
+    "prompt_version": "decision-state-llm-v15",
+    "raw_content": "{\"action\":\"ENGAGE\",\"reason\":\"Sustained gaze and proximity within interaction range.\"}",
+    "request_duration_s": 3.2727802079170942,
+    "requested_model": "qwen2.5:7b",
+    "returned_model": "qwen2.5:7b",
+    "delivery_status": "succeeded",
+    "delivery_error": null
+  },
+  "last_readiness": {
+    "reason_code": null,
+    "status": "READY"
+  },
+  "source_sha256": "4281527e087f3bf89ac1e9c19a274ed1ca0892e5b509a2ec7dc6a2954ecaafb9",
+  "trial_id": "6b090e6aeb3a4c4d9f6906906ce82992",
+  "clock_mapping": "original first perception receipt + real elapsed replay time",
+  "physical_execution": false
+}

@@ -27,7 +27,7 @@ def load_reference(baseline):
     return load_frozen_rules(baseline/'freeze/source')
 
 
-def prepare(baseline, output):
+def prepare(baseline, output, *, require_original_instructions=True):
     verify_freeze(baseline, worktree=False)
     protocol = json.loads((baseline/'freeze/protocol.json').read_text())
     reference = load_reference(baseline)
@@ -57,7 +57,7 @@ def prepare(baseline, output):
             state = SocialState.model_validate(remove_legacy_unknown_cues(saved))
             prompt = build_llm_prompt(state)
             old = json.loads((baseline/f'freeze/snapshots/{scene["scenario_id"]}/{point}.messages.json').read_text())
-            if prompt.instructions != old[0]['content']:
+            if require_original_instructions and prompt.instructions != old[0]['content']:
                 raise ValueError('System instructions changed; stage 3 isolates payload reduction')
             snapshot = scene['snapshots'][point]
             original_json = old[1]['content'].split('\n', 1)[1]
@@ -99,7 +99,7 @@ def prepare(baseline, output):
     write_json(output/'manifest.json',{'created_utc':datetime.now(timezone.utc).isoformat(),
         'git_head':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
         'implementation_sha256':hashes,'baseline_manifest_sha256':sha((baseline/'freeze/manifest.json').read_bytes()),
-        'system_instructions_unchanged':True,'settings_and_acceptance_limits_unchanged':True})
+        'system_instructions_unchanged':require_original_instructions,'settings_and_acceptance_limits_unchanged':True})
     return protocol
 
 

@@ -213,3 +213,65 @@ labels when testing each policy's own spatial judgment. This follow-up does
 not silently change proximity or the comparison contract.
 
 Details: [supported cue contract](/Users/eddiekim/Documents/Projects/P4P/docs/navel-supported-cues.md).
+
+## Stage 5 — 13 October 2026: refine evidence interpretation instructions
+
+**Objective:** adapt instructions to the current shared DecisionState v3 and
+improve interpretation without changing preprocessing, rules or model settings.
+
+**Change:** the selected prompt is `decision-state-llm-v16`, with a
+DecisionState user prefix. Removed obsolete missing-track/uppercase-label
+references. Clarified current gaze versus history, covered-time fraction versus
+continuous looking, unknown versus absent evidence, configured proximity bands,
+robot-relative separation, face-detection limits and observed spatial need for
+space. Reasons are requested to cite observations without claiming interest or
+permission. The four action definitions and two-field output contract remain
+unchanged; no rule thresholds, scenario examples, fallback or output correction
+were introduced.
+
+**Controls:** saved the old v14 instructions before editing. Measured a fresh
+v14 control on the same current v3 payload, so cue removal does not confound the
+prompt comparison. Both arms use the original first/later timestamps, expected
+actions, model digest/runtime, generation options and acceptance limits. Three
+warm S1–S9 operational repetitions and nine later diagnostics were measured per
+arm. Subsequent candidates reuse the sealed measured control. Actual messages,
+transport bytes and all 27 paired first-input hashes are verified. Trials are
+sequential, not randomized; runtime/cache effects also affect timing.
+
+**Candidate history:** v15 over-weighted giving space, selecting YIELD for
+S1/S2/S6/S9 and scoring 5/9 in all three runs. It was rejected and preserved.
+Balanced v16 restored 8/9 alignment in each run. A final v17 screen scored 8/9
+but exchanged S4's failure for an incorrect YIELD in S1 beside the corridor;
+it was rejected without operational repetitions. Production was restored
+byte-for-byte to the measured v16 implementation. No per-scenario answers are
+selected from different candidates.
+
+**Results:** selected v16 retains every v14 first action, with 24/27 alignment
+and S4 still incorrect (CONTINUE rather than YIELD). Median eligibility-to-
+complete-output time was 3.04 seconds versus 3.31 for the v14/v3 control (-8.1%).
+Median input tokens increased from 842 to 917 (+8.9%). Both arms had 27/27 valid
+first outputs. Live acceptance was 22/27 versus 19/27; aligned-and-accepted was
+19/27 versus 16/27. Finite replay acceptance remains separate from correctness.
+
+**Explanation review:** explicit interest/willingness claims disappeared from
+selected first-output reasons. Remaining errors include S7 describing an
+unavailable trend as no closing distance, and S6 describing low nonzero looking
+as no recent looking. Instruction precision does not guarantee semantic
+grounding. Later diagnostics remain separate and cannot improve the primary
+score. No semantic acceptance validator was added.
+
+**Verification:** all 574 frames preserve complete frozen rule decisions and
+readiness, with 402 eligible. The final measured source hashes match production.
+The full v16 suite ran 666 methods with no new failures or HTTP errors; the
+same pre-existing VLM/LLM verbatim-action-wording method fails four subcases.
+Focused checks passed again after restoring v16. Historical freezes and rejected
+candidates are preserved. No physical robot execution occurred.
+
+**Interpretation:** stage 5 clarifies the instruction contract and improves
+measured completion time in this sequential comparison, but produces no primary
+action-alignment improvement. The selected implementation is retained with its
+limits documented; the nine recordings remain a tuning set.
+
+Artifacts: [stage 5 report](/Users/eddiekim/Documents/Projects/P4P/var/evaluation/llm-refinement-stage-5/REPORT.md),
+[selected instructions](/Users/eddiekim/Documents/Projects/P4P/var/evaluation/llm-refinement-stage-5/refined-instructions.txt),
+[instruction method](/Users/eddiekim/Documents/Projects/P4P/docs/llm-instruction-refinement.md).

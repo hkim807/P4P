@@ -1,0 +1,32 @@
+[
+  {
+    "source_state_id": null,
+    "source_robot_timestamp_us": null,
+    "state_sha256": "13a7fe7d417e419868ac3c96821b02e13fa2bfee21290c9883c1571bb733e98e",
+    "request_sha256": "9fa65abd5c59e69abd114096b1dabb9b2ebbbc9eb24ef8e4c5f77cff0d1fc9af",
+    "request_bytes": 5337,
+    "input_characters": 4641,
+    "chat_start_elapsed_s": null,
+    "chat_end_elapsed_s": null,
+    "client_call_duration_s": 2.87431887537241,
+    "request_preparation_s": 0.0007252912037074566,
+    "transport_duration_s": 2.87312391679734,
+    "response_validation_s": 0.00046966737136244774,
+    "ollama_metrics": {
+      "total_duration": 2871697625,
+      "load_duration": 778750,
+      "prompt_eval_count": 930,
+      "prompt_eval_cached_count": 610,
+      "prompt_eval_duration": 1688546000,
+      "eval_count": 19,
+      "eval_duration": 1176071000
+    },
+    "request_duration_s": 2.8731394577771425,
+    "ok": true,
+    "decision": {
+      "action": "YIELD",
+      "reason": "Increasing distance and little looking justify yielding space."
+    },
+    "error": null
+  }
+]

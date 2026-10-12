@@ -1,0 +1,3 @@
+# The Navel SDK is supplied by the robot environment.
+# Sensor collection and HTTP transport use only the Python standard library.
+# Do not install the computer server's requirements on the robot.

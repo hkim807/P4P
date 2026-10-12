@@ -1,0 +1,94 @@
+{
+  "scenario_id": "S6",
+  "policy": "llm",
+  "status": "ACTION_RESOLVED",
+  "action": "CONTINUE",
+  "decision": {
+    "action": "CONTINUE",
+    "reason": "Person not looking at the robot and beyond conversation distance."
+  },
+  "accepted_by_live_client": true,
+  "acceptance_details": {
+    "current_readiness": true,
+    "latest_observation_age_s": 0.617209,
+    "model_source_age_s": 4.124123,
+    "trial_phase": "DECIDED",
+    "failure_reason": null
+  },
+  "resolved_elapsed_s": 5.19077316718176,
+  "stop_elapsed_s": 5.19077316718176,
+  "frames_ingested": 47,
+  "ready_frames": 35,
+  "readiness_counts": {
+    "INSUFFICIENT_GAZE_EVIDENCE": 9,
+    "DISTANCE_UNKNOWN": 3,
+    "READY": 35
+  },
+  "recording_exhausted": true,
+  "last_ingested_source_offset_s": 4.573567,
+  "last_ingested_line": 94,
+  "decision_source_offset_s": 1.066653,
+  "motion_start_monotonic_us": 2198112528,
+  "perception_origin_monotonic_us": 2198154257,
+  "decision_source_since_motion_s": 1.108382,
+  "max_dispatch_lag_s": 0.004590209107846022,
+  "model_failures": [],
+  "first_model_request": {
+    "decision": null,
+    "error": null,
+    "policy": "llm",
+    "request_id": "c5f6178c930b41fb95da46961d78e44c",
+    "session_id": "replay-c868e15ffc810edd0c196acc",
+    "source_robot_timestamp_us": 2199220910,
+    "source_state_id": "replay-c868e15ffc810edd0c196acc:12",
+    "status": "pending",
+    "trial_id": "e5d966a1293743fd9fcad6f1a38d44ea"
+  },
+  "resolved_output": {
+    "decision": {
+      "action": "CONTINUE",
+      "reason": "Person not looking at the robot and beyond conversation distance."
+    },
+    "error": null,
+    "policy": "llm",
+    "request_id": "c5f6178c930b41fb95da46961d78e44c",
+    "session_id": "replay-c868e15ffc810edd0c196acc",
+    "source_robot_timestamp_us": 2199220910,
+    "source_state_id": "replay-c868e15ffc810edd0c196acc:12",
+    "status": "succeeded",
+    "trial_id": "e5d966a1293743fd9fcad6f1a38d44ea",
+    "completed_at": "2026-10-12T18:43:14.963685+00:00",
+    "error_stage": null,
+    "ok": true,
+    "ollama_configuration": {
+      "base_url": "http://127.0.0.1:11434",
+      "generation_options": {
+        "num_ctx": 8192,
+        "num_predict": 192,
+        "seed": 42,
+        "temperature": 0.0
+      },
+      "model": "qwen2.5:7b",
+      "num_ctx": 8192,
+      "num_predict": 192,
+      "seed": 42,
+      "temperature": 0.0,
+      "timeout_seconds": 120.0
+    },
+    "prompt_version": "social-state-llm-v14-semantic-v3-navel-cues",
+    "raw_content": "{\"action\":\"CONTINUE\",\"reason\":\"Person not looking at the robot and beyond conversation distance.\"}",
+    "request_duration_s": 4.080433459021151,
+    "requested_model": "qwen2.5:7b",
+    "returned_model": "qwen2.5:7b",
+    "delivery_status": "succeeded",
+    "delivery_error": null
+  },
+  "last_readiness": {
+    "reason_code": null,
+    "status": "READY"
+  },
+  "source_sha256": "81d07a1936abdf41ae7a6d740ec2288ccedb2806cc7c40dfb2d66941783b43da",
+  "trial_id": "e5d966a1293743fd9fcad6f1a38d44ea",
+  "clock_mapping": "original first perception receipt + real elapsed replay time",
+  "physical_execution": false
+}

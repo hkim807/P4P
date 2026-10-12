@@ -1,0 +1,51 @@
+{
+  "scenario_id": "S9",
+  "first_source_state_id": "replay-077ff210a4441c83a39ff4a6:12",
+  "first_state_sha256": "f9127de9913dc53e096f89b3056e91d6a8e25ea59c096e4a5417d0fd1eb71c4b",
+  "expected_actions": [
+    "APPROACH"
+  ],
+  "first_decision": {
+    "action": "APPROACH",
+    "reason": "Person detected at approachable distance with sustained gaze."
+  },
+  "first_output_valid": true,
+  "action_aligned": true,
+  "first_eligible_since_motion_s": 1.140807,
+  "output_since_motion_s": 4.456962457874567,
+  "first_request_observed_elapsed_s": 1.0802230411209166,
+  "first_client_finished_elapsed_s": 4.372527124825865,
+  "first_eligible_to_validated_client_output_s": 3.2988351248258647,
+  "accepted_by_live_client": true,
+  "acceptance_details": {
+    "current_readiness": true,
+    "latest_observation_age_s": 0.999394,
+    "model_source_age_s": 3.316157,
+    "trial_phase": "DECIDED",
+    "failure_reason": null
+  },
+  "delivery_status": "succeeded",
+  "delivery_error": null,
+  "total_calls": 1,
+  "runner_status": "ACTION_RESOLVED",
+  "timing": {
+    "total_duration_s": 3.266607292,
+    "load_duration_s": 0.002036375,
+    "prompt_eval_duration_s": 1.800029,
+    "eval_duration_s": 1.449357,
+    "prompt_tokens": 918,
+    "cached_prompt_tokens": 586,
+    "output_tokens": 21,
+    "request_bytes": 5295,
+    "request_preparation_s": 0.00027624983340501785,
+    "response_validation_s": 0.0011448338627815247,
+    "transport_duration_s": 3.268100791145116,
+    "transport_minus_native_total_s": 0.001493499145115873,
+    "native_unattributed_s": 0.01518491700000002,
+    "eligible_to_observed_output_s": 3.316155457874566,
+    "eligible_to_client_call_s": 0.029313249984562306,
+    "client_finished_to_observed_output_s": 0.017320333048701286
+  },
+  "first_error": null,
+  "repetition": 1
+}
