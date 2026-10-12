@@ -1,0 +1,10 @@
+{
+  "methods_run": 666,
+  "new_failures": 0,
+  "known_failing_methods": 1,
+  "known_failing_subcases": 4,
+  "http_errors": 0,
+  "rule_frames_unchanged": 574,
+  "eligible_frames": 402,
+  "llm_inference_calls": 0
+}

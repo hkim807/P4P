@@ -170,3 +170,46 @@ in the state. No physical robot action was executed.
 Artifacts: [stage 4 report](/Users/eddiekim/Documents/Projects/P4P/var/evaluation/llm-refinement-stage-4/REPORT.md),
 [label meanings and derivation](/Users/eddiekim/Documents/Projects/P4P/docs/semantic-decision-state.md),
 [comparison metrics](/Users/eddiekim/Documents/Projects/P4P/var/evaluation/llm-refinement-stage-4/comparison.json).
+
+## Follow-up — 13 October 2026: remove unsupported Navel cues
+
+**Request:** remove pass gestures and measured path relations completely,
+because Navel sends neither; clarify whether proximity labels contain a policy
+choice rather than a raw observation.
+
+**Change:** removed the two fields from RawPerson, PersonSocialState, estimator
+construction, DecisionPerson and published schemas. Removed their two English
+descriptions, readiness bypasses, rule branches and reason descriptions. The
+supported nose-based corridor category and closing/low-gaze yield condition
+remain. DecisionState/description version is 3; prompt metadata is
+`social-state-llm-v14-semantic-v3-navel-cues`. No remaining thresholds, category
+calculations, system instructions, proximity descriptions or physical actions
+were changed.
+
+**Historical data:** stage 1–4 freezes/results remain untouched. Current live
+contracts reject the removed fields. Offline SocialState readers can remove
+only archived UNKNOWN placeholders on a copy, preserving original source
+records. Claimed CLEAR/CONFLICT/PASS measurements require the old frozen
+implementation. The rule oracle now loads the original frozen SocialState
+model together with its rule code, so current schema/readiness changes cannot
+contaminate the reference. Paired preparation retains the original full-state
+hash separately from the hash with only unsupported placeholders removed.
+
+**Verification:** all 574 frames retain complete v7 decisions, readiness,
+reasons, targets and IDs; 402 are eligible and first rule actions remain 9/9
+aligned. Focused tests cover end-to-end absence, schema equality, strict live
+rejection, no readiness shortcuts, offline migration, first-output timing and
+supported rule boundaries. The full suite ran 666 methods: all new checks pass;
+the same pre-existing VLM/LLM wording method fails four subcases. No new LLM
+inference runs were performed, so stage 4's accuracy/latency numbers continue to
+describe its frozen v2 payload, not this cleanup.
+
+**Proximity:** the exact distance is measured; conversation/social range names
+refer to configured categories. The final preset has boundaries 0.6/2/6 m.
+They do not establish interest or prescribe an action. The compact input
+currently leaves those numeric definitions implicit. A future experiment can
+either explain a fixed shared operating range clearly or use neutral metric
+labels when testing each policy's own spatial judgment. This follow-up does
+not silently change proximity or the comparison contract.
+
+Details: [supported cue contract](/Users/eddiekim/Documents/Projects/P4P/docs/navel-supported-cues.md).
