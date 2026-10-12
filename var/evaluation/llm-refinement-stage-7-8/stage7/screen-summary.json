@@ -1,0 +1,982 @@
+{
+  "control": [
+    {
+      "scenario_id": "S1",
+      "decision": {
+        "action": "CONTINUE",
+        "reason": "Person outside interaction range, no sustained looking."
+      },
+      "valid": true,
+      "aligned": true,
+      "client_duration_s": 6.212160833179951,
+      "timing": {
+        "total_duration_s": 6.200802375,
+        "load_duration_s": 0.009022541,
+        "prompt_eval_duration_s": 4.991186,
+        "eval_duration_s": 1.175251,
+        "prompt_tokens": 906,
+        "cached_prompt_tokens": 0,
+        "output_tokens": 19,
+        "request_bytes": 5262,
+        "request_preparation_s": 0.00261991610750556,
+        "response_validation_s": 0.004602374974638224,
+        "transport_duration_s": 6.204938542097807,
+        "transport_minus_native_total_s": 0.00413616709780662,
+        "native_unattributed_s": 0.025342833999999925
+      },
+      "done_reason": "stop",
+      "primary_score": false
+    },
+    {
+      "scenario_id": "S2",
+      "decision": {
+        "action": "APPROACH",
+        "reason": "Person within social range, sustained gaze at the robot."
+      },
+      "valid": true,
+      "aligned": true,
+      "client_duration_s": 3.1411037500947714,
+      "timing": {
+        "total_duration_s": 3.139058291,
+        "load_duration_s": 0.002395416,
+        "prompt_eval_duration_s": 1.799521,
+        "eval_duration_s": 1.319662,
+        "prompt_tokens": 914,
+        "cached_prompt_tokens": 620,
+        "output_tokens": 22,
+        "request_bytes": 5288,
+        "request_preparation_s": 0.00020462507382035255,
+        "response_validation_s": 0.00030508311465382576,
+        "transport_duration_s": 3.140594041906297,
+        "transport_minus_native_total_s": 0.0015357509062972063,
+        "native_unattributed_s": 0.017479875000000256
+      },
+      "done_reason": "stop",
+      "primary_score": false
+    },
+    {
+      "scenario_id": "S3",
+      "decision": {
+        "action": "ENGAGE",
+        "reason": "Sustained gaze and proximity within interaction range."
+      },
+      "valid": true,
+      "aligned": true,
+      "client_duration_s": 3.188832125160843,
+      "timing": {
+        "total_duration_s": 3.186122917,
+        "load_duration_s": 0.003136959,
+        "prompt_eval_duration_s": 1.853274,
+        "eval_duration_s": 1.318501,
+        "prompt_tokens": 924,
+        "cached_prompt_tokens": 601,
+        "output_tokens": 20,
+        "request_bytes": 5290,
+        "request_preparation_s": 0.00033508334308862686,
+        "response_validation_s": 0.00011254195123910904,
+        "transport_duration_s": 3.1883844998665154,
+        "transport_minus_native_total_s": 0.0022615828665153437,
+        "native_unattributed_s": 0.011210957999999938
+      },
+      "done_reason": "stop",
+      "primary_score": false
+    },
+    {
+      "scenario_id": "S4",
+      "decision": {
+        "action": "CONTINUE",
+        "reason": "Person outside interaction range, decreasing distance but no sustained looking."
+      },
+      "valid": true,
+      "aligned": false,
+      "client_duration_s": 3.01443029101938,
+      "timing": {
+        "total_duration_s": 3.013542,
+        "load_duration_s": 0.001063209,
+        "prompt_eval_duration_s": 1.803342,
+        "eval_duration_s": 1.204197,
+        "prompt_tokens": 927,
+        "cached_prompt_tokens": 601,
+        "output_tokens": 22,
+        "request_bytes": 5283,
+        "request_preparation_s": 0.00024891598150134087,
+        "response_validation_s": 5.295826122164726e-05,
+        "transport_duration_s": 3.014128416776657,
+        "transport_minus_native_total_s": 0.0005864167766569395,
+        "native_unattributed_s": 0.004939791000000415
+      },
+      "done_reason": "stop",
+      "primary_score": false
+    },
+    {
+      "scenario_id": "S5",
+      "decision": {
+        "action": "CONTINUE",
+        "reason": "No people observed and robot is moving."
+      },
+      "valid": true,
+      "aligned": true,
+      "client_duration_s": 1.4109889580868185,
+      "timing": {
+        "total_duration_s": 1.410199041,
+        "load_duration_s": 0.000932583,
+        "prompt_eval_duration_s": 0.403608,
+        "eval_duration_s": 0.999526,
+        "prompt_tokens": 650,
+        "cached_prompt_tokens": 586,
+        "output_tokens": 18,
+        "request_bytes": 4154,
+        "request_preparation_s": 0.00018929177895188332,
+        "response_validation_s": 4.166644066572189e-05,
+        "transport_duration_s": 1.4107579998672009,
+        "transport_minus_native_total_s": 0.0005589588672008095,
+        "native_unattributed_s": 0.006132457999999952
+      },
+      "done_reason": "stop",
+      "primary_score": false
+    },
+    {
+      "scenario_id": "S6",
+      "decision": {
+        "action": "CONTINUE",
+        "reason": "No recent looking and low gaze fraction outside interaction range."
+      },
+      "valid": true,
+      "aligned": true,
+      "client_duration_s": 3.0523233748972416,
+      "timing": {
+        "total_duration_s": 3.051348541,
+        "load_duration_s": 0.000590583,
+        "prompt_eval_duration_s": 1.794595,
+        "eval_duration_s": 1.252151,
+        "prompt_tokens": 917,
+        "cached_prompt_tokens": 586,
+        "output_tokens": 21,
+        "request_bytes": 5269,
+        "request_preparation_s": 0.00017316685989499092,
+        "response_validation_s": 0.00010091718286275864,
+        "transport_duration_s": 3.052049290854484,
+        "transport_minus_native_total_s": 0.0007007498544839841,
+        "native_unattributed_s": 0.004011957999999982
+      },
+      "done_reason": "stop",
+      "primary_score": false
+    },
+    {
+      "scenario_id": "S7",
+      "decision": {
+        "action": "CONTINUE",
+        "reason": "Intermittent looking but no sustained gaze or closing distance."
+      },
+      "valid": true,
+      "aligned": true,
+      "client_duration_s": 3.4573280829936266,
+      "timing": {
+        "total_duration_s": 3.454714833,
+        "load_duration_s": 0.000647833,
+        "prompt_eval_duration_s": 1.658561,
+        "eval_duration_s": 1.79,
+        "prompt_tokens": 918,
+        "cached_prompt_tokens": 622,
+        "output_tokens": 28,
+        "request_bytes": 5275,
+        "request_preparation_s": 0.0001799166202545166,
+        "response_validation_s": 0.0003520832397043705,
+        "transport_duration_s": 3.4567960831336677,
+        "transport_minus_native_total_s": 0.002081250133667556,
+        "native_unattributed_s": 0.005506000000000011
+      },
+      "done_reason": "stop",
+      "primary_score": false
+    },
+    {
+      "scenario_id": "S8",
+      "decision": {
+        "action": "CONTINUE",
+        "reason": "No people observed and robot is moving."
+      },
+      "valid": true,
+      "aligned": true,
+      "client_duration_s": 1.6886658747680485,
+      "timing": {
+        "total_duration_s": 1.684056041,
+        "load_duration_s": 0.001080291,
+        "prompt_eval_duration_s": 0.408319,
+        "eval_duration_s": 1.260286,
+        "prompt_tokens": 650,
+        "cached_prompt_tokens": 586,
+        "output_tokens": 18,
+        "request_bytes": 4154,
+        "request_preparation_s": 0.0002642497420310974,
+        "response_validation_s": 0.0007537077181041241,
+        "transport_duration_s": 1.6876479173079133,
+        "transport_minus_native_total_s": 0.0035918763079132443,
+        "native_unattributed_s": 0.014370750000000099
+      },
+      "done_reason": "stop",
+      "primary_score": false
+    },
+    {
+      "scenario_id": "S9",
+      "decision": {
+        "action": "APPROACH",
+        "reason": "Person detected at approachable distance with sustained gaze."
+      },
+      "valid": true,
+      "aligned": true,
+      "client_duration_s": 3.24730325024575,
+      "timing": {
+        "total_duration_s": 3.245127208,
+        "load_duration_s": 0.002621,
+        "prompt_eval_duration_s": 1.817557,
+        "eval_duration_s": 1.414139,
+        "prompt_tokens": 918,
+        "cached_prompt_tokens": 586,
+        "output_tokens": 21,
+        "request_bytes": 5295,
+        "request_preparation_s": 0.00018187519162893295,
+        "response_validation_s": 0.0003305422142148018,
+        "transport_duration_s": 3.246790832839906,
+        "transport_minus_native_total_s": 0.0016636248399062303,
+        "native_unattributed_s": 0.010810207999999655
+      },
+      "done_reason": "stop",
+      "primary_score": false
+    }
+  ],
+  "context-2048": [
+    {
+      "scenario_id": "S1",
+      "decision": {
+        "action": "CONTINUE",
+        "reason": "Person outside interaction range, no sustained looking."
+      },
+      "valid": true,
+      "aligned": true,
+      "client_duration_s": 6.0108515419997275,
+      "timing": {
+        "total_duration_s": 6.006087083,
+        "load_duration_s": 0.007362083,
+        "prompt_eval_duration_s": 4.983894,
+        "eval_duration_s": 1.002052,
+        "prompt_tokens": 906,
+        "cached_prompt_tokens": 0,
+        "output_tokens": 19,
+        "request_bytes": 5262,
+        "request_preparation_s": 0.003656791988760233,
+        "response_validation_s": 0.00012366706505417824,
+        "transport_duration_s": 6.007071082945913,
+        "transport_minus_native_total_s": 0.0009839999459133608,
+        "native_unattributed_s": 0.012778999999999208
+      },
+      "done_reason": "stop",
+      "primary_score": false
+    },
+    {
+      "scenario_id": "S2",
+      "decision": {
+        "action": "APPROACH",
+        "reason": "Person within social range, sustained gaze at the robot."
+      },
+      "valid": true,
+      "aligned": true,
+      "client_duration_s": 3.00286674965173,
+      "timing": {
+        "total_duration_s": 3.002056334,
+        "load_duration_s": 0.001016959,
+        "prompt_eval_duration_s": 1.656966,
+        "eval_duration_s": 1.337739,
+        "prompt_tokens": 914,
+        "cached_prompt_tokens": 620,
+        "output_tokens": 22,
+        "request_bytes": 5288,
+        "request_preparation_s": 0.00015187496319413185,
+        "response_validation_s": 6.079161539673805e-05,
+        "transport_duration_s": 3.002654083073139,
+        "transport_minus_native_total_s": 0.0005977490731390311,
+        "native_unattributed_s": 0.006334375000000225
+      },
+      "done_reason": "stop",
+      "primary_score": false
+    },
+    {
+      "scenario_id": "S3",
+      "decision": {
+        "action": "ENGAGE",
+        "reason": "Sustained gaze and proximity within interaction range."
+      },
+      "valid": true,
+      "aligned": true,
+      "client_duration_s": 2.992252374999225,
+      "timing": {
+        "total_duration_s": 2.99123225,
+        "load_duration_s": 0.000622916,
+        "prompt_eval_duration_s": 1.810152,
+        "eval_duration_s": 1.175218,
+        "prompt_tokens": 924,
+        "cached_prompt_tokens": 601,
+        "output_tokens": 20,
+        "request_bytes": 5290,
+        "request_preparation_s": 0.00017083296552300453,
+        "response_validation_s": 0.00010566692799329758,
+        "transport_duration_s": 2.991975875105709,
+        "transport_minus_native_total_s": 0.0007436251057089116,
+        "native_unattributed_s": 0.005239333999999651
+      },
+      "done_reason": "stop",
+      "primary_score": false
+    },
+    {
+      "scenario_id": "S4",
+      "decision": {
+        "action": "CONTINUE",
+        "reason": "Person outside interaction range, decreasing distance but no sustained looking."
+      },
+      "valid": true,
+      "aligned": false,
+      "client_duration_s": 3.0354975829832256,
+      "timing": {
+        "total_duration_s": 3.034065208,
+        "load_duration_s": 0.000766375,
+        "prompt_eval_duration_s": 1.869526,
+        "eval_duration_s": 1.157674,
+        "prompt_tokens": 927,
+        "cached_prompt_tokens": 601,
+        "output_tokens": 22,
+        "request_bytes": 5283,
+        "request_preparation_s": 0.0002176659181714058,
+        "response_validation_s": 0.0001971670426428318,
+        "transport_duration_s": 3.0350827500224113,
+        "transport_minus_native_total_s": 0.001017542022411444,
+        "native_unattributed_s": 0.006098832999999804
+      },
+      "done_reason": "stop",
+      "primary_score": false
+    },
+    {
+      "scenario_id": "S5",
+      "decision": {
+        "action": "CONTINUE",
+        "reason": "No people observed and robot is moving."
+      },
+      "valid": true,
+      "aligned": true,
+      "client_duration_s": 1.5211144583299756,
+      "timing": {
+        "total_duration_s": 1.520000375,
+        "load_duration_s": 0.001628416,
+        "prompt_eval_duration_s": 0.356103,
+        "eval_duration_s": 1.145954,
+        "prompt_tokens": 650,
+        "cached_prompt_tokens": 586,
+        "output_tokens": 18,
+        "request_bytes": 4154,
+        "request_preparation_s": 0.0003219582140445709,
+        "response_validation_s": 4.0125101804733276e-05,
+        "transport_duration_s": 1.5207523750141263,
+        "transport_minus_native_total_s": 0.0007520000141263417,
+        "native_unattributed_s": 0.016314959000000018
+      },
+      "done_reason": "stop",
+      "primary_score": false
+    },
+    {
+      "scenario_id": "S6",
+      "decision": {
+        "action": "CONTINUE",
+        "reason": "No recent looking and low gaze fraction outside interaction range."
+      },
+      "valid": true,
+      "aligned": true,
+      "client_duration_s": 2.9732198328711092,
+      "timing": {
+        "total_duration_s": 2.972338417,
+        "load_duration_s": 0.000633042,
+        "prompt_eval_duration_s": 1.814081,
+        "eval_duration_s": 1.15199,
+        "prompt_tokens": 917,
+        "cached_prompt_tokens": 586,
+        "output_tokens": 21,
+        "request_bytes": 5269,
+        "request_preparation_s": 0.00017229188233613968,
+        "response_validation_s": 7.212487980723381e-05,
+        "transport_duration_s": 2.972975416108966,
+        "transport_minus_native_total_s": 0.0006369991089658633,
+        "native_unattributed_s": 0.00563437500000008
+      },
+      "done_reason": "stop",
+      "primary_score": false
+    },
+    {
+      "scenario_id": "S7",
+      "decision": {
+        "action": "CONTINUE",
+        "reason": "Intermittent looking but no sustained gaze or closing distance."
+      },
+      "valid": true,
+      "aligned": true,
+      "client_duration_s": 3.2867689155973494,
+      "timing": {
+        "total_duration_s": 3.2837865,
+        "load_duration_s": 0.000705291,
+        "prompt_eval_duration_s": 1.764213,
+        "eval_duration_s": 1.513469,
+        "prompt_tokens": 918,
+        "cached_prompt_tokens": 622,
+        "output_tokens": 28,
+        "request_bytes": 5275,
+        "request_preparation_s": 0.0017595826648175716,
+        "response_validation_s": 0.00015516579151153564,
+        "transport_duration_s": 3.2848541671410203,
+        "transport_minus_native_total_s": 0.0010676671410201344,
+        "native_unattributed_s": 0.005399209000000127
+      },
+      "done_reason": "stop",
+      "primary_score": false
+    },
+    {
+      "scenario_id": "S8",
+      "decision": {
+        "action": "CONTINUE",
+        "reason": "No people observed and robot is moving."
+      },
+      "valid": true,
+      "aligned": true,
+      "client_duration_s": 1.4916098746471107,
+      "timing": {
+        "total_duration_s": 1.490641333,
+        "load_duration_s": 0.000832667,
+        "prompt_eval_duration_s": 0.342037,
+        "eval_duration_s": 1.142791,
+        "prompt_tokens": 650,
+        "cached_prompt_tokens": 586,
+        "output_tokens": 18,
+        "request_bytes": 4154,
+        "request_preparation_s": 0.0003000418655574322,
+        "response_validation_s": 4.77498397231102e-05,
+        "transport_duration_s": 1.4912620829418302,
+        "transport_minus_native_total_s": 0.0006207499418302564,
+        "native_unattributed_s": 0.0049806660000000225
+      },
+      "done_reason": "stop",
+      "primary_score": false
+    },
+    {
+      "scenario_id": "S9",
+      "decision": {
+        "action": "APPROACH",
+        "reason": "Person detected at approachable distance with sustained gaze."
+      },
+      "valid": true,
+      "aligned": true,
+      "client_duration_s": 2.897981041111052,
+      "timing": {
+        "total_duration_s": 2.896892667,
+        "load_duration_s": 0.000572959,
+        "prompt_eval_duration_s": 1.802954,
+        "eval_duration_s": 1.087365,
+        "prompt_tokens": 918,
+        "cached_prompt_tokens": 586,
+        "output_tokens": 21,
+        "request_bytes": 5295,
+        "request_preparation_s": 0.0003015412949025631,
+        "response_validation_s": 7.795821875333786e-05,
+        "transport_duration_s": 2.897601541597396,
+        "transport_minus_native_total_s": 0.0007088745973962141,
+        "native_unattributed_s": 0.006000708000000188
+      },
+      "done_reason": "stop",
+      "primary_score": false
+    }
+  ],
+  "output-64": [
+    {
+      "scenario_id": "S1",
+      "decision": {
+        "action": "CONTINUE",
+        "reason": "Person outside interaction range, no sustained looking."
+      },
+      "valid": true,
+      "aligned": true,
+      "client_duration_s": 6.099915334023535,
+      "timing": {
+        "total_duration_s": 6.096120083,
+        "load_duration_s": 0.003646833,
+        "prompt_eval_duration_s": 4.886806,
+        "eval_duration_s": 1.198685,
+        "prompt_tokens": 906,
+        "cached_prompt_tokens": 0,
+        "output_tokens": 19,
+        "request_bytes": 5261,
+        "request_preparation_s": 0.0004539173096418381,
+        "response_validation_s": 0.0007663341239094734,
+        "transport_duration_s": 6.098695082589984,
+        "transport_minus_native_total_s": 0.002574999589984195,
+        "native_unattributed_s": 0.006982250000000079
+      },
+      "done_reason": "stop",
+      "primary_score": false
+    },
+    {
+      "scenario_id": "S2",
+      "decision": {
+        "action": "APPROACH",
+        "reason": "Person within social range, sustained gaze at the robot."
+      },
+      "valid": true,
+      "aligned": true,
+      "client_duration_s": 2.8012007498182356,
+      "timing": {
+        "total_duration_s": 2.799978791,
+        "load_duration_s": 0.001309041,
+        "prompt_eval_duration_s": 1.61566,
+        "eval_duration_s": 1.175048,
+        "prompt_tokens": 914,
+        "cached_prompt_tokens": 620,
+        "output_tokens": 22,
+        "request_bytes": 5287,
+        "request_preparation_s": 0.0002275826409459114,
+        "response_validation_s": 4.3042004108428955e-05,
+        "transport_duration_s": 2.8009301251731813,
+        "transport_minus_native_total_s": 0.000951334173181273,
+        "native_unattributed_s": 0.007961749999999768
+      },
+      "done_reason": "stop",
+      "primary_score": false
+    },
+    {
+      "scenario_id": "S3",
+      "decision": {
+        "action": "ENGAGE",
+        "reason": "Sustained gaze and proximity within interaction range."
+      },
+      "valid": true,
+      "aligned": true,
+      "client_duration_s": 2.9726133751682937,
+      "timing": {
+        "total_duration_s": 2.971835333,
+        "load_duration_s": 0.000639833,
+        "prompt_eval_duration_s": 1.925065,
+        "eval_duration_s": 1.041323,
+        "prompt_tokens": 924,
+        "cached_prompt_tokens": 601,
+        "output_tokens": 20,
+        "request_bytes": 5289,
+        "request_preparation_s": 0.00019225012511014938,
+        "response_validation_s": 4.2499974370002747e-05,
+        "transport_duration_s": 2.9723786250688136,
+        "transport_minus_native_total_s": 0.000543292068813539,
+        "native_unattributed_s": 0.004807500000000076
+      },
+      "done_reason": "stop",
+      "primary_score": false
+    },
+    {
+      "scenario_id": "S4",
+      "decision": {
+        "action": "CONTINUE",
+        "reason": "Person outside interaction range, decreasing distance but no sustained looking."
+      },
+      "valid": true,
+      "aligned": false,
+      "client_duration_s": 3.10556274978444,
+      "timing": {
+        "total_duration_s": 3.104864959,
+        "load_duration_s": 0.000658625,
+        "prompt_eval_duration_s": 1.940255,
+        "eval_duration_s": 1.159906,
+        "prompt_tokens": 927,
+        "cached_prompt_tokens": 601,
+        "output_tokens": 22,
+        "request_bytes": 5282,
+        "request_preparation_s": 0.00017074961215257645,
+        "response_validation_s": 4.520779475569725e-05,
+        "transport_duration_s": 3.1053467923775315,
+        "transport_minus_native_total_s": 0.00048183337753160416,
+        "native_unattributed_s": 0.004045333999999734
+      },
+      "done_reason": "stop",
+      "primary_score": false
+    },
+    {
+      "scenario_id": "S5",
+      "decision": {
+        "action": "CONTINUE",
+        "reason": "No people observed and robot is moving."
+      },
+      "valid": true,
+      "aligned": true,
+      "client_duration_s": 1.3298549582250416,
+      "timing": {
+        "total_duration_s": 1.329001375,
+        "load_duration_s": 0.000656791,
+        "prompt_eval_duration_s": 0.342385,
+        "eval_duration_s": 0.982509,
+        "prompt_tokens": 650,
+        "cached_prompt_tokens": 586,
+        "output_tokens": 18,
+        "request_bytes": 4153,
+        "request_preparation_s": 0.00018395809456706047,
+        "response_validation_s": 4.4208019971847534e-05,
+        "transport_duration_s": 1.3296267921105027,
+        "transport_minus_native_total_s": 0.0006254171105026796,
+        "native_unattributed_s": 0.00345058400000009
+      },
+      "done_reason": "stop",
+      "primary_score": false
+    },
+    {
+      "scenario_id": "S6",
+      "decision": {
+        "action": "CONTINUE",
+        "reason": "No recent looking and low gaze fraction outside interaction range."
+      },
+      "valid": true,
+      "aligned": true,
+      "client_duration_s": 3.0577194169163704,
+      "timing": {
+        "total_duration_s": 3.056601958,
+        "load_duration_s": 0.000615541,
+        "prompt_eval_duration_s": 1.96437,
+        "eval_duration_s": 1.087733,
+        "prompt_tokens": 917,
+        "cached_prompt_tokens": 586,
+        "output_tokens": 21,
+        "request_bytes": 5268,
+        "request_preparation_s": 0.00016395794227719307,
+        "response_validation_s": 0.00014904187992215157,
+        "transport_duration_s": 3.057406417094171,
+        "transport_minus_native_total_s": 0.0008044590941711505,
+        "native_unattributed_s": 0.0038834169999999446
+      },
+      "done_reason": "stop",
+      "primary_score": false
+    },
+    {
+      "scenario_id": "S7",
+      "decision": {
+        "action": "CONTINUE",
+        "reason": "Intermittent looking but no sustained gaze or closing distance."
+      },
+      "valid": true,
+      "aligned": true,
+      "client_duration_s": 3.2915806248784065,
+      "timing": {
+        "total_duration_s": 3.290461291,
+        "load_duration_s": 0.000629333,
+        "prompt_eval_duration_s": 1.699658,
+        "eval_duration_s": 1.585676,
+        "prompt_tokens": 918,
+        "cached_prompt_tokens": 622,
+        "output_tokens": 28,
+        "request_bytes": 5274,
+        "request_preparation_s": 0.00028337491676211357,
+        "response_validation_s": 9.458372369408607e-05,
+        "transport_duration_s": 3.2912026662379503,
+        "transport_minus_native_total_s": 0.0007413752379501481,
+        "native_unattributed_s": 0.004497958000000413
+      },
+      "done_reason": "stop",
+      "primary_score": false
+    },
+    {
+      "scenario_id": "S8",
+      "decision": {
+        "action": "CONTINUE",
+        "reason": "No people observed and robot is moving."
+      },
+      "valid": true,
+      "aligned": true,
+      "client_duration_s": 1.8517239578068256,
+      "timing": {
+        "total_duration_s": 1.850915125,
+        "load_duration_s": 0.000651375,
+        "prompt_eval_duration_s": 0.392023,
+        "eval_duration_s": 1.454661,
+        "prompt_tokens": 650,
+        "cached_prompt_tokens": 586,
+        "output_tokens": 18,
+        "request_bytes": 4153,
+        "request_preparation_s": 0.00020904187113046646,
+        "response_validation_s": 4.329066723585129e-05,
+        "transport_duration_s": 1.8514716252684593,
+        "transport_minus_native_total_s": 0.0005565002684593257,
+        "native_unattributed_s": 0.0035797500000001037
+      },
+      "done_reason": "stop",
+      "primary_score": false
+    },
+    {
+      "scenario_id": "S9",
+      "decision": {
+        "action": "APPROACH",
+        "reason": "Person detected at approachable distance with sustained gaze."
+      },
+      "valid": true,
+      "aligned": true,
+      "client_duration_s": 3.073173249606043,
+      "timing": {
+        "total_duration_s": 3.071879458,
+        "load_duration_s": 0.000682667,
+        "prompt_eval_duration_s": 1.833561,
+        "eval_duration_s": 1.232992,
+        "prompt_tokens": 918,
+        "cached_prompt_tokens": 586,
+        "output_tokens": 21,
+        "request_bytes": 5294,
+        "request_preparation_s": 0.00019024964421987534,
+        "response_validation_s": 0.0001454157754778862,
+        "transport_duration_s": 3.0728375841863453,
+        "transport_minus_native_total_s": 0.0009581261863451651,
+        "native_unattributed_s": 0.004643790999999897
+      },
+      "done_reason": "stop",
+      "primary_score": false
+    }
+  ],
+  "context-2048-output-64": [
+    {
+      "scenario_id": "S1",
+      "decision": {
+        "action": "CONTINUE",
+        "reason": "Person outside interaction range, no sustained looking."
+      },
+      "valid": true,
+      "aligned": true,
+      "client_duration_s": 6.062543750274926,
+      "timing": {
+        "total_duration_s": 6.06016775,
+        "load_duration_s": 0.000892875,
+        "prompt_eval_duration_s": 5.036253,
+        "eval_duration_s": 1.013625,
+        "prompt_tokens": 906,
+        "cached_prompt_tokens": 0,
+        "output_tokens": 19,
+        "request_bytes": 5261,
+        "request_preparation_s": 0.0002703750506043434,
+        "response_validation_s": 0.0003737090155482292,
+        "transport_duration_s": 6.061899666208774,
+        "transport_minus_native_total_s": 0.0017319162087741091,
+        "native_unattributed_s": 0.009396874999999305
+      },
+      "done_reason": "stop",
+      "primary_score": false
+    },
+    {
+      "scenario_id": "S2",
+      "decision": {
+        "action": "APPROACH",
+        "reason": "Person within social range, sustained gaze at the robot."
+      },
+      "valid": true,
+      "aligned": true,
+      "client_duration_s": 3.1060888338834047,
+      "timing": {
+        "total_duration_s": 3.104476584,
+        "load_duration_s": 0.002553459,
+        "prompt_eval_duration_s": 1.610432,
+        "eval_duration_s": 1.473319,
+        "prompt_tokens": 914,
+        "cached_prompt_tokens": 620,
+        "output_tokens": 22,
+        "request_bytes": 5287,
+        "request_preparation_s": 0.00030579185113310814,
+        "response_validation_s": 5.270913243293762e-05,
+        "transport_duration_s": 3.1057303328998387,
+        "transport_minus_native_total_s": 0.001253748899838758,
+        "native_unattributed_s": 0.018172124999999983
+      },
+      "done_reason": "stop",
+      "primary_score": false
+    },
+    {
+      "scenario_id": "S3",
+      "decision": {
+        "action": "ENGAGE",
+        "reason": "Sustained gaze and proximity within interaction range."
+      },
+      "valid": true,
+      "aligned": true,
+      "client_duration_s": 2.8486892920918763,
+      "timing": {
+        "total_duration_s": 2.847616875,
+        "load_duration_s": 0.000572459,
+        "prompt_eval_duration_s": 1.770436,
+        "eval_duration_s": 1.071305,
+        "prompt_tokens": 924,
+        "cached_prompt_tokens": 601,
+        "output_tokens": 20,
+        "request_bytes": 5289,
+        "request_preparation_s": 0.00024908408522605896,
+        "response_validation_s": 0.00015420792624354362,
+        "transport_duration_s": 2.8482860000804067,
+        "transport_minus_native_total_s": 0.0006691250804067295,
+        "native_unattributed_s": 0.005303416000000283
+      },
+      "done_reason": "stop",
+      "primary_score": false
+    },
+    {
+      "scenario_id": "S4",
+      "decision": {
+        "action": "CONTINUE",
+        "reason": "Person outside interaction range, decreasing distance but no sustained looking."
+      },
+      "valid": true,
+      "aligned": false,
+      "client_duration_s": 3.115972707979381,
+      "timing": {
+        "total_duration_s": 3.114515709,
+        "load_duration_s": 0.000747792,
+        "prompt_eval_duration_s": 1.948717,
+        "eval_duration_s": 1.159501,
+        "prompt_tokens": 927,
+        "cached_prompt_tokens": 601,
+        "output_tokens": 22,
+        "request_bytes": 5282,
+        "request_preparation_s": 0.0001777918078005314,
+        "response_validation_s": 0.0002287081442773342,
+        "transport_duration_s": 3.115566208027303,
+        "transport_minus_native_total_s": 0.0010504990273032533,
+        "native_unattributed_s": 0.005549917000000182
+      },
+      "done_reason": "stop",
+      "primary_score": false
+    },
+    {
+      "scenario_id": "S5",
+      "decision": {
+        "action": "CONTINUE",
+        "reason": "No people observed and robot is moving."
+      },
+      "valid": true,
+      "aligned": true,
+      "client_duration_s": 1.4307452500797808,
+      "timing": {
+        "total_duration_s": 1.429354042,
+        "load_duration_s": 0.001620667,
+        "prompt_eval_duration_s": 0.347738,
+        "eval_duration_s": 1.068757,
+        "prompt_tokens": 650,
+        "cached_prompt_tokens": 586,
+        "output_tokens": 18,
+        "request_bytes": 4153,
+        "request_preparation_s": 0.0003137500025331974,
+        "response_validation_s": 4.158308729529381e-05,
+        "transport_duration_s": 1.4303899169899523,
+        "transport_minus_native_total_s": 0.00103587498995239,
+        "native_unattributed_s": 0.011238375000000023
+      },
+      "done_reason": "stop",
+      "primary_score": false
+    },
+    {
+      "scenario_id": "S6",
+      "decision": {
+        "action": "CONTINUE",
+        "reason": "No recent looking and low gaze fraction outside interaction range."
+      },
+      "valid": true,
+      "aligned": true,
+      "client_duration_s": 2.916968083009124,
+      "timing": {
+        "total_duration_s": 2.915972834,
+        "load_duration_s": 0.0005225,
+        "prompt_eval_duration_s": 1.840147,
+        "eval_duration_s": 1.07021,
+        "prompt_tokens": 917,
+        "cached_prompt_tokens": 586,
+        "output_tokens": 21,
+        "request_bytes": 5268,
+        "request_preparation_s": 0.00018395809456706047,
+        "response_validation_s": 7.483316585421562e-05,
+        "transport_duration_s": 2.9167092917487025,
+        "transport_minus_native_total_s": 0.000736457748702346,
+        "native_unattributed_s": 0.005093334000000116
+      },
+      "done_reason": "stop",
+      "primary_score": false
+    },
+    {
+      "scenario_id": "S7",
+      "decision": {
+        "action": "CONTINUE",
+        "reason": "Intermittent looking but no sustained gaze or closing distance."
+      },
+      "valid": true,
+      "aligned": true,
+      "client_duration_s": 3.302064917050302,
+      "timing": {
+        "total_duration_s": 3.299415375,
+        "load_duration_s": 0.000653875,
+        "prompt_eval_duration_s": 1.787176,
+        "eval_duration_s": 1.505334,
+        "prompt_tokens": 918,
+        "cached_prompt_tokens": 622,
+        "output_tokens": 28,
+        "request_bytes": 5274,
+        "request_preparation_s": 0.001823625061661005,
+        "response_validation_s": 0.00012183422222733498,
+        "transport_duration_s": 3.3001194577664137,
+        "transport_minus_native_total_s": 0.0007040827664135385,
+        "native_unattributed_s": 0.0062515000000002985
+      },
+      "done_reason": "stop",
+      "primary_score": false
+    },
+    {
+      "scenario_id": "S8",
+      "decision": {
+        "action": "CONTINUE",
+        "reason": "No people observed and robot is moving."
+      },
+      "valid": true,
+      "aligned": true,
+      "client_duration_s": 1.3471964579075575,
+      "timing": {
+        "total_duration_s": 1.34586475,
+        "load_duration_s": 0.001724375,
+        "prompt_eval_duration_s": 0.345975,
+        "eval_duration_s": 0.985006,
+        "prompt_tokens": 650,
+        "cached_prompt_tokens": 586,
+        "output_tokens": 18,
+        "request_bytes": 4153,
+        "request_preparation_s": 0.00033674994483590126,
+        "response_validation_s": 5.545793101191521e-05,
+        "transport_duration_s": 1.3468042500317097,
+        "transport_minus_native_total_s": 0.0009395000317096169,
+        "native_unattributed_s": 0.013159375000000084
+      },
+      "done_reason": "stop",
+      "primary_score": false
+    },
+    {
+      "scenario_id": "S9",
+      "decision": {
+        "action": "APPROACH",
+        "reason": "Person detected at approachable distance with sustained gaze."
+      },
+      "valid": true,
+      "aligned": true,
+      "client_duration_s": 3.0020384583622217,
+      "timing": {
+        "total_duration_s": 3.001192709,
+        "load_duration_s": 0.000625917,
+        "prompt_eval_duration_s": 1.90892,
+        "eval_duration_s": 1.085496,
+        "prompt_tokens": 918,
+        "cached_prompt_tokens": 586,
+        "output_tokens": 21,
+        "request_bytes": 5294,
+        "request_preparation_s": 0.000258374959230423,
+        "response_validation_s": 4.0333252400159836e-05,
+        "transport_duration_s": 3.001739750150591,
+        "transport_minus_native_total_s": 0.00054704115059101,
+        "native_unattributed_s": 0.006150792000000127
+      },
+      "done_reason": "stop",
+      "primary_score": false
+    }
+  ]
+}

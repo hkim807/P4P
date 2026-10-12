@@ -1,0 +1,32 @@
+[
+  {
+    "source_state_id": null,
+    "source_robot_timestamp_us": null,
+    "state_sha256": "1d52101a732de6669958f720696b7de9d5d957f2070ee0b80b9e8bf9dc7aacd0",
+    "request_sha256": "5f8f24b70906625fb40545c8d4a47c400966e4f11aad1618ba370cce6a263369",
+    "request_bytes": 5274,
+    "input_characters": 4578,
+    "chat_start_elapsed_s": null,
+    "chat_end_elapsed_s": null,
+    "client_call_duration_s": 2.4540892909280956,
+    "request_preparation_s": 0.0016818749718368053,
+    "transport_duration_s": 2.451975957956165,
+    "response_validation_s": 0.0004314580000936985,
+    "ollama_metrics": {
+      "total_duration": 2451106500,
+      "load_duration": 724167,
+      "prompt_eval_count": 1002,
+      "prompt_eval_cached_count": 490,
+      "prompt_eval_duration": 1417411000,
+      "eval_count": 29,
+      "eval_duration": 1027011000
+    },
+    "request_duration_s": 2.4519783328287303,
+    "ok": true,
+    "decision": {
+      "action": "CONTINUE",
+      "reason": "The robot is within conversation distance and intermittently looking at the person, but distance trend is unavailable."
+    },
+    "error": null
+  }
+]

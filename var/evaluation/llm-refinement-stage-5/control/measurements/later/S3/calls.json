@@ -1,0 +1,32 @@
+[
+  {
+    "source_state_id": null,
+    "source_robot_timestamp_us": null,
+    "state_sha256": "fadb65bb2cc2404e219331ec14a8a744b6b2de8b324f07838f805c60475f02c2",
+    "request_sha256": "dde06ee1385ef8b355705b42bfcf6525e8c98d98b14782c9b09c79e7b29f2a8a",
+    "request_bytes": 4793,
+    "input_characters": 4097,
+    "chat_start_elapsed_s": null,
+    "chat_end_elapsed_s": null,
+    "client_call_duration_s": 3.176549708005041,
+    "request_preparation_s": 0.0002877921797335148,
+    "transport_duration_s": 3.173900124616921,
+    "response_validation_s": 0.002361791208386421,
+    "ollama_metrics": {
+      "total_duration": 3168598917,
+      "load_duration": 633625,
+      "prompt_eval_count": 838,
+      "prompt_eval_cached_count": 526,
+      "prompt_eval_duration": 1931235000,
+      "eval_count": 21,
+      "eval_duration": 1231234000
+    },
+    "request_duration_s": 3.1739316671155393,
+    "ok": true,
+    "decision": {
+      "action": "ENGAGE",
+      "reason": "Sustained gaze and face detected within interaction range."
+    },
+    "error": null
+  }
+]

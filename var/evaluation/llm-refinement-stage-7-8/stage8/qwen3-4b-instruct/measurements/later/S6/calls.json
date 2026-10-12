@@ -1,0 +1,32 @@
+[
+  {
+    "source_state_id": null,
+    "source_robot_timestamp_us": null,
+    "state_sha256": "6bedc687fbd36b684b15544a5f8d2a85a201df3fac1efcabc24929e2d1d719f4",
+    "request_sha256": "048160a2c8ed60502876dc47e8946c715a9dd866d1d53a7112a19ba7401de870",
+    "request_bytes": 5257,
+    "input_characters": 4553,
+    "chat_start_elapsed_s": null,
+    "chat_end_elapsed_s": null,
+    "client_call_duration_s": 2.257714457809925,
+    "request_preparation_s": 0.00015629176050424576,
+    "transport_duration_s": 2.2574202911928296,
+    "response_validation_s": 0.00013787485659122467,
+    "ollama_metrics": {
+      "total_duration": 2255598750,
+      "load_duration": 710458,
+      "prompt_eval_count": 904,
+      "prompt_eval_cached_count": 586,
+      "prompt_eval_duration": 955917000,
+      "eval_count": 40,
+      "eval_duration": 1281437000
+    },
+    "request_duration_s": 2.257423125207424,
+    "ok": true,
+    "decision": {
+      "action": "CONTINUE",
+      "reason": "A face is detected within interaction range, but no sustained gaze or interest is observed; robot is moving and no clear interaction need exists."
+    },
+    "error": null
+  }
+]

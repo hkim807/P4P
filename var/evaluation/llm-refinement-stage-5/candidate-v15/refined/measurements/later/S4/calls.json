@@ -1,0 +1,32 @@
+[
+  {
+    "source_state_id": null,
+    "source_robot_timestamp_us": null,
+    "state_sha256": "7f5d15972d9822eaba243ac102c2243102fce3bd38e8eb352d7615d5b6b7c95b",
+    "request_sha256": "be020603bca67fefe7738946b68b160980dbe9f388c46ecd50eb4f9d79ad854c",
+    "request_bytes": 5326,
+    "input_characters": 4630,
+    "chat_start_elapsed_s": null,
+    "chat_end_elapsed_s": null,
+    "client_call_duration_s": 4.940589833073318,
+    "request_preparation_s": 0.0006013750098645687,
+    "transport_duration_s": 4.91528245806694,
+    "response_validation_s": 0.02470599999651313,
+    "ollama_metrics": {
+      "total_duration": 4827507125,
+      "load_duration": 2810709,
+      "prompt_eval_count": 919,
+      "prompt_eval_cached_count": 628,
+      "prompt_eval_duration": 1801625000,
+      "eval_count": 20,
+      "eval_duration": 2966774000
+    },
+    "request_duration_s": 4.915333958342671,
+    "ok": true,
+    "decision": {
+      "action": "YIELD",
+      "reason": "Decreasing distance and intermittent looking justify yielding space."
+    },
+    "error": null
+  }
+]

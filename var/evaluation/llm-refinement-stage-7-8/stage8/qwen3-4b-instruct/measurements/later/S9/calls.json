@@ -1,0 +1,32 @@
+[
+  {
+    "source_state_id": null,
+    "source_robot_timestamp_us": null,
+    "state_sha256": "4f7fc313e671f36c1b3a878c377ce1e05de17b0edce142717aed2de51e063329",
+    "request_sha256": "3d107b40a84fa111ad1b2e221b297e93b80c786664e0f7a7dd5c63731caad9be",
+    "request_bytes": 5321,
+    "input_characters": 4617,
+    "chat_start_elapsed_s": null,
+    "chat_end_elapsed_s": null,
+    "client_call_duration_s": 2.2547582499682903,
+    "request_preparation_s": 0.00026008300483226776,
+    "transport_duration_s": 2.254415374714881,
+    "response_validation_s": 8.27922485768795e-05,
+    "ollama_metrics": {
+      "total_duration": 2253613041,
+      "load_duration": 753666,
+      "prompt_eval_count": 937,
+      "prompt_eval_cached_count": 620,
+      "prompt_eval_duration": 1030568000,
+      "eval_count": 37,
+      "eval_duration": 1204371000
+    },
+    "request_duration_s": 2.254417708143592,
+    "ok": true,
+    "decision": {
+      "action": "APPROACH",
+      "reason": "A face is detected with sustained gaze and high looking fraction, beyond conversation distance, indicating clear interest and social need."
+    },
+    "error": null
+  }
+]

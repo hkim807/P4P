@@ -1,0 +1,32 @@
+[
+  {
+    "source_state_id": null,
+    "source_robot_timestamp_us": null,
+    "state_sha256": "a26b19c2e0f20ff1c9afa0d1bea8303130e226e42fbedd66a7e97bd418f58037",
+    "request_sha256": "0f49b900d2623e53e36dcdaa0665eb6184a65aec8d073519fa7f8a57c233289d",
+    "request_bytes": 5289,
+    "input_characters": 4593,
+    "chat_start_elapsed_s": 1.1450463328510523,
+    "chat_end_elapsed_s": 4.017517125234008,
+    "client_call_duration_s": 2.8724707923829556,
+    "request_preparation_s": 0.00017241714522242546,
+    "transport_duration_s": 2.872219707816839,
+    "response_validation_s": 7.866742089390755e-05,
+    "ollama_metrics": {
+      "total_duration": 2870905167,
+      "load_duration": 3509542,
+      "prompt_eval_count": 994,
+      "prompt_eval_cached_count": 470,
+      "prompt_eval_duration": 1697833000,
+      "eval_count": 29,
+      "eval_duration": 1148263000
+    },
+    "request_duration_s": 2.872220959048718,
+    "ok": true,
+    "decision": {
+      "action": "CONTINUE",
+      "reason": "The robot is within interaction range with sustained gaze and a steady distance, requiring continued route progress."
+    },
+    "error": null
+  }
+]

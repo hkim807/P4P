@@ -1,0 +1,93 @@
+{
+  "scenario_id": "S9",
+  "policy": "llm",
+  "status": "ACTION_RESOLVED",
+  "action": "YIELD",
+  "decision": {
+    "action": "YIELD",
+    "reason": "Person is looking at the robot from a distance, suggesting a need for space without approaching interaction."
+  },
+  "accepted_by_live_client": true,
+  "acceptance_details": {
+    "current_readiness": true,
+    "latest_observation_age_s": 0.048329,
+    "model_source_age_s": 1.850222,
+    "trial_phase": "DECIDED",
+    "failure_reason": null
+  },
+  "resolved_elapsed_s": 2.9239127496257424,
+  "stop_elapsed_s": 2.9239127496257424,
+  "frames_ingested": 30,
+  "ready_frames": 19,
+  "readiness_counts": {
+    "INSUFFICIENT_GAZE_EVIDENCE": 11,
+    "READY": 19
+  },
+  "recording_exhausted": false,
+  "last_ingested_source_offset_s": 2.875585,
+  "last_ingested_line": 60,
+  "decision_source_offset_s": 1.073692,
+  "motion_start_monotonic_us": 2338007134,
+  "perception_origin_monotonic_us": 2338074249,
+  "decision_source_since_motion_s": 1.140807,
+  "max_dispatch_lag_s": 0.00529570784419775,
+  "model_failures": [],
+  "first_model_request": {
+    "decision": null,
+    "error": null,
+    "policy": "llm",
+    "request_id": "b62ade8a99da420fabf0176f4758785f",
+    "session_id": "replay-077ff210a4441c83a39ff4a6",
+    "source_robot_timestamp_us": 2339147941,
+    "source_state_id": "replay-077ff210a4441c83a39ff4a6:12",
+    "status": "pending",
+    "trial_id": "a8365a18b3c14cef89bdc331b0732739"
+  },
+  "resolved_output": {
+    "decision": {
+      "action": "YIELD",
+      "reason": "Person is looking at the robot from a distance, suggesting a need for space without approaching interaction."
+    },
+    "error": null,
+    "policy": "llm",
+    "request_id": "b62ade8a99da420fabf0176f4758785f",
+    "session_id": "replay-077ff210a4441c83a39ff4a6",
+    "source_robot_timestamp_us": 2339147941,
+    "source_state_id": "replay-077ff210a4441c83a39ff4a6:12",
+    "status": "succeeded",
+    "trial_id": "a8365a18b3c14cef89bdc331b0732739",
+    "completed_at": "2026-10-12T22:02:41.852768+00:00",
+    "error_stage": null,
+    "ok": true,
+    "ollama_configuration": {
+      "base_url": "http://127.0.0.1:11434",
+      "generation_options": {
+        "num_ctx": 8192,
+        "num_predict": 192,
+        "seed": 42,
+        "temperature": 0.0
+      },
+      "model": "qwen2.5:3b",
+      "num_ctx": 8192,
+      "num_predict": 192,
+      "seed": 42,
+      "temperature": 0.0,
+      "timeout_seconds": 120.0
+    },
+    "prompt_version": "decision-state-llm-v16",
+    "raw_content": "{\n    \"action\": \"YIELD\",\n    \"reason\": \"Person is looking at the robot from a distance, suggesting a need for space without approaching interaction.\"\n}",
+    "request_duration_s": 1.80720908427611,
+    "requested_model": "qwen2.5:3b",
+    "returned_model": "qwen2.5:3b",
+    "delivery_status": "succeeded",
+    "delivery_error": null
+  },
+  "last_readiness": {
+    "reason_code": null,
+    "status": "READY"
+  },
+  "source_sha256": "56793886eec65c069a2861f87ad0f01b67dc8445d8b3dfa756a5a86c0b8c57d8",
+  "trial_id": "a8365a18b3c14cef89bdc331b0732739",
+  "clock_mapping": "original first perception receipt + real elapsed replay time",
+  "physical_execution": false
+}

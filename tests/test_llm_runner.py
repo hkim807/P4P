@@ -14,6 +14,7 @@ from app.pipeline import TrackingPipeline
 from app.policy.llm import PROMPT_VERSION, SOCIAL_STATE_PREFIX
 from app.state.estimator import SocialStateEstimator
 from app.state.social_models import TemporalConfig
+from app.state.decision_models import prepare_decision_input
 from tests.fixtures import frame
 
 
@@ -169,7 +170,7 @@ class SingleSnapshotRunnerTests(unittest.TestCase):
                     self.assertEqual(raised.exception.code, 2)
                     constructor.assert_not_called()
 
-    def test_success_passes_caller_config_and_whole_snapshot_once_without_writing(self):
+    def test_success_passes_caller_config_and_compact_snapshot_once_without_writing(self):
         decision = ModelDecision(action="ENGAGE", reason="Caller-provided fake response.")
         raw_content = '{ "action": "ENGAGE", "reason": "Caller-provided fake response." }'
         result = OllamaResult("caller-model", "actual-model:tag", raw_content, 0.375,
@@ -189,7 +190,8 @@ class SingleSnapshotRunnerTests(unittest.TestCase):
         messages = client.chat.call_args.args[0]
         self.assertEqual([message.role for message in messages], ["system", "user"])
         self.assertTrue(messages[1].content.startswith(SOCIAL_STATE_PREFIX))
-        self.assertEqual(json.loads(messages[1].content[len(SOCIAL_STATE_PREFIX):]), self.payload)
+        self.assertEqual(json.loads(messages[1].content[len(SOCIAL_STATE_PREFIX):]),
+                         prepare_decision_input(self.payload).state.model_dump(mode='json'))
         self.assertTrue(all(message.images is None for message in messages))
         self.assertEqual(payload, {
             "source_state_id": self.state.state_id, "session_id": self.state.session_id,

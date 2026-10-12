@@ -1,0 +1,14 @@
+{
+  "measured_source_hashes_unchanged": true,
+  "original_baseline_files_unchanged": true,
+  "rule_frames_preserved": 574,
+  "eligible_frames_preserved": 402,
+  "paired_operational_inputs": 27,
+  "validated_profiled_outputs": 36,
+  "request_hashes_verified": 36,
+  "test_methods_run": 658,
+  "preexisting_failed_test_methods": 1,
+  "preexisting_failed_subcases": 4,
+  "test_failure": "tests.test_vlm_policy.VLMPromptTests.test_task_context_and_definitions_match_llm_verbatim",
+  "system_instructions_byte_identical_to_frozen_baseline": true
+}

@@ -1,0 +1,32 @@
+[
+  {
+    "source_state_id": null,
+    "source_robot_timestamp_us": null,
+    "state_sha256": "55d85de4becba11f9c56b316bab500930488cee72771a0dc3b67fc62d27370d4",
+    "request_sha256": "a312add2eb6dfde6b117f19bfbb88a7d7981b2ebd14166e2c7bb25c6ab69847e",
+    "request_bytes": 5283,
+    "input_characters": 4586,
+    "chat_start_elapsed_s": 1.1036323751322925,
+    "chat_end_elapsed_s": 2.8852490838617086,
+    "client_call_duration_s": 1.7816167087294161,
+    "request_preparation_s": 0.0001915418542921543,
+    "transport_duration_s": 1.781234708148986,
+    "response_validation_s": 0.0001904587261378765,
+    "ollama_metrics": {
+      "total_duration": 1780117500,
+      "load_duration": 2095750,
+      "prompt_eval_count": 927,
+      "prompt_eval_cached_count": 601,
+      "prompt_eval_duration": 836673000,
+      "eval_count": 35,
+      "eval_duration": 931205000
+    },
+    "request_duration_s": 1.7812377917580307,
+    "ok": true,
+    "decision": {
+      "action": "YIELD",
+      "reason": "Person is looking away and robot-person distance is decreasing, suggesting obstruction without clear interest or permission."
+    },
+    "error": null
+  }
+]

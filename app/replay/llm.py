@@ -123,8 +123,8 @@ def main(argv: list[str] | None = None) -> int:
                         status = "succeeded" if result.ok else "failed"
                     counter = {"prepared": "prepared", "succeeded": "successes", "failed": "failures"}[status]
                     summary[counter] += 1
-                    # The returned prompt is the frozen input actually sent, even
-                    # if the caller's state was changed while the HTTP call ran.
+                    # Retain full diagnostics separately from the frozen compact
+                    # input actually sent, even if the caller mutated the state.
                     row = {
                         "schema_version": 1, "status": status,
                         "source": item.source, "processing": item.processing,
@@ -134,6 +134,8 @@ def main(argv: list[str] | None = None) -> int:
                         "ollama_configuration": model_settings,
                         "social_state": json.loads(prompt.social_state_json),
                         "social_state_json": prompt.social_state_json,
+                        "decision_state": json.loads(prompt.decision_state_json),
+                        "decision_state_json": prompt.decision_state_json,
                         "completed_at": datetime.now(timezone.utc).isoformat(),
                         "completion_clock": "replay-host UTC wall clock; independent of source clocks",
                         **diagnostics,

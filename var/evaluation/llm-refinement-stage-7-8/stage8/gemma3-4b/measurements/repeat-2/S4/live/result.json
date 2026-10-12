@@ -1,0 +1,93 @@
+{
+  "scenario_id": "S4",
+  "policy": "llm",
+  "status": "ACTION_RESOLVED",
+  "action": "CONTINUE",
+  "decision": {
+    "action": "CONTINUE",
+    "reason": "The person is beyond conversation distance and shows little to no looking at the robot."
+  },
+  "accepted_by_live_client": true,
+  "acceptance_details": {
+    "current_readiness": true,
+    "latest_observation_age_s": 0.124146,
+    "model_source_age_s": 2.704223,
+    "trial_phase": "DECIDED",
+    "failure_reason": null
+  },
+  "resolved_elapsed_s": 3.7900498751550913,
+  "stop_elapsed_s": 3.7900498751550913,
+  "frames_ingested": 38,
+  "ready_frames": 27,
+  "readiness_counts": {
+    "INSUFFICIENT_GAZE_EVIDENCE": 11,
+    "READY": 27
+  },
+  "recording_exhausted": false,
+  "last_ingested_source_offset_s": 3.665907,
+  "last_ingested_line": 75,
+  "decision_source_offset_s": 1.08583,
+  "motion_start_monotonic_us": 2096080866,
+  "perception_origin_monotonic_us": 2096097493,
+  "decision_source_since_motion_s": 1.102457,
+  "max_dispatch_lag_s": 0.0058340830728411674,
+  "model_failures": [],
+  "first_model_request": {
+    "decision": null,
+    "error": null,
+    "policy": "llm",
+    "request_id": "f9b170c3063d4f4e9d6118821adea538",
+    "session_id": "replay-6c13d1e775b7489493285686",
+    "source_robot_timestamp_us": 2097183323,
+    "source_state_id": "replay-6c13d1e775b7489493285686:12",
+    "status": "pending",
+    "trial_id": "d98b938df6234a7ebb44bdc3bdca2b04"
+  },
+  "resolved_output": {
+    "decision": {
+      "action": "CONTINUE",
+      "reason": "The person is beyond conversation distance and shows little to no looking at the robot."
+    },
+    "error": null,
+    "policy": "llm",
+    "request_id": "f9b170c3063d4f4e9d6118821adea538",
+    "session_id": "replay-6c13d1e775b7489493285686",
+    "source_robot_timestamp_us": 2097183323,
+    "source_state_id": "replay-6c13d1e775b7489493285686:12",
+    "status": "succeeded",
+    "trial_id": "d98b938df6234a7ebb44bdc3bdca2b04",
+    "completed_at": "2026-10-12T21:59:00.231443+00:00",
+    "error_stage": null,
+    "ok": true,
+    "ollama_configuration": {
+      "base_url": "http://127.0.0.1:11434",
+      "generation_options": {
+        "num_ctx": 8192,
+        "num_predict": 192,
+        "seed": 42,
+        "temperature": 0.0
+      },
+      "model": "gemma3:4b",
+      "num_ctx": 8192,
+      "num_predict": 192,
+      "seed": 42,
+      "temperature": 0.0,
+      "timeout_seconds": 120.0
+    },
+    "prompt_version": "decision-state-llm-v16",
+    "raw_content": "{\"action\":\"CONTINUE\",\"reason\":\"The person is beyond conversation distance and shows little to no looking at the robot.\"}",
+    "request_duration_s": 2.660010708961636,
+    "requested_model": "gemma3:4b",
+    "returned_model": "gemma3:4b",
+    "delivery_status": "succeeded",
+    "delivery_error": null
+  },
+  "last_readiness": {
+    "reason_code": null,
+    "status": "READY"
+  },
+  "source_sha256": "37a122fd2fa1aa2e62772c10a9d88152e0dcc1d3ba08f84428c59ae7d8d290d6",
+  "trial_id": "d98b938df6234a7ebb44bdc3bdca2b04",
+  "clock_mapping": "original first perception receipt + real elapsed replay time",
+  "physical_execution": false
+}

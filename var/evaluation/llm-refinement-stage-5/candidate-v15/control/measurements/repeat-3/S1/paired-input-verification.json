@@ -1,0 +1,6 @@
+{
+  "source_state_id": "replay-c185d8773106dd7263c9682d:12",
+  "decision_state_sha256": "349cc6d4229926a9c2ae0552404253eea702058e526b77644d07ad74588c6fbc",
+  "rules_and_llm_inputs_identical": true,
+  "rule_output_unchanged": true
+}

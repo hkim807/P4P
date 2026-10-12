@@ -258,7 +258,7 @@ class LiveReceiverTests(unittest.TestCase):
             self.assertEqual(response.json[key], baseline.json[key])
         self.assertEqual(len(self.messages), 2)
         llm = self.messages[0][1]
-        self.assertEqual(json.loads(llm[1].content.removeprefix(SOCIAL_STATE_PREFIX)), response.json["social_state"])
+        self.assertEqual(json.loads(llm[1].content.removeprefix(SOCIAL_STATE_PREFIX)), response.json["decision_state"])
         vlm = self.messages[1][1]
         self.assertEqual(vlm[0].content, VLM_SYSTEM_PROMPT)
         self.assertEqual(vlm[1].content, VLM_USER_PROMPT)

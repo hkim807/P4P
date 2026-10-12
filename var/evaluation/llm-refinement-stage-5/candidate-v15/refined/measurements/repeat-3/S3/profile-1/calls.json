@@ -1,0 +1,32 @@
+[
+  {
+    "source_state_id": null,
+    "source_robot_timestamp_us": null,
+    "state_sha256": "a26b19c2e0f20ff1c9afa0d1bea8303130e226e42fbedd66a7e97bd418f58037",
+    "request_sha256": "038c86f6e0d29ed96941b0d261da7aed8f537741c31b3b2bdd7c646b2d397154",
+    "request_bytes": 5356,
+    "input_characters": 4660,
+    "chat_start_elapsed_s": 1.1536296671256423,
+    "chat_end_elapsed_s": 4.472570542246103,
+    "client_call_duration_s": 3.318940875120461,
+    "request_preparation_s": 0.0012136250734329224,
+    "transport_duration_s": 3.317619999870658,
+    "response_validation_s": 0.00010725017637014389,
+    "ollama_metrics": {
+      "total_duration": 3315834709,
+      "load_duration": 1792584,
+      "prompt_eval_count": 933,
+      "prompt_eval_cached_count": 610,
+      "prompt_eval_duration": 1975077000,
+      "eval_count": 20,
+      "eval_duration": 1322984000
+    },
+    "request_duration_s": 3.317625292111188,
+    "ok": true,
+    "decision": {
+      "action": "ENGAGE",
+      "reason": "Sustained gaze and proximity within interaction range."
+    },
+    "error": null
+  }
+]

@@ -1,0 +1,32 @@
+[
+  {
+    "source_state_id": null,
+    "source_robot_timestamp_us": null,
+    "state_sha256": "687334ab20a9c016cd85baa86977ea1a1f979bf14e94808aab9a10b80044e6a9",
+    "request_sha256": "64950235985bb2b30643e2f519fe2cccac4a3ab7f8977b29049ae5d7f5922895",
+    "request_bytes": 5354,
+    "input_characters": 4658,
+    "chat_start_elapsed_s": 1.114802666939795,
+    "chat_end_elapsed_s": 4.156732833944261,
+    "client_call_duration_s": 3.041930167004466,
+    "request_preparation_s": 0.00031174998730421066,
+    "transport_duration_s": 3.0415389169938862,
+    "response_validation_s": 7.950002327561378e-05,
+    "ollama_metrics": {
+      "total_duration": 3040322417,
+      "load_duration": 2319792,
+      "prompt_eval_count": 923,
+      "prompt_eval_cached_count": 629,
+      "prompt_eval_duration": 1817805000,
+      "eval_count": 21,
+      "eval_duration": 1203969000
+    },
+    "request_duration_s": 3.041543542407453,
+    "ok": true,
+    "decision": {
+      "action": "YIELD",
+      "reason": "Sustained looking and decreasing distance justify yielding space."
+    },
+    "error": null
+  }
+]

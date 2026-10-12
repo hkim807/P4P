@@ -1,0 +1,78 @@
+{
+  "version": {
+    "version": "0.34.0"
+  },
+  "tags": {
+    "models": [
+      {
+        "name": "qwen3:4b-instruct",
+        "model": "qwen3:4b-instruct",
+        "modified_at": "2026-10-13T09:03:01.056248007+13:00",
+        "size": 2497293803,
+        "digest": "0edcdef34593eac1aa2be9c7d06c432dcf81945adca5eca2f27662c18f168ba0",
+        "details": {
+          "parent_model": "",
+          "format": "gguf",
+          "family": "qwen3",
+          "families": [
+            "qwen3"
+          ],
+          "parameter_size": "4.0B",
+          "quantization_level": "Q4_K_M",
+          "context_length": 262144,
+          "embedding_length": 2560
+        },
+        "capabilities": [
+          "completion",
+          "tools"
+        ]
+      },
+      {
+        "name": "qwen2.5:3b",
+        "model": "qwen2.5:3b",
+        "modified_at": "2026-10-13T08:46:34.227182946+13:00",
+        "size": 1929912432,
+        "digest": "357c53fb659c5076de1d65ccb0b397446227b71a42be9d1603d46168015c9e4b",
+        "details": {
+          "parent_model": "",
+          "format": "gguf",
+          "family": "qwen2",
+          "families": [
+            "qwen2"
+          ],
+          "parameter_size": "3.1B",
+          "quantization_level": "Q4_K_M",
+          "context_length": 32768,
+          "embedding_length": 2048
+        },
+        "capabilities": [
+          "completion",
+          "tools"
+        ]
+      },
+      {
+        "name": "qwen2.5:7b",
+        "model": "qwen2.5:7b",
+        "modified_at": "2026-09-15T18:05:40.0886835+12:00",
+        "size": 4683087332,
+        "digest": "845dbda0ea48ed749caafd9e6037047aa19acfcfd82e704d7ca97d631a0b697e",
+        "details": {
+          "parent_model": "",
+          "format": "gguf",
+          "family": "qwen2",
+          "families": [
+            "qwen2"
+          ],
+          "parameter_size": "7.6B",
+          "quantization_level": "Q4_K_M",
+          "context_length": 32768,
+          "embedding_length": 3584
+        },
+        "capabilities": [
+          "completion",
+          "tools"
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,93 @@
+{
+  "scenario_id": "S2",
+  "policy": "llm",
+  "status": "ACTION_RESOLVED",
+  "action": "CONTINUE",
+  "decision": {
+    "action": "CONTINUE",
+    "reason": "The person is observed with sustained gaze and decreasing distance, but remains outside interaction range."
+  },
+  "accepted_by_live_client": true,
+  "acceptance_details": {
+    "current_readiness": true,
+    "latest_observation_age_s": 0.032776,
+    "model_source_age_s": 3.63524,
+    "trial_phase": "DECIDED",
+    "failure_reason": null
+  },
+  "resolved_elapsed_s": 4.707204166799784,
+  "stop_elapsed_s": 4.707204166799784,
+  "frames_ingested": 48,
+  "ready_frames": 37,
+  "readiness_counts": {
+    "INSUFFICIENT_GAZE_EVIDENCE": 11,
+    "READY": 37
+  },
+  "recording_exhausted": true,
+  "last_ingested_source_offset_s": 4.674429,
+  "last_ingested_line": 96,
+  "decision_source_offset_s": 1.071965,
+  "motion_start_monotonic_us": 2009906601,
+  "perception_origin_monotonic_us": 2009938706,
+  "decision_source_since_motion_s": 1.10407,
+  "max_dispatch_lag_s": 0.01315033296123147,
+  "model_failures": [],
+  "first_model_request": {
+    "decision": null,
+    "error": null,
+    "policy": "llm",
+    "request_id": "522c5e81576140db894b65a9a55e2082",
+    "session_id": "replay-bd5e83b6a4070146c505ec1e",
+    "source_robot_timestamp_us": 2011010671,
+    "source_state_id": "replay-bd5e83b6a4070146c505ec1e:12",
+    "status": "pending",
+    "trial_id": "b649000fee42459ca19bee485d67cdd0"
+  },
+  "resolved_output": {
+    "decision": {
+      "action": "CONTINUE",
+      "reason": "The person is observed with sustained gaze and decreasing distance, but remains outside interaction range."
+    },
+    "error": null,
+    "policy": "llm",
+    "request_id": "522c5e81576140db894b65a9a55e2082",
+    "session_id": "replay-bd5e83b6a4070146c505ec1e",
+    "source_robot_timestamp_us": 2011010671,
+    "source_state_id": "replay-bd5e83b6a4070146c505ec1e:12",
+    "status": "succeeded",
+    "trial_id": "b649000fee42459ca19bee485d67cdd0",
+    "completed_at": "2026-10-12T21:56:53.551149+00:00",
+    "error_stage": null,
+    "ok": true,
+    "ollama_configuration": {
+      "base_url": "http://127.0.0.1:11434",
+      "generation_options": {
+        "num_ctx": 8192,
+        "num_predict": 192,
+        "seed": 42,
+        "temperature": 0.0
+      },
+      "model": "gemma3:4b",
+      "num_ctx": 8192,
+      "num_predict": 192,
+      "seed": 42,
+      "temperature": 0.0,
+      "timeout_seconds": 120.0
+    },
+    "prompt_version": "decision-state-llm-v16",
+    "raw_content": "{\"action\":\"CONTINUE\",\"reason\":\"The person is observed with sustained gaze and decreasing distance, but remains outside interaction range.\"}",
+    "request_duration_s": 3.5669279168359935,
+    "requested_model": "gemma3:4b",
+    "returned_model": "gemma3:4b",
+    "delivery_status": "succeeded",
+    "delivery_error": null
+  },
+  "last_readiness": {
+    "reason_code": null,
+    "status": "READY"
+  },
+  "source_sha256": "08a9f4e035e8ff1b5ca4ad5f807dd5b9a4e94bc55c916da9412365813df506bb",
+  "trial_id": "b649000fee42459ca19bee485d67cdd0",
+  "clock_mapping": "original first perception receipt + real elapsed replay time",
+  "physical_execution": false
+}

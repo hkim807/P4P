@@ -1,0 +1,825 @@
+[
+  {
+    "scenario_id": "S1",
+    "observations": 105,
+    "readiness_counts": {
+      "INSUFFICIENT_GAZE_EVIDENCE": 12,
+      "READY": 82,
+      "DISTANCE_UNKNOWN": 1,
+      "NO_VISIBLE_PERSON": 10
+    },
+    "cue_counts_observed_person_frames": {
+      "gaze_state": {
+        "UNKNOWN": 12,
+        "NONE": 27,
+        "INTERMITTENT": 28
+      },
+      "distance_zone": {
+        "APPROACHABLE": 45,
+        "UNKNOWN": 1,
+        "INTERACTION_RANGE": 21
+      },
+      "relative_distance_trend": {
+        "UNKNOWN": 22,
+        "DECREASING": 45
+      },
+      "path_position": {
+        "TO_SIDE": 67
+      }
+    },
+    "track_event_counts": {
+      "ACQUIRED": 2,
+      "REASSOCIATED": 25,
+      "MISSING": 2,
+      "LOST": 2
+    },
+    "selected_llm_calls": 9,
+    "decisions": [
+      {
+        "since_motion_s": 1.178444,
+        "status": "DECIDED",
+        "action": "APPROACH",
+        "decision": {
+          "action": "APPROACH",
+          "reason": "Person getting closer and within approachable distance."
+        },
+        "error": null,
+        "request_duration_s": 5.518324040807784
+      },
+      {
+        "since_motion_s": 2.300379,
+        "status": "DECIDED",
+        "action": "CONTINUE",
+        "decision": {
+          "action": "CONTINUE",
+          "reason": "Person not looking at robot and beyond conversation distance."
+        },
+        "error": null,
+        "request_duration_s": 5.020650875288993
+      },
+      {
+        "since_motion_s": 3.36784,
+        "status": "DECIDED",
+        "action": "CONTINUE",
+        "decision": {
+          "action": "CONTINUE",
+          "reason": "Person beyond conversation distance, no sustained attention."
+        },
+        "error": null,
+        "request_duration_s": 5.510554125066847
+      },
+      {
+        "since_motion_s": 4.393531,
+        "status": "DECIDED",
+        "action": "APPROACH",
+        "decision": {
+          "action": "APPROACH",
+          "reason": "Person is getting closer and looking at the robot."
+        },
+        "error": null,
+        "request_duration_s": 6.375708083156496
+      },
+      {
+        "since_motion_s": 5.50572,
+        "status": "DECIDED",
+        "action": "ENGAGE",
+        "decision": {
+          "action": "ENGAGE",
+          "reason": "Person within conversation distance, getting closer, intermittent looking at robot."
+        },
+        "error": null,
+        "request_duration_s": 5.651031292043626
+      },
+      {
+        "since_motion_s": 6.580952,
+        "status": "DECIDED",
+        "action": "APPROACH",
+        "decision": {
+          "action": "APPROACH",
+          "reason": "Person within conversation distance, getting closer."
+        },
+        "error": null,
+        "request_duration_s": 5.7397059998475015
+      },
+      {
+        "since_motion_s": 7.801348,
+        "status": "DECIDED",
+        "action": "CONTINUE",
+        "decision": {
+          "action": "CONTINUE",
+          "reason": "No people observed."
+        },
+        "error": null,
+        "request_duration_s": 1.744445291813463
+      },
+      {
+        "since_motion_s": 8.889035,
+        "status": "DECIDED",
+        "action": "CONTINUE",
+        "decision": {
+          "action": "CONTINUE",
+          "reason": "No people observed and robot is moving."
+        },
+        "error": null,
+        "request_duration_s": 2.1257805419154465
+      },
+      {
+        "since_motion_s": 9.88975,
+        "status": "DECIDED",
+        "action": "CONTINUE",
+        "decision": {
+          "action": "CONTINUE",
+          "reason": "No people observed and robot is moving."
+        },
+        "error": null,
+        "request_duration_s": 1.9783969591371715
+      }
+    ],
+    "expected_actions": [
+      "CONTINUE"
+    ]
+  },
+  {
+    "scenario_id": "S2",
+    "observations": 48,
+    "readiness_counts": {
+      "INSUFFICIENT_GAZE_EVIDENCE": 11,
+      "READY": 37
+    },
+    "cue_counts_observed_person_frames": {
+      "gaze_state": {
+        "UNKNOWN": 11,
+        "SUSTAINED": 37
+      },
+      "distance_zone": {
+        "APPROACHABLE": 48
+      },
+      "relative_distance_trend": {
+        "UNKNOWN": 11,
+        "DECREASING": 4,
+        "STABLE": 33
+      },
+      "path_position": {
+        "TO_SIDE": 48
+      }
+    },
+    "track_event_counts": {
+      "ACQUIRED": 1,
+      "REASSOCIATED": 2
+    },
+    "selected_llm_calls": 4,
+    "decisions": [
+      {
+        "since_motion_s": 1.10407,
+        "status": "DECIDED",
+        "action": "APPROACH",
+        "decision": {
+          "action": "APPROACH",
+          "reason": "Person is getting closer and looking at the robot."
+        },
+        "error": null,
+        "request_duration_s": 6.369121166877449
+      },
+      {
+        "since_motion_s": 2.131983,
+        "status": "DECIDED",
+        "action": "CONTINUE",
+        "decision": {
+          "action": "CONTINUE",
+          "reason": "Person is beyond conversation distance and not looking at the robot."
+        },
+        "error": null,
+        "request_duration_s": 5.83493775036186
+      },
+      {
+        "since_motion_s": 3.205898,
+        "status": "DECIDED",
+        "action": "CONTINUE",
+        "decision": {
+          "action": "CONTINUE",
+          "reason": "Person beyond conversation distance, steady position."
+        },
+        "error": null,
+        "request_duration_s": 5.663284000009298
+      },
+      {
+        "since_motion_s": 4.234689,
+        "status": "DECIDED",
+        "action": "CONTINUE",
+        "decision": {
+          "action": "CONTINUE",
+          "reason": "Person is beyond conversation distance and looking at the robot."
+        },
+        "error": null,
+        "request_duration_s": 5.620649333111942
+      }
+    ],
+    "expected_actions": [
+      "APPROACH"
+    ]
+  },
+  {
+    "scenario_id": "S3",
+    "observations": 47,
+    "readiness_counts": {
+      "INSUFFICIENT_GAZE_EVIDENCE": 11,
+      "READY": 36
+    },
+    "cue_counts_observed_person_frames": {
+      "gaze_state": {
+        "UNKNOWN": 11,
+        "SUSTAINED": 36
+      },
+      "distance_zone": {
+        "INTERACTION_RANGE": 47
+      },
+      "relative_distance_trend": {
+        "UNKNOWN": 11,
+        "STABLE": 36
+      },
+      "path_position": {
+        "IN_WAY": 47
+      }
+    },
+    "track_event_counts": {
+      "ACQUIRED": 1
+    },
+    "selected_llm_calls": 4,
+    "decisions": [
+      {
+        "since_motion_s": 1.213042,
+        "status": "DECIDED",
+        "action": "ENGAGE",
+        "decision": {
+          "action": "ENGAGE",
+          "reason": "Sustained looking at robot within conversation distance."
+        },
+        "error": null,
+        "request_duration_s": 5.971538917161524
+      },
+      {
+        "since_motion_s": 2.298538,
+        "status": "DECIDED",
+        "action": "ENGAGE",
+        "decision": {
+          "action": "ENGAGE",
+          "reason": "SUSTAINED_LOOKING_AT_ROBOT and WITHIN_CONVERSATION_DISTANCE"
+        },
+        "error": null,
+        "request_duration_s": 5.916315915994346
+      },
+      {
+        "since_motion_s": 3.410529,
+        "status": "DECIDED",
+        "action": "ENGAGE",
+        "decision": {
+          "action": "ENGAGE",
+          "reason": "SUSTAINED_LOOKING_AT_ROBOT and WITHIN_CONVERSATION_DISTANCE"
+        },
+        "error": null,
+        "request_duration_s": 5.4909341665916145
+      },
+      {
+        "since_motion_s": 4.483402,
+        "status": "DECIDED",
+        "action": "ENGAGE",
+        "decision": {
+          "action": "ENGAGE",
+          "reason": "SUSTAINED_LOOKING_AT_ROBOT and WITHIN_CONVERSATION_DISTANCE"
+        },
+        "error": null,
+        "request_duration_s": 6.012667625211179
+      }
+    ],
+    "expected_actions": [
+      "ENGAGE",
+      "APPROACH"
+    ]
+  },
+  {
+    "scenario_id": "S4",
+    "observations": 62,
+    "readiness_counts": {
+      "INSUFFICIENT_GAZE_EVIDENCE": 11,
+      "READY": 50,
+      "NO_VISIBLE_PERSON": 1
+    },
+    "cue_counts_observed_person_frames": {
+      "gaze_state": {
+        "UNKNOWN": 11,
+        "NONE": 48,
+        "INTERMITTENT": 2
+      },
+      "distance_zone": {
+        "APPROACHABLE": 41,
+        "INTERACTION_RANGE": 20
+      },
+      "relative_distance_trend": {
+        "UNKNOWN": 37,
+        "DECREASING": 24
+      },
+      "path_position": {
+        "IN_WAY": 54,
+        "TO_SIDE": 7
+      }
+    },
+    "track_event_counts": {
+      "ACQUIRED": 1,
+      "REASSOCIATED": 21,
+      "MISSING": 1
+    },
+    "selected_llm_calls": 5,
+    "decisions": [
+      {
+        "since_motion_s": 1.102457,
+        "status": "DECIDED",
+        "action": "APPROACH",
+        "decision": {
+          "action": "APPROACH",
+          "reason": "Person getting closer and within approachable distance."
+        },
+        "error": null,
+        "request_duration_s": 5.920763082802296
+      },
+      {
+        "since_motion_s": 2.21904,
+        "status": "DECIDED",
+        "action": "CONTINUE",
+        "decision": {
+          "action": "CONTINUE",
+          "reason": "Person beyond conversation distance, no sustained attention."
+        },
+        "error": null,
+        "request_duration_s": 5.7175095421262085
+      },
+      {
+        "since_motion_s": 3.291923,
+        "status": "DECIDED",
+        "action": "CONTINUE",
+        "decision": {
+          "action": "CONTINUE",
+          "reason": "Person beyond conversation distance, no looking at robot."
+        },
+        "error": null,
+        "request_duration_s": 5.882290415931493
+      },
+      {
+        "since_motion_s": 4.410252,
+        "status": "DECIDED",
+        "action": "CONTINUE",
+        "decision": {
+          "action": "CONTINUE",
+          "reason": "Person's gaze is not directed at the robot."
+        },
+        "error": null,
+        "request_duration_s": 5.610805083997548
+      },
+      {
+        "since_motion_s": 5.480259,
+        "status": "DECIDED",
+        "action": "CONTINUE",
+        "decision": {
+          "action": "CONTINUE",
+          "reason": "Person not looking at robot and moving closer."
+        },
+        "error": null,
+        "request_duration_s": 5.170548000372946
+      }
+    ],
+    "expected_actions": [
+      "YIELD"
+    ]
+  },
+  {
+    "scenario_id": "S5",
+    "observations": 69,
+    "readiness_counts": {
+      "NO_VISIBLE_PERSON": 11,
+      "READY": 58
+    },
+    "cue_counts_observed_person_frames": {},
+    "track_event_counts": {},
+    "selected_llm_calls": 6,
+    "decisions": [
+      {
+        "since_motion_s": 1.166849,
+        "status": "DECIDED",
+        "action": "CONTINUE",
+        "decision": {
+          "action": "CONTINUE",
+          "reason": "No people observed."
+        },
+        "error": null,
+        "request_duration_s": 1.894639290869236
+      },
+      {
+        "since_motion_s": 2.250058,
+        "status": "DECIDED",
+        "action": "CONTINUE",
+        "decision": {
+          "action": "CONTINUE",
+          "reason": "No people observed."
+        },
+        "error": null,
+        "request_duration_s": 1.9143449170514941
+      },
+      {
+        "since_motion_s": 3.250764,
+        "status": "DECIDED",
+        "action": "CONTINUE",
+        "decision": {
+          "action": "CONTINUE",
+          "reason": "No people observed."
+        },
+        "error": null,
+        "request_duration_s": 1.7148205419071019
+      },
+      {
+        "since_motion_s": 4.371741,
+        "status": "DECIDED",
+        "action": "CONTINUE",
+        "decision": {
+          "action": "CONTINUE",
+          "reason": "No people observed."
+        },
+        "error": null,
+        "request_duration_s": 1.9187263753265142
+      },
+      {
+        "since_motion_s": 5.459707,
+        "status": "DECIDED",
+        "action": "CONTINUE",
+        "decision": {
+          "action": "CONTINUE",
+          "reason": "No people observed."
+        },
+        "error": null,
+        "request_duration_s": 1.756286000367254
+      },
+      {
+        "since_motion_s": 6.54082,
+        "status": "DECIDED",
+        "action": "CONTINUE",
+        "decision": {
+          "action": "CONTINUE",
+          "reason": "No people observed."
+        },
+        "error": null,
+        "request_duration_s": 1.9174992498010397
+      }
+    ],
+    "expected_actions": [
+      "CONTINUE"
+    ]
+  },
+  {
+    "scenario_id": "S6",
+    "observations": 47,
+    "readiness_counts": {
+      "INSUFFICIENT_GAZE_EVIDENCE": 9,
+      "DISTANCE_UNKNOWN": 3,
+      "READY": 35
+    },
+    "cue_counts_observed_person_frames": {
+      "gaze_state": {
+        "UNKNOWN": 11,
+        "NONE": 27,
+        "INTERMITTENT": 9
+      },
+      "distance_zone": {
+        "APPROACHABLE": 34,
+        "UNKNOWN": 3,
+        "INTERACTION_RANGE": 10
+      },
+      "relative_distance_trend": {
+        "UNKNOWN": 37,
+        "DECREASING": 10
+      },
+      "path_position": {
+        "TO_SIDE": 47
+      }
+    },
+    "track_event_counts": {
+      "ACQUIRED": 1,
+      "REASSOCIATED": 8
+    },
+    "selected_llm_calls": 4,
+    "decisions": [
+      {
+        "since_motion_s": 1.108382,
+        "status": "DECIDED",
+        "action": "CONTINUE",
+        "decision": {
+          "action": "CONTINUE",
+          "reason": "Person beyond conversation distance, no looking at robot."
+        },
+        "error": null,
+        "request_duration_s": 5.669315832667053
+      },
+      {
+        "since_motion_s": 2.138932,
+        "status": "DECIDED",
+        "action": "APPROACH",
+        "decision": {
+          "action": "APPROACH",
+          "reason": "Person is getting closer and within approachable distance."
+        },
+        "error": null,
+        "request_duration_s": 5.779136500321329
+      },
+      {
+        "since_motion_s": 3.246631,
+        "status": "DECIDED",
+        "action": "CONTINUE",
+        "decision": {
+          "action": "CONTINUE",
+          "reason": "Person beyond conversation distance, no sustained attention."
+        },
+        "error": null,
+        "request_duration_s": 5.378235082607716
+      },
+      {
+        "since_motion_s": 4.314911,
+        "status": "DECIDED",
+        "action": "APPROACH",
+        "decision": {
+          "action": "APPROACH",
+          "reason": "Person within conversation distance, getting closer."
+        },
+        "error": null,
+        "request_duration_s": 5.6908012088388205
+      }
+    ],
+    "expected_actions": [
+      "CONTINUE"
+    ]
+  },
+  {
+    "scenario_id": "S7",
+    "observations": 89,
+    "readiness_counts": {
+      "INSUFFICIENT_GAZE_EVIDENCE": 48,
+      "NO_VISIBLE_PERSON": 10,
+      "READY": 30,
+      "DISTANCE_UNKNOWN": 1
+    },
+    "cue_counts_observed_person_frames": {
+      "gaze_state": {
+        "UNKNOWN": 48,
+        "INTERMITTENT": 31
+      },
+      "distance_zone": {
+        "APPROACHABLE": 64,
+        "INTERACTION_RANGE": 14,
+        "UNKNOWN": 1
+      },
+      "relative_distance_trend": {
+        "UNKNOWN": 71,
+        "DECREASING": 3,
+        "STABLE": 5
+      },
+      "path_position": {
+        "TO_SIDE": 79
+      }
+    },
+    "track_event_counts": {
+      "ACQUIRED": 12,
+      "REASSOCIATED": 6,
+      "MISSING": 16,
+      "REACQUIRED": 5,
+      "LOST": 10
+    },
+    "selected_llm_calls": 5,
+    "decisions": [
+      {
+        "since_motion_s": 1.707624,
+        "status": "DECIDED",
+        "action": "CONTINUE",
+        "decision": {
+          "action": "CONTINUE",
+          "reason": "Person is beyond conversation distance and not looking at the robot."
+        },
+        "error": null,
+        "request_duration_s": 6.453687916044146
+      },
+      {
+        "since_motion_s": 2.734578,
+        "status": "DECIDED",
+        "action": "APPROACH",
+        "decision": {
+          "action": "APPROACH",
+          "reason": "Person getting closer and within approachable distance."
+        },
+        "error": null,
+        "request_duration_s": 5.833089291118085
+      },
+      {
+        "since_motion_s": 5.216827,
+        "status": "DECIDED",
+        "action": "CONTINUE",
+        "decision": {
+          "action": "CONTINUE",
+          "reason": "Person's gaze is intermittent and beyond conversation distance."
+        },
+        "error": null,
+        "request_duration_s": 5.544632417149842
+      },
+      {
+        "since_motion_s": 7.741611,
+        "status": "DECIDED",
+        "action": "CONTINUE",
+        "decision": {
+          "action": "CONTINUE",
+          "reason": "Person is beyond conversation distance and not looking at the robot."
+        },
+        "error": null,
+        "request_duration_s": 5.8935991250909865
+      },
+      {
+        "since_motion_s": 8.815404,
+        "status": "DECIDED",
+        "action": "ENGAGE",
+        "decision": {
+          "action": "ENGAGE",
+          "reason": "Person within conversation distance, looking at robot."
+        },
+        "error": null,
+        "request_duration_s": 7.519947708118707
+      }
+    ],
+    "expected_actions": [
+      "CONTINUE"
+    ]
+  },
+  {
+    "scenario_id": "S8",
+    "observations": 72,
+    "readiness_counts": {
+      "NO_VISIBLE_PERSON": 11,
+      "READY": 50,
+      "INSUFFICIENT_GAZE_EVIDENCE": 11
+    },
+    "cue_counts_observed_person_frames": {
+      "gaze_state": {
+        "UNKNOWN": 11,
+        "NONE": 34
+      },
+      "distance_zone": {
+        "INTERACTION_RANGE": 38,
+        "APPROACHABLE": 7
+      },
+      "relative_distance_trend": {
+        "UNKNOWN": 11,
+        "INCREASING": 34
+      },
+      "path_position": {
+        "TO_SIDE": 45
+      }
+    },
+    "track_event_counts": {
+      "ACQUIRED": 1,
+      "REASSOCIATED": 4
+    },
+    "selected_llm_calls": 6,
+    "decisions": [
+      {
+        "since_motion_s": 1.173908,
+        "status": "DECIDED",
+        "action": "CONTINUE",
+        "decision": {
+          "action": "CONTINUE",
+          "reason": "No people observed."
+        },
+        "error": null,
+        "request_duration_s": 2.0407765419222414
+      },
+      {
+        "since_motion_s": 2.263203,
+        "status": "DECIDED",
+        "action": "CONTINUE",
+        "decision": {
+          "action": "CONTINUE",
+          "reason": "No people observed and robot is moving."
+        },
+        "error": null,
+        "request_duration_s": 2.2962775002233684
+      },
+      {
+        "since_motion_s": 3.872566,
+        "status": "DECIDED",
+        "action": "YIELD",
+        "decision": {
+          "action": "YIELD",
+          "reason": "Person getting farther away, no interaction desired."
+        },
+        "error": null,
+        "request_duration_s": 5.674786083865911
+      },
+      {
+        "since_motion_s": 4.98483,
+        "status": "DECIDED",
+        "action": "YIELD",
+        "decision": {
+          "action": "YIELD",
+          "reason": "Person moving farther away, increasing relative separation."
+        },
+        "error": null,
+        "request_duration_s": 5.475339834112674
+      },
+      {
+        "since_motion_s": 6.053392,
+        "status": "DECIDED",
+        "action": "CONTINUE",
+        "decision": {
+          "action": "CONTINUE",
+          "reason": "Person not looking at robot and moving away."
+        },
+        "error": null,
+        "request_duration_s": 4.800117833074182
+      },
+      {
+        "since_motion_s": 7.162199,
+        "status": "DECIDED",
+        "action": "CONTINUE",
+        "decision": {
+          "action": "CONTINUE",
+          "reason": "Person is beyond conversation distance and not looking at the robot."
+        },
+        "error": null,
+        "request_duration_s": 5.1135457921773195
+      }
+    ],
+    "expected_actions": [
+      "APPROACH",
+      "ENGAGE",
+      "CONTINUE"
+    ]
+  },
+  {
+    "scenario_id": "S9",
+    "observations": 35,
+    "readiness_counts": {
+      "INSUFFICIENT_GAZE_EVIDENCE": 11,
+      "READY": 24
+    },
+    "cue_counts_observed_person_frames": {
+      "gaze_state": {
+        "UNKNOWN": 11,
+        "SUSTAINED": 24
+      },
+      "distance_zone": {
+        "APPROACHABLE": 35
+      },
+      "relative_distance_trend": {
+        "UNKNOWN": 11,
+        "STABLE": 24
+      },
+      "path_position": {
+        "TO_SIDE": 35
+      }
+    },
+    "track_event_counts": {
+      "ACQUIRED": 1,
+      "REASSOCIATED": 2
+    },
+    "selected_llm_calls": 3,
+    "decisions": [
+      {
+        "since_motion_s": 1.140807,
+        "status": "DECIDED",
+        "action": "CONTINUE",
+        "decision": {
+          "action": "CONTINUE",
+          "reason": "Person is beyond conversation distance and not looking at the robot."
+        },
+        "error": null,
+        "request_duration_s": 5.517773541621864
+      },
+      {
+        "since_motion_s": 2.165162,
+        "status": "DECIDED",
+        "action": "APPROACH",
+        "decision": {
+          "action": "APPROACH",
+          "reason": "Sustained looking at robot from beyond conversation distance."
+        },
+        "error": null,
+        "request_duration_s": 5.3934719590470195
+      },
+      {
+        "since_motion_s": 3.243587,
+        "status": "DECIDED",
+        "action": "CONTINUE",
+        "decision": {
+          "action": "CONTINUE",
+          "reason": "Person is beyond conversation distance and not looking at the robot."
+        },
+        "error": null,
+        "request_duration_s": 5.2922787088900805
+      }
+    ],
+    "expected_actions": [
+      "APPROACH"
+    ]
+  }
+]

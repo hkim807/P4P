@@ -77,10 +77,10 @@ yield. Attentive people still follow APPROACH/ENGAGE rules. UNKNOWN and BEHIND
 cannot activate this corridor-based yield trigger; UNKNOWN does not prove that
 the route is clear.
 
-The existing explicit upstream `path_relation: CONFLICT` remains an independent
-higher-priority cue. It is not generated from nose position. A measured PASS
-gesture still overrides the corridor trigger after the explicit conflict check.
-No physical APPROACH or YIELD manoeuvre is changed by this classifier.
+The unsupported path-relation and pass-gesture cues have been removed. The
+corridor cue is derived from measured nose position and does not claim a verified
+path conflict or clearance. No physical APPROACH or YIELD manoeuvre is changed
+by this classifier.
 
 Use the updated robot adapter and server together to supply live nose geometry.
 Old raw/SocialState captures without nose geometry remain readable and expose

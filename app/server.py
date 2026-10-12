@@ -241,6 +241,8 @@ def create_app(output_path: str | Path | None = None, *,
             social = snapshot.get("social_state")
             if social is not None:
                 extra = {"social_state": social, "policy_decision": snapshot["policy_decision"],
+                         "decision_state": snapshot["decision_state"],
+                         "decision_state_sha256": snapshot["decision_state_sha256"],
                          "policy_readiness": snapshot["policy_readiness"],
                          "final_decision": snapshot["final_decision"],
                          "target_lock": snapshot["target_lock"],

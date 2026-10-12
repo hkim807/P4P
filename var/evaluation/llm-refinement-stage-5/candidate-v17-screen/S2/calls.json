@@ -1,0 +1,32 @@
+[
+  {
+    "source_state_id": null,
+    "source_robot_timestamp_us": null,
+    "state_sha256": "687334ab20a9c016cd85baa86977ea1a1f979bf14e94808aab9a10b80044e6a9",
+    "request_sha256": "28b81e6174e031ca975d40f0fde370bcfbb0d3eb5c32d8020a853324d3fe9c9a",
+    "request_bytes": 5372,
+    "input_characters": 4674,
+    "chat_start_elapsed_s": null,
+    "chat_end_elapsed_s": null,
+    "client_call_duration_s": 2.8267044592648745,
+    "request_preparation_s": 0.00024479208514094353,
+    "transport_duration_s": 2.826275832951069,
+    "response_validation_s": 0.0001838342286646366,
+    "ollama_metrics": {
+      "total_duration": 2825129458,
+      "load_duration": 1050208,
+      "prompt_eval_count": 926,
+      "prompt_eval_cached_count": 632,
+      "prompt_eval_duration": 1766517000,
+      "eval_count": 21,
+      "eval_duration": 1050204999
+    },
+    "request_duration_s": 2.826280167326331,
+    "ok": true,
+    "decision": {
+      "action": "APPROACH",
+      "reason": "Sustained gaze and decreasing distance outside interaction range"
+    },
+    "error": null
+  }
+]

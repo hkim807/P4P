@@ -1,0 +1,32 @@
+[
+  {
+    "source_state_id": null,
+    "source_robot_timestamp_us": null,
+    "state_sha256": "13a7fe7d417e419868ac3c96821b02e13fa2bfee21290c9883c1571bb733e98e",
+    "request_sha256": "b0c7864bcc01b53b2e4a08ede382b778b632c7fa81076f7804432b500649ffb0",
+    "request_bytes": 5278,
+    "input_characters": 4574,
+    "chat_start_elapsed_s": null,
+    "chat_end_elapsed_s": null,
+    "client_call_duration_s": 1.9123457921668887,
+    "request_preparation_s": 0.002486750017851591,
+    "transport_duration_s": 1.909785958006978,
+    "response_validation_s": 7.308414205908775e-05,
+    "ollama_metrics": {
+      "total_duration": 1909199584,
+      "load_duration": 992875,
+      "prompt_eval_count": 921,
+      "prompt_eval_cached_count": 601,
+      "prompt_eval_duration": 954295000,
+      "eval_count": 29,
+      "eval_duration": 936545000
+    },
+    "request_duration_s": 1.9097878746688366,
+    "ok": true,
+    "decision": {
+      "action": "CONTINUE",
+      "reason": "No sustained gaze or intent detected; person is beyond conversation distance and moving away."
+    },
+    "error": null
+  }
+]

@@ -1,0 +1,32 @@
+[
+  {
+    "source_state_id": null,
+    "source_robot_timestamp_us": null,
+    "state_sha256": "1d52101a732de6669958f720696b7de9d5d957f2070ee0b80b9e8bf9dc7aacd0",
+    "request_sha256": "9e52fb31c24c7f37f302f93a08e3d40a80a57f6316f6195bf6b1c886c1568eb2",
+    "request_bytes": 5282,
+    "input_characters": 4578,
+    "chat_start_elapsed_s": null,
+    "chat_end_elapsed_s": null,
+    "client_call_duration_s": 2.192490416113287,
+    "request_preparation_s": 0.00029233284294605255,
+    "transport_duration_s": 2.192107083275914,
+    "response_validation_s": 9.099999442696571e-05,
+    "ollama_metrics": {
+      "total_duration": 2191252625,
+      "load_duration": 1028333,
+      "prompt_eval_count": 933,
+      "prompt_eval_cached_count": 621,
+      "prompt_eval_duration": 1025991000,
+      "eval_count": 34,
+      "eval_duration": 1144187000
+    },
+    "request_duration_s": 2.1921099997125566,
+    "ok": true,
+    "decision": {
+      "action": "APPROACH",
+      "reason": "A face is detected within interaction distance, with intermittent looking and high gaze overlap, indicating potential interest."
+    },
+    "error": null
+  }
+]

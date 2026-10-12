@@ -1,0 +1,32 @@
+[
+  {
+    "source_state_id": null,
+    "source_robot_timestamp_us": null,
+    "state_sha256": "687334ab20a9c016cd85baa86977ea1a1f979bf14e94808aab9a10b80044e6a9",
+    "request_sha256": "c0c75dc822003b183f1eb74c411303a6db64a98e1406def56f23ae4bbf39265c",
+    "request_bytes": 4802,
+    "input_characters": 4106,
+    "chat_start_elapsed_s": 1.1774717918597162,
+    "chat_end_elapsed_s": 4.869989708065987,
+    "client_call_duration_s": 3.6925179162062705,
+    "request_preparation_s": 0.009437875356525183,
+    "transport_duration_s": 3.6827144576236606,
+    "response_validation_s": 0.00036558322608470917,
+    "ollama_metrics": {
+      "total_duration": 3680431209,
+      "load_duration": 3686417,
+      "prompt_eval_count": 839,
+      "prompt_eval_cached_count": 545,
+      "prompt_eval_duration": 1893099000,
+      "eval_count": 24,
+      "eval_duration": 1670939000
+    },
+    "request_duration_s": 3.682721792254597,
+    "ok": true,
+    "decision": {
+      "action": "APPROACH",
+      "reason": "Sustained gaze and decreasing relative distance indicate interest and proximity."
+    },
+    "error": null
+  }
+]

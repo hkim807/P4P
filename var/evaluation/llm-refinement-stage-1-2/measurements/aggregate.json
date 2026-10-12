@@ -1,0 +1,65 @@
+{
+  "baseline_git_head": "72ccb64462303a103b236e105b14291f9adb67bf",
+  "operational_trials": 27,
+  "profiled_calls_and_request_hashes_verified": 37,
+  "valid_first_outputs": 27,
+  "aligned_first_outputs": 18,
+  "accepted_first_outputs": 5,
+  "rules_aligned": 9,
+  "rules_total": 9,
+  "median_eligible_to_output_s": 6.2106557500377,
+  "min_eligible_to_output_s": 1.8028237087863386,
+  "max_eligible_to_output_s": 12.322830708669246,
+  "native_total_s": 149.613744335,
+  "native_load_s": 0.134716461,
+  "native_prompt_s": 115.728983,
+  "native_generation_s": 33.094534,
+  "median_prompt_tokens": 1766,
+  "median_output_tokens": 20,
+  "later_diagnostics": 9,
+  "cold_probe": {
+    "total_duration_s": 14.408847625,
+    "load_duration_s": 3.174186042,
+    "prompt_eval_duration_s": 9.991455,
+    "eval_duration_s": 1.22429,
+    "prompt_tokens": 1807,
+    "cached_prompt_tokens": 0,
+    "output_tokens": 20,
+    "request_bytes": 7212,
+    "request_preparation_s": 0.0008618747815489769,
+    "response_validation_s": 0.0036905421875417233,
+    "transport_duration_s": 14.413216250017285,
+    "transport_minus_native_total_s": 0.00436862501728541,
+    "native_unattributed_s": 0.01891658299999932
+  },
+  "paired_inputs_verified": 27,
+  "median_receiver_ready_frame_processing_s": 0.0030673746950924397,
+  "median_request_preparation_s": 0.0005979998968541622,
+  "median_response_validation_s": 0.0003125830553472042,
+  "median_pre_inference_processing_and_scheduling_s": 0.030088833296745943,
+  "median_finished_to_observed_output_s": 0.01690137479454279,
+  "per_repetition": [
+    {
+      "repetition": 1,
+      "aligned": 6,
+      "accepted": 1,
+      "median_eligible_to_output_s": 6.299686625325053
+    },
+    {
+      "repetition": 2,
+      "aligned": 6,
+      "accepted": 2,
+      "median_eligible_to_output_s": 5.946242666343033
+    },
+    {
+      "repetition": 3,
+      "aligned": 6,
+      "accepted": 2,
+      "median_eligible_to_output_s": 6.237287499851227
+    }
+  ],
+  "native_load_percent": 0.0900428377077152,
+  "native_prompt_percent": 77.35183924069926,
+  "native_generation_percent": 22.119982456891165,
+  "native_other_percent": 0.43813546470185827
+}

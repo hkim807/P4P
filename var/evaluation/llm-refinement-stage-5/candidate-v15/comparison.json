@@ -1,0 +1,59 @@
+{
+  "control_v14_on_v3": {
+    "trials": 27,
+    "aligned": 24,
+    "accepted": 19,
+    "aligned_and_accepted": 16,
+    "valid_first_outputs": 27,
+    "median_eligible_to_output_s": 3.3071816670762297,
+    "median_prompt_tokens": 842,
+    "per_repetition": [
+      {
+        "repeat": 1,
+        "aligned": 8,
+        "accepted": 5
+      },
+      {
+        "repeat": 2,
+        "aligned": 8,
+        "accepted": 7
+      },
+      {
+        "repeat": 3,
+        "aligned": 8,
+        "accepted": 7
+      }
+    ]
+  },
+  "refined_v15_on_v3": {
+    "trials": 27,
+    "aligned": 15,
+    "accepted": 21,
+    "aligned_and_accepted": 12,
+    "valid_first_outputs": 27,
+    "median_eligible_to_output_s": 3.1034924589431285,
+    "median_prompt_tokens": 926,
+    "per_repetition": [
+      {
+        "repeat": 1,
+        "aligned": 5,
+        "accepted": 6
+      },
+      {
+        "repeat": 2,
+        "aligned": 5,
+        "accepted": 8
+      },
+      {
+        "repeat": 3,
+        "aligned": 5,
+        "accepted": 7
+      }
+    ]
+  },
+  "paired_trials": 27,
+  "rule_frames_unchanged": 574,
+  "eligible_frames": 402,
+  "median_latency_change_percent": -6.158996651465354,
+  "median_prompt_token_change_percent": 9.97624703087887
+}

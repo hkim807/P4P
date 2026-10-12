@@ -1,0 +1,32 @@
+[
+  {
+    "source_state_id": null,
+    "source_robot_timestamp_us": null,
+    "state_sha256": "a26b19c2e0f20ff1c9afa0d1bea8303130e226e42fbedd66a7e97bd418f58037",
+    "request_sha256": "21f06c52c1bebafcca66e52eec40e105fb2c9bca54ad65a216840d3832c83f8b",
+    "request_bytes": 4804,
+    "input_characters": 4108,
+    "chat_start_elapsed_s": 1.1588934580795467,
+    "chat_end_elapsed_s": 4.710431749932468,
+    "client_call_duration_s": 3.5515382918529212,
+    "request_preparation_s": 0.0004826672375202179,
+    "transport_duration_s": 3.550893582869321,
+    "response_validation_s": 0.00016204174607992172,
+    "ollama_metrics": {
+      "total_duration": 3548915792,
+      "load_duration": 2253708,
+      "prompt_eval_count": 849,
+      "prompt_eval_cached_count": 526,
+      "prompt_eval_duration": 2040197000,
+      "eval_count": 22,
+      "eval_duration": 1489467000
+    },
+    "request_duration_s": 3.550895499996841,
+    "ok": true,
+    "decision": {
+      "action": "ENGAGE",
+      "reason": "Sustained gaze within interaction range indicates willingness to interact."
+    },
+    "error": null
+  }
+]

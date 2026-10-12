@@ -1,0 +1,32 @@
+[
+  {
+    "source_state_id": null,
+    "source_robot_timestamp_us": null,
+    "state_sha256": "b06763a5b11d233fd0339694bc65d71b285f77775348c2b3b1cc1597073d805d",
+    "request_sha256": "f19e5dd345a1b23d58e54ca486d603adfe3b2b9d06417a146f38cf5f33f75543",
+    "request_bytes": 5487,
+    "input_characters": 4778,
+    "chat_start_elapsed_s": null,
+    "chat_end_elapsed_s": null,
+    "client_call_duration_s": 3.4283285420387983,
+    "request_preparation_s": 0.0004732082597911358,
+    "transport_duration_s": 3.4276913749054074,
+    "response_validation_s": 0.00016395887359976768,
+    "ollama_metrics": {
+      "total_duration": 3426766292,
+      "load_duration": 983292,
+      "prompt_eval_count": 969,
+      "prompt_eval_cached_count": 621,
+      "prompt_eval_duration": 1785507000,
+      "eval_count": 28,
+      "eval_duration": 1635001000
+    },
+    "request_duration_s": 3.4276945828460157,
+    "ok": true,
+    "decision": {
+      "action": "ENGAGE",
+      "reason": "Intermittent looking and multiple looking episodes within conversation distance."
+    },
+    "error": null
+  }
+]

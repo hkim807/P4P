@@ -1,0 +1,32 @@
+[
+  {
+    "source_state_id": null,
+    "source_robot_timestamp_us": null,
+    "state_sha256": "a26b19c2e0f20ff1c9afa0d1bea8303130e226e42fbedd66a7e97bd418f58037",
+    "request_sha256": "99b8749c6655c0668949deff112d7157807ebe92bcd823fcd6c1344a5d39cacc",
+    "request_bytes": 5297,
+    "input_characters": 4593,
+    "chat_start_elapsed_s": 1.1662704171612859,
+    "chat_end_elapsed_s": 3.6612490420229733,
+    "client_call_duration_s": 2.4949786248616874,
+    "request_preparation_s": 0.000384707935154438,
+    "transport_duration_s": 2.4945217091590166,
+    "response_validation_s": 7.220776751637459e-05,
+    "ollama_metrics": {
+      "total_duration": 2492931958,
+      "load_duration": 2309667,
+      "prompt_eval_count": 924,
+      "prompt_eval_cached_count": 601,
+      "prompt_eval_duration": 1095164000,
+      "eval_count": 37,
+      "eval_duration": 1340098000
+    },
+    "request_duration_s": 2.494523957837373,
+    "ok": true,
+    "decision": {
+      "action": "APPROACH",
+      "reason": "A person is within interaction range, steadily looking at the robot, and in the forward corridor, indicating a clear opportunity for engagement."
+    },
+    "error": null
+  }
+]

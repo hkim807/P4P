@@ -1,0 +1,56 @@
+{
+  "scenario_id": "S3",
+  "first_source_state_id": "replay-7a43024a2619ec806420c762:12",
+  "first_state_sha256": "a26b19c2e0f20ff1c9afa0d1bea8303130e226e42fbedd66a7e97bd418f58037",
+  "expected_actions": [
+    "ENGAGE",
+    "APPROACH"
+  ],
+  "first_decision": {
+    "action": "ENGAGE",
+    "reason": "Person is looking at the robot within conversation distance and has sustained gaze, indicating interest in interaction."
+  },
+  "first_output_valid": true,
+  "action_aligned": true,
+  "first_eligible_since_motion_s": 1.213042,
+  "output_since_motion_s": 3.2650844166719017,
+  "first_request_observed_elapsed_s": 1.133995208889246,
+  "first_client_finished_elapsed_s": 3.1753550837747753,
+  "first_eligible_to_validated_client_output_s": 2.0486240837747753,
+  "accepted_by_live_client": true,
+  "acceptance_details": {
+    "current_readiness": true,
+    "latest_observation_age_s": 0.068973,
+    "model_source_age_s": 2.052044,
+    "trial_phase": "DECIDED",
+    "failure_reason": null
+  },
+  "delivery_status": "succeeded",
+  "delivery_error": null,
+  "total_calls": 1,
+  "runner_status": "ACTION_RESOLVED",
+  "timing": {
+    "total_duration_s": 2.012053459,
+    "load_duration_s": 0.001891959,
+    "prompt_eval_duration_s": 0.885571,
+    "eval_duration_s": 1.112982,
+    "prompt_tokens": 924,
+    "cached_prompt_tokens": 601,
+    "output_tokens": 29,
+    "request_bytes": 5290,
+    "request_preparation_s": 0.0002465839497745037,
+    "response_validation_s": 6.716698408126831e-05,
+    "transport_duration_s": 2.0130024580284953,
+    "transport_minus_native_total_s": 0.0009489990284952121,
+    "native_unattributed_s": 0.011608500000000355,
+    "eligible_to_observed_output_s": 2.052042416671902,
+    "eligible_to_client_call_s": 0.035307874812424256,
+    "client_finished_to_observed_output_s": 0.0034183328971266747
+  },
+  "first_error": null,
+  "repetition": 2,
+  "eligible_to_first_completion_s": 2.0486240837747753,
+  "first_done_reason": "stop",
+  "prompt_tokens": 924,
+  "output_tokens": 29
+}

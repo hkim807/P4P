@@ -1,0 +1,93 @@
+{
+  "scenario_id": "S2",
+  "policy": "llm",
+  "status": "ACTION_RESOLVED",
+  "action": "APPROACH",
+  "decision": {
+    "action": "APPROACH",
+    "reason": "Sustained gaze and decreasing distance indicate interest in interaction."
+  },
+  "accepted_by_live_client": true,
+  "acceptance_details": {
+    "current_readiness": true,
+    "latest_observation_age_s": 0.108936,
+    "model_source_age_s": 3.413763,
+    "trial_phase": "DECIDED",
+    "failure_reason": null
+  },
+  "resolved_elapsed_s": 4.485725374892354,
+  "stop_elapsed_s": 4.485725374892354,
+  "frames_ingested": 45,
+  "ready_frames": 34,
+  "readiness_counts": {
+    "INSUFFICIENT_GAZE_EVIDENCE": 11,
+    "READY": 34
+  },
+  "recording_exhausted": false,
+  "last_ingested_source_offset_s": 4.376792,
+  "last_ingested_line": 90,
+  "decision_source_offset_s": 1.071965,
+  "motion_start_monotonic_us": 2009906601,
+  "perception_origin_monotonic_us": 2009938706,
+  "decision_source_since_motion_s": 1.10407,
+  "max_dispatch_lag_s": 0.005702374968677759,
+  "model_failures": [],
+  "first_model_request": {
+    "decision": null,
+    "error": null,
+    "policy": "llm",
+    "request_id": "e12f5b70af3544b7b57d2d940bef6e19",
+    "session_id": "replay-bd5e83b6a4070146c505ec1e",
+    "source_robot_timestamp_us": 2011010671,
+    "source_state_id": "replay-bd5e83b6a4070146c505ec1e:12",
+    "status": "pending",
+    "trial_id": "115d4a9eb4b04d7d9e10075c4a3febd0"
+  },
+  "resolved_output": {
+    "decision": {
+      "action": "APPROACH",
+      "reason": "Sustained gaze and decreasing distance indicate interest in interaction."
+    },
+    "error": null,
+    "policy": "llm",
+    "request_id": "e12f5b70af3544b7b57d2d940bef6e19",
+    "session_id": "replay-bd5e83b6a4070146c505ec1e",
+    "source_robot_timestamp_us": 2011010671,
+    "source_state_id": "replay-bd5e83b6a4070146c505ec1e:12",
+    "status": "succeeded",
+    "trial_id": "115d4a9eb4b04d7d9e10075c4a3febd0",
+    "completed_at": "2026-10-12T17:57:33.429773+00:00",
+    "error_stage": null,
+    "ok": true,
+    "ollama_configuration": {
+      "base_url": "http://127.0.0.1:11434",
+      "generation_options": {
+        "num_ctx": 8192,
+        "num_predict": 192,
+        "seed": 42,
+        "temperature": 0.0
+      },
+      "model": "qwen2.5:7b",
+      "num_ctx": 8192,
+      "num_predict": 192,
+      "seed": 42,
+      "temperature": 0.0,
+      "timeout_seconds": 120.0
+    },
+    "prompt_version": "social-state-llm-v14-semantic-v2",
+    "raw_content": "{\"action\":\"APPROACH\",\"reason\":\"Sustained gaze and decreasing distance indicate interest in interaction.\"}",
+    "request_duration_s": 3.3736713328398764,
+    "requested_model": "qwen2.5:7b",
+    "returned_model": "qwen2.5:7b",
+    "delivery_status": "succeeded",
+    "delivery_error": null
+  },
+  "last_readiness": {
+    "reason_code": null,
+    "status": "READY"
+  },
+  "source_sha256": "08a9f4e035e8ff1b5ca4ad5f807dd5b9a4e94bc55c916da9412365813df506bb",
+  "trial_id": "115d4a9eb4b04d7d9e10075c4a3febd0",
+  "clock_mapping": "original first perception receipt + real elapsed replay time",
+  "physical_execution": false
+}

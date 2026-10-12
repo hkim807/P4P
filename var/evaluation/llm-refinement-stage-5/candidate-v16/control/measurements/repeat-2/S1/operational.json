@@ -1,0 +1,51 @@
+{
+  "scenario_id": "S1",
+  "first_source_state_id": "replay-c185d8773106dd7263c9682d:12",
+  "first_state_sha256": "349cc6d4229926a9c2ae0552404253eea702058e526b77644d07ad74588c6fbc",
+  "expected_actions": [
+    "CONTINUE"
+  ],
+  "first_decision": {
+    "action": "CONTINUE",
+    "reason": "Person beyond conversation distance, decreasing relative distance."
+  },
+  "first_output_valid": true,
+  "action_aligned": true,
+  "first_eligible_since_motion_s": 1.178444,
+  "output_since_motion_s": 4.258845166779667,
+  "first_request_observed_elapsed_s": 1.078714832663536,
+  "first_client_finished_elapsed_s": 4.145474332850426,
+  "first_eligible_to_validated_client_output_s": 3.0696463328504264,
+  "accepted_by_live_client": true,
+  "acceptance_details": {
+    "current_readiness": true,
+    "latest_observation_age_s": 0.080015,
+    "model_source_age_s": 3.080405,
+    "trial_phase": "DECIDED",
+    "failure_reason": null
+  },
+  "delivery_status": "succeeded",
+  "delivery_error": null,
+  "total_calls": 1,
+  "runner_status": "ACTION_RESOLVED",
+  "timing": {
+    "total_duration_s": 3.042083459,
+    "load_duration_s": 0.001585417,
+    "prompt_eval_duration_s": 1.776584,
+    "eval_duration_s": 1.245393,
+    "prompt_tokens": 831,
+    "cached_prompt_tokens": 545,
+    "output_tokens": 19,
+    "request_bytes": 4776,
+    "request_preparation_s": 0.000690000131726265,
+    "response_validation_s": 0.0001781661994755268,
+    "transport_duration_s": 3.0453526666387916,
+    "transport_minus_native_total_s": 0.0032692076387914604,
+    "native_unattributed_s": 0.018521042000000154,
+    "eligible_to_observed_output_s": 3.080401166779667,
+    "eligible_to_client_call_s": 0.023425499880433076,
+    "client_finished_to_observed_output_s": 0.010754833929240704
+  },
+  "first_error": null,
+  "repetition": 2
+}

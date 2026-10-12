@@ -1,0 +1,94 @@
+{
+  "scenario_id": "S8",
+  "policy": "llm",
+  "status": "ACTION_RESOLVED",
+  "action": "CONTINUE",
+  "decision": {
+    "action": "CONTINUE",
+    "reason": "No people observed and robot is moving."
+  },
+  "accepted_by_live_client": false,
+  "acceptance_details": {
+    "current_readiness": false,
+    "latest_observation_age_s": 0.077489,
+    "model_source_age_s": 1.666763,
+    "trial_phase": "OBSERVING",
+    "failure_reason": null
+  },
+  "resolved_elapsed_s": 2.7569238329306245,
+  "stop_elapsed_s": 2.7569238329306245,
+  "frames_ingested": 28,
+  "ready_frames": 16,
+  "readiness_counts": {
+    "NO_VISIBLE_PERSON": 11,
+    "READY": 16,
+    "INSUFFICIENT_GAZE_EVIDENCE": 1
+  },
+  "recording_exhausted": false,
+  "last_ingested_source_offset_s": 2.679437,
+  "last_ingested_line": 56,
+  "decision_source_offset_s": 1.090163,
+  "motion_start_monotonic_us": 2291237477,
+  "perception_origin_monotonic_us": 2291321222,
+  "decision_source_since_motion_s": 1.173908,
+  "max_dispatch_lag_s": 0.004764374811202288,
+  "model_failures": [],
+  "first_model_request": {
+    "decision": null,
+    "error": null,
+    "policy": "llm",
+    "request_id": "0a90e42e916c4e44be556a94b0527124",
+    "session_id": "replay-246b41a68d212a1d60d24467",
+    "source_robot_timestamp_us": 2292411385,
+    "source_state_id": "replay-246b41a68d212a1d60d24467:12",
+    "status": "pending",
+    "trial_id": "dc843a48080f49858918f7e05853922a"
+  },
+  "resolved_output": {
+    "decision": {
+      "action": "CONTINUE",
+      "reason": "No people observed and robot is moving."
+    },
+    "error": null,
+    "policy": "llm",
+    "request_id": "0a90e42e916c4e44be556a94b0527124",
+    "session_id": "replay-246b41a68d212a1d60d24467",
+    "source_robot_timestamp_us": 2292411385,
+    "source_state_id": "replay-246b41a68d212a1d60d24467:12",
+    "status": "succeeded",
+    "trial_id": "dc843a48080f49858918f7e05853922a",
+    "completed_at": "2026-10-12T19:22:49.548363+00:00",
+    "error_stage": null,
+    "ok": true,
+    "ollama_configuration": {
+      "base_url": "http://127.0.0.1:11434",
+      "generation_options": {
+        "num_ctx": 8192,
+        "num_predict": 192,
+        "seed": 42,
+        "temperature": 0.0
+      },
+      "model": "qwen2.5:7b",
+      "num_ctx": 8192,
+      "num_predict": 192,
+      "seed": 42,
+      "temperature": 0.0,
+      "timeout_seconds": 120.0
+    },
+    "prompt_version": "decision-state-llm-v16",
+    "raw_content": "{\"action\":\"CONTINUE\",\"reason\":\"No people observed and robot is moving.\"}",
+    "request_duration_s": 1.613485625013709,
+    "requested_model": "qwen2.5:7b",
+    "returned_model": "qwen2.5:7b",
+    "delivery_status": "succeeded",
+    "delivery_error": null
+  },
+  "last_readiness": {
+    "reason_code": "INSUFFICIENT_GAZE_EVIDENCE",
+    "status": "OBSERVING"
+  },
+  "source_sha256": "240fff11df215f5bb491c93db59827a6b4dc507f7981e870a2abc77cd2b6d12f",
+  "trial_id": "dc843a48080f49858918f7e05853922a",
+  "clock_mapping": "original first perception receipt + real elapsed replay time",
+  "physical_execution": false
+}

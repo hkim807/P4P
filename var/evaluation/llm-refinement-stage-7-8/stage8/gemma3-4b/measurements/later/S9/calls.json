@@ -1,0 +1,32 @@
+[
+  {
+    "source_state_id": null,
+    "source_robot_timestamp_us": null,
+    "state_sha256": "4f7fc313e671f36c1b3a878c377ce1e05de17b0edce142717aed2de51e063329",
+    "request_sha256": "c6c7277dbc6082833bfab1ab1f748a0573975459902026310cb332e8fe84790c",
+    "request_bytes": 5313,
+    "input_characters": 4617,
+    "chat_start_elapsed_s": null,
+    "chat_end_elapsed_s": null,
+    "client_call_duration_s": 2.6648620418272913,
+    "request_preparation_s": 0.0002931668423116207,
+    "transport_duration_s": 2.6644907500594854,
+    "response_validation_s": 7.812492549419403e-05,
+    "ollama_metrics": {
+      "total_duration": 2663750750,
+      "load_duration": 824292,
+      "prompt_eval_count": 1006,
+      "prompt_eval_cached_count": 488,
+      "prompt_eval_duration": 1830668000,
+      "eval_count": 26,
+      "eval_duration": 825668000
+    },
+    "request_duration_s": 2.6644930420443416,
+    "ok": true,
+    "decision": {
+      "action": "CONTINUE",
+      "reason": "The person is within the approachable zone with sustained gaze, but beyond interaction range."
+    },
+    "error": null
+  }
+]

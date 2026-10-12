@@ -1,0 +1,18 @@
+{
+  "action_version": "social-actions-v3",
+  "rule_version": "social-rules-v7",
+  "prompt_version": "decision-state-llm-v16",
+  "temporal_config": "config/temporal-final-scenarios.json",
+  "track_config": "config/person-tracking-final-scenarios.json",
+  "evaluation_contract": "config/final-scenarios.json",
+  "model": "qwen2.5:7b",
+  "temperature": 0.0,
+  "seed": 42,
+  "num_ctx": 8192,
+  "num_predict": 192,
+  "timeout_seconds": 120.0,
+  "diagnostic_interval_s": 1.0,
+  "model_trial_max_age_s": 10.0,
+  "design": "First-action fit to nine user-labelled motion-trimmed recordings; not held-out evaluation; no physical execution",
+  "base_url": "http://127.0.0.1:11434"
+}

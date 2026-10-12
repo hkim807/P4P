@@ -1,0 +1,93 @@
+{
+  "scenario_id": "S4",
+  "policy": "llm",
+  "status": "ACTION_RESOLVED",
+  "action": "CONTINUE",
+  "decision": {
+    "action": "CONTINUE",
+    "reason": "Person outside interaction range, decreasing distance but no sustained looking."
+  },
+  "accepted_by_live_client": true,
+  "acceptance_details": {
+    "current_readiness": true,
+    "latest_observation_age_s": 0.025601,
+    "model_source_age_s": 3.634147,
+    "trial_phase": "DECIDED",
+    "failure_reason": null
+  },
+  "resolved_elapsed_s": 4.719975499901921,
+  "stop_elapsed_s": 4.719975499901921,
+  "frames_ingested": 48,
+  "ready_frames": 37,
+  "readiness_counts": {
+    "INSUFFICIENT_GAZE_EVIDENCE": 11,
+    "READY": 37
+  },
+  "recording_exhausted": false,
+  "last_ingested_source_offset_s": 4.694376,
+  "last_ingested_line": 96,
+  "decision_source_offset_s": 1.08583,
+  "motion_start_monotonic_us": 2096080866,
+  "perception_origin_monotonic_us": 2096097493,
+  "decision_source_since_motion_s": 1.102457,
+  "max_dispatch_lag_s": 0.029851041734218597,
+  "model_failures": [],
+  "first_model_request": {
+    "decision": null,
+    "error": null,
+    "policy": "llm",
+    "request_id": "ff0073bf65d84b19b68dafa6736b7672",
+    "session_id": "replay-6c13d1e775b7489493285686",
+    "source_robot_timestamp_us": 2097183323,
+    "source_state_id": "replay-6c13d1e775b7489493285686:12",
+    "status": "pending",
+    "trial_id": "82c2d37918764fbe9b19042b9dbf6ff5"
+  },
+  "resolved_output": {
+    "decision": {
+      "action": "CONTINUE",
+      "reason": "Person outside interaction range, decreasing distance but no sustained looking."
+    },
+    "error": null,
+    "policy": "llm",
+    "request_id": "ff0073bf65d84b19b68dafa6736b7672",
+    "session_id": "replay-6c13d1e775b7489493285686",
+    "source_robot_timestamp_us": 2097183323,
+    "source_state_id": "replay-6c13d1e775b7489493285686:12",
+    "status": "succeeded",
+    "trial_id": "82c2d37918764fbe9b19042b9dbf6ff5",
+    "completed_at": "2026-10-12T21:55:10.538383+00:00",
+    "error_stage": null,
+    "ok": true,
+    "ollama_configuration": {
+      "base_url": "http://127.0.0.1:11434",
+      "generation_options": {
+        "num_ctx": 8192,
+        "num_predict": 192,
+        "seed": 42,
+        "temperature": 0.0
+      },
+      "model": "qwen2.5:7b",
+      "num_ctx": 8192,
+      "num_predict": 192,
+      "seed": 42,
+      "temperature": 0.0,
+      "timeout_seconds": 120.0
+    },
+    "prompt_version": "decision-state-llm-v16",
+    "raw_content": "{\"action\":\"CONTINUE\",\"reason\":\"Person outside interaction range, decreasing distance but no sustained looking.\"}",
+    "request_duration_s": 3.605393792036921,
+    "requested_model": "qwen2.5:7b",
+    "returned_model": "qwen2.5:7b",
+    "delivery_status": "succeeded",
+    "delivery_error": null
+  },
+  "last_readiness": {
+    "reason_code": null,
+    "status": "READY"
+  },
+  "source_sha256": "37a122fd2fa1aa2e62772c10a9d88152e0dcc1d3ba08f84428c59ae7d8d290d6",
+  "trial_id": "82c2d37918764fbe9b19042b9dbf6ff5",
+  "clock_mapping": "original first perception receipt + real elapsed replay time",
+  "physical_execution": false
+}

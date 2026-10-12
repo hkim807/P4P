@@ -1,0 +1,32 @@
+[
+  {
+    "source_state_id": null,
+    "source_robot_timestamp_us": null,
+    "state_sha256": "55d85de4becba11f9c56b316bab500930488cee72771a0dc3b67fc62d27370d4",
+    "request_sha256": "1d1020f335c0da25387d66858badc4eafcc4877e05dd32222d9367add7ee0f58",
+    "request_bytes": 5283,
+    "input_characters": 4586,
+    "chat_start_elapsed_s": 1.107382208108902,
+    "chat_end_elapsed_s": 4.206089500337839,
+    "client_call_duration_s": 3.098707292228937,
+    "request_preparation_s": 0.0002871672622859478,
+    "transport_duration_s": 3.098379374947399,
+    "response_validation_s": 4.075001925230026e-05,
+    "ollama_metrics": {
+      "total_duration": 3097595584,
+      "load_duration": 1969792,
+      "prompt_eval_count": 927,
+      "prompt_eval_cached_count": 601,
+      "prompt_eval_duration": 1910438000,
+      "eval_count": 22,
+      "eval_duration": 1169959000
+    },
+    "request_duration_s": 3.098381041083485,
+    "ok": true,
+    "decision": {
+      "action": "CONTINUE",
+      "reason": "Person outside interaction range, decreasing distance but no sustained looking."
+    },
+    "error": null
+  }
+]

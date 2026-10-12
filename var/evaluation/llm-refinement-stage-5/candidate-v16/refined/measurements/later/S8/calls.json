@@ -1,0 +1,32 @@
+[
+  {
+    "source_state_id": null,
+    "source_robot_timestamp_us": null,
+    "state_sha256": "13a7fe7d417e419868ac3c96821b02e13fa2bfee21290c9883c1571bb733e98e",
+    "request_sha256": "a45c0827b1dfaf4718b497a7fc06977aff24ebdec3df0bb30540add37c7e4b44",
+    "request_bytes": 5271,
+    "input_characters": 4574,
+    "chat_start_elapsed_s": null,
+    "chat_end_elapsed_s": null,
+    "client_call_duration_s": 2.610867832787335,
+    "request_preparation_s": 0.0003243326209485531,
+    "transport_duration_s": 2.610376334283501,
+    "response_validation_s": 0.00016716588288545609,
+    "ollama_metrics": {
+      "total_duration": 2609240417,
+      "load_duration": 837083,
+      "prompt_eval_count": 921,
+      "prompt_eval_cached_count": 601,
+      "prompt_eval_duration": 1702656000,
+      "eval_count": 18,
+      "eval_duration": 901344000
+    },
+    "request_duration_s": 2.6103797093965113,
+    "ok": true,
+    "decision": {
+      "action": "CONTINUE",
+      "reason": "Person outside interaction range, increasing distance."
+    },
+    "error": null
+  }
+]

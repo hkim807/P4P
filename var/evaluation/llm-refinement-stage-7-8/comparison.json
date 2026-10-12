@@ -1,0 +1,179 @@
+{
+  "stage7": {
+    "results": {
+      "control": {
+        "trials": 27,
+        "aligned": 24,
+        "valid": 27,
+        "accepted": 21,
+        "aligned_and_accepted": 18,
+        "median_s": 3.125866708720714,
+        "p95_s": 5.842532217288137,
+        "median_first_client_completion_s": 3.118116374968231,
+        "truncated": 0,
+        "per_scenario_aligned": {
+          "S1": 3,
+          "S2": 3,
+          "S3": 3,
+          "S4": 0,
+          "S5": 3,
+          "S6": 3,
+          "S7": 3,
+          "S8": 3,
+          "S9": 3
+        },
+        "per_repeat_aligned": [
+          8,
+          8,
+          8
+        ]
+      },
+      "context-2048": {
+        "trials": 27,
+        "aligned": 24,
+        "valid": 27,
+        "accepted": 21,
+        "aligned_and_accepted": 18,
+        "median_s": 3.0738009580239356,
+        "p95_s": 5.9101562501115055,
+        "median_first_client_completion_s": 3.053810790909052,
+        "truncated": 0,
+        "per_scenario_aligned": {
+          "S1": 3,
+          "S2": 3,
+          "S3": 3,
+          "S4": 0,
+          "S5": 3,
+          "S6": 3,
+          "S7": 3,
+          "S8": 3,
+          "S9": 3
+        },
+        "per_repeat_aligned": [
+          8,
+          8,
+          8
+        ]
+      }
+    },
+    "selected": "control",
+    "settings_variant": "context-2048",
+    "first_score_only": true
+  },
+  "stage8": {
+    "results": {
+      "qwen25-7b": {
+        "trials": 27,
+        "aligned": 24,
+        "valid": 27,
+        "accepted": 20,
+        "aligned_and_accepted": 17,
+        "median_s": 3.198938208357364,
+        "p95_s": 6.339981895610437,
+        "median_first_client_completion_s": 3.170646249908805,
+        "truncated": 0,
+        "per_scenario_aligned": {
+          "S1": 3,
+          "S2": 3,
+          "S3": 3,
+          "S4": 0,
+          "S5": 3,
+          "S6": 3,
+          "S7": 3,
+          "S8": 3,
+          "S9": 3
+        },
+        "per_repeat_aligned": [
+          8,
+          8,
+          8
+        ]
+      },
+      "qwen25-3b": {
+        "trials": 27,
+        "aligned": 12,
+        "valid": 27,
+        "accepted": 22,
+        "aligned_and_accepted": 12,
+        "median_s": 1.806311459044069,
+        "p95_s": 3.115995929315433,
+        "median_first_client_completion_s": 1.7994190838617086,
+        "truncated": 0,
+        "per_scenario_aligned": {
+          "S1": 0,
+          "S2": 0,
+          "S3": 3,
+          "S4": 3,
+          "S5": 3,
+          "S6": 0,
+          "S7": 0,
+          "S8": 3,
+          "S9": 0
+        },
+        "per_repeat_aligned": [
+          4,
+          4,
+          4
+        ]
+      },
+      "qwen3-4b-instruct": {
+        "trials": 27,
+        "aligned": 21,
+        "valid": 27,
+        "accepted": 24,
+        "aligned_and_accepted": 18,
+        "median_s": 2.492149040759474,
+        "p95_s": 4.462340712705374,
+        "median_first_client_completion_s": 2.4785052092791795,
+        "truncated": 0,
+        "per_scenario_aligned": {
+          "S1": 0,
+          "S2": 3,
+          "S3": 3,
+          "S4": 0,
+          "S5": 3,
+          "S6": 3,
+          "S7": 3,
+          "S8": 3,
+          "S9": 3
+        },
+        "per_repeat_aligned": [
+          7,
+          7,
+          7
+        ]
+      },
+      "gemma3-4b": {
+        "trials": 27,
+        "aligned": 15,
+        "valid": 27,
+        "accepted": 21,
+        "aligned_and_accepted": 10,
+        "median_s": 2.955871250276983,
+        "p95_s": 4.083605058556169,
+        "median_first_client_completion_s": 2.9436479171566368,
+        "truncated": 0,
+        "per_scenario_aligned": {
+          "S1": 3,
+          "S2": 0,
+          "S3": 0,
+          "S4": 0,
+          "S5": 3,
+          "S6": 3,
+          "S7": 3,
+          "S8": 3,
+          "S9": 0
+        },
+        "per_repeat_aligned": [
+          5,
+          5,
+          5
+        ]
+      }
+    },
+    "selected": "qwen25-7b",
+    "settings_variant": "control",
+    "first_score_only": true
+  },
+  "physical_execution": false
+}

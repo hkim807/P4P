@@ -1,0 +1,6 @@
+{
+  "qwen2.5:3b": "Downloaded successfully",
+  "qwen3:4b-instruct": "Downloaded successfully",
+  "gemma3:4b": "Initial storage-host DNS failure; retry succeeded during stage 7 repetition 2 before stage 8",
+  "timing_limit": "Model download activity overlapped the direct settings screens and early stage 7 blocks. Later stage 7 blocks and all model comparisons ran after download completion."
+}

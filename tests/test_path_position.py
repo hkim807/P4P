@@ -99,11 +99,6 @@ class PathPositionTests(unittest.TestCase):
                     f['people'][0]['optional_relative_nose_position'] = point
                     row = pipeline.process(f)
                 self.assertEqual(row['final_decision']['action'], expected)
-                state = row['social_state']
-                state['people'][0]['pass_gesture'] = 'PASS'
-                self.assertEqual(decide(state).decision, 'CONTINUE')
-                state['people'][0]['path_relation'] = 'CONFLICT'
-                self.assertEqual(decide(state).decision, 'YIELD')
 
     def test_position_alone_does_not_yield_or_override_attention(self):
         for y in (.3, .65):

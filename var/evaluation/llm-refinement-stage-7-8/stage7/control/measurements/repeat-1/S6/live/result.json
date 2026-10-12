@@ -1,0 +1,94 @@
+{
+  "scenario_id": "S6",
+  "policy": "llm",
+  "status": "ACTION_RESOLVED",
+  "action": "CONTINUE",
+  "decision": {
+    "action": "CONTINUE",
+    "reason": "No recent looking and low gaze fraction outside interaction range."
+  },
+  "accepted_by_live_client": true,
+  "acceptance_details": {
+    "current_readiness": true,
+    "latest_observation_age_s": 0.076933,
+    "model_source_age_s": 3.109818,
+    "trial_phase": "DECIDED",
+    "failure_reason": null
+  },
+  "resolved_elapsed_s": 4.176467958837748,
+  "stop_elapsed_s": 4.176467958837748,
+  "frames_ingested": 42,
+  "ready_frames": 30,
+  "readiness_counts": {
+    "INSUFFICIENT_GAZE_EVIDENCE": 9,
+    "DISTANCE_UNKNOWN": 3,
+    "READY": 30
+  },
+  "recording_exhausted": false,
+  "last_ingested_source_offset_s": 4.099538,
+  "last_ingested_line": 84,
+  "decision_source_offset_s": 1.066653,
+  "motion_start_monotonic_us": 2198112528,
+  "perception_origin_monotonic_us": 2198154257,
+  "decision_source_since_motion_s": 1.108382,
+  "max_dispatch_lag_s": 0.00594358379021287,
+  "model_failures": [],
+  "first_model_request": {
+    "decision": null,
+    "error": null,
+    "policy": "llm",
+    "request_id": "ecb672454b7144a98c6164d67f95ea57",
+    "session_id": "replay-c868e15ffc810edd0c196acc",
+    "source_robot_timestamp_us": 2199220910,
+    "source_state_id": "replay-c868e15ffc810edd0c196acc:12",
+    "status": "pending",
+    "trial_id": "fd8c1d088bf9439cb4749737e3aba970"
+  },
+  "resolved_output": {
+    "decision": {
+      "action": "CONTINUE",
+      "reason": "No recent looking and low gaze fraction outside interaction range."
+    },
+    "error": null,
+    "policy": "llm",
+    "request_id": "ecb672454b7144a98c6164d67f95ea57",
+    "session_id": "replay-c868e15ffc810edd0c196acc",
+    "source_robot_timestamp_us": 2199220910,
+    "source_state_id": "replay-c868e15ffc810edd0c196acc:12",
+    "status": "succeeded",
+    "trial_id": "fd8c1d088bf9439cb4749737e3aba970",
+    "completed_at": "2026-10-12T21:40:41.265066+00:00",
+    "error_stage": null,
+    "ok": true,
+    "ollama_configuration": {
+      "base_url": "http://127.0.0.1:11434",
+      "generation_options": {
+        "num_ctx": 8192,
+        "num_predict": 192,
+        "seed": 42,
+        "temperature": 0.0
+      },
+      "model": "qwen2.5:7b",
+      "num_ctx": 8192,
+      "num_predict": 192,
+      "seed": 42,
+      "temperature": 0.0,
+      "timeout_seconds": 120.0
+    },
+    "prompt_version": "decision-state-llm-v16",
+    "raw_content": "{\"action\":\"CONTINUE\",\"reason\":\"No recent looking and low gaze fraction outside interaction range.\"}",
+    "request_duration_s": 3.065353791229427,
+    "requested_model": "qwen2.5:7b",
+    "returned_model": "qwen2.5:7b",
+    "delivery_status": "succeeded",
+    "delivery_error": null
+  },
+  "last_readiness": {
+    "reason_code": null,
+    "status": "READY"
+  },
+  "source_sha256": "81d07a1936abdf41ae7a6d740ec2288ccedb2806cc7c40dfb2d66941783b43da",
+  "trial_id": "fd8c1d088bf9439cb4749737e3aba970",
+  "clock_mapping": "original first perception receipt + real elapsed replay time",
+  "physical_execution": false
+}

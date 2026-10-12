@@ -1,0 +1,7 @@
+{
+  "frames": 574,
+  "modes": 4,
+  "canonical_payload_comparisons": 2296,
+  "payloads_byte_identical": true,
+  "reason": "Omit empty summary with a wrap serializer compatible with the declared Pydantic floor; no dependency upgrade."
+}

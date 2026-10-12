@@ -1,0 +1,32 @@
+[
+  {
+    "source_state_id": null,
+    "source_robot_timestamp_us": null,
+    "state_sha256": "32c15c47cd8540d1c653f7ebf45fd9248ecb5862303563ef96d11935eb54256c",
+    "request_sha256": "90fa3d0fd87906a513355c8798644ded75075d01d6af3cf7f029f9590aea0d61",
+    "request_bytes": 5275,
+    "input_characters": 4578,
+    "chat_start_elapsed_s": 1.6838752082549036,
+    "chat_end_elapsed_s": 4.946035541128367,
+    "client_call_duration_s": 3.2621603328734636,
+    "request_preparation_s": 0.00020408304408192635,
+    "transport_duration_s": 3.2618509586900473,
+    "response_validation_s": 0.00010529113933444023,
+    "ollama_metrics": {
+      "total_duration": 3260914208,
+      "load_duration": 2172625,
+      "prompt_eval_count": 918,
+      "prompt_eval_cached_count": 622,
+      "prompt_eval_duration": 1762664000,
+      "eval_count": 28,
+      "eval_duration": 1477757000
+    },
+    "request_duration_s": 3.2618530420586467,
+    "ok": true,
+    "decision": {
+      "action": "CONTINUE",
+      "reason": "Intermittent looking but no sustained gaze or closing distance."
+    },
+    "error": null
+  }
+]

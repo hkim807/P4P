@@ -1,0 +1,55 @@
+{
+  "scenario_id": "S1",
+  "first_source_state_id": "replay-c185d8773106dd7263c9682d:12",
+  "first_state_sha256": "349cc6d4229926a9c2ae0552404253eea702058e526b77644d07ad74588c6fbc",
+  "expected_actions": [
+    "CONTINUE"
+  ],
+  "first_decision": {
+    "action": "APPROACH",
+    "reason": "A face is detected with decreasing distance and low gaze, indicating a person approaching within social range."
+  },
+  "first_output_valid": true,
+  "action_aligned": false,
+  "first_eligible_since_motion_s": 1.178444,
+  "output_since_motion_s": 5.825520625348747,
+  "first_request_observed_elapsed_s": 1.0804405831731856,
+  "first_client_finished_elapsed_s": 5.710935791023076,
+  "first_eligible_to_validated_client_output_s": 4.635107791023076,
+  "accepted_by_live_client": true,
+  "acceptance_details": {
+    "current_readiness": true,
+    "latest_observation_age_s": 0.053788,
+    "model_source_age_s": 4.647078,
+    "trial_phase": "DECIDED",
+    "failure_reason": null
+  },
+  "delivery_status": "succeeded",
+  "delivery_error": null,
+  "total_calls": 1,
+  "runner_status": "ACTION_RESOLVED",
+  "timing": {
+    "total_duration_s": 4.611196625,
+    "load_duration_s": 0.001606916,
+    "prompt_eval_duration_s": 3.11181,
+    "eval_duration_s": 1.458295,
+    "prompt_tokens": 906,
+    "cached_prompt_tokens": 0,
+    "output_tokens": 33,
+    "request_bytes": 5269,
+    "request_preparation_s": 0.0002298750914633274,
+    "response_validation_s": 6.870785728096962e-05,
+    "transport_duration_s": 4.612274332903326,
+    "transport_minus_native_total_s": 0.0010777079033257309,
+    "native_unattributed_s": 0.039484708999999896,
+    "eligible_to_observed_output_s": 4.647076625348747,
+    "eligible_to_client_call_s": 0.02253487517100572,
+    "client_finished_to_observed_output_s": 0.011968834325671196
+  },
+  "first_error": null,
+  "repetition": 2,
+  "eligible_to_first_completion_s": 4.635107791023076,
+  "first_done_reason": "stop",
+  "prompt_tokens": 906,
+  "output_tokens": 33
+}

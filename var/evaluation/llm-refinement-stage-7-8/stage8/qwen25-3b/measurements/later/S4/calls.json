@@ -1,0 +1,32 @@
+[
+  {
+    "source_state_id": null,
+    "source_robot_timestamp_us": null,
+    "state_sha256": "7f5d15972d9822eaba243ac102c2243102fce3bd38e8eb352d7615d5b6b7c95b",
+    "request_sha256": "614f21c8af6cc6010c0cdd2ae1fdb4c152b0dd7def490557bfcba35812b0fbe1",
+    "request_bytes": 5260,
+    "input_characters": 4563,
+    "chat_start_elapsed_s": null,
+    "chat_end_elapsed_s": null,
+    "client_call_duration_s": 2.205335124861449,
+    "request_preparation_s": 0.00021183397620916367,
+    "transport_duration_s": 2.2050774581730366,
+    "response_validation_s": 4.5832712203264236e-05,
+    "ollama_metrics": {
+      "total_duration": 2204420167,
+      "load_duration": 772667,
+      "prompt_eval_count": 910,
+      "prompt_eval_cached_count": 619,
+      "prompt_eval_duration": 954685000,
+      "eval_count": 35,
+      "eval_duration": 1243786000
+    },
+    "request_duration_s": 2.2050794577226043,
+    "ok": true,
+    "decision": {
+      "action": "YIELD",
+      "reason": "Person inside corridor, face detected but not looking at robot; distance decreasing, potential obstruction ahead."
+    },
+    "error": null
+  }
+]

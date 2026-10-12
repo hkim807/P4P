@@ -1,0 +1,150 @@
+{
+  "input_path": "/Users/eddiekim/Documents/Projects/P4P/var/evaluation/final-scenarios-audit/trimmed/final_scenario_5-sdk.jsonl",
+  "input_format": "sdk",
+  "reconstructed": true,
+  "file_sha256": "8598b85db20dc43044da5392b69a14b55ff7a3ea080ec53663765670287fba4c",
+  "line_number": 24,
+  "record_number": 24,
+  "original_capture_session": "393a20cdb19a447d8387eea25819dad8",
+  "source_session_id": "393a20cdb19a447d8387eea25819dad8",
+  "processing_session_id": "replay-f9e815a071393de98a4bc3d1",
+  "source_record": {
+    "capture_version": 1,
+    "session_id": "393a20cdb19a447d8387eea25819dad8",
+    "stream": "perception",
+    "sequence": 12,
+    "received_monotonic_us": 2139472694,
+    "received_unix_us": 1791695096773552,
+    "packet": {
+      "time": 1791695096641698,
+      "persons": [],
+      "sst_time_latest": 1791695096740358,
+      "sst_tracks_latest": [
+        {
+          "id": 1,
+          "activity": 1.3434951237299733e-22,
+          "loc": {
+            "sys": "HEAD_STRAIGHT",
+            "x": 1.875561767578125,
+            "y": -0.0016551361083984376,
+            "z": 0.4758856506347656
+          },
+          "is_dynamic": false
+        },
+        {
+          "id": 0,
+          "activity": 0.0,
+          "loc": {
+            "sys": "HEAD_STRAIGHT",
+            "x": -0.05128036117553711,
+            "y": -0.0008851884603500366,
+            "z": -0.06009796142578125
+          },
+          "is_dynamic": false
+        },
+        {
+          "id": 0,
+          "activity": 0.0,
+          "loc": {
+            "sys": "HEAD_STRAIGHT",
+            "x": -0.05128036117553711,
+            "y": -0.0008851884603500366,
+            "z": -0.06009796142578125
+          },
+          "is_dynamic": false
+        },
+        {
+          "id": 0,
+          "activity": 0.0,
+          "loc": {
+            "sys": "HEAD_STRAIGHT",
+            "x": -0.05128036117553711,
+            "y": -0.0008851884603500366,
+            "z": -0.06009796142578125
+          },
+          "is_dynamic": false
+        }
+      ]
+    }
+  },
+  "timestamps": {
+    "estimation_timestamp_us": 2139472694,
+    "estimation_clock": "robot-host monotonic microseconds",
+    "estimation_origin": "SDK perception received_monotonic_us, used as reconstructed collection time",
+    "received_monotonic_us": 2139472694,
+    "received_unix_us": 1791695096773552,
+    "received_unix_clock": "capture-host Unix UTC microseconds at receipt; not used for estimation",
+    "sdk_perception_timestamp": 1791695096641698,
+    "sdk_perception_clock": "SDK PerceptionData.time; units and clock mapping unverified; not used for estimation"
+  },
+  "locomotion": {
+    "status": "used",
+    "age_s": 0.085583,
+    "line_number": 23,
+    "record_number": 23,
+    "source_record": {
+      "capture_version": 1,
+      "session_id": "393a20cdb19a447d8387eea25819dad8",
+      "stream": "locomotion",
+      "sequence": 12,
+      "received_monotonic_us": 2139387111,
+      "received_unix_us": 1791695096687968,
+      "packet": {
+        "odometry": {
+          "time": 1791695096675826,
+          "position": {
+            "x": 14.015870999999999,
+            "y": 3.185186,
+            "z": 0.0
+          },
+          "orientation": {
+            "x": 0.12825029222007464,
+            "y": 0.9917418326083989,
+            "z": 0.0,
+            "w": 0.0
+          },
+          "velocity": {
+            "linear_x": 0.093,
+            "linear_y": 0.0,
+            "linear_z": 0.0,
+            "angular_x": 0.0,
+            "angular_y": 0.0,
+            "angular_z": 0.0
+          }
+        },
+        "distances": {
+          "SONAR": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "LIDAR": [
+            0.461,
+            0.432
+          ]
+        }
+      }
+    },
+    "sdk_odometry_timestamp": 1791695096675826,
+    "sdk_odometry_clock": "SDK Odometry.time; units and clock mapping unverified"
+  },
+  "reconstructed_raw_observation": {
+    "timestamp": 2139472694,
+    "people": [],
+    "robot": {
+      "linear_velocity": 0.093,
+      "angular_velocity": 0.0
+    },
+    "safety": {
+      "lidar": [
+        0.461,
+        0.432
+      ],
+      "sonar": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    }
+  }
+}

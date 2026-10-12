@@ -1,0 +1,44 @@
+{
+  "frames_compared": 574,
+  "eligible_frames": 402,
+  "readiness_actions_reasons_targets_and_ids_unchanged": true,
+  "reference_rule_sha256": "ba944c006dfb801c440c3703494957db81bcb29021785e28c97c1de02ca7c22b",
+  "first_actions": [
+    {
+      "action": "CONTINUE",
+      "reason": "Gaze evidence is classified as no attention; continue along the fixed route."
+    },
+    {
+      "action": "APPROACH",
+      "reason": "The person is looking steadily at the robot and is within approach distance."
+    },
+    {
+      "action": "ENGAGE",
+      "reason": "The person is looking steadily at the robot and is within conversation distance."
+    },
+    {
+      "action": "YIELD",
+      "reason": "The current nose position lies within the configured forward corridor, separation is decreasing within yield range, and face and low-gaze evidence are valid; give the person room to pass."
+    },
+    {
+      "action": "CONTINUE",
+      "reason": "No person has been detected throughout the configured observation interval; continue along the route without initiating interaction."
+    },
+    {
+      "action": "CONTINUE",
+      "reason": "Gaze evidence is classified as no attention; continue along the fixed route."
+    },
+    {
+      "action": "CONTINUE",
+      "reason": "Usable gaze evidence does not show sustained attention; continue along the fixed route."
+    },
+    {
+      "action": "CONTINUE",
+      "reason": "No person has been detected throughout the configured observation interval; continue along the route without initiating interaction."
+    },
+    {
+      "action": "APPROACH",
+      "reason": "The person is looking steadily at the robot and is within approach distance."
+    }
+  ]
+}

@@ -1,0 +1,94 @@
+{
+  "scenario_id": "S6",
+  "policy": "llm",
+  "status": "ACTION_RESOLVED",
+  "action": "YIELD",
+  "decision": {
+    "action": "YIELD",
+    "reason": "Low looking and close proximity justify yielding space."
+  },
+  "accepted_by_live_client": true,
+  "acceptance_details": {
+    "current_readiness": true,
+    "latest_observation_age_s": 0.051769,
+    "model_source_age_s": 3.084654,
+    "trial_phase": "DECIDED",
+    "failure_reason": null
+  },
+  "resolved_elapsed_s": 4.151306165847927,
+  "stop_elapsed_s": 4.151306165847927,
+  "frames_ingested": 42,
+  "ready_frames": 30,
+  "readiness_counts": {
+    "INSUFFICIENT_GAZE_EVIDENCE": 9,
+    "DISTANCE_UNKNOWN": 3,
+    "READY": 30
+  },
+  "recording_exhausted": false,
+  "last_ingested_source_offset_s": 4.099538,
+  "last_ingested_line": 84,
+  "decision_source_offset_s": 1.066653,
+  "motion_start_monotonic_us": 2198112528,
+  "perception_origin_monotonic_us": 2198154257,
+  "decision_source_since_motion_s": 1.108382,
+  "max_dispatch_lag_s": 0.007173915859311819,
+  "model_failures": [],
+  "first_model_request": {
+    "decision": null,
+    "error": null,
+    "policy": "llm",
+    "request_id": "5221c7aa8d6741a8bb1e0c9c214392b3",
+    "session_id": "replay-c868e15ffc810edd0c196acc",
+    "source_robot_timestamp_us": 2199220910,
+    "source_state_id": "replay-c868e15ffc810edd0c196acc:12",
+    "status": "pending",
+    "trial_id": "f9739da3c69f46a19cba859bd181cde8"
+  },
+  "resolved_output": {
+    "decision": {
+      "action": "YIELD",
+      "reason": "Low looking and close proximity justify yielding space."
+    },
+    "error": null,
+    "policy": "llm",
+    "request_id": "5221c7aa8d6741a8bb1e0c9c214392b3",
+    "session_id": "replay-c868e15ffc810edd0c196acc",
+    "source_robot_timestamp_us": 2199220910,
+    "source_state_id": "replay-c868e15ffc810edd0c196acc:12",
+    "status": "succeeded",
+    "trial_id": "f9739da3c69f46a19cba859bd181cde8",
+    "completed_at": "2026-10-12T18:45:30.619494+00:00",
+    "error_stage": null,
+    "ok": true,
+    "ollama_configuration": {
+      "base_url": "http://127.0.0.1:11434",
+      "generation_options": {
+        "num_ctx": 8192,
+        "num_predict": 192,
+        "seed": 42,
+        "temperature": 0.0
+      },
+      "model": "qwen2.5:7b",
+      "num_ctx": 8192,
+      "num_predict": 192,
+      "seed": 42,
+      "temperature": 0.0,
+      "timeout_seconds": 120.0
+    },
+    "prompt_version": "decision-state-llm-v15",
+    "raw_content": "{\"action\":\"YIELD\",\"reason\":\"Low looking and close proximity justify yielding space.\"}",
+    "request_duration_s": 3.0602310416288674,
+    "requested_model": "qwen2.5:7b",
+    "returned_model": "qwen2.5:7b",
+    "delivery_status": "succeeded",
+    "delivery_error": null
+  },
+  "last_readiness": {
+    "reason_code": null,
+    "status": "READY"
+  },
+  "source_sha256": "81d07a1936abdf41ae7a6d740ec2288ccedb2806cc7c40dfb2d66941783b43da",
+  "trial_id": "f9739da3c69f46a19cba859bd181cde8",
+  "clock_mapping": "original first perception receipt + real elapsed replay time",
+  "physical_execution": false
+}

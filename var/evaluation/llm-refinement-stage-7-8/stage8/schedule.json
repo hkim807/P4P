@@ -1,0 +1,29 @@
+[
+  {
+    "repetition": 1,
+    "order": [
+      "qwen25-7b",
+      "qwen25-3b",
+      "qwen3-4b-instruct",
+      "gemma3-4b"
+    ]
+  },
+  {
+    "repetition": 2,
+    "order": [
+      "qwen25-3b",
+      "qwen3-4b-instruct",
+      "gemma3-4b",
+      "qwen25-7b"
+    ]
+  },
+  {
+    "repetition": 3,
+    "order": [
+      "qwen3-4b-instruct",
+      "gemma3-4b",
+      "qwen25-7b",
+      "qwen25-3b"
+    ]
+  }
+]

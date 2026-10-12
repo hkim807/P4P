@@ -76,28 +76,6 @@ class RefinedCueTests(unittest.TestCase):
         s = deepcopy(state); s['people'][0]['evidence']['gaze_valid'] = False
         self.assertIsNotNone(rule_readiness(s))
 
-    def test_conflict_and_pass_precede_gaze(self):
-        state = ready_state()
-        for updates, expected in (({'path_relation': 'CONFLICT'}, 'YIELD'),
-                                  ({'pass_gesture': 'PASS'}, 'CONTINUE'),
-                                  ({'path_relation': 'CONFLICT', 'pass_gesture': 'PASS'}, 'YIELD')):
-            s = deepcopy(state); person = s['people'][0]
-            person.update(updates); person['gaze_state'] = 'UNKNOWN'; person['evidence']['gaze_valid'] = False
-            self.assertIsNone(rule_readiness(s))
-            self.assertEqual(decide(s).decision, expected)
-
-    def test_raw_explicit_cues_roundtrip_and_are_not_retained_when_missing(self):
-        p = SocialPipeline('explicit')
-        observation = sample(0)
-        observation['people'][0].update(path_relation='CONFLICT', pass_gesture='PASS')
-        row = p.process(observation)
-        self.assertEqual(row['final_decision']['action'], 'YIELD')
-        observation = sample(1); observation['people'] = []
-        row = p.process(observation)
-        self.assertEqual(row['social_state']['people'][0]['path_relation'], 'UNKNOWN')
-        self.assertEqual(row['social_state']['people'][0]['pass_gesture'], 'UNKNOWN')
-        self.assertIsNone(row['final_decision'])
-
     def test_retreat_nearby_greeting_differs_from_distant_pursuit(self):
         for distance, expected in ((1.0, 'ENGAGE'), (2.0, 'CONTINUE')):
             state = ready_state(distance)

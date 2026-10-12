@@ -1,0 +1,164 @@
+[
+  {
+    "scenario_id": "S1",
+    "repeat": 1,
+    "decision_state_sha256": "349cc6d4229926a9c2ae0552404253eea702058e526b77644d07ad74588c6fbc",
+    "state_identical": true
+  },
+  {
+    "scenario_id": "S2",
+    "repeat": 1,
+    "decision_state_sha256": "687334ab20a9c016cd85baa86977ea1a1f979bf14e94808aab9a10b80044e6a9",
+    "state_identical": true
+  },
+  {
+    "scenario_id": "S3",
+    "repeat": 1,
+    "decision_state_sha256": "a26b19c2e0f20ff1c9afa0d1bea8303130e226e42fbedd66a7e97bd418f58037",
+    "state_identical": true
+  },
+  {
+    "scenario_id": "S4",
+    "repeat": 1,
+    "decision_state_sha256": "55d85de4becba11f9c56b316bab500930488cee72771a0dc3b67fc62d27370d4",
+    "state_identical": true
+  },
+  {
+    "scenario_id": "S5",
+    "repeat": 1,
+    "decision_state_sha256": "40187719f69d35c353d86076671b281dcb197d8e366f57c341079875f2820263",
+    "state_identical": true
+  },
+  {
+    "scenario_id": "S6",
+    "repeat": 1,
+    "decision_state_sha256": "159a0ac453b5388f8ebd7d551a032c978d57733c4db4a97cceb72c252aad183b",
+    "state_identical": true
+  },
+  {
+    "scenario_id": "S7",
+    "repeat": 1,
+    "decision_state_sha256": "32c15c47cd8540d1c653f7ebf45fd9248ecb5862303563ef96d11935eb54256c",
+    "state_identical": true
+  },
+  {
+    "scenario_id": "S8",
+    "repeat": 1,
+    "decision_state_sha256": "5e5b1408334085e5e0a193e04a5c70e96b3f87ee42c4433fae095b82650d126e",
+    "state_identical": true
+  },
+  {
+    "scenario_id": "S9",
+    "repeat": 1,
+    "decision_state_sha256": "f9127de9913dc53e096f89b3056e91d6a8e25ea59c096e4a5417d0fd1eb71c4b",
+    "state_identical": true
+  },
+  {
+    "scenario_id": "S1",
+    "repeat": 2,
+    "decision_state_sha256": "349cc6d4229926a9c2ae0552404253eea702058e526b77644d07ad74588c6fbc",
+    "state_identical": true
+  },
+  {
+    "scenario_id": "S2",
+    "repeat": 2,
+    "decision_state_sha256": "687334ab20a9c016cd85baa86977ea1a1f979bf14e94808aab9a10b80044e6a9",
+    "state_identical": true
+  },
+  {
+    "scenario_id": "S3",
+    "repeat": 2,
+    "decision_state_sha256": "a26b19c2e0f20ff1c9afa0d1bea8303130e226e42fbedd66a7e97bd418f58037",
+    "state_identical": true
+  },
+  {
+    "scenario_id": "S4",
+    "repeat": 2,
+    "decision_state_sha256": "55d85de4becba11f9c56b316bab500930488cee72771a0dc3b67fc62d27370d4",
+    "state_identical": true
+  },
+  {
+    "scenario_id": "S5",
+    "repeat": 2,
+    "decision_state_sha256": "40187719f69d35c353d86076671b281dcb197d8e366f57c341079875f2820263",
+    "state_identical": true
+  },
+  {
+    "scenario_id": "S6",
+    "repeat": 2,
+    "decision_state_sha256": "159a0ac453b5388f8ebd7d551a032c978d57733c4db4a97cceb72c252aad183b",
+    "state_identical": true
+  },
+  {
+    "scenario_id": "S7",
+    "repeat": 2,
+    "decision_state_sha256": "32c15c47cd8540d1c653f7ebf45fd9248ecb5862303563ef96d11935eb54256c",
+    "state_identical": true
+  },
+  {
+    "scenario_id": "S8",
+    "repeat": 2,
+    "decision_state_sha256": "5e5b1408334085e5e0a193e04a5c70e96b3f87ee42c4433fae095b82650d126e",
+    "state_identical": true
+  },
+  {
+    "scenario_id": "S9",
+    "repeat": 2,
+    "decision_state_sha256": "f9127de9913dc53e096f89b3056e91d6a8e25ea59c096e4a5417d0fd1eb71c4b",
+    "state_identical": true
+  },
+  {
+    "scenario_id": "S1",
+    "repeat": 3,
+    "decision_state_sha256": "349cc6d4229926a9c2ae0552404253eea702058e526b77644d07ad74588c6fbc",
+    "state_identical": true
+  },
+  {
+    "scenario_id": "S2",
+    "repeat": 3,
+    "decision_state_sha256": "687334ab20a9c016cd85baa86977ea1a1f979bf14e94808aab9a10b80044e6a9",
+    "state_identical": true
+  },
+  {
+    "scenario_id": "S3",
+    "repeat": 3,
+    "decision_state_sha256": "a26b19c2e0f20ff1c9afa0d1bea8303130e226e42fbedd66a7e97bd418f58037",
+    "state_identical": true
+  },
+  {
+    "scenario_id": "S4",
+    "repeat": 3,
+    "decision_state_sha256": "55d85de4becba11f9c56b316bab500930488cee72771a0dc3b67fc62d27370d4",
+    "state_identical": true
+  },
+  {
+    "scenario_id": "S5",
+    "repeat": 3,
+    "decision_state_sha256": "40187719f69d35c353d86076671b281dcb197d8e366f57c341079875f2820263",
+    "state_identical": true
+  },
+  {
+    "scenario_id": "S6",
+    "repeat": 3,
+    "decision_state_sha256": "159a0ac453b5388f8ebd7d551a032c978d57733c4db4a97cceb72c252aad183b",
+    "state_identical": true
+  },
+  {
+    "scenario_id": "S7",
+    "repeat": 3,
+    "decision_state_sha256": "32c15c47cd8540d1c653f7ebf45fd9248ecb5862303563ef96d11935eb54256c",
+    "state_identical": true
+  },
+  {
+    "scenario_id": "S8",
+    "repeat": 3,
+    "decision_state_sha256": "5e5b1408334085e5e0a193e04a5c70e96b3f87ee42c4433fae095b82650d126e",
+    "state_identical": true
+  },
+  {
+    "scenario_id": "S9",
+    "repeat": 3,
+    "decision_state_sha256": "f9127de9913dc53e096f89b3056e91d6a8e25ea59c096e4a5417d0fd1eb71c4b",
+    "state_identical": true
+  }
+]

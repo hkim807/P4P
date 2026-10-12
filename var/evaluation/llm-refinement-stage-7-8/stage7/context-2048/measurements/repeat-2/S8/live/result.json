@@ -1,0 +1,93 @@
+{
+  "scenario_id": "S8",
+  "policy": "llm",
+  "status": "ACTION_RESOLVED",
+  "action": "CONTINUE",
+  "decision": {
+    "action": "CONTINUE",
+    "reason": "No people observed and robot is moving."
+  },
+  "accepted_by_live_client": true,
+  "acceptance_details": {
+    "current_readiness": true,
+    "latest_observation_age_s": 0.049763,
+    "model_source_age_s": 1.346931,
+    "trial_phase": "DECIDED",
+    "failure_reason": null
+  },
+  "resolved_elapsed_s": 2.4370926250703633,
+  "stop_elapsed_s": 2.4370926250703633,
+  "frames_ingested": 25,
+  "ready_frames": 14,
+  "readiness_counts": {
+    "NO_VISIBLE_PERSON": 11,
+    "READY": 14
+  },
+  "recording_exhausted": false,
+  "last_ingested_source_offset_s": 2.387331,
+  "last_ingested_line": 51,
+  "decision_source_offset_s": 1.090163,
+  "motion_start_monotonic_us": 2291237477,
+  "perception_origin_monotonic_us": 2291321222,
+  "decision_source_since_motion_s": 1.173908,
+  "max_dispatch_lag_s": 0.010564500465989113,
+  "model_failures": [],
+  "first_model_request": {
+    "decision": null,
+    "error": null,
+    "policy": "llm",
+    "request_id": "a19d7a5994e34fa584cbca0800e3e210",
+    "session_id": "replay-246b41a68d212a1d60d24467",
+    "source_robot_timestamp_us": 2292411385,
+    "source_state_id": "replay-246b41a68d212a1d60d24467:12",
+    "status": "pending",
+    "trial_id": "aa7e5f3e220e4666bf433b32ab7bcce8"
+  },
+  "resolved_output": {
+    "decision": {
+      "action": "CONTINUE",
+      "reason": "No people observed and robot is moving."
+    },
+    "error": null,
+    "policy": "llm",
+    "request_id": "a19d7a5994e34fa584cbca0800e3e210",
+    "session_id": "replay-246b41a68d212a1d60d24467",
+    "source_robot_timestamp_us": 2292411385,
+    "source_state_id": "replay-246b41a68d212a1d60d24467:12",
+    "status": "succeeded",
+    "trial_id": "aa7e5f3e220e4666bf433b32ab7bcce8",
+    "completed_at": "2026-10-12T21:42:10.942733+00:00",
+    "error_stage": null,
+    "ok": true,
+    "ollama_configuration": {
+      "base_url": "http://127.0.0.1:11434",
+      "generation_options": {
+        "num_ctx": 2048,
+        "num_predict": 192,
+        "seed": 42,
+        "temperature": 0.0
+      },
+      "model": "qwen2.5:7b",
+      "num_ctx": 2048,
+      "num_predict": 192,
+      "seed": 42,
+      "temperature": 0.0,
+      "timeout_seconds": 120.0
+    },
+    "prompt_version": "decision-state-llm-v16",
+    "raw_content": "{\"action\":\"CONTINUE\",\"reason\":\"No people observed and robot is moving.\"}",
+    "request_duration_s": 1.3165023331530392,
+    "requested_model": "qwen2.5:7b",
+    "returned_model": "qwen2.5:7b",
+    "delivery_status": "succeeded",
+    "delivery_error": null
+  },
+  "last_readiness": {
+    "reason_code": null,
+    "status": "READY"
+  },
+  "source_sha256": "240fff11df215f5bb491c93db59827a6b4dc507f7981e870a2abc77cd2b6d12f",
+  "trial_id": "aa7e5f3e220e4666bf433b32ab7bcce8",
+  "clock_mapping": "original first perception receipt + real elapsed replay time",
+  "physical_execution": false
+}

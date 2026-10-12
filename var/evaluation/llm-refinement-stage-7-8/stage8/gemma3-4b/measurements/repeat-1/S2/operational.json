@@ -1,0 +1,55 @@
+{
+  "scenario_id": "S2",
+  "first_source_state_id": "replay-bd5e83b6a4070146c505ec1e:12",
+  "first_state_sha256": "687334ab20a9c016cd85baa86977ea1a1f979bf14e94808aab9a10b80044e6a9",
+  "expected_actions": [
+    "APPROACH"
+  ],
+  "first_decision": {
+    "action": "CONTINUE",
+    "reason": "The person is observed with sustained gaze and decreasing distance, but remains outside interaction range."
+  },
+  "first_output_valid": true,
+  "action_aligned": false,
+  "first_eligible_since_motion_s": 1.10407,
+  "output_since_motion_s": 4.739309166799783,
+  "first_request_observed_elapsed_s": 1.084468166809529,
+  "first_client_finished_elapsed_s": 4.680823582690209,
+  "first_eligible_to_validated_client_output_s": 3.608858582690209,
+  "accepted_by_live_client": true,
+  "acceptance_details": {
+    "current_readiness": true,
+    "latest_observation_age_s": 0.032776,
+    "model_source_age_s": 3.63524,
+    "trial_phase": "DECIDED",
+    "failure_reason": null
+  },
+  "delivery_status": "succeeded",
+  "delivery_error": null,
+  "total_calls": 1,
+  "runner_status": "ACTION_RESOLVED",
+  "timing": {
+    "total_duration_s": 3.564815167,
+    "load_duration_s": 0.003598875,
+    "prompt_eval_duration_s": 2.673544,
+    "eval_duration_s": 0.867419,
+    "prompt_tokens": 983,
+    "cached_prompt_tokens": 0,
+    "output_tokens": 27,
+    "request_bytes": 5287,
+    "request_preparation_s": 0.00023116590455174446,
+    "response_validation_s": 6.433296948671341e-05,
+    "transport_duration_s": 3.566926166880876,
+    "transport_minus_native_total_s": 0.00211099988087593,
+    "native_unattributed_s": 0.02025329199999959,
+    "eligible_to_observed_output_s": 3.6352391667997836,
+    "eligible_to_client_call_s": 0.04163691693529481,
+    "client_finished_to_observed_output_s": 0.026380584109574556
+  },
+  "first_error": null,
+  "repetition": 1,
+  "eligible_to_first_completion_s": 3.608858582690209,
+  "first_done_reason": "stop",
+  "prompt_tokens": 983,
+  "output_tokens": 27
+}

@@ -1,0 +1,32 @@
+[
+  {
+    "source_state_id": null,
+    "source_robot_timestamp_us": null,
+    "state_sha256": "32c15c47cd8540d1c653f7ebf45fd9248ecb5862303563ef96d11935eb54256c",
+    "request_sha256": "f1ebbaf281e4930c3d9d4e4d6fdc9aca6eb1c7ff3da3a811dcafdbd20c45f5aa",
+    "request_bytes": 5359,
+    "input_characters": 4661,
+    "chat_start_elapsed_s": null,
+    "chat_end_elapsed_s": null,
+    "client_call_duration_s": 2.5649516247212887,
+    "request_preparation_s": 0.00036633294075727463,
+    "transport_duration_s": 2.564478541724384,
+    "response_validation_s": 0.00010675005614757538,
+    "ollama_metrics": {
+      "total_duration": 2563691792,
+      "load_duration": 602083,
+      "prompt_eval_count": 930,
+      "prompt_eval_cached_count": 634,
+      "prompt_eval_duration": 1604515000,
+      "eval_count": 19,
+      "eval_duration": 954104000
+    },
+    "request_duration_s": 2.5644810418598354,
+    "ok": true,
+    "decision": {
+      "action": "CONTINUE",
+      "reason": "Low looking and no sustained gaze justify continuing."
+    },
+    "error": null
+  }
+]

@@ -1,0 +1,32 @@
+[
+  {
+    "source_state_id": null,
+    "source_robot_timestamp_us": null,
+    "state_sha256": "7f5d15972d9822eaba243ac102c2243102fce3bd38e8eb352d7615d5b6b7c95b",
+    "request_sha256": "72d8ddf5df39903332a8b954acf51cd77b839f5c967616c34a837ba7bd7c204b",
+    "request_bytes": 5260,
+    "input_characters": 4563,
+    "chat_start_elapsed_s": null,
+    "chat_end_elapsed_s": null,
+    "client_call_duration_s": 3.175853833090514,
+    "request_preparation_s": 0.0003487500362098217,
+    "transport_duration_s": 3.1754207080230117,
+    "response_validation_s": 8.437503129243851e-05,
+    "ollama_metrics": {
+      "total_duration": 3174458625,
+      "load_duration": 1165000,
+      "prompt_eval_count": 910,
+      "prompt_eval_cached_count": 619,
+      "prompt_eval_duration": 1776593000,
+      "eval_count": 27,
+      "eval_duration": 1391144000
+    },
+    "request_duration_s": 3.1754247089847922,
+    "ok": true,
+    "decision": {
+      "action": "CONTINUE",
+      "reason": "Person within interaction range but not looking at the robot."
+    },
+    "error": null
+  }
+]

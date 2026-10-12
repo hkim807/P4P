@@ -1,0 +1,32 @@
+[
+  {
+    "source_state_id": null,
+    "source_robot_timestamp_us": null,
+    "state_sha256": "7f5d15972d9822eaba243ac102c2243102fce3bd38e8eb352d7615d5b6b7c95b",
+    "request_sha256": "a6d821265607bf1feac185dfcefb4346c2d4f2a53174a10267cd99c830937733",
+    "request_bytes": 4774,
+    "input_characters": 4078,
+    "chat_start_elapsed_s": null,
+    "chat_end_elapsed_s": null,
+    "client_call_duration_s": 3.0790461250580847,
+    "request_preparation_s": 0.0008150003850460052,
+    "transport_duration_s": 3.0776200839318335,
+    "response_validation_s": 0.0006110407412052155,
+    "ollama_metrics": {
+      "total_duration": 3075244167,
+      "load_duration": 1066500,
+      "prompt_eval_count": 835,
+      "prompt_eval_cached_count": 544,
+      "prompt_eval_duration": 1739447000,
+      "eval_count": 22,
+      "eval_duration": 1323298000
+    },
+    "request_duration_s": 3.0776382917538285,
+    "ok": true,
+    "decision": {
+      "action": "APPROACH",
+      "reason": "Person within interaction range, intermittent looking suggests potential interest."
+    },
+    "error": null
+  }
+]

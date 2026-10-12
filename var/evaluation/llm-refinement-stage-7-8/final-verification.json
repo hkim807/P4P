@@ -1,0 +1,22 @@
+{
+  "decision_calls": 252,
+  "valid_decision_calls": 252,
+  "raw_transport_requests_verified": 252,
+  "operational_first_trials": 162,
+  "later_diagnostics": 54,
+  "direct_setting_screens": 36,
+  "completed_operational_arms": 6,
+  "all_source_hashes_unchanged": true,
+  "historical_artifact_seals_verified": true,
+  "frames_rule_and_readiness_unchanged": 574,
+  "eligible_frames": 402,
+  "new_focused_tests": 6,
+  "focused_passed": true,
+  "full_test_methods": 679,
+  "known_failure_subcases": 4,
+  "known_failure_method": "test_vlm_policy.VLMPromptTests.test_task_context_and_definitions_match_llm_verbatim",
+  "new_test_failures": 0,
+  "full_test_errors": 0,
+  "physical_execution": false,
+  "production_changes": "None; selected state, prompt, model and inference settings retained."
+}

@@ -1,0 +1,11 @@
+{
+  "no_person_observed_s": 1.090163,
+  "observation_readiness": "READY",
+  "people": [],
+  "readiness_reason": "OBSERVATIONS_AVAILABLE",
+  "robot": {
+    "motion_description": "Measured robot motion exceeds stationary tolerances; it may be translating or turning.",
+    "motion_state": "MOVING"
+  },
+  "schema_version": 2
+}

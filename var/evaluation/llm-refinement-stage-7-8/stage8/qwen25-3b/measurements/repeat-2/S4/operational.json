@@ -1,0 +1,55 @@
+{
+  "scenario_id": "S4",
+  "first_source_state_id": "replay-6c13d1e775b7489493285686:12",
+  "first_state_sha256": "55d85de4becba11f9c56b316bab500930488cee72771a0dc3b67fc62d27370d4",
+  "expected_actions": [
+    "YIELD"
+  ],
+  "first_decision": {
+    "action": "YIELD",
+    "reason": "Person is looking away and robot-person distance is decreasing, suggesting obstruction without clear interest or permission."
+  },
+  "first_output_valid": true,
+  "action_aligned": true,
+  "first_eligible_since_motion_s": 1.102457,
+  "output_since_motion_s": 3.325582791871995,
+  "first_request_observed_elapsed_s": 1.0896113747730851,
+  "first_client_finished_elapsed_s": 3.303057833109051,
+  "first_eligible_to_validated_client_output_s": 2.217227833109051,
+  "accepted_by_live_client": true,
+  "acceptance_details": {
+    "current_readiness": true,
+    "latest_observation_age_s": 0.033662,
+    "model_source_age_s": 2.223128,
+    "trial_phase": "DECIDED",
+    "failure_reason": null
+  },
+  "delivery_status": "succeeded",
+  "delivery_error": null,
+  "total_calls": 1,
+  "runner_status": "ACTION_RESOLVED",
+  "timing": {
+    "total_duration_s": 2.192102042,
+    "load_duration_s": 0.001803709,
+    "prompt_eval_duration_s": 0.846574,
+    "eval_duration_s": 1.325756,
+    "prompt_tokens": 927,
+    "cached_prompt_tokens": 601,
+    "output_tokens": 35,
+    "request_bytes": 5283,
+    "request_preparation_s": 0.0002827499993145466,
+    "response_validation_s": 6.404099985957146e-05,
+    "transport_duration_s": 2.1931008342653513,
+    "transport_minus_native_total_s": 0.000998792265351156,
+    "native_unattributed_s": 0.017968333000000225,
+    "eligible_to_observed_output_s": 2.2231257918719947,
+    "eligible_to_client_call_s": 0.023780207844525503,
+    "client_finished_to_observed_output_s": 0.005897958762943745
+  },
+  "first_error": null,
+  "repetition": 2,
+  "eligible_to_first_completion_s": 2.217227833109051,
+  "first_done_reason": "stop",
+  "prompt_tokens": 927,
+  "output_tokens": 35
+}

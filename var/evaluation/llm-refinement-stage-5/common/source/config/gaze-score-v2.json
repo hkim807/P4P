@@ -1,0 +1,261 @@
+{
+  "model_version": 2,
+  "feature_version": 1,
+  "model_type": "quadratic_pose_gaze_logistic",
+  "feature_names": [
+    "gaze_xz_deg",
+    "gaze_elevation_deg",
+    "head_x_raw",
+    "head_y_raw",
+    "head_z_raw"
+  ],
+  "basis": "linear_then_squares_then_i_lt_j_products",
+  "probability_calibrated": false,
+  "means": [
+    -5.319298374198035,
+    1.9565899756311855,
+    -0.23680641968749647,
+    0.06761983941524544,
+    -0.2466056858320662
+  ],
+  "scales": [
+    9.393080117250225,
+    3.6427917786961723,
+    0.0993434359022652,
+    0.1754937957283754,
+    0.16329951220884942
+  ],
+  "weights": [
+    0.026329031462574336,
+    -0.31869819463632804,
+    0.11766027423994099,
+    -0.11108498828060452,
+    0.10661509128949449,
+    -0.45519172141779596,
+    -0.23311062206729913,
+    0.16304024818418572,
+    0.4434722540042688,
+    0.296532629642813,
+    0.436944898480957,
+    -0.18763700288093843,
+    -0.02636360319277468,
+    -0.11296761483862745,
+    0.6347324421687102,
+    -0.36371903114619264,
+    -0.16394084096392475,
+    -0.12373433807690438,
+    0.28905814180168965,
+    0.35462194404235786
+  ],
+  "intercept": -0.1877446371331573,
+  "feature_config": {
+    "reference_direction": [
+      0.0,
+      0.0,
+      -1.0
+    ],
+    "zero_epsilon": 1e-08,
+    "window_s": 0.3,
+    "max_gap_s": 0.5
+  },
+  "away_max": 0.3,
+  "direct_min": 0.7,
+  "training": {
+    "fit": {
+      "iterations": 2334,
+      "max_gradient": 9.99469918671082e-07,
+      "converged": true,
+      "usable_samples": 977,
+      "class_counts": {
+        "1": 392,
+        "0": 585
+      },
+      "slope_l2": 0.05,
+      "weighting": "equal recording, equal class within recording, equal phase within class"
+    },
+    "independently_validated": false,
+    "boundary_exclusion_s": 0.3,
+    "recordings": [
+      {
+        "name": "calibration_1",
+        "source_sha256": "f77d6fd7d8feea74074a3726edd3cb423e7fcd5b9172214b84047dff1871c52c",
+        "labels": {
+          "label_version": 1,
+          "source_sha256": "f77d6fd7d8feea74074a3726edd3cb423e7fcd5b9172214b84047dff1871c52c",
+          "session_id": "06cad32ab19d426ca73f8ce75a4b964a",
+          "label_origin": "Provisional: early intervals follow the user-reported eight-second schedule beginning at first visibility (38.591s), with margins removed. Final direct is inferred from the reported last action and the final stable segment. No independent cue timestamps.",
+          "notes": "All intervals have uncertain timing. Do not interpret performance as validated accuracy. Exclude 94-153s: the later head-action timing is incompatible with the stated consecutive eight-second schedule and cannot be assigned reliably. No labels are assigned to other IDs or transition frames.",
+          "intervals": [
+            {
+              "name": "initial_direct",
+              "start_s": 40,
+              "end_s": 45,
+              "uid": 1783940805,
+              "target": "DIRECT",
+              "split": "train"
+            },
+            {
+              "name": "eyes_slightly_left",
+              "start_s": 48,
+              "end_s": 53,
+              "uid": 1783940805,
+              "target": "AWAY",
+              "split": "train"
+            },
+            {
+              "name": "eyes_slightly_right",
+              "start_s": 56,
+              "end_s": 61,
+              "uid": 1783940805,
+              "target": "AWAY",
+              "split": "train"
+            },
+            {
+              "name": "eyes_down",
+              "start_s": 64,
+              "end_s": 69,
+              "uid": 1783940805,
+              "target": "AWAY",
+              "split": "train"
+            },
+            {
+              "name": "eyes_up",
+              "start_s": 72,
+              "end_s": 77,
+              "uid": 1783940805,
+              "target": "AWAY",
+              "split": "train"
+            },
+            {
+              "name": "eyes_far_left",
+              "start_s": 80,
+              "end_s": 85,
+              "uid": 1783940805,
+              "target": "AWAY",
+              "split": "train"
+            },
+            {
+              "name": "eyes_far_right",
+              "start_s": 88,
+              "end_s": 93,
+              "uid": 1783940805,
+              "target": "AWAY",
+              "split": "train"
+            },
+            {
+              "name": "final_direct",
+              "start_s": 154,
+              "end_s": 161,
+              "uid": 1783940805,
+              "target": "DIRECT",
+              "split": "train"
+            }
+          ]
+        }
+      },
+      {
+        "name": "calibration_2",
+        "source_sha256": "f808e02fb71c040779297a42f1b583849acc74cc2a348790cf0eadb5894cbd26",
+        "labels": {
+          "label_version": 1,
+          "source_sha256": "f808e02fb71c040779297a42f1b583849acc74cc2a348790cf0eadb5894cbd26",
+          "session_id": "cf56291137a9444ca244d97b899e697c",
+          "label_origin": "Provisional settled intervals from the user's ordered actions and inspection of these same signals. User confirms brief neutral resets and starting the first hold when seated in view. No independently logged cue times.",
+          "notes": "Uses the settled intervals inspected before retraining, not intervals selected by the new model's scores. Initial visible settling and brief neutral resets are excluded. The head-and-eyes-left interval uses only the late established turn (61-64s). Direction plus head pose features are being developed using this recording, so cross-recording tests remain exploratory.",
+          "intervals": [
+            {
+              "name": "initial_direct",
+              "start_s": 16,
+              "end_s": 21,
+              "uid": 1783940805,
+              "target": "DIRECT",
+              "split": "train"
+            },
+            {
+              "name": "eyes_left",
+              "start_s": 25,
+              "end_s": 31,
+              "uid": 1783940805,
+              "target": "AWAY",
+              "split": "train"
+            },
+            {
+              "name": "eyes_right",
+              "start_s": 33,
+              "end_s": 39,
+              "uid": 1783940805,
+              "target": "AWAY",
+              "split": "train"
+            },
+            {
+              "name": "eyes_up",
+              "start_s": 41,
+              "end_s": 47,
+              "uid": 1783940805,
+              "target": "AWAY",
+              "split": "train"
+            },
+            {
+              "name": "eyes_down",
+              "start_s": 49,
+              "end_s": 55,
+              "uid": 1783940805,
+              "target": "AWAY",
+              "split": "train"
+            },
+            {
+              "name": "head_and_eyes_left",
+              "start_s": 61,
+              "end_s": 64,
+              "uid": 1783940805,
+              "target": "AWAY",
+              "split": "train"
+            },
+            {
+              "name": "head_and_eyes_right",
+              "start_s": 65,
+              "end_s": 71,
+              "uid": 1783940805,
+              "target": "AWAY",
+              "split": "train"
+            },
+            {
+              "name": "head_left_eyes_direct",
+              "start_s": 74,
+              "end_s": 79,
+              "uid": 1783940805,
+              "target": "DIRECT",
+              "split": "train"
+            },
+            {
+              "name": "head_right_eyes_direct",
+              "start_s": 81,
+              "end_s": 87,
+              "uid": 1783940805,
+              "target": "DIRECT",
+              "split": "train"
+            },
+            {
+              "name": "final_direct",
+              "start_s": 89,
+              "end_s": 103,
+              "uid": 1783940805,
+              "target": "DIRECT",
+              "split": "train"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "limitations": [
+    "Experimental alignment score, not a calibrated probability of eye contact.",
+    "Both recordings' action intervals are provisional and informed by inspection of their signals.",
+    "Later head-action intervals in calibration 1 are excluded because their timing cannot be resolved.",
+    "Cross-recording diagnostics use disjoint fitting data but are not independent validation of the feature design or labels.",
+    "The final combined model has seen both recordings; its per-phase results are fitting diagnostics.",
+    "SDK gaze/head axes and units remain unverified; learned associations are not physical coordinate compensation.",
+    "Unknown gaze or head pose remains UNKNOWN; the model never fills missing measurements with 0.5.",
+    "An unseen, independently timestamp-labelled trial is required before live policy integration."
+  ]
+}

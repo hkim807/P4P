@@ -140,7 +140,7 @@ class LiveModelRunnerTests(unittest.TestCase):
             self.assertTrue(runner.close())
         self.assertFalse(output.exists())
 
-    def test_llm_receives_full_state_and_original_diagnostics_in_background(self):
+    def test_llm_receives_compact_state_and_preserves_full_diagnostics_in_background(self):
         runner, text, _ = self.runner()
         original = state()
         expected = original.model_dump(mode="json")
@@ -153,7 +153,7 @@ class LiveModelRunnerTests(unittest.TestCase):
         self.assertEqual(row["source_robot_timestamp_us"], original.robot_timestamp_us)
         self.assertEqual(row["ingest_sequence"], original.ingest_sequence)
         self.assertEqual(text.calls[0][0].content, LLM_SYSTEM)
-        self.assertEqual(text.calls[0][1].content, SOCIAL_STATE_PREFIX + row["social_state_json"])
+        self.assertEqual(text.calls[0][1].content, SOCIAL_STATE_PREFIX + row["decision_state_json"])
         self.assertTrue(all(message.images is None for message in text.calls[0]))
         self.assertIsNot(text.threads[0], current_thread())
         inferred = row["llm_inference"]

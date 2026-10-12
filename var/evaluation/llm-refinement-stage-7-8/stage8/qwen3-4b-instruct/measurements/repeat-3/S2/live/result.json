@@ -1,0 +1,93 @@
+{
+  "scenario_id": "S2",
+  "policy": "llm",
+  "status": "ACTION_RESOLVED",
+  "action": "APPROACH",
+  "decision": {
+    "action": "APPROACH",
+    "reason": "A face is detected with sustained gaze and decreasing distance, indicating clear interest and approachability."
+  },
+  "accepted_by_live_client": true,
+  "acceptance_details": {
+    "current_readiness": true,
+    "latest_observation_age_s": 0.099746,
+    "model_source_age_s": 2.502832,
+    "trial_phase": "DECIDED",
+    "failure_reason": null
+  },
+  "resolved_elapsed_s": 3.5747892917133868,
+  "stop_elapsed_s": 3.5747892917133868,
+  "frames_ingested": 36,
+  "ready_frames": 25,
+  "readiness_counts": {
+    "INSUFFICIENT_GAZE_EVIDENCE": 11,
+    "READY": 25
+  },
+  "recording_exhausted": false,
+  "last_ingested_source_offset_s": 3.475051,
+  "last_ingested_line": 72,
+  "decision_source_offset_s": 1.071965,
+  "motion_start_monotonic_us": 2009906601,
+  "perception_origin_monotonic_us": 2009938706,
+  "decision_source_since_motion_s": 1.10407,
+  "max_dispatch_lag_s": 0.004037416540086269,
+  "model_failures": [],
+  "first_model_request": {
+    "decision": null,
+    "error": null,
+    "policy": "llm",
+    "request_id": "bebd69566d9848be92f58485d312e77b",
+    "session_id": "replay-bd5e83b6a4070146c505ec1e",
+    "source_robot_timestamp_us": 2011010671,
+    "source_state_id": "replay-bd5e83b6a4070146c505ec1e:12",
+    "status": "pending",
+    "trial_id": "2087f6340eb14f6e8ce8b939278a8553"
+  },
+  "resolved_output": {
+    "decision": {
+      "action": "APPROACH",
+      "reason": "A face is detected with sustained gaze and decreasing distance, indicating clear interest and approachability."
+    },
+    "error": null,
+    "policy": "llm",
+    "request_id": "bebd69566d9848be92f58485d312e77b",
+    "session_id": "replay-bd5e83b6a4070146c505ec1e",
+    "source_robot_timestamp_us": 2011010671,
+    "source_state_id": "replay-bd5e83b6a4070146c505ec1e:12",
+    "status": "succeeded",
+    "trial_id": "2087f6340eb14f6e8ce8b939278a8553",
+    "completed_at": "2026-10-12T22:00:21.412945+00:00",
+    "error_stage": null,
+    "ok": true,
+    "ollama_configuration": {
+      "base_url": "http://127.0.0.1:11434",
+      "generation_options": {
+        "num_ctx": 8192,
+        "num_predict": 192,
+        "seed": 42,
+        "temperature": 0.0
+      },
+      "model": "qwen3:4b-instruct",
+      "num_ctx": 8192,
+      "num_predict": 192,
+      "seed": 42,
+      "temperature": 0.0,
+      "timeout_seconds": 120.0
+    },
+    "prompt_version": "decision-state-llm-v16",
+    "raw_content": "{\"action\": \"APPROACH\", \"reason\": \"A face is detected with sustained gaze and decreasing distance, indicating clear interest and approachability.\"}",
+    "request_duration_s": 2.474992792122066,
+    "requested_model": "qwen3:4b-instruct",
+    "returned_model": "qwen3:4b-instruct",
+    "delivery_status": "succeeded",
+    "delivery_error": null
+  },
+  "last_readiness": {
+    "reason_code": null,
+    "status": "READY"
+  },
+  "source_sha256": "08a9f4e035e8ff1b5ca4ad5f807dd5b9a4e94bc55c916da9412365813df506bb",
+  "trial_id": "2087f6340eb14f6e8ce8b939278a8553",
+  "clock_mapping": "original first perception receipt + real elapsed replay time",
+  "physical_execution": false
+}

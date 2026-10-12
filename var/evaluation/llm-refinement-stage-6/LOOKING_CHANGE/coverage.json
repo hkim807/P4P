@@ -1,0 +1,52 @@
+{
+  "active_snapshots": {
+    "first": [
+      "S4",
+      "S6",
+      "S7"
+    ],
+    "later": [
+      "S4",
+      "S6",
+      "S8"
+    ]
+  },
+  "frames_with_summary": 138,
+  "eligible_frames_with_summary": 136,
+  "S1": {
+    "frames_with_summary": 27,
+    "eligible_frames_with_summary": 26
+  },
+  "S2": {
+    "frames_with_summary": 0,
+    "eligible_frames_with_summary": 0
+  },
+  "S3": {
+    "frames_with_summary": 0,
+    "eligible_frames_with_summary": 0
+  },
+  "S4": {
+    "frames_with_summary": 39,
+    "eligible_frames_with_summary": 39
+  },
+  "S5": {
+    "frames_with_summary": 0,
+    "eligible_frames_with_summary": 0
+  },
+  "S6": {
+    "frames_with_summary": 24,
+    "eligible_frames_with_summary": 24
+  },
+  "S7": {
+    "frames_with_summary": 19,
+    "eligible_frames_with_summary": 18
+  },
+  "S8": {
+    "frames_with_summary": 29,
+    "eligible_frames_with_summary": 29
+  },
+  "S9": {
+    "frames_with_summary": 0,
+    "eligible_frames_with_summary": 0
+  }
+}

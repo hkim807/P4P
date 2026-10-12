@@ -1,0 +1,21 @@
+{
+  "frozen_files_and_implementation_verified": true,
+  "operational_runs": 27,
+  "later_diagnostics": 9,
+  "cold_probes": 1,
+  "profiled_calls_and_request_hashes_verified": 37,
+  "paired_policy_inputs_verified": 27,
+  "rule_outputs_unchanged": true,
+  "regression_tests": {
+    "passed": 79,
+    "modules": [
+      "tests.test_llm_baseline_profile",
+      "tests.test_first_action_replay",
+      "tests.test_final_scenario_tuning",
+      "tests.test_ollama",
+      "tests.test_llm_policy",
+      "tests.test_live_models",
+      "tests.test_live_model_receiver"
+    ]
+  }
+}

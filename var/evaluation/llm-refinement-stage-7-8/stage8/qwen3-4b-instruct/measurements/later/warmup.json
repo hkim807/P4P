@@ -1,0 +1,7 @@
+{
+  "model": "qwen3:4b-instruct",
+  "created_at": "2026-10-12T22:03:40.468495Z",
+  "response": "",
+  "done": true,
+  "done_reason": "load"
+}

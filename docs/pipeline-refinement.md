@@ -1,10 +1,12 @@
 # Refined social decision pipeline
 
-The current rule policy is `social-rules-v5` and the LLM prompt is
-`social-state-llm-v10`. Both describe measured conflict, PASS priority and the
-complete closing-distance/low-gaze YIELD condition; proximity alone does not
-justify YIELD. Human motion is not estimated. Current parameters and guidance
-are documented in [the social policy](social-policy.md).
+The current rule policy is `social-rules-v7`. Unsupported measured-conflict and
+pass-gesture inputs have been removed. The nose-corridor closing/low-gaze YIELD
+condition remains; proximity alone does not justify YIELD. Human motion is not
+estimated. Current parameters and guidance are documented in
+[the social policy](social-policy.md) and
+[supported Navel cues](navel-supported-cues.md). Earlier experiments below retain
+their historical descriptions and frozen results.
 
 ## Historical refinement experiment
 

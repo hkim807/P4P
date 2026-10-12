@@ -1,0 +1,95 @@
+{
+  "scenario_id": "S7",
+  "policy": "llm",
+  "status": "ACTION_RESOLVED",
+  "action": "CONTINUE",
+  "decision": {
+    "action": "CONTINUE",
+    "reason": "Intermittent looking but no sustained gaze or closing distance."
+  },
+  "accepted_by_live_client": false,
+  "acceptance_details": {
+    "current_readiness": false,
+    "latest_observation_age_s": 0.091212,
+    "model_source_age_s": 4.320467,
+    "trial_phase": "OBSERVING",
+    "failure_reason": null
+  },
+  "resolved_elapsed_s": 5.984884208068252,
+  "stop_elapsed_s": 5.984884208068252,
+  "frames_ingested": 60,
+  "ready_frames": 21,
+  "readiness_counts": {
+    "INSUFFICIENT_GAZE_EVIDENCE": 29,
+    "NO_VISIBLE_PERSON": 9,
+    "READY": 21,
+    "DISTANCE_UNKNOWN": 1
+  },
+  "recording_exhausted": false,
+  "last_ingested_source_offset_s": 5.893673,
+  "last_ingested_line": 120,
+  "decision_source_offset_s": 1.664418,
+  "motion_start_monotonic_us": 2247095821,
+  "perception_origin_monotonic_us": 2247139027,
+  "decision_source_since_motion_s": 1.707624,
+  "max_dispatch_lag_s": 0.2175554996356368,
+  "model_failures": [],
+  "first_model_request": {
+    "decision": null,
+    "error": null,
+    "policy": "llm",
+    "request_id": "ec3199b5e5a24cccb5deaaabe5b46a8b",
+    "session_id": "replay-e25f14f5c9126f586b63f9e9",
+    "source_robot_timestamp_us": 2248803445,
+    "source_state_id": "replay-e25f14f5c9126f586b63f9e9:18",
+    "status": "pending",
+    "trial_id": "e0d2e4adaece46968aa134be86fb5fb0"
+  },
+  "resolved_output": {
+    "decision": {
+      "action": "CONTINUE",
+      "reason": "Intermittent looking but no sustained gaze or closing distance."
+    },
+    "error": null,
+    "policy": "llm",
+    "request_id": "ec3199b5e5a24cccb5deaaabe5b46a8b",
+    "session_id": "replay-e25f14f5c9126f586b63f9e9",
+    "source_robot_timestamp_us": 2248803445,
+    "source_state_id": "replay-e25f14f5c9126f586b63f9e9:18",
+    "status": "succeeded",
+    "trial_id": "e0d2e4adaece46968aa134be86fb5fb0",
+    "completed_at": "2026-10-12T21:59:57.086099+00:00",
+    "error_stage": null,
+    "ok": true,
+    "ollama_configuration": {
+      "base_url": "http://127.0.0.1:11434",
+      "generation_options": {
+        "num_ctx": 8192,
+        "num_predict": 192,
+        "seed": 42,
+        "temperature": 0.0
+      },
+      "model": "qwen2.5:7b",
+      "num_ctx": 8192,
+      "num_predict": 192,
+      "seed": 42,
+      "temperature": 0.0,
+      "timeout_seconds": 120.0
+    },
+    "prompt_version": "decision-state-llm-v16",
+    "raw_content": "{\n  \"action\": \"CONTINUE\",\n  \"reason\": \"Intermittent looking but no sustained gaze or closing distance.\"\n}",
+    "request_duration_s": 4.204305457882583,
+    "requested_model": "qwen2.5:7b",
+    "returned_model": "qwen2.5:7b",
+    "delivery_status": "succeeded",
+    "delivery_error": null
+  },
+  "last_readiness": {
+    "reason_code": "INSUFFICIENT_GAZE_EVIDENCE",
+    "status": "OBSERVING"
+  },
+  "source_sha256": "b9f1f06c611c7d01c2c225095d193118ecc029c8202ca5635a963952fe9eb405",
+  "trial_id": "e0d2e4adaece46968aa134be86fb5fb0",
+  "clock_mapping": "original first perception receipt + real elapsed replay time",
+  "physical_execution": false
+}

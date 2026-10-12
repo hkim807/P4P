@@ -1,0 +1,51 @@
+{
+  "scenario_id": "S6",
+  "first_source_state_id": "replay-c868e15ffc810edd0c196acc:12",
+  "first_state_sha256": "159a0ac453b5388f8ebd7d551a032c978d57733c4db4a97cceb72c252aad183b",
+  "expected_actions": [
+    "CONTINUE"
+  ],
+  "first_decision": {
+    "action": "YIELD",
+    "reason": "Low looking and close proximity justify yielding space."
+  },
+  "first_output_valid": true,
+  "action_aligned": false,
+  "first_eligible_since_motion_s": 1.108382,
+  "output_since_motion_s": 4.443978208185822,
+  "first_request_observed_elapsed_s": 1.071564792189747,
+  "first_client_finished_elapsed_s": 4.3898010002449155,
+  "first_eligible_to_validated_client_output_s": 3.3231480002449154,
+  "accepted_by_live_client": true,
+  "acceptance_details": {
+    "current_readiness": true,
+    "latest_observation_age_s": 0.129073,
+    "model_source_age_s": 3.335602,
+    "trial_phase": "DECIDED",
+    "failure_reason": null
+  },
+  "delivery_status": "succeeded",
+  "delivery_error": null,
+  "total_calls": 1,
+  "runner_status": "ACTION_RESOLVED",
+  "timing": {
+    "total_duration_s": 3.275863667,
+    "load_duration_s": 0.001678125,
+    "prompt_eval_duration_s": 2.018378,
+    "eval_duration_s": 1.23607,
+    "prompt_tokens": 926,
+    "cached_prompt_tokens": 595,
+    "output_tokens": 19,
+    "request_bytes": 5335,
+    "request_preparation_s": 0.0002215411514043808,
+    "response_validation_s": 0.00014566723257303238,
+    "transport_duration_s": 3.298779749777168,
+    "transport_minus_native_total_s": 0.022916082777168167,
+    "native_unattributed_s": 0.019737542000000108,
+    "eligible_to_observed_output_s": 3.3355962081858217,
+    "eligible_to_client_call_s": 0.024001042083769963,
+    "client_finished_to_observed_output_s": 0.012448207940906286
+  },
+  "first_error": null,
+  "repetition": 2
+}

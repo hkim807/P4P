@@ -1,0 +1,32 @@
+[
+  {
+    "source_state_id": "replay-6c13d1e775b7489493285686:61",
+    "source_robot_timestamp_us": 2102077205,
+    "state_sha256": "8683a1c27f5930509d69bbbfaf4a9d5b5c2e8d390800f839a5056327fbe38501",
+    "request_sha256": "6647f80898ceaed72ae0a658b6531f3bfc9fb18e4722f5f541f1194abcce44a9",
+    "request_bytes": 6842,
+    "input_characters": 5970,
+    "chat_start_elapsed_s": null,
+    "chat_end_elapsed_s": null,
+    "client_call_duration_s": 5.689572250004858,
+    "request_preparation_s": 0.00081595778465271,
+    "transport_duration_s": 5.687994167208672,
+    "response_validation_s": 0.0007621250115334988,
+    "ollama_metrics": {
+      "total_duration": 5685466333,
+      "load_duration": 1343750,
+      "prompt_eval_count": 1710,
+      "prompt_eval_cached_count": 931,
+      "prompt_eval_duration": 4588262000,
+      "eval_count": 19,
+      "eval_duration": 1072296000
+    },
+    "request_duration_s": 5.688011915888637,
+    "ok": true,
+    "decision": {
+      "action": "APPROACH",
+      "reason": "Person within conversation distance, getting closer."
+    },
+    "error": null
+  }
+]

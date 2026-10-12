@@ -1,0 +1,32 @@
+[
+  {
+    "source_state_id": null,
+    "source_robot_timestamp_us": null,
+    "state_sha256": "159a0ac453b5388f8ebd7d551a032c978d57733c4db4a97cceb72c252aad183b",
+    "request_sha256": "07929adaccd0bfe0c91bff886a82c28458b5543fb4ca889a33e44d89270f0b6e",
+    "request_bytes": 5269,
+    "input_characters": 4572,
+    "chat_start_elapsed_s": 1.1720728748477995,
+    "chat_end_elapsed_s": 4.228893333114684,
+    "client_call_duration_s": 3.056820458266884,
+    "request_preparation_s": 0.00019749999046325684,
+    "transport_duration_s": 3.0565673750825226,
+    "response_validation_s": 5.558319389820099e-05,
+    "ollama_metrics": {
+      "total_duration": 3055867084,
+      "load_duration": 2035584,
+      "prompt_eval_count": 917,
+      "prompt_eval_cached_count": 586,
+      "prompt_eval_duration": 1963181000,
+      "eval_count": 21,
+      "eval_duration": 1074984000
+    },
+    "request_duration_s": 3.0565686249174178,
+    "ok": true,
+    "decision": {
+      "action": "CONTINUE",
+      "reason": "No recent looking and low gaze fraction outside interaction range."
+    },
+    "error": null
+  }
+]

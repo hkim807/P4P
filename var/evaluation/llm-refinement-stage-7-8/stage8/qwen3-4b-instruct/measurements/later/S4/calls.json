@@ -1,0 +1,32 @@
+[
+  {
+    "source_state_id": null,
+    "source_robot_timestamp_us": null,
+    "state_sha256": "7f5d15972d9822eaba243ac102c2243102fce3bd38e8eb352d7615d5b6b7c95b",
+    "request_sha256": "d3027f304369a457f38adc714e8dc08ce297e8fd9e8e9ee15b88ffac27ca355a",
+    "request_bytes": 5267,
+    "input_characters": 4563,
+    "chat_start_elapsed_s": null,
+    "chat_end_elapsed_s": null,
+    "client_call_duration_s": 2.054950207937509,
+    "request_preparation_s": 0.00034608272835612297,
+    "transport_duration_s": 2.0545187080278993,
+    "response_validation_s": 8.541718125343323e-05,
+    "ollama_metrics": {
+      "total_duration": 2053634125,
+      "load_duration": 892500,
+      "prompt_eval_count": 910,
+      "prompt_eval_cached_count": 619,
+      "prompt_eval_duration": 946167000,
+      "eval_count": 33,
+      "eval_duration": 1088262000
+    },
+    "request_duration_s": 2.054521332960576,
+    "ok": true,
+    "decision": {
+      "action": "YIELD",
+      "reason": "A person is detected within interaction distance with decreasing separation, indicating a potential obstruction in the forward corridor."
+    },
+    "error": null
+  }
+]

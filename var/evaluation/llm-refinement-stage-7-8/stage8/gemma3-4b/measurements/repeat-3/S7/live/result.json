@@ -1,0 +1,94 @@
+{
+  "scenario_id": "S7",
+  "policy": "llm",
+  "status": "ACTION_RESOLVED",
+  "action": "CONTINUE",
+  "decision": {
+    "action": "CONTINUE",
+    "reason": "The person is within the approachable zone with intermittent looking, but distance is too great to initiate interaction."
+  },
+  "accepted_by_live_client": false,
+  "acceptance_details": {
+    "current_readiness": false,
+    "latest_observation_age_s": 0.054627,
+    "model_source_age_s": 3.388894,
+    "trial_phase": "OBSERVING",
+    "failure_reason": null
+  },
+  "resolved_elapsed_s": 5.0533044170588255,
+  "stop_elapsed_s": 5.0533044170588255,
+  "frames_ingested": 51,
+  "ready_frames": 16,
+  "readiness_counts": {
+    "INSUFFICIENT_GAZE_EVIDENCE": 27,
+    "NO_VISIBLE_PERSON": 8,
+    "READY": 16
+  },
+  "recording_exhausted": false,
+  "last_ingested_source_offset_s": 4.998685,
+  "last_ingested_line": 102,
+  "decision_source_offset_s": 1.664418,
+  "motion_start_monotonic_us": 2247095821,
+  "perception_origin_monotonic_us": 2247139027,
+  "decision_source_since_motion_s": 1.707624,
+  "max_dispatch_lag_s": 0.02207216713577509,
+  "model_failures": [],
+  "first_model_request": {
+    "decision": null,
+    "error": null,
+    "policy": "llm",
+    "request_id": "e2cfd942f3bf4724a1b1af5adc04e6b2",
+    "session_id": "replay-e25f14f5c9126f586b63f9e9",
+    "source_robot_timestamp_us": 2248803445,
+    "source_state_id": "replay-e25f14f5c9126f586b63f9e9:18",
+    "status": "pending",
+    "trial_id": "092ab5c191914d53a576fac3417bfbaf"
+  },
+  "resolved_output": {
+    "decision": {
+      "action": "CONTINUE",
+      "reason": "The person is within the approachable zone with intermittent looking, but distance is too great to initiate interaction."
+    },
+    "error": null,
+    "policy": "llm",
+    "request_id": "e2cfd942f3bf4724a1b1af5adc04e6b2",
+    "session_id": "replay-e25f14f5c9126f586b63f9e9",
+    "source_robot_timestamp_us": 2248803445,
+    "source_state_id": "replay-e25f14f5c9126f586b63f9e9:18",
+    "status": "succeeded",
+    "trial_id": "092ab5c191914d53a576fac3417bfbaf",
+    "completed_at": "2026-10-12T22:01:20.482057+00:00",
+    "error_stage": null,
+    "ok": true,
+    "ollama_configuration": {
+      "base_url": "http://127.0.0.1:11434",
+      "generation_options": {
+        "num_ctx": 8192,
+        "num_predict": 192,
+        "seed": 42,
+        "temperature": 0.0
+      },
+      "model": "gemma3:4b",
+      "num_ctx": 8192,
+      "num_predict": 192,
+      "seed": 42,
+      "temperature": 0.0,
+      "timeout_seconds": 120.0
+    },
+    "prompt_version": "decision-state-llm-v16",
+    "raw_content": "{\"action\":\"CONTINUE\",\"reason\":\"The person is within the approachable zone with intermittent looking, but distance is too great to initiate interaction.\"}",
+    "request_duration_s": 3.358840416651219,
+    "requested_model": "gemma3:4b",
+    "returned_model": "gemma3:4b",
+    "delivery_status": "succeeded",
+    "delivery_error": null
+  },
+  "last_readiness": {
+    "reason_code": "INSUFFICIENT_GAZE_EVIDENCE",
+    "status": "OBSERVING"
+  },
+  "source_sha256": "b9f1f06c611c7d01c2c225095d193118ecc029c8202ca5635a963952fe9eb405",
+  "trial_id": "092ab5c191914d53a576fac3417bfbaf",
+  "clock_mapping": "original first perception receipt + real elapsed replay time",
+  "physical_execution": false
+}

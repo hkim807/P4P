@@ -1,0 +1,32 @@
+[
+  {
+    "source_state_id": null,
+    "source_robot_timestamp_us": null,
+    "state_sha256": "32c15c47cd8540d1c653f7ebf45fd9248ecb5862303563ef96d11935eb54256c",
+    "request_sha256": "2a601a0d50516a1c61686b30c4d6de9b8ab53d83597664427f82dc39a9aaac6a",
+    "request_bytes": 5282,
+    "input_characters": 4578,
+    "chat_start_elapsed_s": 1.6867194999940693,
+    "chat_end_elapsed_s": 4.040891041979194,
+    "client_call_duration_s": 2.3541715419851243,
+    "request_preparation_s": 0.00018012477084994316,
+    "transport_duration_s": 2.353902333881706,
+    "response_validation_s": 8.908333256840706e-05,
+    "ollama_metrics": {
+      "total_duration": 2352445417,
+      "load_duration": 2084459,
+      "prompt_eval_count": 918,
+      "prompt_eval_cached_count": 622,
+      "prompt_eval_duration": 979895000,
+      "eval_count": 35,
+      "eval_duration": 1331729000
+    },
+    "request_duration_s": 2.3539036251604557,
+    "ok": true,
+    "decision": {
+      "action": "CONTINUE",
+      "reason": "Intermittent gaze and no sustained attention indicate no interest; person is beyond conversation distance and position is unknown."
+    },
+    "error": null
+  }
+]

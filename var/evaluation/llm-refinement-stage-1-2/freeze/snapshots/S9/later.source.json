@@ -1,0 +1,344 @@
+{
+  "input_path": "/Users/eddiekim/Documents/Projects/P4P/var/evaluation/final-scenarios-audit/trimmed/final_scenario_9-sdk.jsonl",
+  "input_format": "sdk",
+  "reconstructed": true,
+  "file_sha256": "56793886eec65c069a2861f87ad0f01b67dc8445d8b3dfa756a5a86c0b8c57d8",
+  "line_number": 70,
+  "record_number": 70,
+  "original_capture_session": "e1f3996f5422479b917903e2dbc0db7c",
+  "source_session_id": "e1f3996f5422479b917903e2dbc0db7c",
+  "processing_session_id": "replay-077ff210a4441c83a39ff4a6",
+  "source_record": {
+    "capture_version": 1,
+    "session_id": "e1f3996f5422479b917903e2dbc0db7c",
+    "stream": "perception",
+    "sequence": 35,
+    "received_monotonic_us": 2341464704,
+    "received_unix_us": 1791695298765560,
+    "packet": {
+      "time": 1791695298638092,
+      "persons": [
+        {
+          "id_score": 0.7622222304344177,
+          "uid": 1603742625,
+          "face": {
+            "x1": 141,
+            "y1": 317,
+            "x2": 168,
+            "y2": 349
+          },
+          "landmarks": {
+            "eye_left": {
+              "x": 152,
+              "y": 326
+            },
+            "eye_right": {
+              "x": 164,
+              "y": 329
+            },
+            "nose": {
+              "x": 158,
+              "y": 333
+            },
+            "mouth_left": {
+              "x": 150,
+              "y": 339
+            },
+            "mouth_right": {
+              "x": 160,
+              "y": 342
+            }
+          },
+          "head_position": {
+            "x": 0.28239044547080994,
+            "y": -0.1574220508337021,
+            "z": 0.30810585618019104
+          },
+          "gaze": {
+            "x": 0.16796532273292542,
+            "y": 0.011616936884820461,
+            "z": -0.9602969884872437
+          },
+          "facial_expression": {
+            "neutral": 0.5910637974739075,
+            "happy": 0.0066440957598388195,
+            "sad": 0.19369371235370636,
+            "surprise": 0.15942126512527466,
+            "anger": 0.04917711764574051
+          },
+          "dist_mm": 2090.56201171875,
+          "gaze_overlap": 0.9518958330154419,
+          "g_eye_left": [
+            {
+              "sys": "CAM_HEAD",
+              "x": 1.85668359375,
+              "y": 0.8746685180664062,
+              "z": -0.4798086547851563
+            },
+            {
+              "sys": "HEAD_STRAIGHT",
+              "x": 1.8653773193359375,
+              "y": 0.8752431640625,
+              "z": -0.02132183837890625
+            },
+            {
+              "sys": "HEAD_REAL",
+              "x": 1.8660791015625,
+              "y": 0.8736685180664062,
+              "z": -0.02428277587890625
+            },
+            {
+              "sys": "EYE_LEFT",
+              "x": 1.965771240234375,
+              "y": 0.3913447265625,
+              "z": -0.031682775497436526
+            },
+            {
+              "sys": "EYE_RIGHT",
+              "x": 1.548972900390625,
+              "y": 1.30555419921875,
+              "z": -0.031682775497436526
+            }
+          ],
+          "g_eye_right": [
+            {
+              "sys": "CAM_HEAD",
+              "x": 1.875479248046875,
+              "y": 0.82216552734375,
+              "z": -0.4956204528808594
+            },
+            {
+              "sys": "HEAD_STRAIGHT",
+              "x": 1.88778662109375,
+              "y": 0.8227576293945312,
+              "z": -0.0314678955078125
+            },
+            {
+              "sys": "HEAD_REAL",
+              "x": 1.88842724609375,
+              "y": 0.82116552734375,
+              "z": -0.0344732666015625
+            },
+            {
+              "sys": "EYE_LEFT",
+              "x": 1.97495068359375,
+              "y": 0.3350265197753906,
+              "z": -0.0418732681274414
+            },
+            {
+              "sys": "EYE_RIGHT",
+              "x": 1.5831998291015625,
+              "y": 1.2598975830078125,
+              "z": -0.0418732681274414
+            }
+          ],
+          "g_nose": [
+            {
+              "sys": "CAM_HEAD",
+              "x": 1.8606988525390624,
+              "y": 0.8486573486328125,
+              "z": -0.5165630493164063
+            },
+            {
+              "sys": "HEAD_STRAIGHT",
+              "x": 1.879183349609375,
+              "y": 0.8492388305664063,
+              "z": -0.055625640869140625
+            },
+            {
+              "sys": "HEAD_REAL",
+              "x": 1.879806396484375,
+              "y": 0.8476573486328125,
+              "z": -0.058613037109375
+            },
+            {
+              "sys": "EYE_LEFT",
+              "x": 1.9728978271484374,
+              "y": 0.3628099975585938,
+              "z": -0.0660130386352539
+            },
+            {
+              "sys": "EYE_RIGHT",
+              "x": 1.568508544921875,
+              "y": 1.283568359375,
+              "z": -0.0660130386352539
+            }
+          ],
+          "g_head_position": null,
+          "g_gaze": [
+            {
+              "sys": "CAM_HEAD",
+              "x": -0.0007984884381294251,
+              "y": -0.0005522861480712891,
+              "z": 0.00023957507312297822
+            },
+            {
+              "sys": "HEAD_STRAIGHT",
+              "x": -0.0008330482244491577,
+              "y": -0.0005529886484146119,
+              "z": 1.5302807092666625e-05
+            },
+            {
+              "sys": "HEAD_REAL",
+              "x": -0.0008334892392158509,
+              "y": -0.0005522861480712891,
+              "z": 1.6602233052253722e-05
+            },
+            {
+              "sys": "EYE_LEFT",
+              "x": -0.0009411687254905701,
+              "y": -0.00033752897381782534,
+              "z": 1.6602233052253722e-05
+            },
+            {
+              "sys": "EYE_RIGHT",
+              "x": -0.0006776912808418273,
+              "y": -0.0007351591587066651,
+              "z": 1.6602233052253722e-05
+            }
+          ]
+        }
+      ],
+      "sst_time_latest": 1791695298739382,
+      "sst_tracks_latest": [
+        {
+          "id": 1,
+          "activity": 0.0,
+          "loc": {
+            "sys": "HEAD_STRAIGHT",
+            "x": 1.8751953125,
+            "y": -0.0016341865062713622,
+            "z": 0.4773282165527344
+          },
+          "is_dynamic": false
+        },
+        {
+          "id": 0,
+          "activity": 0.0,
+          "loc": {
+            "sys": "HEAD_STRAIGHT",
+            "x": -0.05123473739624024,
+            "y": -0.0009879528880119323,
+            "z": -0.06013526153564453
+          },
+          "is_dynamic": false
+        },
+        {
+          "id": 0,
+          "activity": 0.0,
+          "loc": {
+            "sys": "HEAD_STRAIGHT",
+            "x": -0.05123473739624024,
+            "y": -0.0009879528880119323,
+            "z": -0.06013526153564453
+          },
+          "is_dynamic": false
+        },
+        {
+          "id": 0,
+          "activity": 0.0,
+          "loc": {
+            "sys": "HEAD_STRAIGHT",
+            "x": -0.05123473739624024,
+            "y": -0.0009879528880119323,
+            "z": -0.06013526153564453
+          },
+          "is_dynamic": false
+        }
+      ]
+    }
+  },
+  "timestamps": {
+    "estimation_timestamp_us": 2341464704,
+    "estimation_clock": "robot-host monotonic microseconds",
+    "estimation_origin": "SDK perception received_monotonic_us, used as reconstructed collection time",
+    "received_monotonic_us": 2341464704,
+    "received_unix_us": 1791695298765560,
+    "received_unix_clock": "capture-host Unix UTC microseconds at receipt; not used for estimation",
+    "sdk_perception_timestamp": 1791695298638092,
+    "sdk_perception_clock": "SDK PerceptionData.time; units and clock mapping unverified; not used for estimation"
+  },
+  "locomotion": {
+    "status": "used",
+    "age_s": 0.030567,
+    "line_number": 69,
+    "record_number": 69,
+    "source_record": {
+      "capture_version": 1,
+      "session_id": "e1f3996f5422479b917903e2dbc0db7c",
+      "stream": "locomotion",
+      "sequence": 35,
+      "received_monotonic_us": 2341434137,
+      "received_unix_us": 1791695298734994,
+      "packet": {
+        "odometry": {
+          "time": 1791695298703643,
+          "position": {
+            "x": 17.455712,
+            "y": 4.121039,
+            "z": 0.0
+          },
+          "orientation": {
+            "x": 0.13706119778736298,
+            "y": 0.9905625815974947,
+            "z": 0.0,
+            "w": 0.0
+          },
+          "velocity": {
+            "linear_x": 0.096,
+            "linear_y": 0.032,
+            "linear_z": 0.0,
+            "angular_x": 0.0,
+            "angular_y": 0.0,
+            "angular_z": 0.0
+          }
+        },
+        "distances": {
+          "SONAR": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "LIDAR": [
+            0.461,
+            0.43
+          ]
+        }
+      }
+    },
+    "sdk_odometry_timestamp": 1791695298703643,
+    "sdk_odometry_clock": "SDK Odometry.time; units and clock mapping unverified"
+  },
+  "reconstructed_raw_observation": {
+    "timestamp": 2341464704,
+    "people": [
+      {
+        "uid": 1603742625,
+        "distance_m": 2.09056201171875,
+        "gaze_overlap": 0.9518958330154419,
+        "face_detected": true,
+        "optional_relative_nose_position": {
+          "coordinate_frame": "CAM_HEAD",
+          "x": 1.8606988525390624,
+          "y": 0.8486573486328125,
+          "z": -0.5165630493164063
+        }
+      }
+    ],
+    "robot": {
+      "linear_velocity": 0.096,
+      "angular_velocity": 0.0
+    },
+    "safety": {
+      "lidar": [
+        0.461,
+        0.43
+      ],
+      "sonar": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    }
+  }
+}

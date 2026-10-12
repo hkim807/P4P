@@ -1,0 +1,150 @@
+{
+  "input_path": "/Users/eddiekim/Documents/Projects/P4P/var/evaluation/final-scenarios-audit/trimmed/final_scenario_8-sdk.jsonl",
+  "input_format": "sdk",
+  "reconstructed": true,
+  "file_sha256": "240fff11df215f5bb491c93db59827a6b4dc507f7981e870a2abc77cd2b6d12f",
+  "line_number": 25,
+  "record_number": 25,
+  "original_capture_session": "c0ccd1be0e724eb6ab9e5bee0e3300e4",
+  "source_session_id": "c0ccd1be0e724eb6ab9e5bee0e3300e4",
+  "processing_session_id": "replay-246b41a68d212a1d60d24467",
+  "source_record": {
+    "capture_version": 1,
+    "session_id": "c0ccd1be0e724eb6ab9e5bee0e3300e4",
+    "stream": "perception",
+    "sequence": 12,
+    "received_monotonic_us": 2292411385,
+    "received_unix_us": 1791695249712241,
+    "packet": {
+      "time": 1791695249580604,
+      "persons": [],
+      "sst_time_latest": 1791695249677353,
+      "sst_tracks_latest": [
+        {
+          "id": 1,
+          "activity": 1.1256391940674315e-23,
+          "loc": {
+            "sys": "HEAD_STRAIGHT",
+            "x": 1.87701171875,
+            "y": -0.0018884460926055907,
+            "z": 0.47013385009765624
+          },
+          "is_dynamic": false
+        },
+        {
+          "id": 0,
+          "activity": 0.0,
+          "loc": {
+            "sys": "HEAD_STRAIGHT",
+            "x": -0.051465240478515625,
+            "y": -0.00100344455242157,
+            "z": -0.05993785095214844
+          },
+          "is_dynamic": false
+        },
+        {
+          "id": 0,
+          "activity": 0.0,
+          "loc": {
+            "sys": "HEAD_STRAIGHT",
+            "x": -0.051465240478515625,
+            "y": -0.00100344455242157,
+            "z": -0.05993785095214844
+          },
+          "is_dynamic": false
+        },
+        {
+          "id": 0,
+          "activity": 0.0,
+          "loc": {
+            "sys": "HEAD_STRAIGHT",
+            "x": -0.051465240478515625,
+            "y": -0.00100344455242157,
+            "z": -0.05993785095214844
+          },
+          "is_dynamic": false
+        }
+      ]
+    }
+  },
+  "timestamps": {
+    "estimation_timestamp_us": 2292411385,
+    "estimation_clock": "robot-host monotonic microseconds",
+    "estimation_origin": "SDK perception received_monotonic_us, used as reconstructed collection time",
+    "received_monotonic_us": 2292411385,
+    "received_unix_us": 1791695249712241,
+    "received_unix_clock": "capture-host Unix UTC microseconds at receipt; not used for estimation",
+    "sdk_perception_timestamp": 1791695249580604,
+    "sdk_perception_clock": "SDK PerceptionData.time; units and clock mapping unverified; not used for estimation"
+  },
+  "locomotion": {
+    "status": "used",
+    "age_s": 0.000532,
+    "line_number": 24,
+    "record_number": 24,
+    "source_record": {
+      "capture_version": 1,
+      "session_id": "c0ccd1be0e724eb6ab9e5bee0e3300e4",
+      "stream": "locomotion",
+      "sequence": 13,
+      "received_monotonic_us": 2292410853,
+      "received_unix_us": 1791695249711710,
+      "packet": {
+        "odometry": {
+          "time": 1791695249696715,
+          "position": {
+            "x": 16.625534,
+            "y": 3.888238,
+            "z": 0.0
+          },
+          "orientation": {
+            "x": 0.13576146208843703,
+            "y": 0.9907415532880459,
+            "z": 0.0,
+            "w": 0.0
+          },
+          "velocity": {
+            "linear_x": 0.096,
+            "linear_y": -0.032,
+            "linear_z": 0.0,
+            "angular_x": 0.0,
+            "angular_y": 0.0,
+            "angular_z": 0.0
+          }
+        },
+        "distances": {
+          "SONAR": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "LIDAR": [
+            0.452,
+            0.433
+          ]
+        }
+      }
+    },
+    "sdk_odometry_timestamp": 1791695249696715,
+    "sdk_odometry_clock": "SDK Odometry.time; units and clock mapping unverified"
+  },
+  "reconstructed_raw_observation": {
+    "timestamp": 2292411385,
+    "people": [],
+    "robot": {
+      "linear_velocity": 0.096,
+      "angular_velocity": 0.0
+    },
+    "safety": {
+      "lidar": [
+        0.452,
+        0.433
+      ],
+      "sonar": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    }
+  }
+}

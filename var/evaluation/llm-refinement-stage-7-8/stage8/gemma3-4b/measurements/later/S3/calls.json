@@ -1,0 +1,32 @@
+[
+  {
+    "source_state_id": null,
+    "source_robot_timestamp_us": null,
+    "state_sha256": "fadb65bb2cc2404e219331ec14a8a744b6b2de8b324f07838f805c60475f02c2",
+    "request_sha256": "fd908e553e1d1bc1bfce97c2424b6f6bfe260a34a163ac1ee5b1d68e264dadd5",
+    "request_bytes": 5278,
+    "input_characters": 4582,
+    "chat_start_elapsed_s": null,
+    "chat_end_elapsed_s": null,
+    "client_call_duration_s": 2.4011039999313653,
+    "request_preparation_s": 0.00033954065293073654,
+    "transport_duration_s": 2.4006530423648655,
+    "response_validation_s": 0.00011141691356897354,
+    "ollama_metrics": {
+      "total_duration": 2399661208,
+      "load_duration": 1473333,
+      "prompt_eval_count": 983,
+      "prompt_eval_cached_count": 494,
+      "prompt_eval_duration": 1414910000,
+      "eval_count": 30,
+      "eval_duration": 974974000
+    },
+    "request_duration_s": 2.400655667297542,
+    "ok": true,
+    "decision": {
+      "action": "CONTINUE",
+      "reason": "The robot is within interaction range with sustained gaze, but steady separation indicates no immediate need to yield."
+    },
+    "error": null
+  }
+]

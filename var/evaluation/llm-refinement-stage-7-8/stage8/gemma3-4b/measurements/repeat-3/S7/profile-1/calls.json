@@ -1,0 +1,32 @@
+[
+  {
+    "source_state_id": null,
+    "source_robot_timestamp_us": null,
+    "state_sha256": "32c15c47cd8540d1c653f7ebf45fd9248ecb5862303563ef96d11935eb54256c",
+    "request_sha256": "a6e0245577bed1069715fad4620030f889f91e1b9fcb1e63a143ea83f8eb60bf",
+    "request_bytes": 5274,
+    "input_characters": 4578,
+    "chat_start_elapsed_s": 1.6841389168985188,
+    "chat_end_elapsed_s": 5.043253667186946,
+    "client_call_duration_s": 3.359114750288427,
+    "request_preparation_s": 0.00019120797514915466,
+    "transport_duration_s": 3.358835957944393,
+    "response_validation_s": 8.758436888456345e-05,
+    "ollama_metrics": {
+      "total_duration": 3357432917,
+      "load_duration": 2750667,
+      "prompt_eval_count": 985,
+      "prompt_eval_cached_count": 479,
+      "prompt_eval_duration": 1796244000,
+      "eval_count": 30,
+      "eval_duration": 1536883000
+    },
+    "request_duration_s": 3.358840416651219,
+    "ok": true,
+    "decision": {
+      "action": "CONTINUE",
+      "reason": "The person is within the approachable zone with intermittent looking, but distance is too great to initiate interaction."
+    },
+    "error": null
+  }
+]

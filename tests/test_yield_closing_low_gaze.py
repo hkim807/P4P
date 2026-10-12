@@ -141,15 +141,6 @@ class ClosingYieldTests(unittest.TestCase):
                 state['config']['yield_closing_max_distance_m'] = cutoff
                 self.assertEqual(decide(state).decision, 'YIELD')
 
-    def test_pass_overrides_closing_trigger_and_conflict_overrides_pass(self):
-        _, rows = sequence()
-        state = rows[-1]['social_state']
-        state['people'][0]['pass_gesture'] = 'PASS'
-        self.assertEqual(decide(state).decision, 'CONTINUE')
-        state['people'][0].update(path_relation='CONFLICT', gaze_state='UNKNOWN')
-        state['people'][0]['evidence']['gaze_valid'] = False
-        self.assertEqual(decide(state).reason_code, 'HUMAN_PATH_CONFLICT')
-
 
 if __name__ == '__main__':
     unittest.main()

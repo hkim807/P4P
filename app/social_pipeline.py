@@ -8,6 +8,7 @@ from app.policy.target_lock import LockConfig, TargetLockController
 from app.state.estimator import SocialStateEstimator
 from app.state.social_models import TemporalConfig
 from app.state.tracks import TrackConfig
+from app.state.decision_models import prepare_decision_input
 
 
 class SocialPipeline:
@@ -43,10 +44,11 @@ class SocialPipeline:
                 except Exception as error:
                     raise TrackingProcessingError("social_trace_write") from error
             try:
-                hold_reason = rule_readiness(state)
+                decision_input = prepare_decision_input(state)
+                hold_reason = rule_readiness(decision_input)
                 readiness = {"status": "OBSERVING" if hold_reason else "READY",
                              "reason_code": hold_reason}
-                proposal = decide(state).model_dump(mode="json") if hold_reason is None else None
+                proposal = decide(decision_input).model_dump(mode="json") if hold_reason is None else None
                 final_decision = normalise_rule_decision(proposal) if proposal is not None else None
             except Exception as error:
                 raise TrackingProcessingError("policy_decision") from error
@@ -69,6 +71,8 @@ class SocialPipeline:
                 except Exception as error:
                     raise TrackingProcessingError("command_trace_write") from error
             return {**snapshot, "social_state": state, "policy_decision": proposal,
+                    "decision_state": decision_input.state.model_dump(mode="json"),
+                    "decision_state_sha256": decision_input.state.sha256,
                     "policy_readiness": readiness,
                     "final_decision": final_decision.model_dump(mode="json") if final_decision else None,
                     "target_lock": target_lock, "robot_command": command}

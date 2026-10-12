@@ -1,0 +1,32 @@
+[
+  {
+    "source_state_id": null,
+    "source_robot_timestamp_us": null,
+    "state_sha256": "32c15c47cd8540d1c653f7ebf45fd9248ecb5862303563ef96d11935eb54256c",
+    "request_sha256": "3a09f25d9f262476884889f6a79cd12ff680c52e30a9b52f3bf80776d67ca2a1",
+    "request_bytes": 5275,
+    "input_characters": 4578,
+    "chat_start_elapsed_s": 1.6821565413847566,
+    "chat_end_elapsed_s": 3.4308620830997825,
+    "client_call_duration_s": 1.748705541715026,
+    "request_preparation_s": 0.00020704185590147972,
+    "transport_duration_s": 1.7484395829960704,
+    "response_validation_s": 5.8916863054037094e-05,
+    "ollama_metrics": {
+      "total_duration": 1747743208,
+      "load_duration": 2038417,
+      "prompt_eval_count": 918,
+      "prompt_eval_cached_count": 622,
+      "prompt_eval_duration": 816664000,
+      "eval_count": 32,
+      "eval_duration": 919808000
+    },
+    "request_duration_s": 1.7484411248005927,
+    "ok": true,
+    "decision": {
+      "action": "YIELD",
+      "reason": "Person is within conversation distance and intermittently looking, suggesting a potential interaction request."
+    },
+    "error": null
+  }
+]

@@ -1,0 +1,26 @@
+{
+  "metrics": {
+    "control": {
+      "aligned": 8,
+      "valid": 9,
+      "median_client_s": 3.1411037500947714
+    },
+    "context-2048": {
+      "aligned": 8,
+      "valid": 9,
+      "median_client_s": 2.992252374999225
+    },
+    "output-64": {
+      "aligned": 8,
+      "valid": 9,
+      "median_client_s": 3.0577194169163704
+    },
+    "context-2048-output-64": {
+      "aligned": 8,
+      "valid": 9,
+      "median_client_s": 3.0020384583622217
+    }
+  },
+  "selected_for_operational_confirmation": "context-2048",
+  "reason": "Fastest measured median with identical actions and valid whole prompts. Retain output ceiling 192; no operational promotion from screening."
+}

@@ -1,0 +1,93 @@
+{
+  "scenario_id": "S9",
+  "policy": "llm",
+  "status": "ACTION_RESOLVED",
+  "action": "APPROACH",
+  "decision": {
+    "action": "APPROACH",
+    "reason": "Person detected at approachable distance with sustained gaze."
+  },
+  "accepted_by_live_client": true,
+  "acceptance_details": {
+    "current_readiness": true,
+    "latest_observation_age_s": 0.813197,
+    "model_source_age_s": 3.12996,
+    "trial_phase": "DECIDED",
+    "failure_reason": null
+  },
+  "resolved_elapsed_s": 4.203650165814906,
+  "stop_elapsed_s": 4.203650165814906,
+  "frames_ingested": 35,
+  "ready_frames": 24,
+  "readiness_counts": {
+    "INSUFFICIENT_GAZE_EVIDENCE": 11,
+    "READY": 24
+  },
+  "recording_exhausted": true,
+  "last_ingested_source_offset_s": 3.390455,
+  "last_ingested_line": 70,
+  "decision_source_offset_s": 1.073692,
+  "motion_start_monotonic_us": 2338007134,
+  "perception_origin_monotonic_us": 2338074249,
+  "decision_source_since_motion_s": 1.140807,
+  "max_dispatch_lag_s": 0.005283040925860405,
+  "model_failures": [],
+  "first_model_request": {
+    "decision": null,
+    "error": null,
+    "policy": "llm",
+    "request_id": "73e354ffb04d4bf9b7e6e9665c4be974",
+    "session_id": "replay-077ff210a4441c83a39ff4a6",
+    "source_robot_timestamp_us": 2339147941,
+    "source_state_id": "replay-077ff210a4441c83a39ff4a6:12",
+    "status": "pending",
+    "trial_id": "08f095df6363488eb2410089d611bf64"
+  },
+  "resolved_output": {
+    "decision": {
+      "action": "APPROACH",
+      "reason": "Person detected at approachable distance with sustained gaze."
+    },
+    "error": null,
+    "policy": "llm",
+    "request_id": "73e354ffb04d4bf9b7e6e9665c4be974",
+    "session_id": "replay-077ff210a4441c83a39ff4a6",
+    "source_robot_timestamp_us": 2339147941,
+    "source_state_id": "replay-077ff210a4441c83a39ff4a6:12",
+    "status": "succeeded",
+    "trial_id": "08f095df6363488eb2410089d611bf64",
+    "completed_at": "2026-10-12T19:22:18.125881+00:00",
+    "error_stage": null,
+    "ok": true,
+    "ollama_configuration": {
+      "base_url": "http://127.0.0.1:11434",
+      "generation_options": {
+        "num_ctx": 8192,
+        "num_predict": 192,
+        "seed": 42,
+        "temperature": 0.0
+      },
+      "model": "qwen2.5:7b",
+      "num_ctx": 8192,
+      "num_predict": 192,
+      "seed": 42,
+      "temperature": 0.0,
+      "timeout_seconds": 120.0
+    },
+    "prompt_version": "decision-state-llm-v16",
+    "raw_content": "{\"action\":\"APPROACH\",\"reason\":\"Person detected at approachable distance with sustained gaze.\"}",
+    "request_duration_s": 3.095311749726534,
+    "requested_model": "qwen2.5:7b",
+    "returned_model": "qwen2.5:7b",
+    "delivery_status": "succeeded",
+    "delivery_error": null
+  },
+  "last_readiness": {
+    "reason_code": null,
+    "status": "READY"
+  },
+  "source_sha256": "56793886eec65c069a2861f87ad0f01b67dc8445d8b3dfa756a5a86c0b8c57d8",
+  "trial_id": "08f095df6363488eb2410089d611bf64",
+  "clock_mapping": "original first perception receipt + real elapsed replay time",
+  "physical_execution": false
+}

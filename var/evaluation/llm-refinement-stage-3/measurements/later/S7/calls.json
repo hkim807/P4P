@@ -1,0 +1,32 @@
+[
+  {
+    "source_state_id": null,
+    "source_robot_timestamp_us": null,
+    "state_sha256": "1a330f2b0254e5e809d21bdbdbe847f86b275295ae23e0266f08ea832be0bfaf",
+    "request_sha256": "17c91f2d46c8210c985e8c4c0ba9266fd0d452e69fe2c74c5c5b7001efc72e68",
+    "request_bytes": 4442,
+    "input_characters": 3746,
+    "chat_start_elapsed_s": null,
+    "chat_end_elapsed_s": null,
+    "client_call_duration_s": 2.5500483331270516,
+    "request_preparation_s": 0.00037054112181067467,
+    "transport_duration_s": 2.5496255420148373,
+    "response_validation_s": 5.224999040365219e-05,
+    "ollama_metrics": {
+      "total_duration": 2548920083,
+      "load_duration": 823083,
+      "prompt_eval_count": 817,
+      "prompt_eval_cached_count": 546,
+      "prompt_eval_duration": 1463914000,
+      "eval_count": 19,
+      "eval_duration": 1077850000
+    },
+    "request_duration_s": 2.5496272910386324,
+    "ok": true,
+    "decision": {
+      "action": "ENGAGE",
+      "reason": "Intermittent looking and within conversation distance."
+    },
+    "error": null
+  }
+]

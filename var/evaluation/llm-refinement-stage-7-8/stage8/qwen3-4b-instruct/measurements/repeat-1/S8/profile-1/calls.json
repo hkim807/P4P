@@ -1,0 +1,32 @@
+[
+  {
+    "source_state_id": null,
+    "source_robot_timestamp_us": null,
+    "state_sha256": "5e5b1408334085e5e0a193e04a5c70e96b3f87ee42c4433fae095b82650d126e",
+    "request_sha256": "9ff7382ac5af7845387aa8c5a234c6d70eae2940bf9472184c090d67921db25f",
+    "request_bytes": 4161,
+    "input_characters": 3531,
+    "chat_start_elapsed_s": 1.1307422500103712,
+    "chat_end_elapsed_s": 2.200083499774337,
+    "client_call_duration_s": 1.0693412497639656,
+    "request_preparation_s": 0.00026516709476709366,
+    "transport_duration_s": 1.068962374702096,
+    "response_validation_s": 0.00011370796710252762,
+    "ollama_metrics": {
+      "total_duration": 1067766125,
+      "load_duration": 2624083,
+      "prompt_eval_count": 650,
+      "prompt_eval_cached_count": 586,
+      "prompt_eval_duration": 224480000,
+      "eval_count": 25,
+      "eval_duration": 801147000
+    },
+    "request_duration_s": 1.0689643751829863,
+    "ok": true,
+    "decision": {
+      "action": "CONTINUE",
+      "reason": "No observed people or gaze, and no interaction target detected in the environment."
+    },
+    "error": null
+  }
+]

@@ -1,0 +1,32 @@
+[
+  {
+    "source_state_id": null,
+    "source_robot_timestamp_us": null,
+    "state_sha256": "6bedc687fbd36b684b15544a5f8d2a85a201df3fac1efcabc24929e2d1d719f4",
+    "request_sha256": "ff32d1442ab27ed41c5fa09f73b5c6467f7a6ca38f714df8bcc139e8e6d36dcc",
+    "request_bytes": 5250,
+    "input_characters": 4553,
+    "chat_start_elapsed_s": null,
+    "chat_end_elapsed_s": null,
+    "client_call_duration_s": 1.6719321249984205,
+    "request_preparation_s": 0.00026408303529024124,
+    "transport_duration_s": 1.671573500148952,
+    "response_validation_s": 9.454181417822838e-05,
+    "ollama_metrics": {
+      "total_duration": 1670886375,
+      "load_duration": 903458,
+      "prompt_eval_count": 904,
+      "prompt_eval_cached_count": 586,
+      "prompt_eval_duration": 728761000,
+      "eval_count": 36,
+      "eval_duration": 936523000
+    },
+    "request_duration_s": 1.6715753749012947,
+    "ok": true,
+    "decision": {
+      "action": "YIELD",
+      "reason": "Person is within interaction range and intermittently looking, suggesting a potential interaction request but no clear obstruction"
+    },
+    "error": null
+  }
+]

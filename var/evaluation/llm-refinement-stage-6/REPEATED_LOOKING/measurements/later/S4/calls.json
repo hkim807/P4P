@@ -1,0 +1,32 @@
+[
+  {
+    "source_state_id": null,
+    "source_robot_timestamp_us": null,
+    "state_sha256": "663ac677bfdd205f7b71b99778ea396d1c874959affdd2171e4e75ef3b97bcdc",
+    "request_sha256": "d0199031838503c58e5289d1e2a6b6da50e66172ab2d19c0a241b63d83d8ee70",
+    "request_bytes": 5472,
+    "input_characters": 4763,
+    "chat_start_elapsed_s": null,
+    "chat_end_elapsed_s": null,
+    "client_call_duration_s": 3.3200212502852082,
+    "request_preparation_s": 0.002695500385016203,
+    "transport_duration_s": 3.3172270827926695,
+    "response_validation_s": 9.866710752248764e-05,
+    "ollama_metrics": {
+      "total_duration": 3316288250,
+      "load_duration": 916791,
+      "prompt_eval_count": 946,
+      "prompt_eval_cached_count": 619,
+      "prompt_eval_duration": 1779789000,
+      "eval_count": 26,
+      "eval_duration": 1529379000
+    },
+    "request_duration_s": 3.3172300420701504,
+    "ok": true,
+    "decision": {
+      "action": "CONTINUE",
+      "reason": "Intermittent looking does not indicate interaction interest."
+    },
+    "error": null
+  }
+]

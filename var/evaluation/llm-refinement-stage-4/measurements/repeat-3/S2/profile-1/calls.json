@@ -1,0 +1,32 @@
+[
+  {
+    "source_state_id": null,
+    "source_robot_timestamp_us": null,
+    "state_sha256": "133e693dc1c55ad7aa88d7a60e6890c1260961cae13fbaf8e69325d58c44ced9",
+    "request_sha256": "5efae1dd13323fa0a1f3a95ea61779c5607ae3e0b22b313805f3a1014ef7ac05",
+    "request_bytes": 5014,
+    "input_characters": 4302,
+    "chat_start_elapsed_s": 1.0996705419383943,
+    "chat_end_elapsed_s": 4.880477250088006,
+    "client_call_duration_s": 3.780806708149612,
+    "request_preparation_s": 0.0005028750747442245,
+    "transport_duration_s": 3.779983999673277,
+    "response_validation_s": 0.0003198334015905857,
+    "ollama_metrics": {
+      "total_duration": 3778389625,
+      "load_duration": 1639917,
+      "prompt_eval_count": 877,
+      "prompt_eval_cached_count": 545,
+      "prompt_eval_duration": 1891905000,
+      "eval_count": 23,
+      "eval_duration": 1848923000
+    },
+    "request_duration_s": 3.779985750094056,
+    "ok": true,
+    "decision": {
+      "action": "APPROACH",
+      "reason": "Sustained gaze and decreasing distance indicate interest in interaction."
+    },
+    "error": null
+  }
+]

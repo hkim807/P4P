@@ -1,0 +1,42 @@
+{
+  "no_person_observed_s": 0.0,
+  "observation_readiness": "READY",
+  "people": [
+    {
+      "distance_zone": "APPROACHABLE",
+      "evidence": {
+        "distance_trend_valid": true,
+        "gaze_fraction": 1.0,
+        "gaze_valid": true,
+        "latest_distance_valid": true,
+        "latest_gaze_looking": true,
+        "latest_gaze_overlap": 0.9324391484260559,
+        "looking_bouts": 1,
+        "looking_exit_threshold": 0.9,
+        "looking_time_s": 1.073692,
+        "sustained_gaze_s": 1.073692
+      },
+      "face_detected": true,
+      "gaze_state": "SUSTAINED",
+      "latest_distance_m": 2.286056884765625,
+      "observation_labels": {
+        "attention_over_time": "Looking at the robot for a high fraction of covered recent time; not necessarily continuously.",
+        "corridor_position": "Position estimate is beside the robot forward corridor; future clearance is unknown.",
+        "current_gaze": "Latest gaze sample is classified as looking at the robot.",
+        "face_detection": "A face was detected; facing the robot is not established.",
+        "proximity": "Beyond conversation distance, within the configured social range.",
+        "relative_separation": "Robot-person distance is approximately steady; individual motion is unknown.",
+        "version": 3
+      },
+      "path_position": "TO_SIDE",
+      "relative_distance_trend": "STABLE",
+      "visibility": "OBSERVED"
+    }
+  ],
+  "readiness_reason": "OBSERVATIONS_AVAILABLE",
+  "robot": {
+    "motion_description": "Measured robot motion exceeds stationary tolerances; it may be translating or turning.",
+    "motion_state": "MOVING"
+  },
+  "schema_version": 3
+}

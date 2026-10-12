@@ -1,0 +1,32 @@
+[
+  {
+    "source_state_id": null,
+    "source_robot_timestamp_us": null,
+    "state_sha256": "e72efaf09501f9d9ee528977e06606152269b977af3cda26c7951fd53ca6197f",
+    "request_sha256": "27d2d83e77575e9c9f9b22c74174f246b36808168230f8d75790f65c749b4f58",
+    "request_bytes": 5315,
+    "input_characters": 4618,
+    "chat_start_elapsed_s": null,
+    "chat_end_elapsed_s": null,
+    "client_call_duration_s": 1.7738790418952703,
+    "request_preparation_s": 0.0002244170755147934,
+    "transport_duration_s": 1.7735679997131228,
+    "response_validation_s": 8.66251066327095e-05,
+    "ollama_metrics": {
+      "total_duration": 1772857667,
+      "load_duration": 845333,
+      "prompt_eval_count": 938,
+      "prompt_eval_cached_count": 586,
+      "prompt_eval_duration": 802016000,
+      "eval_count": 38,
+      "eval_duration": 965415000
+    },
+    "request_duration_s": 1.7735699163749814,
+    "ok": true,
+    "decision": {
+      "action": "YIELD",
+      "reason": "Person is looking at the robot from a distance, suggesting a need for space as separation is steady and increasing."
+    },
+    "error": null
+  }
+]
