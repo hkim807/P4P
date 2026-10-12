@@ -1,0 +1,32 @@
+[
+  {
+    "source_state_id": null,
+    "source_robot_timestamp_us": null,
+    "state_sha256": "abffc0df0d5cd33b198b75151b57a34f578707faf53dbcb6f46b86429fb94e81",
+    "request_sha256": "063aad8c7c2efeeb46692a376d61ab0d387a17b0d070de2aa1f9ef6996b14847",
+    "request_bytes": 5469,
+    "input_characters": 4760,
+    "chat_start_elapsed_s": null,
+    "chat_end_elapsed_s": null,
+    "client_call_duration_s": 3.0534810409881175,
+    "request_preparation_s": 0.0003676661290228367,
+    "transport_duration_s": 3.0530589590780437,
+    "response_validation_s": 5.4415781050920486e-05,
+    "ollama_metrics": {
+      "total_duration": 3052312791,
+      "load_duration": 652458,
+      "prompt_eval_count": 958,
+      "prompt_eval_cached_count": 601,
+      "prompt_eval_duration": 2084699999,
+      "eval_count": 19,
+      "eval_duration": 961957000
+    },
+    "request_duration_s": 3.053061166778207,
+    "ok": true,
+    "decision": {
+      "action": "CONTINUE",
+      "reason": "Increasing distance and no sustained looking outside conversation range"
+    },
+    "error": null
+  }
+]

@@ -1,0 +1,7 @@
+{
+  "manifest_version": 1,
+  "recordings": [
+    {"name": "calibration_1", "source": "../var/recordings/gaze-v2-calibration-sdk.jsonl", "labels": "gaze-v2-calibration-labels.json"},
+    {"name": "calibration_2", "source": "../var/recordings/gaze-v2-calibration-2-sdk.jsonl", "labels": "gaze-v2-calibration-2-labels.json"}
+  ]
+}

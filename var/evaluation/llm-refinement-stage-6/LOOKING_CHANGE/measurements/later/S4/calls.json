@@ -1,0 +1,32 @@
+[
+  {
+    "source_state_id": null,
+    "source_robot_timestamp_us": null,
+    "state_sha256": "f214cc8ec6e929942c9c982565fc4067d2702fbfbaa791854b2a20d8f7b317e3",
+    "request_sha256": "f8046cc9d1706fafc4493247ba2cf536090e488de3bc487493a12b57e60a68a1",
+    "request_bytes": 5458,
+    "input_characters": 4749,
+    "chat_start_elapsed_s": null,
+    "chat_end_elapsed_s": null,
+    "client_call_duration_s": 3.568920665886253,
+    "request_preparation_s": 0.00022070808336138725,
+    "transport_duration_s": 3.568287624977529,
+    "response_validation_s": 0.00041233282536268234,
+    "ollama_metrics": {
+      "total_duration": 3566269084,
+      "load_duration": 1894667,
+      "prompt_eval_count": 947,
+      "prompt_eval_cached_count": 619,
+      "prompt_eval_duration": 1819706000,
+      "eval_count": 32,
+      "eval_duration": 1739969000
+    },
+    "request_duration_s": 3.5682955840602517,
+    "ok": true,
+    "decision": {
+      "action": "CONTINUE",
+      "reason": "Intermittent looking and decreasing distance, but not sustained or at conversation range."
+    },
+    "error": null
+  }
+]

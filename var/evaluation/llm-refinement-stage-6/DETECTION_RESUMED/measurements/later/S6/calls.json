@@ -1,0 +1,32 @@
+[
+  {
+    "source_state_id": null,
+    "source_robot_timestamp_us": null,
+    "state_sha256": "6bedc687fbd36b684b15544a5f8d2a85a201df3fac1efcabc24929e2d1d719f4",
+    "request_sha256": "64c714902c8682a9ba53630be019efe7c3119a9be9bd2b54cf33d2548c42624b",
+    "request_bytes": 5250,
+    "input_characters": 4553,
+    "chat_start_elapsed_s": null,
+    "chat_end_elapsed_s": null,
+    "client_call_duration_s": 2.971878834068775,
+    "request_preparation_s": 0.0002454170025885105,
+    "transport_duration_s": 2.971016500145197,
+    "response_validation_s": 0.0006169169209897518,
+    "ollama_metrics": {
+      "total_duration": 2969309416,
+      "load_duration": 622333,
+      "prompt_eval_count": 904,
+      "prompt_eval_cached_count": 586,
+      "prompt_eval_duration": 1625477000,
+      "eval_count": 25,
+      "eval_duration": 1338422000
+    },
+    "request_duration_s": 2.971031208988279,
+    "ok": true,
+    "decision": {
+      "action": "CONTINUE",
+      "reason": "Intermittent looking and no sustained gaze."
+    },
+    "error": null
+  }
+]

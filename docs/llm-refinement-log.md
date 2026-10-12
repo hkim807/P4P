@@ -275,3 +275,63 @@ limits documented; the nine recordings remain a tuning set.
 Artifacts: [stage 5 report](/Users/eddiekim/Documents/Projects/P4P/var/evaluation/llm-refinement-stage-5/REPORT.md),
 [selected instructions](/Users/eddiekim/Documents/Projects/P4P/var/evaluation/llm-refinement-stage-5/refined-instructions.txt),
 [instruction method](/Users/eddiekim/Documents/Projects/P4P/docs/llm-instruction-refinement.md).
+
+## Stage 6 — 13 October 2026: test causal temporal summaries
+
+**Objective:** test whether a small combination of existing temporal evidence
+improves the first decision, with the base state and v16 instructions fixed.
+
+**Changes tested independently:** earlier measured looking with latest
+not-looking (`LOOKING_CHANGE`); multiple measured looking bouts
+(`REPEATED_LOOKING`); and detection resumption after a missing-detection gap
+(`DETECTION_RESUMED`). Descriptions do not infer intent, individual motion,
+short episode duration, looking away during a detection gap or a person
+physically returning. Only positive applicable summaries are included.
+
+**Controls:** reused the sealed stage 5 v16 control, rather than measuring a
+fresh control. Original first/later timestamps and expected actions remain
+fixed. Both policies receive the exact same representation. All 574 frames in
+all four modes retain complete frozen v7 decisions and readiness; 402 remain
+eligible. Other state fields, full SocialState, prompt, thresholds, model
+digest/runtime, generation settings and acceptance limits are unchanged.
+Actual first requests and paired input hashes are verified, as are later
+requests. Historical stages 1–5 remain untouched.
+
+**Results:** looking change appears at first in S4/S6/S7; detection resumption
+in S7. Each received three warm operational repetitions and nine later probes.
+Both retain 24/27 alignment (8/9 in every run), with S4 still choosing CONTINUE
+instead of YIELD. Median complete-output time is 3.05 and 3.06 seconds,
+respectively, versus the reused control's 3.04 seconds. Acceptance is 22/27
+and 24/27 versus 22/27; validity is 27/27 in each. Sequential timing and finite
+recording acceptance do not establish a causal improvement in live performance.
+
+Repeated looking changes none of the nine first inputs, so it receives no new
+primary score or timing result. Its nine later probes change S7 from APPROACH
+to ENGAGE. That does not improve the frozen first-decision score or establish
+that the later action is correct. In total, 81 new model calls were made:
+54 primary and 27 later, separate from the 36 reused control calls.
+
+**Interpretation:** no variant improves primary action alignment. S7's first
+reason stops presenting an unknown trend as absent motion, but S6 still says
+“no recent looking” despite positive measured looking. Extra descriptions do
+not guarantee faithful use of the evidence. Adding a summary costs 36–37
+input tokens in the affected first snapshots; the overall median hides this
+because most first inputs are unchanged.
+
+**Selection:** retain `NONE` as the production default. The experimental
+extension is available for future tests: applicable summaries identify state
+version 4; inactive summaries are omitted, preserving byte-identical v3
+inputs. No tuned rule condition or production instruction changed.
+
+**Verification:** the full suite ran 673 test methods; the same pre-existing
+VLM/LLM verbatim-wording method fails four subcases, with no new failures or
+errors. All 31 final focused checks pass. A final serializer compatibility
+adjustment avoids requiring a newer Pydantic than the declared dependency
+floor; 2,296 canonical payload comparisons (574 frames × four modes) prove
+byte equivalence to the measured implementation. Measured source copies and
+the final source are preserved separately. No physical robot execution occurred.
+
+Artifacts: [stage 6 report](/Users/eddiekim/Documents/Projects/P4P/var/evaluation/llm-refinement-stage-6/REPORT.md),
+[summary definitions and method](/Users/eddiekim/Documents/Projects/P4P/docs/temporal-summary-experiments.md).
+The next planned stage is inference-setting optimization, with the selected
+v16 prompt and default v3 state held fixed.

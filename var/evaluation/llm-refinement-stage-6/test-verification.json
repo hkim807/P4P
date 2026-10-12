@@ -1,0 +1,14 @@
+{
+  "focused_tests": 31,
+  "focused_passed": true,
+  "full_test_methods": 673,
+  "full_failure_subcases": 4,
+  "known_failure_method": "test_vlm_policy.VLMPromptTests.test_task_context_and_definitions_match_llm_verbatim",
+  "new_failures": 0,
+  "errors": 0,
+  "rule_frames": 574,
+  "eligible_frames": 402,
+  "summary_modes_in_parity_check": 4,
+  "canonical_payload_equivalence_comparisons": 2296,
+  "default_v3_payload_unchanged": true
+}

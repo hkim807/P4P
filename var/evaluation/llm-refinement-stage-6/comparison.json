@@ -1,0 +1,242 @@
+{
+  "stage5_control": {
+    "trials": 27,
+    "aligned": 24,
+    "accepted": 22,
+    "aligned_and_accepted": 19,
+    "valid_first_outputs": 27,
+    "median_eligible_to_output_s": 3.0382223330771922,
+    "median_prompt_tokens": 917,
+    "per_repetition": [
+      {
+        "repeat": 1,
+        "aligned": 8,
+        "accepted": 7
+      },
+      {
+        "repeat": 2,
+        "aligned": 8,
+        "accepted": 8
+      },
+      {
+        "repeat": 3,
+        "aligned": 8,
+        "accepted": 7
+      }
+    ]
+  },
+  "arms": {
+    "LOOKING_CHANGE": {
+      "coverage": {
+        "active_snapshots": {
+          "first": [
+            "S4",
+            "S6",
+            "S7"
+          ],
+          "later": [
+            "S4",
+            "S6",
+            "S8"
+          ]
+        },
+        "frames_with_summary": 138,
+        "eligible_frames_with_summary": 136,
+        "S1": {
+          "frames_with_summary": 27,
+          "eligible_frames_with_summary": 26
+        },
+        "S2": {
+          "frames_with_summary": 0,
+          "eligible_frames_with_summary": 0
+        },
+        "S3": {
+          "frames_with_summary": 0,
+          "eligible_frames_with_summary": 0
+        },
+        "S4": {
+          "frames_with_summary": 39,
+          "eligible_frames_with_summary": 39
+        },
+        "S5": {
+          "frames_with_summary": 0,
+          "eligible_frames_with_summary": 0
+        },
+        "S6": {
+          "frames_with_summary": 24,
+          "eligible_frames_with_summary": 24
+        },
+        "S7": {
+          "frames_with_summary": 19,
+          "eligible_frames_with_summary": 18
+        },
+        "S8": {
+          "frames_with_summary": 29,
+          "eligible_frames_with_summary": 29
+        },
+        "S9": {
+          "frames_with_summary": 0,
+          "eligible_frames_with_summary": 0
+        }
+      },
+      "primary_trials_run": 27,
+      "metrics": {
+        "trials": 27,
+        "aligned": 24,
+        "accepted": 22,
+        "aligned_and_accepted": 19,
+        "valid_first_outputs": 27,
+        "median_eligible_to_output_s": 3.0502059998946787,
+        "median_prompt_tokens": 918,
+        "per_repetition": [
+          {
+            "repeat": 1,
+            "aligned": 8,
+            "accepted": 7
+          },
+          {
+            "repeat": 2,
+            "aligned": 8,
+            "accepted": 8
+          },
+          {
+            "repeat": 3,
+            "aligned": 8,
+            "accepted": 7
+          }
+        ]
+      }
+    },
+    "REPEATED_LOOKING": {
+      "coverage": {
+        "active_snapshots": {
+          "first": [],
+          "later": [
+            "S4",
+            "S6",
+            "S7"
+          ]
+        },
+        "frames_with_summary": 108,
+        "eligible_frames_with_summary": 106,
+        "S1": {
+          "frames_with_summary": 41,
+          "eligible_frames_with_summary": 40
+        },
+        "S2": {
+          "frames_with_summary": 0,
+          "eligible_frames_with_summary": 0
+        },
+        "S3": {
+          "frames_with_summary": 0,
+          "eligible_frames_with_summary": 0
+        },
+        "S4": {
+          "frames_with_summary": 39,
+          "eligible_frames_with_summary": 39
+        },
+        "S5": {
+          "frames_with_summary": 0,
+          "eligible_frames_with_summary": 0
+        },
+        "S6": {
+          "frames_with_summary": 12,
+          "eligible_frames_with_summary": 11
+        },
+        "S7": {
+          "frames_with_summary": 16,
+          "eligible_frames_with_summary": 16
+        },
+        "S8": {
+          "frames_with_summary": 0,
+          "eligible_frames_with_summary": 0
+        },
+        "S9": {
+          "frames_with_summary": 0,
+          "eligible_frames_with_summary": 0
+        }
+      },
+      "primary_trials_run": 0,
+      "metrics": null,
+      "interpretation": "No added information at any frozen first decision; no new operational score or latency claimed."
+    },
+    "DETECTION_RESUMED": {
+      "coverage": {
+        "active_snapshots": {
+          "first": [
+            "S7"
+          ],
+          "later": []
+        },
+        "frames_with_summary": 5,
+        "eligible_frames_with_summary": 3,
+        "S1": {
+          "frames_with_summary": 0,
+          "eligible_frames_with_summary": 0
+        },
+        "S2": {
+          "frames_with_summary": 0,
+          "eligible_frames_with_summary": 0
+        },
+        "S3": {
+          "frames_with_summary": 0,
+          "eligible_frames_with_summary": 0
+        },
+        "S4": {
+          "frames_with_summary": 0,
+          "eligible_frames_with_summary": 0
+        },
+        "S5": {
+          "frames_with_summary": 0,
+          "eligible_frames_with_summary": 0
+        },
+        "S6": {
+          "frames_with_summary": 0,
+          "eligible_frames_with_summary": 0
+        },
+        "S7": {
+          "frames_with_summary": 5,
+          "eligible_frames_with_summary": 3
+        },
+        "S8": {
+          "frames_with_summary": 0,
+          "eligible_frames_with_summary": 0
+        },
+        "S9": {
+          "frames_with_summary": 0,
+          "eligible_frames_with_summary": 0
+        }
+      },
+      "primary_trials_run": 27,
+      "metrics": {
+        "trials": 27,
+        "aligned": 24,
+        "accepted": 24,
+        "aligned_and_accepted": 21,
+        "valid_first_outputs": 27,
+        "median_eligible_to_output_s": 3.0601379579266905,
+        "median_prompt_tokens": 917,
+        "per_repetition": [
+          {
+            "repeat": 1,
+            "aligned": 8,
+            "accepted": 8
+          },
+          {
+            "repeat": 2,
+            "aligned": 8,
+            "accepted": 8
+          },
+          {
+            "repeat": 3,
+            "aligned": 8,
+            "accepted": 8
+          }
+        ]
+      }
+    }
+  },
+  "selected_mode": "NONE",
+  "prompt_version": "decision-state-llm-v16",
+  "rule_frames_preserved_per_mode": 574
+}

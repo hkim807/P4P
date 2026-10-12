@@ -1,0 +1,353 @@
+[
+  {
+    "scenario_id": "S1",
+    "repeat": 1,
+    "control_action": {
+      "action": "CONTINUE",
+      "reason": "Person outside interaction range, no sustained looking."
+    },
+    "candidate_action": {
+      "action": "CONTINUE",
+      "reason": "Person outside interaction range, no sustained looking."
+    },
+    "aligned": true
+  },
+  {
+    "scenario_id": "S2",
+    "repeat": 1,
+    "control_action": {
+      "action": "APPROACH",
+      "reason": "Person within social range, sustained gaze at the robot."
+    },
+    "candidate_action": {
+      "action": "APPROACH",
+      "reason": "Person within social range, sustained gaze at the robot."
+    },
+    "aligned": true
+  },
+  {
+    "scenario_id": "S3",
+    "repeat": 1,
+    "control_action": {
+      "action": "ENGAGE",
+      "reason": "Sustained gaze and proximity within interaction range."
+    },
+    "candidate_action": {
+      "action": "ENGAGE",
+      "reason": "Sustained gaze and proximity within interaction range."
+    },
+    "aligned": true
+  },
+  {
+    "scenario_id": "S4",
+    "repeat": 1,
+    "control_action": {
+      "action": "CONTINUE",
+      "reason": "Person outside interaction range, decreasing distance but no sustained looking."
+    },
+    "candidate_action": {
+      "action": "CONTINUE",
+      "reason": "Person outside interaction range, decreasing distance but no sustained looking."
+    },
+    "aligned": false
+  },
+  {
+    "scenario_id": "S5",
+    "repeat": 1,
+    "control_action": {
+      "action": "CONTINUE",
+      "reason": "No people observed and robot is moving."
+    },
+    "candidate_action": {
+      "action": "CONTINUE",
+      "reason": "No people observed and robot is moving."
+    },
+    "aligned": true
+  },
+  {
+    "scenario_id": "S6",
+    "repeat": 1,
+    "control_action": {
+      "action": "CONTINUE",
+      "reason": "No recent looking and low gaze fraction outside interaction range."
+    },
+    "candidate_action": {
+      "action": "CONTINUE",
+      "reason": "No recent looking and low gaze fraction outside interaction range."
+    },
+    "aligned": true
+  },
+  {
+    "scenario_id": "S7",
+    "repeat": 1,
+    "control_action": {
+      "action": "CONTINUE",
+      "reason": "Intermittent looking but no sustained gaze or closing distance."
+    },
+    "candidate_action": {
+      "action": "CONTINUE",
+      "reason": "Intermittent looking outside conversation distance"
+    },
+    "aligned": true
+  },
+  {
+    "scenario_id": "S8",
+    "repeat": 1,
+    "control_action": {
+      "action": "CONTINUE",
+      "reason": "No people observed and robot is moving."
+    },
+    "candidate_action": {
+      "action": "CONTINUE",
+      "reason": "No people observed and robot is moving."
+    },
+    "aligned": true
+  },
+  {
+    "scenario_id": "S9",
+    "repeat": 1,
+    "control_action": {
+      "action": "APPROACH",
+      "reason": "Person detected at approachable distance with sustained gaze."
+    },
+    "candidate_action": {
+      "action": "APPROACH",
+      "reason": "Person detected at approachable distance with sustained gaze."
+    },
+    "aligned": true
+  },
+  {
+    "scenario_id": "S1",
+    "repeat": 2,
+    "control_action": {
+      "action": "CONTINUE",
+      "reason": "Person outside interaction range, no sustained looking."
+    },
+    "candidate_action": {
+      "action": "CONTINUE",
+      "reason": "Person outside interaction range, no sustained looking."
+    },
+    "aligned": true
+  },
+  {
+    "scenario_id": "S2",
+    "repeat": 2,
+    "control_action": {
+      "action": "APPROACH",
+      "reason": "Person within social range, sustained gaze at the robot."
+    },
+    "candidate_action": {
+      "action": "APPROACH",
+      "reason": "Person within social range, sustained gaze at the robot."
+    },
+    "aligned": true
+  },
+  {
+    "scenario_id": "S3",
+    "repeat": 2,
+    "control_action": {
+      "action": "ENGAGE",
+      "reason": "Sustained gaze and proximity within interaction range."
+    },
+    "candidate_action": {
+      "action": "ENGAGE",
+      "reason": "Sustained gaze and proximity within interaction range."
+    },
+    "aligned": true
+  },
+  {
+    "scenario_id": "S4",
+    "repeat": 2,
+    "control_action": {
+      "action": "CONTINUE",
+      "reason": "Person outside interaction range, decreasing distance but no sustained looking."
+    },
+    "candidate_action": {
+      "action": "CONTINUE",
+      "reason": "Person outside interaction range, decreasing distance but no sustained looking."
+    },
+    "aligned": false
+  },
+  {
+    "scenario_id": "S5",
+    "repeat": 2,
+    "control_action": {
+      "action": "CONTINUE",
+      "reason": "No people observed and robot is moving."
+    },
+    "candidate_action": {
+      "action": "CONTINUE",
+      "reason": "No people observed and robot is moving."
+    },
+    "aligned": true
+  },
+  {
+    "scenario_id": "S6",
+    "repeat": 2,
+    "control_action": {
+      "action": "CONTINUE",
+      "reason": "No recent looking and low gaze fraction outside interaction range."
+    },
+    "candidate_action": {
+      "action": "CONTINUE",
+      "reason": "No recent looking and low gaze fraction outside interaction range."
+    },
+    "aligned": true
+  },
+  {
+    "scenario_id": "S7",
+    "repeat": 2,
+    "control_action": {
+      "action": "CONTINUE",
+      "reason": "Intermittent looking but no sustained gaze or closing distance."
+    },
+    "candidate_action": {
+      "action": "CONTINUE",
+      "reason": "Intermittent looking outside conversation distance"
+    },
+    "aligned": true
+  },
+  {
+    "scenario_id": "S8",
+    "repeat": 2,
+    "control_action": {
+      "action": "CONTINUE",
+      "reason": "No people observed and robot is moving."
+    },
+    "candidate_action": {
+      "action": "CONTINUE",
+      "reason": "No people observed and robot is moving."
+    },
+    "aligned": true
+  },
+  {
+    "scenario_id": "S9",
+    "repeat": 2,
+    "control_action": {
+      "action": "APPROACH",
+      "reason": "Person detected at approachable distance with sustained gaze."
+    },
+    "candidate_action": {
+      "action": "APPROACH",
+      "reason": "Person detected at approachable distance with sustained gaze."
+    },
+    "aligned": true
+  },
+  {
+    "scenario_id": "S1",
+    "repeat": 3,
+    "control_action": {
+      "action": "CONTINUE",
+      "reason": "Person outside interaction range, no sustained looking."
+    },
+    "candidate_action": {
+      "action": "CONTINUE",
+      "reason": "Person outside interaction range, no sustained looking."
+    },
+    "aligned": true
+  },
+  {
+    "scenario_id": "S2",
+    "repeat": 3,
+    "control_action": {
+      "action": "APPROACH",
+      "reason": "Person within social range, sustained gaze at the robot."
+    },
+    "candidate_action": {
+      "action": "APPROACH",
+      "reason": "Person within social range, sustained gaze at the robot."
+    },
+    "aligned": true
+  },
+  {
+    "scenario_id": "S3",
+    "repeat": 3,
+    "control_action": {
+      "action": "ENGAGE",
+      "reason": "Sustained gaze and proximity within interaction range."
+    },
+    "candidate_action": {
+      "action": "ENGAGE",
+      "reason": "Sustained gaze and proximity within interaction range."
+    },
+    "aligned": true
+  },
+  {
+    "scenario_id": "S4",
+    "repeat": 3,
+    "control_action": {
+      "action": "CONTINUE",
+      "reason": "Person outside interaction range, decreasing distance but no sustained looking."
+    },
+    "candidate_action": {
+      "action": "CONTINUE",
+      "reason": "Person outside interaction range, decreasing distance but no sustained looking."
+    },
+    "aligned": false
+  },
+  {
+    "scenario_id": "S5",
+    "repeat": 3,
+    "control_action": {
+      "action": "CONTINUE",
+      "reason": "No people observed and robot is moving."
+    },
+    "candidate_action": {
+      "action": "CONTINUE",
+      "reason": "No people observed and robot is moving."
+    },
+    "aligned": true
+  },
+  {
+    "scenario_id": "S6",
+    "repeat": 3,
+    "control_action": {
+      "action": "CONTINUE",
+      "reason": "No recent looking and low gaze fraction outside interaction range."
+    },
+    "candidate_action": {
+      "action": "CONTINUE",
+      "reason": "No recent looking and low gaze fraction outside interaction range."
+    },
+    "aligned": true
+  },
+  {
+    "scenario_id": "S7",
+    "repeat": 3,
+    "control_action": {
+      "action": "CONTINUE",
+      "reason": "Intermittent looking but no sustained gaze or closing distance."
+    },
+    "candidate_action": {
+      "action": "CONTINUE",
+      "reason": "Intermittent looking outside conversation distance"
+    },
+    "aligned": true
+  },
+  {
+    "scenario_id": "S8",
+    "repeat": 3,
+    "control_action": {
+      "action": "CONTINUE",
+      "reason": "No people observed and robot is moving."
+    },
+    "candidate_action": {
+      "action": "CONTINUE",
+      "reason": "No people observed and robot is moving."
+    },
+    "aligned": true
+  },
+  {
+    "scenario_id": "S9",
+    "repeat": 3,
+    "control_action": {
+      "action": "APPROACH",
+      "reason": "Person detected at approachable distance with sustained gaze."
+    },
+    "candidate_action": {
+      "action": "APPROACH",
+      "reason": "Person detected at approachable distance with sustained gaze."
+    },
+    "aligned": true
+  }
+]

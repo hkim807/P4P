@@ -1,0 +1,51 @@
+{
+  "scenario_id": "S4",
+  "first_source_state_id": "replay-6c13d1e775b7489493285686:12",
+  "first_state_sha256": "82d09c4787fd3885db545a0a7e64bbf64aa57c9cffa1605ef249fcf31f06ab05",
+  "expected_actions": [
+    "YIELD"
+  ],
+  "first_decision": {
+    "action": "CONTINUE",
+    "reason": "Decreasing distance without sustained looking or spatial need."
+  },
+  "first_output_valid": true,
+  "action_aligned": false,
+  "first_eligible_since_motion_s": 1.102457,
+  "output_since_motion_s": 4.188150333992809,
+  "first_request_observed_elapsed_s": 1.0904064169153571,
+  "first_client_finished_elapsed_s": 4.159472083672881,
+  "first_eligible_to_validated_client_output_s": 3.073642083672881,
+  "accepted_by_live_client": true,
+  "acceptance_details": {
+    "current_readiness": true,
+    "latest_observation_age_s": 0.078226,
+    "model_source_age_s": 3.085694,
+    "trial_phase": "DECIDED",
+    "failure_reason": null
+  },
+  "delivery_status": "succeeded",
+  "delivery_error": null,
+  "total_calls": 1,
+  "runner_status": "ACTION_RESOLVED",
+  "timing": {
+    "total_duration_s": 3.053801042,
+    "load_duration_s": 0.002194834,
+    "prompt_eval_duration_s": 2.005306,
+    "eval_duration_s": 1.033279,
+    "prompt_tokens": 964,
+    "cached_prompt_tokens": 601,
+    "output_tokens": 20,
+    "request_bytes": 5481,
+    "request_preparation_s": 0.00018683401867747307,
+    "response_validation_s": 6.620865315198898e-05,
+    "transport_duration_s": 3.054566541220993,
+    "transport_minus_native_total_s": 0.0007654992209928935,
+    "native_unattributed_s": 0.013021207999999618,
+    "eligible_to_observed_output_s": 3.085693333992809,
+    "eligible_to_client_call_s": 0.018822499780058788,
+    "client_finished_to_observed_output_s": 0.01205125031992793
+  },
+  "first_error": null,
+  "repetition": 1
+}

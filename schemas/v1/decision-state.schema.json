@@ -212,6 +212,17 @@
         },
         "observation_labels": {
           "$ref": "#/$defs/DecisionObservationLabels"
+        },
+        "temporal_summary": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/TemporalSummary"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
         }
       },
       "required": [
@@ -249,13 +260,46 @@
       ],
       "title": "DecisionRobot",
       "type": "object"
+    },
+    "TemporalSummary": {
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "const": 1,
+          "default": 1,
+          "title": "Version",
+          "type": "integer"
+        },
+        "kind": {
+          "enum": [
+            "LOOKING_CHANGE",
+            "REPEATED_LOOKING",
+            "DETECTION_RESUMED"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "description": {
+          "default": "",
+          "title": "Description",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind"
+      ],
+      "title": "TemporalSummary",
+      "type": "object"
     }
   },
   "additionalProperties": false,
   "properties": {
     "schema_version": {
-      "const": 3,
       "default": 3,
+      "enum": [
+        3,
+        4
+      ],
       "title": "Schema Version",
       "type": "integer"
     },

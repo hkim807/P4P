@@ -1,0 +1,47 @@
+{
+  "no_person_observed_s": 0.0,
+  "observation_readiness": "READY",
+  "people": [
+    {
+      "distance_zone": "INTERACTION_RANGE",
+      "evidence": {
+        "distance_trend_valid": false,
+        "gaze_fraction": 0.3989283351266816,
+        "gaze_valid": true,
+        "latest_distance_valid": true,
+        "latest_gaze_looking": false,
+        "latest_gaze_overlap": 0.5,
+        "looking_bouts": 2,
+        "looking_exit_threshold": 0.9,
+        "looking_time_s": 1.193809,
+        "sustained_gaze_s": 0.0
+      },
+      "face_detected": true,
+      "gaze_state": "INTERMITTENT",
+      "latest_distance_m": 1.7892979736328125,
+      "observation_labels": {
+        "attention_over_time": "Intermittent looking at the robot during the recent observation window.",
+        "corridor_position": "Position estimate is beside the robot forward corridor; future clearance is unknown.",
+        "current_gaze": "Latest gaze sample is classified as not looking at the robot.",
+        "face_detection": "A face was detected; facing the robot is not established.",
+        "proximity": "Within the configured conversation distance.",
+        "relative_separation": "Recent robot-person distance trend is unavailable or unreliable.",
+        "version": 3
+      },
+      "path_position": "TO_SIDE",
+      "relative_distance_trend": "UNKNOWN",
+      "temporal_summary": {
+        "description": "Some measured looking occurred earlier in the recent window; the latest gaze sample is not looking at the robot.",
+        "kind": "LOOKING_CHANGE",
+        "version": 1
+      },
+      "visibility": "OBSERVED"
+    }
+  ],
+  "readiness_reason": "OBSERVATIONS_AVAILABLE",
+  "robot": {
+    "motion_description": "Measured robot motion exceeds stationary tolerances; it may be translating or turning.",
+    "motion_state": "MOVING"
+  },
+  "schema_version": 4
+}

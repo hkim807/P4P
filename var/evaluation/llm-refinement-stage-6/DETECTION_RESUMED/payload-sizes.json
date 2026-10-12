@@ -1,0 +1,110 @@
+[
+  {
+    "scenario_id": "S1",
+    "point": "first",
+    "full_state_bytes": 3479,
+    "compact_state_bytes": 1318
+  },
+  {
+    "scenario_id": "S1",
+    "point": "later",
+    "full_state_bytes": 1633,
+    "compact_state_bytes": 284
+  },
+  {
+    "scenario_id": "S2",
+    "point": "first",
+    "full_state_bytes": 3499,
+    "compact_state_bytes": 1344
+  },
+  {
+    "scenario_id": "S2",
+    "point": "later",
+    "full_state_bytes": 3169,
+    "compact_state_bytes": 1371
+  },
+  {
+    "scenario_id": "S3",
+    "point": "first",
+    "full_state_bytes": 3318,
+    "compact_state_bytes": 1346
+  },
+  {
+    "scenario_id": "S3",
+    "point": "later",
+    "full_state_bytes": 3093,
+    "compact_state_bytes": 1335
+  },
+  {
+    "scenario_id": "S4",
+    "point": "first",
+    "full_state_bytes": 3371,
+    "compact_state_bytes": 1339
+  },
+  {
+    "scenario_id": "S4",
+    "point": "later",
+    "full_state_bytes": 3157,
+    "compact_state_bytes": 1316
+  },
+  {
+    "scenario_id": "S5",
+    "point": "first",
+    "full_state_bytes": 1631,
+    "compact_state_bytes": 284
+  },
+  {
+    "scenario_id": "S5",
+    "point": "later",
+    "full_state_bytes": 1645,
+    "compact_state_bytes": 284
+  },
+  {
+    "scenario_id": "S6",
+    "point": "first",
+    "full_state_bytes": 3338,
+    "compact_state_bytes": 1325
+  },
+  {
+    "scenario_id": "S6",
+    "point": "later",
+    "full_state_bytes": 3377,
+    "compact_state_bytes": 1306
+  },
+  {
+    "scenario_id": "S7",
+    "point": "first",
+    "full_state_bytes": 3582,
+    "compact_state_bytes": 1508
+  },
+  {
+    "scenario_id": "S7",
+    "point": "later",
+    "full_state_bytes": 4486,
+    "compact_state_bytes": 1331
+  },
+  {
+    "scenario_id": "S8",
+    "point": "first",
+    "full_state_bytes": 1631,
+    "compact_state_bytes": 284
+  },
+  {
+    "scenario_id": "S8",
+    "point": "later",
+    "full_state_bytes": 3155,
+    "compact_state_bytes": 1327
+  },
+  {
+    "scenario_id": "S9",
+    "point": "first",
+    "full_state_bytes": 3299,
+    "compact_state_bytes": 1351
+  },
+  {
+    "scenario_id": "S9",
+    "point": "later",
+    "full_state_bytes": 3169,
+    "compact_state_bytes": 1370
+  }
+]

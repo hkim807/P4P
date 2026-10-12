@@ -1,0 +1,32 @@
+[
+  {
+    "source_state_id": null,
+    "source_robot_timestamp_us": null,
+    "state_sha256": "192e392b60927bc73c2b5f03110ebcf8691f264043b90aaf1c15503b6e532938",
+    "request_sha256": "2e7de29a853dd5a40da93e286ab160ce103d11154416e00667abbd9ec309c867",
+    "request_bytes": 4154,
+    "input_characters": 3531,
+    "chat_start_elapsed_s": null,
+    "chat_end_elapsed_s": null,
+    "client_call_duration_s": 1.2575286249630153,
+    "request_preparation_s": 0.00021241698414087296,
+    "transport_duration_s": 1.2572718332521617,
+    "response_validation_s": 4.4374726712703705e-05,
+    "ollama_metrics": {
+      "total_duration": 1256651917,
+      "load_duration": 687542,
+      "prompt_eval_count": 650,
+      "prompt_eval_cached_count": 586,
+      "prompt_eval_duration": 348861000,
+      "eval_count": 18,
+      "eval_duration": 903089000
+    },
+    "request_duration_s": 1.2572737918235362,
+    "ok": true,
+    "decision": {
+      "action": "CONTINUE",
+      "reason": "No people observed and robot is moving."
+    },
+    "error": null
+  }
+]

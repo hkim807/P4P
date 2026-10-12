@@ -1,0 +1,26 @@
+{
+  "trials": 27,
+  "aligned": 24,
+  "accepted": 22,
+  "aligned_and_accepted": 19,
+  "valid_first_outputs": 27,
+  "median_eligible_to_output_s": 3.0502059998946787,
+  "median_prompt_tokens": 918,
+  "per_repetition": [
+    {
+      "repeat": 1,
+      "aligned": 8,
+      "accepted": 7
+    },
+    {
+      "repeat": 2,
+      "aligned": 8,
+      "accepted": 8
+    },
+    {
+      "repeat": 3,
+      "aligned": 8,
+      "accepted": 7
+    }
+  ]
+}
