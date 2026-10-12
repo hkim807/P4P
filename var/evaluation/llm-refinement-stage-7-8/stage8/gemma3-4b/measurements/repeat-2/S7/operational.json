@@ -1,0 +1,55 @@
+{
+  "scenario_id": "S7",
+  "first_source_state_id": "replay-e25f14f5c9126f586b63f9e9:18",
+  "first_state_sha256": "32c15c47cd8540d1c653f7ebf45fd9248ecb5862303563ef96d11935eb54256c",
+  "expected_actions": [
+    "CONTINUE"
+  ],
+  "first_decision": {
+    "action": "CONTINUE",
+    "reason": "The person is within the approachable zone with intermittent looking, but distance is too great to initiate interaction."
+  },
+  "first_output_valid": true,
+  "action_aligned": true,
+  "first_eligible_since_motion_s": 1.707624,
+  "output_since_motion_s": 4.663495250276982,
+  "first_request_observed_elapsed_s": 1.669485750142485,
+  "first_client_finished_elapsed_s": 4.608065917156637,
+  "first_eligible_to_validated_client_output_s": 2.9436479171566368,
+  "accepted_by_live_client": false,
+  "acceptance_details": {
+    "current_readiness": false,
+    "latest_observation_age_s": 0.055622,
+    "model_source_age_s": 2.955872,
+    "trial_phase": "OBSERVING",
+    "failure_reason": null
+  },
+  "delivery_status": "succeeded",
+  "delivery_error": null,
+  "total_calls": 1,
+  "runner_status": "ACTION_RESOLVED",
+  "timing": {
+    "total_duration_s": 2.919443208,
+    "load_duration_s": 0.002932708,
+    "prompt_eval_duration_s": 1.546799,
+    "eval_duration_s": 1.352953,
+    "prompt_tokens": 985,
+    "cached_prompt_tokens": 479,
+    "output_tokens": 30,
+    "request_bytes": 5274,
+    "request_preparation_s": 0.0003327089361846447,
+    "response_validation_s": 6.933417171239853e-05,
+    "transport_duration_s": 2.92131641600281,
+    "transport_minus_native_total_s": 0.0018732080028098785,
+    "native_unattributed_s": 0.0167584999999999,
+    "eligible_to_observed_output_s": 2.955871250276983,
+    "eligible_to_client_call_s": 0.021929458045929717,
+    "client_finished_to_observed_output_s": 0.01222333312034607
+  },
+  "first_error": null,
+  "repetition": 2,
+  "eligible_to_first_completion_s": 2.9436479171566368,
+  "first_done_reason": "stop",
+  "prompt_tokens": 985,
+  "output_tokens": 30
+}

@@ -1,0 +1,93 @@
+{
+  "scenario_id": "S3",
+  "policy": "llm",
+  "status": "ACTION_RESOLVED",
+  "action": "APPROACH",
+  "decision": {
+    "action": "APPROACH",
+    "reason": "A person is within interaction range, steadily looking at the robot, and in the forward corridor, indicating a clear opportunity for engagement."
+  },
+  "accepted_by_live_client": true,
+  "acceptance_details": {
+    "current_readiness": true,
+    "latest_observation_age_s": 0.059822,
+    "model_source_age_s": 2.344377,
+    "trial_phase": "DECIDED",
+    "failure_reason": null
+  },
+  "resolved_elapsed_s": 3.4711064998991787,
+  "stop_elapsed_s": 3.4711064998991787,
+  "frames_ingested": 35,
+  "ready_frames": 24,
+  "readiness_counts": {
+    "INSUFFICIENT_GAZE_EVIDENCE": 11,
+    "READY": 24
+  },
+  "recording_exhausted": false,
+  "last_ingested_source_offset_s": 3.411286,
+  "last_ingested_line": 70,
+  "decision_source_offset_s": 1.126731,
+  "motion_start_monotonic_us": 2046106026,
+  "perception_origin_monotonic_us": 2046192337,
+  "decision_source_since_motion_s": 1.213042,
+  "max_dispatch_lag_s": 0.004987332969903946,
+  "model_failures": [],
+  "first_model_request": {
+    "decision": null,
+    "error": null,
+    "policy": "llm",
+    "request_id": "cf26c84a09d3485284b728fecdd6be48",
+    "session_id": "replay-7a43024a2619ec806420c762",
+    "source_robot_timestamp_us": 2047319068,
+    "source_state_id": "replay-7a43024a2619ec806420c762:12",
+    "status": "pending",
+    "trial_id": "fc3d9a19f9bd48dfa0fe82fc1682bc98"
+  },
+  "resolved_output": {
+    "decision": {
+      "action": "APPROACH",
+      "reason": "A person is within interaction range, steadily looking at the robot, and in the forward corridor, indicating a clear opportunity for engagement."
+    },
+    "error": null,
+    "policy": "llm",
+    "request_id": "cf26c84a09d3485284b728fecdd6be48",
+    "session_id": "replay-7a43024a2619ec806420c762",
+    "source_robot_timestamp_us": 2047319068,
+    "source_state_id": "replay-7a43024a2619ec806420c762:12",
+    "status": "succeeded",
+    "trial_id": "fc3d9a19f9bd48dfa0fe82fc1682bc98",
+    "completed_at": "2026-10-12T21:56:17.660368+00:00",
+    "error_stage": null,
+    "ok": true,
+    "ollama_configuration": {
+      "base_url": "http://127.0.0.1:11434",
+      "generation_options": {
+        "num_ctx": 8192,
+        "num_predict": 192,
+        "seed": 42,
+        "temperature": 0.0
+      },
+      "model": "qwen3:4b-instruct",
+      "num_ctx": 8192,
+      "num_predict": 192,
+      "seed": 42,
+      "temperature": 0.0,
+      "timeout_seconds": 120.0
+    },
+    "prompt_version": "decision-state-llm-v16",
+    "raw_content": "{\"action\":\"APPROACH\",\"reason\":\"A person is within interaction range, steadily looking at the robot, and in the forward corridor, indicating a clear opportunity for engagement.\"}",
+    "request_duration_s": 2.2983946669846773,
+    "requested_model": "qwen3:4b-instruct",
+    "returned_model": "qwen3:4b-instruct",
+    "delivery_status": "succeeded",
+    "delivery_error": null
+  },
+  "last_readiness": {
+    "reason_code": null,
+    "status": "READY"
+  },
+  "source_sha256": "4281527e087f3bf89ac1e9c19a274ed1ca0892e5b509a2ec7dc6a2954ecaafb9",
+  "trial_id": "fc3d9a19f9bd48dfa0fe82fc1682bc98",
+  "clock_mapping": "original first perception receipt + real elapsed replay time",
+  "physical_execution": false
+}

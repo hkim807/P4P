@@ -1,0 +1,94 @@
+{
+  "scenario_id": "S1",
+  "policy": "llm",
+  "status": "ACTION_RESOLVED",
+  "action": "YIELD",
+  "decision": {
+    "action": "YIELD",
+    "reason": "Person is looking away and decreasing distance, suggesting obstruction; robot needs space to continue."
+  },
+  "accepted_by_live_client": true,
+  "acceptance_details": {
+    "current_readiness": true,
+    "latest_observation_age_s": 0.059378,
+    "model_source_age_s": 3.059768,
+    "trial_phase": "DECIDED",
+    "failure_reason": null
+  },
+  "resolved_elapsed_s": 4.135593540966511,
+  "stop_elapsed_s": 4.135593540966511,
+  "frames_ingested": 42,
+  "ready_frames": 30,
+  "readiness_counts": {
+    "INSUFFICIENT_GAZE_EVIDENCE": 11,
+    "READY": 30,
+    "DISTANCE_UNKNOWN": 1
+  },
+  "recording_exhausted": false,
+  "last_ingested_source_offset_s": 4.076218,
+  "last_ingested_line": 84,
+  "decision_source_offset_s": 1.075828,
+  "motion_start_monotonic_us": 1896788380,
+  "perception_origin_monotonic_us": 1896890996,
+  "decision_source_since_motion_s": 1.178444,
+  "max_dispatch_lag_s": 0.030745457857847214,
+  "model_failures": [],
+  "first_model_request": {
+    "decision": null,
+    "error": null,
+    "policy": "llm",
+    "request_id": "d42f33bfaceb4c499d2b4ce14aa6528f",
+    "session_id": "replay-c185d8773106dd7263c9682d",
+    "source_robot_timestamp_us": 1897966824,
+    "source_state_id": "replay-c185d8773106dd7263c9682d:12",
+    "status": "pending",
+    "trial_id": "31a7d539f22f49be91cfc64f09776d23"
+  },
+  "resolved_output": {
+    "decision": {
+      "action": "YIELD",
+      "reason": "Person is looking away and decreasing distance, suggesting obstruction; robot needs space to continue."
+    },
+    "error": null,
+    "policy": "llm",
+    "request_id": "d42f33bfaceb4c499d2b4ce14aa6528f",
+    "session_id": "replay-c185d8773106dd7263c9682d",
+    "source_robot_timestamp_us": 1897966824,
+    "source_state_id": "replay-c185d8773106dd7263c9682d:12",
+    "status": "succeeded",
+    "trial_id": "31a7d539f22f49be91cfc64f09776d23",
+    "completed_at": "2026-10-12T22:02:19.811797+00:00",
+    "error_stage": null,
+    "ok": true,
+    "ollama_configuration": {
+      "base_url": "http://127.0.0.1:11434",
+      "generation_options": {
+        "num_ctx": 8192,
+        "num_predict": 192,
+        "seed": 42,
+        "temperature": 0.0
+      },
+      "model": "qwen2.5:3b",
+      "num_ctx": 8192,
+      "num_predict": 192,
+      "seed": 42,
+      "temperature": 0.0,
+      "timeout_seconds": 120.0
+    },
+    "prompt_version": "decision-state-llm-v16",
+    "raw_content": "{\n    \"action\": \"YIELD\",\n    \"reason\": \"Person is looking away and decreasing distance, suggesting obstruction; robot needs space to continue.\"\n}",
+    "request_duration_s": 3.0069442079402506,
+    "requested_model": "qwen2.5:3b",
+    "returned_model": "qwen2.5:3b",
+    "delivery_status": "succeeded",
+    "delivery_error": null
+  },
+  "last_readiness": {
+    "reason_code": null,
+    "status": "READY"
+  },
+  "source_sha256": "0bfc5da545ab0634876c584913affcd5d697af9d4ad912aca0e8a72c9fc8e21a",
+  "trial_id": "31a7d539f22f49be91cfc64f09776d23",
+  "clock_mapping": "original first perception receipt + real elapsed replay time",
+  "physical_execution": false
+}

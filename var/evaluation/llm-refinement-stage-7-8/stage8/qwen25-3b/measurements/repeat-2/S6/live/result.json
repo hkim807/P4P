@@ -1,0 +1,94 @@
+{
+  "scenario_id": "S6",
+  "policy": "llm",
+  "status": "ACTION_RESOLVED",
+  "action": "YIELD",
+  "decision": {
+    "action": "YIELD",
+    "reason": "Person detected within corridor, looking away; robot needs space to pass."
+  },
+  "accepted_by_live_client": false,
+  "acceptance_details": {
+    "current_readiness": false,
+    "latest_observation_age_s": 0.050293,
+    "model_source_age_s": 1.764193,
+    "trial_phase": "OBSERVING",
+    "failure_reason": null
+  },
+  "resolved_elapsed_s": 2.830844707787037,
+  "stop_elapsed_s": 2.830844707787037,
+  "frames_ingested": 29,
+  "ready_frames": 17,
+  "readiness_counts": {
+    "INSUFFICIENT_GAZE_EVIDENCE": 9,
+    "DISTANCE_UNKNOWN": 3,
+    "READY": 17
+  },
+  "recording_exhausted": false,
+  "last_ingested_source_offset_s": 2.780553,
+  "last_ingested_line": 58,
+  "decision_source_offset_s": 1.066653,
+  "motion_start_monotonic_us": 2198112528,
+  "perception_origin_monotonic_us": 2198154257,
+  "decision_source_since_motion_s": 1.108382,
+  "max_dispatch_lag_s": 0.011231333017349243,
+  "model_failures": [],
+  "first_model_request": {
+    "decision": null,
+    "error": null,
+    "policy": "llm",
+    "request_id": "fb8e4b3007264b01ac69b00a26a52a8b",
+    "session_id": "replay-c868e15ffc810edd0c196acc",
+    "source_robot_timestamp_us": 2199220910,
+    "source_state_id": "replay-c868e15ffc810edd0c196acc:12",
+    "status": "pending",
+    "trial_id": "b6035e0a5ef24d9cb42a830d0983d39a"
+  },
+  "resolved_output": {
+    "decision": {
+      "action": "YIELD",
+      "reason": "Person detected within corridor, looking away; robot needs space to pass."
+    },
+    "error": null,
+    "policy": "llm",
+    "request_id": "fb8e4b3007264b01ac69b00a26a52a8b",
+    "session_id": "replay-c868e15ffc810edd0c196acc",
+    "source_robot_timestamp_us": 2199220910,
+    "source_state_id": "replay-c868e15ffc810edd0c196acc:12",
+    "status": "succeeded",
+    "trial_id": "b6035e0a5ef24d9cb42a830d0983d39a",
+    "completed_at": "2026-10-12T21:57:48.708905+00:00",
+    "error_stage": null,
+    "ok": true,
+    "ollama_configuration": {
+      "base_url": "http://127.0.0.1:11434",
+      "generation_options": {
+        "num_ctx": 8192,
+        "num_predict": 192,
+        "seed": 42,
+        "temperature": 0.0
+      },
+      "model": "qwen2.5:3b",
+      "num_ctx": 8192,
+      "num_predict": 192,
+      "seed": 42,
+      "temperature": 0.0,
+      "timeout_seconds": 120.0
+    },
+    "prompt_version": "decision-state-llm-v16",
+    "raw_content": "{\n  \"action\": \"YIELD\",\n  \"reason\": \"Person detected within corridor, looking away; robot needs space to pass.\"\n}",
+    "request_duration_s": 1.7068654159083962,
+    "requested_model": "qwen2.5:3b",
+    "returned_model": "qwen2.5:3b",
+    "delivery_status": "succeeded",
+    "delivery_error": null
+  },
+  "last_readiness": {
+    "reason_code": "DISTANCE_UNKNOWN",
+    "status": "OBSERVING"
+  },
+  "source_sha256": "81d07a1936abdf41ae7a6d740ec2288ccedb2806cc7c40dfb2d66941783b43da",
+  "trial_id": "b6035e0a5ef24d9cb42a830d0983d39a",
+  "clock_mapping": "original first perception receipt + real elapsed replay time",
+  "physical_execution": false
+}

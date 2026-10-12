@@ -1,0 +1,32 @@
+[
+  {
+    "source_state_id": null,
+    "source_robot_timestamp_us": null,
+    "state_sha256": "159a0ac453b5388f8ebd7d551a032c978d57733c4db4a97cceb72c252aad183b",
+    "request_sha256": "8dddd1ffe53edc1e6ae92a7967747fa34ecf9571e0b882b422c5e4ef24996749",
+    "request_bytes": 5269,
+    "input_characters": 4572,
+    "chat_start_elapsed_s": 1.1056474577635527,
+    "chat_end_elapsed_s": 2.8127312501892447,
+    "client_call_duration_s": 1.707083792425692,
+    "request_preparation_s": 0.00016645807772874832,
+    "transport_duration_s": 1.70686429226771,
+    "response_validation_s": 5.3042080253362656e-05,
+    "ollama_metrics": {
+      "total_duration": 1706084833,
+      "load_duration": 2333791,
+      "prompt_eval_count": 917,
+      "prompt_eval_cached_count": 586,
+      "prompt_eval_duration": 931794000,
+      "eval_count": 30,
+      "eval_duration": 758163000
+    },
+    "request_duration_s": 1.7068654159083962,
+    "ok": true,
+    "decision": {
+      "action": "YIELD",
+      "reason": "Person detected within corridor, looking away; robot needs space to pass."
+    },
+    "error": null
+  }
+]

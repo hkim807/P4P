@@ -1,0 +1,32 @@
+[
+  {
+    "source_state_id": null,
+    "source_robot_timestamp_us": null,
+    "state_sha256": "6bedc687fbd36b684b15544a5f8d2a85a201df3fac1efcabc24929e2d1d719f4",
+    "request_sha256": "cb8420504077019aca810f09d81da70d33db45082270584a81381a5bd9ae7639",
+    "request_bytes": 5249,
+    "input_characters": 4553,
+    "chat_start_elapsed_s": null,
+    "chat_end_elapsed_s": null,
+    "client_call_duration_s": 2.2597466660663486,
+    "request_preparation_s": 0.0001715831458568573,
+    "transport_duration_s": 2.2594807078130543,
+    "response_validation_s": 9.437510743737221e-05,
+    "ollama_metrics": {
+      "total_duration": 2258801417,
+      "load_duration": 622000,
+      "prompt_eval_count": 973,
+      "prompt_eval_cached_count": 491,
+      "prompt_eval_duration": 1433949000,
+      "eval_count": 26,
+      "eval_duration": 818637000
+    },
+    "request_duration_s": 2.2594840419478714,
+    "ok": true,
+    "decision": {
+      "action": "CONTINUE",
+      "reason": "The person is within interaction range with intermittent looking, but distance trend is unavailable."
+    },
+    "error": null
+  }
+]

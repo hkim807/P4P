@@ -1,0 +1,93 @@
+{
+  "scenario_id": "S9",
+  "policy": "llm",
+  "status": "ACTION_RESOLVED",
+  "action": "CONTINUE",
+  "decision": {
+    "action": "CONTINUE",
+    "reason": "The person is within the approachable zone with sustained gaze, but beyond interaction range."
+  },
+  "accepted_by_live_client": false,
+  "acceptance_details": {
+    "current_readiness": true,
+    "latest_observation_age_s": 1.535224,
+    "model_source_age_s": 3.851987,
+    "trial_phase": "OBSERVING",
+    "failure_reason": null
+  },
+  "resolved_elapsed_s": 4.925673624966294,
+  "stop_elapsed_s": 4.925673624966294,
+  "frames_ingested": 35,
+  "ready_frames": 24,
+  "readiness_counts": {
+    "INSUFFICIENT_GAZE_EVIDENCE": 11,
+    "READY": 24
+  },
+  "recording_exhausted": true,
+  "last_ingested_source_offset_s": 3.390455,
+  "last_ingested_line": 70,
+  "decision_source_offset_s": 1.073692,
+  "motion_start_monotonic_us": 2338007134,
+  "perception_origin_monotonic_us": 2338074249,
+  "decision_source_since_motion_s": 1.140807,
+  "max_dispatch_lag_s": 0.18371841590851545,
+  "model_failures": [],
+  "first_model_request": {
+    "decision": null,
+    "error": null,
+    "policy": "llm",
+    "request_id": "836a0875306446a58ec82528db1d1c21",
+    "session_id": "replay-077ff210a4441c83a39ff4a6",
+    "source_robot_timestamp_us": 2339147941,
+    "source_state_id": "replay-077ff210a4441c83a39ff4a6:12",
+    "status": "pending",
+    "trial_id": "d124a8ed7fd945fc87670b67827ff0bd"
+  },
+  "resolved_output": {
+    "decision": {
+      "action": "CONTINUE",
+      "reason": "The person is within the approachable zone with sustained gaze, but beyond interaction range."
+    },
+    "error": null,
+    "policy": "llm",
+    "request_id": "836a0875306446a58ec82528db1d1c21",
+    "session_id": "replay-077ff210a4441c83a39ff4a6",
+    "source_robot_timestamp_us": 2339147941,
+    "source_state_id": "replay-077ff210a4441c83a39ff4a6:12",
+    "status": "succeeded",
+    "trial_id": "d124a8ed7fd945fc87670b67827ff0bd",
+    "completed_at": "2026-10-12T21:57:26.519772+00:00",
+    "error_stage": null,
+    "ok": true,
+    "ollama_configuration": {
+      "base_url": "http://127.0.0.1:11434",
+      "generation_options": {
+        "num_ctx": 8192,
+        "num_predict": 192,
+        "seed": 42,
+        "temperature": 0.0
+      },
+      "model": "gemma3:4b",
+      "num_ctx": 8192,
+      "num_predict": 192,
+      "seed": 42,
+      "temperature": 0.0,
+      "timeout_seconds": 120.0
+    },
+    "prompt_version": "decision-state-llm-v16",
+    "raw_content": "{\"action\":\"CONTINUE\",\"reason\":\"The person is within the approachable zone with sustained gaze, but beyond interaction range.\"}",
+    "request_duration_s": 3.8187535000033677,
+    "requested_model": "gemma3:4b",
+    "returned_model": "gemma3:4b",
+    "delivery_status": "succeeded",
+    "delivery_error": null
+  },
+  "last_readiness": {
+    "reason_code": null,
+    "status": "READY"
+  },
+  "source_sha256": "56793886eec65c069a2861f87ad0f01b67dc8445d8b3dfa756a5a86c0b8c57d8",
+  "trial_id": "d124a8ed7fd945fc87670b67827ff0bd",
+  "clock_mapping": "original first perception receipt + real elapsed replay time",
+  "physical_execution": false
+}

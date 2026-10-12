@@ -1,0 +1,330 @@
+Operational qwen25-7b 1 S1
+{"scenario_id": "S1", "first_decision": {"action": "CONTINUE", "reason": "Person outside interaction range, no sustained looking."}, "action_aligned": true, "eligible_to_first_completion_s": 7.274618125026793, "accepted_by_live_client": true}
+Operational qwen25-7b 1 S2
+{"scenario_id": "S2", "first_decision": {"action": "APPROACH", "reason": "Person within social range, sustained gaze at the robot."}, "action_aligned": true, "eligible_to_first_completion_s": 3.170646249908805, "accepted_by_live_client": true}
+Operational qwen25-7b 1 S3
+{"scenario_id": "S3", "first_decision": {"action": "ENGAGE", "reason": "Sustained gaze and proximity within interaction range."}, "action_aligned": true, "eligible_to_first_completion_s": 3.3113437079849244, "accepted_by_live_client": true}
+Operational qwen25-7b 1 S4
+{"scenario_id": "S4", "first_decision": {"action": "CONTINUE", "reason": "Person outside interaction range, decreasing distance but no sustained looking."}, "action_aligned": false, "eligible_to_first_completion_s": 3.627058083886355, "accepted_by_live_client": true}
+Operational qwen25-7b 1 S5
+{"scenario_id": "S5", "first_decision": {"action": "CONTINUE", "reason": "No people observed and robot is moving."}, "action_aligned": true, "eligible_to_first_completion_s": 1.6698058751841485, "accepted_by_live_client": true}
+Operational qwen25-7b 1 S6
+{"scenario_id": "S6", "first_decision": {"action": "CONTINUE", "reason": "No recent looking and low gaze fraction outside interaction range."}, "action_aligned": true, "eligible_to_first_completion_s": 3.17145520793733, "accepted_by_live_client": true}
+Operational qwen25-7b 1 S7
+{"scenario_id": "S7", "first_decision": {"action": "CONTINUE", "reason": "Intermittent looking but no sustained gaze or closing distance."}, "action_aligned": true, "eligible_to_first_completion_s": 3.1300873330622614, "accepted_by_live_client": false}
+Operational qwen25-7b 1 S8
+{"scenario_id": "S8", "first_decision": {"action": "CONTINUE", "reason": "No people observed and robot is moving."}, "action_aligned": true, "eligible_to_first_completion_s": 1.4260242911266983, "accepted_by_live_client": true}
+Operational qwen25-7b 1 S9
+{"scenario_id": "S9", "first_decision": {"action": "APPROACH", "reason": "Person detected at approachable distance with sustained gaze."}, "action_aligned": true, "eligible_to_first_completion_s": 3.044110875116467, "accepted_by_live_client": true}
+Operational qwen25-3b 1 S1
+{"scenario_id": "S1", "first_decision": {"action": "YIELD", "reason": "Person is looking away and decreasing distance, suggesting obstruction; robot needs space to continue."}, "action_aligned": false, "eligible_to_first_completion_s": 3.1385122909860015, "accepted_by_live_client": true}
+Operational qwen25-3b 1 S2
+{"scenario_id": "S2", "first_decision": {"action": "YIELD", "reason": "Person is looking at the robot and closing the distance, indicating a potential obstruction."}, "action_aligned": false, "eligible_to_first_completion_s": 1.8263897501266002, "accepted_by_live_client": true}
+Operational qwen25-3b 1 S3
+{"scenario_id": "S3", "first_decision": {"action": "ENGAGE", "reason": "Person is looking at the robot within conversation distance and has sustained gaze, indicating interest in interaction."}, "action_aligned": true, "eligible_to_first_completion_s": 1.6880697090203465, "accepted_by_live_client": true}
+Operational qwen25-3b 1 S4
+{"scenario_id": "S4", "first_decision": {"action": "YIELD", "reason": "Person is looking away and robot-person distance is decreasing, suggesting obstruction without clear interest or permission."}, "action_aligned": true, "eligible_to_first_completion_s": 2.245517625236958, "accepted_by_live_client": true}
+Operational qwen25-3b 1 S5
+{"scenario_id": "S5", "first_decision": {"action": "CONTINUE", "reason": "No person observed; robot is moving, no immediate interaction needed."}, "action_aligned": true, "eligible_to_first_completion_s": 1.3886998339054584, "accepted_by_live_client": true}
+Operational qwen25-3b 1 S6
+{"scenario_id": "S6", "first_decision": {"action": "YIELD", "reason": "Person detected within corridor, looking away; robot needs space to pass."}, "action_aligned": false, "eligible_to_first_completion_s": 1.7723998331510722, "accepted_by_live_client": false}
+Operational qwen25-3b 1 S7
+{"scenario_id": "S7", "first_decision": {"action": "YIELD", "reason": "Person is within conversation distance and intermittently looking, suggesting a potential interaction request."}, "action_aligned": false, "eligible_to_first_completion_s": 1.7622757081702054, "accepted_by_live_client": false}
+Operational qwen25-3b 1 S8
+{"scenario_id": "S8", "first_decision": {"action": "CONTINUE", "reason": "No person observed; robot is moving, no immediate interaction needed."}, "action_aligned": true, "eligible_to_first_completion_s": 0.8476363340604007, "accepted_by_live_client": true}
+Operational qwen25-3b 1 S9
+{"scenario_id": "S9", "first_decision": {"action": "YIELD", "reason": "Person is looking at the robot from a distance, suggesting a need for space without approaching interaction."}, "action_aligned": false, "eligible_to_first_completion_s": 1.9371111248673796, "accepted_by_live_client": true}
+Operational qwen3-4b-instruct 1 S1
+{"scenario_id": "S1", "first_decision": {"action": "APPROACH", "reason": "A face is detected with decreasing distance and low gaze, indicating a person approaching within social range."}, "action_aligned": false, "eligible_to_first_completion_s": 4.0257315826320355, "accepted_by_live_client": true}
+Operational qwen3-4b-instruct 1 S2
+{"scenario_id": "S2", "first_decision": {"action": "APPROACH", "reason": "A face is detected with sustained gaze and decreasing distance, indicating clear interest and approachability."}, "action_aligned": true, "eligible_to_first_completion_s": 2.0449320414437353, "accepted_by_live_client": true}
+Operational qwen3-4b-instruct 1 S3
+{"scenario_id": "S3", "first_decision": {"action": "APPROACH", "reason": "A person is within interaction range, steadily looking at the robot, and in the forward corridor, indicating a clear opportunity for engagement."}, "action_aligned": true, "eligible_to_first_completion_s": 2.3351907501021922, "accepted_by_live_client": true}
+Operational qwen3-4b-instruct 1 S4
+{"scenario_id": "S4", "first_decision": {"action": "APPROACH", "reason": "A face is detected with decreasing distance and low gaze, indicating a person approaching within social range."}, "action_aligned": false, "eligible_to_first_completion_s": 2.2675862919968366, "accepted_by_live_client": true}
+Operational qwen3-4b-instruct 1 S5
+{"scenario_id": "S5", "first_decision": {"action": "CONTINUE", "reason": "No observed people or gaze, and no detected interaction target or spatial need."}, "action_aligned": true, "eligible_to_first_completion_s": 1.3889255827722549, "accepted_by_live_client": true}
+Operational qwen3-4b-instruct 1 S6
+{"scenario_id": "S6", "first_decision": {"action": "CONTINUE", "reason": "No sustained gaze or proximity within interaction range; face detected but not looking, and distance trend is unavailable."}, "action_aligned": true, "eligible_to_first_completion_s": 2.4785052092791795, "accepted_by_live_client": true}
+Operational qwen3-4b-instruct 1 S7
+{"scenario_id": "S7", "first_decision": {"action": "CONTINUE", "reason": "Intermittent gaze and no sustained attention indicate no interest; person is beyond conversation distance and position is unknown."}, "action_aligned": true, "eligible_to_first_completion_s": 2.3764730419791937, "accepted_by_live_client": false}
+Operational qwen3-4b-instruct 1 S8
+{"scenario_id": "S8", "first_decision": {"action": "CONTINUE", "reason": "No observed people or gaze, and no interaction target detected in the environment."}, "action_aligned": true, "eligible_to_first_completion_s": 1.1099204997743368, "accepted_by_live_client": true}
+Operational qwen3-4b-instruct 1 S9
+{"scenario_id": "S9", "first_decision": {"action": "APPROACH", "reason": "A face is detected with sustained gaze and high looking fraction, beyond conversation distance but within social range, indicating interest and need for interaction."}, "action_aligned": true, "eligible_to_first_completion_s": 2.543973417026728, "accepted_by_live_client": true}
+Operational gemma3-4b 1 S1
+{"scenario_id": "S1", "first_decision": {"action": "CONTINUE", "reason": "The person is beyond conversation distance and shows no sustained gaze, justifying continued route progress."}, "action_aligned": true, "eligible_to_first_completion_s": 3.910610250169158, "accepted_by_live_client": true}
+Operational gemma3-4b 1 S2
+{"scenario_id": "S2", "first_decision": {"action": "CONTINUE", "reason": "The person is observed with sustained gaze and decreasing distance, but remains outside interaction range."}, "action_aligned": false, "eligible_to_first_completion_s": 3.608858582690209, "accepted_by_live_client": true}
+Operational gemma3-4b 1 S3
+{"scenario_id": "S3", "first_decision": {"action": "CONTINUE", "reason": "The robot is within interaction range with sustained gaze and a steady distance, requiring continued route progress."}, "action_aligned": false, "eligible_to_first_completion_s": 3.855038375037402, "accepted_by_live_client": true}
+Operational gemma3-4b 1 S4
+{"scenario_id": "S4", "first_decision": {"action": "CONTINUE", "reason": "The person is beyond conversation distance and shows little to no looking at the robot."}, "action_aligned": false, "eligible_to_first_completion_s": 3.5702637077738344, "accepted_by_live_client": true}
+Operational gemma3-4b 1 S5
+{"scenario_id": "S5", "first_decision": {"action": "CONTINUE", "reason": "No people observed and the robot is currently moving, so it should continue its route."}, "action_aligned": true, "eligible_to_first_completion_s": 2.7577925833371877, "accepted_by_live_client": true}
+Operational gemma3-4b 1 S6
+{"scenario_id": "S6", "first_decision": {"action": "CONTINUE", "reason": "The person is beyond conversation distance and shows little to no looking at the robot."}, "action_aligned": true, "eligible_to_first_completion_s": 3.694400708847612, "accepted_by_live_client": true}
+Operational gemma3-4b 1 S7
+{"scenario_id": "S7", "first_decision": {"action": "CONTINUE", "reason": "The person is within the approachable zone with intermittent looking, but distance is too great to initiate interaction."}, "action_aligned": true, "eligible_to_first_completion_s": 3.8551744579165876, "accepted_by_live_client": false}
+Operational gemma3-4b 1 S8
+{"scenario_id": "S8", "first_decision": {"action": "CONTINUE", "reason": "No people observed and the robot is currently moving, so it should continue its route."}, "action_aligned": true, "eligible_to_first_completion_s": 2.968764500154823, "accepted_by_live_client": true}
+Operational gemma3-4b 1 S9
+{"scenario_id": "S9", "first_decision": {"action": "CONTINUE", "reason": "The person is within the approachable zone with sustained gaze, but beyond interaction range."}, "action_aligned": false, "eligible_to_first_completion_s": 3.8386183753663596, "accepted_by_live_client": false}
+Operational qwen25-3b 2 S1
+{"scenario_id": "S1", "first_decision": {"action": "YIELD", "reason": "Person is looking away and decreasing distance, suggesting obstruction; robot needs space to continue."}, "action_aligned": false, "eligible_to_first_completion_s": 3.1347946249597967, "accepted_by_live_client": true}
+Operational qwen25-3b 2 S2
+{"scenario_id": "S2", "first_decision": {"action": "YIELD", "reason": "Person is looking at the robot and closing the distance, indicating a potential obstruction."}, "action_aligned": false, "eligible_to_first_completion_s": 1.881194624710679, "accepted_by_live_client": true}
+Operational qwen25-3b 2 S3
+{"scenario_id": "S3", "first_decision": {"action": "ENGAGE", "reason": "Person is looking at the robot within conversation distance and has sustained gaze, indicating interest in interaction."}, "action_aligned": true, "eligible_to_first_completion_s": 2.0486240837747753, "accepted_by_live_client": true}
+Operational qwen25-3b 2 S4
+{"scenario_id": "S4", "first_decision": {"action": "YIELD", "reason": "Person is looking away and robot-person distance is decreasing, suggesting obstruction without clear interest or permission."}, "action_aligned": true, "eligible_to_first_completion_s": 2.217227833109051, "accepted_by_live_client": true}
+Operational qwen25-3b 2 S5
+{"scenario_id": "S5", "first_decision": {"action": "CONTINUE", "reason": "No person observed; robot is moving, no immediate interaction needed."}, "action_aligned": true, "eligible_to_first_completion_s": 0.8902897910644709, "accepted_by_live_client": true}
+Operational qwen25-3b 2 S6
+{"scenario_id": "S6", "first_decision": {"action": "YIELD", "reason": "Person detected within corridor, looking away; robot needs space to pass."}, "action_aligned": false, "eligible_to_first_completion_s": 1.7460782501892447, "accepted_by_live_client": false}
+Operational qwen25-3b 2 S7
+{"scenario_id": "S7", "first_decision": {"action": "YIELD", "reason": "Person is within conversation distance and intermittently looking, suggesting a potential interaction request."}, "action_aligned": false, "eligible_to_first_completion_s": 1.6595118751577735, "accepted_by_live_client": false}
+Operational qwen25-3b 2 S8
+{"scenario_id": "S8", "first_decision": {"action": "CONTINUE", "reason": "No person observed; robot is moving, no immediate interaction needed."}, "action_aligned": true, "eligible_to_first_completion_s": 0.8763976250055134, "accepted_by_live_client": true}
+Operational qwen25-3b 2 S9
+{"scenario_id": "S9", "first_decision": {"action": "YIELD", "reason": "Person is looking at the robot from a distance, suggesting a need for space without approaching interaction."}, "action_aligned": false, "eligible_to_first_completion_s": 1.8799548749865889, "accepted_by_live_client": true}
+Operational qwen3-4b-instruct 2 S1
+{"scenario_id": "S1", "first_decision": {"action": "APPROACH", "reason": "A face is detected with decreasing distance and low gaze, indicating a person approaching within social range."}, "action_aligned": false, "eligible_to_first_completion_s": 4.635107791023076, "accepted_by_live_client": true}
+Operational qwen3-4b-instruct 2 S2
+{"scenario_id": "S2", "first_decision": {"action": "APPROACH", "reason": "A face is detected with sustained gaze and decreasing distance, indicating clear interest and approachability."}, "action_aligned": true, "eligible_to_first_completion_s": 2.685641000173837, "accepted_by_live_client": true}
+Operational qwen3-4b-instruct 2 S3
+{"scenario_id": "S3", "first_decision": {"action": "APPROACH", "reason": "A person is within interaction range, steadily looking at the robot, and in the forward corridor, indicating a clear opportunity for engagement."}, "action_aligned": true, "eligible_to_first_completion_s": 2.5345180420229734, "accepted_by_live_client": true}
+Operational qwen3-4b-instruct 2 S4
+{"scenario_id": "S4", "first_decision": {"action": "APPROACH", "reason": "A face is detected with decreasing distance and low gaze, indicating a person approaching within social range."}, "action_aligned": false, "eligible_to_first_completion_s": 2.4930049593058228, "accepted_by_live_client": true}
+Operational qwen3-4b-instruct 2 S5
+{"scenario_id": "S5", "first_decision": {"action": "CONTINUE", "reason": "No observed people or gaze, and no detected interaction target or spatial need."}, "action_aligned": true, "eligible_to_first_completion_s": 1.2114122497347592, "accepted_by_live_client": true}
+Operational qwen3-4b-instruct 2 S6
+{"scenario_id": "S6", "first_decision": {"action": "CONTINUE", "reason": "No sustained gaze or proximity within interaction range; face detected but not looking, and distance trend is unavailable."}, "action_aligned": true, "eligible_to_first_completion_s": 2.506198000353694, "accepted_by_live_client": true}
+Operational qwen3-4b-instruct 2 S7
+{"scenario_id": "S7", "first_decision": {"action": "CONTINUE", "reason": "Intermittent gaze and no sustained attention indicate no interest; person is beyond conversation distance and position is unknown."}, "action_aligned": true, "eligible_to_first_completion_s": 2.5043148750267625, "accepted_by_live_client": false}
+Operational qwen3-4b-instruct 2 S8
+{"scenario_id": "S8", "first_decision": {"action": "CONTINUE", "reason": "No observed people or gaze, and no interaction target detected in the environment."}, "action_aligned": true, "eligible_to_first_completion_s": 1.3983359163838327, "accepted_by_live_client": true}
+Operational qwen3-4b-instruct 2 S9
+{"scenario_id": "S9", "first_decision": {"action": "APPROACH", "reason": "A face is detected with sustained gaze and high looking fraction, beyond conversation distance but within social range, indicating interest and need for interaction."}, "action_aligned": true, "eligible_to_first_completion_s": 2.8455964578369555, "accepted_by_live_client": true}
+Operational gemma3-4b 2 S1
+{"scenario_id": "S1", "first_decision": {"action": "CONTINUE", "reason": "The person is beyond conversation distance and shows no sustained gaze, justifying continued route progress."}, "action_aligned": true, "eligible_to_first_completion_s": 4.1733517078400855, "accepted_by_live_client": true}
+Operational gemma3-4b 2 S2
+{"scenario_id": "S2", "first_decision": {"action": "CONTINUE", "reason": "The person is observed with sustained gaze and decreasing distance, but remains outside interaction range."}, "action_aligned": false, "eligible_to_first_completion_s": 2.820331999692917, "accepted_by_live_client": true}
+Operational gemma3-4b 2 S3
+{"scenario_id": "S3", "first_decision": {"action": "CONTINUE", "reason": "The robot is within interaction range with sustained gaze and a steady distance, requiring continued route progress."}, "action_aligned": false, "eligible_to_first_completion_s": 2.890786125234008, "accepted_by_live_client": true}
+Operational gemma3-4b 2 S4
+{"scenario_id": "S4", "first_decision": {"action": "CONTINUE", "reason": "The person is beyond conversation distance and shows little to no looking at the robot."}, "action_aligned": false, "eligible_to_first_completion_s": 2.680646749908179, "accepted_by_live_client": true}
+Operational gemma3-4b 2 S5
+{"scenario_id": "S5", "first_decision": {"action": "CONTINUE", "reason": "No people observed and the robot is currently moving, so it should continue its route."}, "action_aligned": true, "eligible_to_first_completion_s": 2.0606899998580515, "accepted_by_live_client": true}
+Operational gemma3-4b 2 S6
+{"scenario_id": "S6", "first_decision": {"action": "CONTINUE", "reason": "The person is beyond conversation distance and shows little to no looking at the robot."}, "action_aligned": true, "eligible_to_first_completion_s": 2.7739012499385773, "accepted_by_live_client": true}
+Operational gemma3-4b 2 S7
+{"scenario_id": "S7", "first_decision": {"action": "CONTINUE", "reason": "The person is within the approachable zone with intermittent looking, but distance is too great to initiate interaction."}, "action_aligned": true, "eligible_to_first_completion_s": 2.9436479171566368, "accepted_by_live_client": false}
+Operational gemma3-4b 2 S8
+{"scenario_id": "S8", "first_decision": {"action": "CONTINUE", "reason": "No people observed and the robot is currently moving, so it should continue its route."}, "action_aligned": true, "eligible_to_first_completion_s": 1.783947291711986, "accepted_by_live_client": false}
+Operational gemma3-4b 2 S9
+{"scenario_id": "S9", "first_decision": {"action": "CONTINUE", "reason": "The person is within the approachable zone with sustained gaze, but beyond interaction range."}, "action_aligned": false, "eligible_to_first_completion_s": 2.5369505411999222, "accepted_by_live_client": true}
+Operational qwen25-7b 2 S1
+{"scenario_id": "S1", "first_decision": {"action": "CONTINUE", "reason": "Person outside interaction range, no sustained looking."}, "action_aligned": true, "eligible_to_first_completion_s": 6.342557958299041, "accepted_by_live_client": false}
+Operational qwen25-7b 2 S2
+{"scenario_id": "S2", "first_decision": {"action": "APPROACH", "reason": "Person within social range, sustained gaze at the robot."}, "action_aligned": true, "eligible_to_first_completion_s": 3.1594811660571396, "accepted_by_live_client": true}
+Operational qwen25-7b 2 S3
+{"scenario_id": "S3", "first_decision": {"action": "ENGAGE", "reason": "Sustained gaze and proximity within interaction range."}, "action_aligned": true, "eligible_to_first_completion_s": 3.4225860418776572, "accepted_by_live_client": true}
+Operational qwen25-7b 2 S4
+{"scenario_id": "S4", "first_decision": {"action": "CONTINUE", "reason": "Person outside interaction range, decreasing distance but no sustained looking."}, "action_aligned": false, "eligible_to_first_completion_s": 3.2246779173110425, "accepted_by_live_client": true}
+Operational qwen25-7b 2 S5
+{"scenario_id": "S5", "first_decision": {"action": "CONTINUE", "reason": "No people observed and robot is moving."}, "action_aligned": true, "eligible_to_first_completion_s": 1.6176150829029678, "accepted_by_live_client": true}
+Operational qwen25-7b 2 S6
+{"scenario_id": "S6", "first_decision": {"action": "CONTINUE", "reason": "No recent looking and low gaze fraction outside interaction range."}, "action_aligned": true, "eligible_to_first_completion_s": 3.289067499996096, "accepted_by_live_client": true}
+Operational qwen25-7b 2 S7
+{"scenario_id": "S7", "first_decision": {"action": "CONTINUE", "reason": "Intermittent looking but no sustained gaze or closing distance."}, "action_aligned": true, "eligible_to_first_completion_s": 4.301280624961079, "accepted_by_live_client": false}
+Operational qwen25-7b 2 S8
+{"scenario_id": "S8", "first_decision": {"action": "CONTINUE", "reason": "No people observed and robot is moving."}, "action_aligned": true, "eligible_to_first_completion_s": 1.9839280419262946, "accepted_by_live_client": false}
+Operational qwen25-7b 2 S9
+{"scenario_id": "S9", "first_decision": {"action": "APPROACH", "reason": "Person detected at approachable distance with sustained gaze."}, "action_aligned": true, "eligible_to_first_completion_s": 3.8978322497622964, "accepted_by_live_client": false}
+Operational qwen3-4b-instruct 3 S1
+{"scenario_id": "S1", "first_decision": {"action": "APPROACH", "reason": "A face is detected with decreasing distance and low gaze, indicating a person approaching within social range."}, "action_aligned": false, "eligible_to_first_completion_s": 5.016904875142247, "accepted_by_live_client": true}
+Operational qwen3-4b-instruct 3 S2
+{"scenario_id": "S2", "first_decision": {"action": "APPROACH", "reason": "A face is detected with sustained gaze and decreasing distance, indicating clear interest and approachability."}, "action_aligned": true, "eligible_to_first_completion_s": 2.495242916639745, "accepted_by_live_client": true}
+Operational qwen3-4b-instruct 3 S3
+{"scenario_id": "S3", "first_decision": {"action": "APPROACH", "reason": "A person is within interaction range, steadily looking at the robot, and in the forward corridor, indicating a clear opportunity for engagement."}, "action_aligned": true, "eligible_to_first_completion_s": 2.7279542502040566, "accepted_by_live_client": true}
+Operational qwen3-4b-instruct 3 S4
+{"scenario_id": "S4", "first_decision": {"action": "APPROACH", "reason": "A face is detected with decreasing distance and low gaze, indicating a person approaching within social range."}, "action_aligned": false, "eligible_to_first_completion_s": 2.345063083103001, "accepted_by_live_client": true}
+Operational qwen3-4b-instruct 3 S5
+{"scenario_id": "S5", "first_decision": {"action": "CONTINUE", "reason": "No observed people or gaze, and no detected interaction target or spatial need."}, "action_aligned": true, "eligible_to_first_completion_s": 1.4317885419783591, "accepted_by_live_client": true}
+Operational qwen3-4b-instruct 3 S6
+{"scenario_id": "S6", "first_decision": {"action": "CONTINUE", "reason": "No sustained gaze or proximity within interaction range; face detected but not looking, and distance trend is unavailable."}, "action_aligned": true, "eligible_to_first_completion_s": 2.4709462907211184, "accepted_by_live_client": true}
+Operational qwen3-4b-instruct 3 S7
+{"scenario_id": "S7", "first_decision": {"action": "CONTINUE", "reason": "Intermittent gaze and no sustained attention indicate no interest; person is beyond conversation distance and position is unknown."}, "action_aligned": true, "eligible_to_first_completion_s": 2.7243741660207212, "accepted_by_live_client": false}
+Operational qwen3-4b-instruct 3 S8
+{"scenario_id": "S8", "first_decision": {"action": "CONTINUE", "reason": "No observed people or gaze, and no interaction target detected in the environment."}, "action_aligned": true, "eligible_to_first_completion_s": 1.1574476667891145, "accepted_by_live_client": true}
+Operational qwen3-4b-instruct 3 S9
+{"scenario_id": "S9", "first_decision": {"action": "APPROACH", "reason": "A face is detected with sustained gaze and high looking fraction, beyond conversation distance but within social range, indicating interest and need for interaction."}, "action_aligned": true, "eligible_to_first_completion_s": 2.4575633332187232, "accepted_by_live_client": true}
+Operational gemma3-4b 3 S1
+{"scenario_id": "S1", "first_decision": {"action": "CONTINUE", "reason": "The person is beyond conversation distance and shows no sustained gaze, justifying continued route progress."}, "action_aligned": true, "eligible_to_first_completion_s": 4.130039666751147, "accepted_by_live_client": true}
+Operational gemma3-4b 3 S2
+{"scenario_id": "S2", "first_decision": {"action": "CONTINUE", "reason": "The person is observed with sustained gaze and decreasing distance, but remains outside interaction range."}, "action_aligned": false, "eligible_to_first_completion_s": 2.8742599581702053, "accepted_by_live_client": true}
+Operational gemma3-4b 3 S3
+{"scenario_id": "S3", "first_decision": {"action": "CONTINUE", "reason": "The robot is within interaction range with sustained gaze and a steady distance, requiring continued route progress."}, "action_aligned": false, "eligible_to_first_completion_s": 3.1280399168866277, "accepted_by_live_client": true}
+Operational gemma3-4b 3 S4
+{"scenario_id": "S4", "first_decision": {"action": "CONTINUE", "reason": "The person is beyond conversation distance and shows little to no looking at the robot."}, "action_aligned": false, "eligible_to_first_completion_s": 2.5544332500976323, "accepted_by_live_client": true}
+Operational gemma3-4b 3 S5
+{"scenario_id": "S5", "first_decision": {"action": "CONTINUE", "reason": "No people observed and the robot is currently moving, so it should continue its route."}, "action_aligned": true, "eligible_to_first_completion_s": 1.714249957954645, "accepted_by_live_client": true}
+Operational gemma3-4b 3 S6
+{"scenario_id": "S6", "first_decision": {"action": "CONTINUE", "reason": "The person is beyond conversation distance and shows little to no looking at the robot."}, "action_aligned": true, "eligible_to_first_completion_s": 2.433183292117834, "accepted_by_live_client": true}
+Operational gemma3-4b 3 S7
+{"scenario_id": "S7", "first_decision": {"action": "CONTINUE", "reason": "The person is within the approachable zone with intermittent looking, but distance is too great to initiate interaction."}, "action_aligned": true, "eligible_to_first_completion_s": 3.3788356671869457, "accepted_by_live_client": false}
+Operational gemma3-4b 3 S8
+{"scenario_id": "S8", "first_decision": {"action": "CONTINUE", "reason": "No people observed and the robot is currently moving, so it should continue its route."}, "action_aligned": true, "eligible_to_first_completion_s": 2.520527916888416, "accepted_by_live_client": false}
+Operational gemma3-4b 3 S9
+{"scenario_id": "S9", "first_decision": {"action": "CONTINUE", "reason": "The person is within the approachable zone with sustained gaze, but beyond interaction range."}, "action_aligned": false, "eligible_to_first_completion_s": 3.1029042918289003, "accepted_by_live_client": true}
+Operational qwen25-7b 3 S1
+{"scenario_id": "S1", "first_decision": {"action": "CONTINUE", "reason": "Person outside interaction range, no sustained looking."}, "action_aligned": true, "eligible_to_first_completion_s": 6.272387207923204, "accepted_by_live_client": false}
+Operational qwen25-7b 3 S2
+{"scenario_id": "S2", "first_decision": {"action": "APPROACH", "reason": "Person within social range, sustained gaze at the robot."}, "action_aligned": true, "eligible_to_first_completion_s": 3.1549683330914378, "accepted_by_live_client": true}
+Operational qwen25-7b 3 S3
+{"scenario_id": "S3", "first_decision": {"action": "ENGAGE", "reason": "Sustained gaze and proximity within interaction range."}, "action_aligned": true, "eligible_to_first_completion_s": 3.2181915411750377, "accepted_by_live_client": true}
+Operational qwen25-7b 3 S4
+{"scenario_id": "S4", "first_decision": {"action": "CONTINUE", "reason": "Person outside interaction range, decreasing distance but no sustained looking."}, "action_aligned": false, "eligible_to_first_completion_s": 3.165694833962321, "accepted_by_live_client": true}
+Operational qwen25-7b 3 S5
+{"scenario_id": "S5", "first_decision": {"action": "CONTINUE", "reason": "No people observed and robot is moving."}, "action_aligned": true, "eligible_to_first_completion_s": 1.58549437499246, "accepted_by_live_client": true}
+Operational qwen25-7b 3 S6
+{"scenario_id": "S6", "first_decision": {"action": "CONTINUE", "reason": "No recent looking and low gaze fraction outside interaction range."}, "action_aligned": true, "eligible_to_first_completion_s": 3.1667260408447384, "accepted_by_live_client": true}
+Operational qwen25-7b 3 S7
+{"scenario_id": "S7", "first_decision": {"action": "CONTINUE", "reason": "Intermittent looking but no sustained gaze or closing distance."}, "action_aligned": true, "eligible_to_first_completion_s": 3.238142207992792, "accepted_by_live_client": false}
+Operational qwen25-7b 3 S8
+{"scenario_id": "S8", "first_decision": {"action": "CONTINUE", "reason": "No people observed and robot is moving."}, "action_aligned": true, "eligible_to_first_completion_s": 1.5799283333334029, "accepted_by_live_client": true}
+Operational qwen25-7b 3 S9
+{"scenario_id": "S9", "first_decision": {"action": "APPROACH", "reason": "Person detected at approachable distance with sustained gaze."}, "action_aligned": true, "eligible_to_first_completion_s": 3.0416737077811655, "accepted_by_live_client": true}
+Operational qwen25-3b 3 S1
+{"scenario_id": "S1", "first_decision": {"action": "YIELD", "reason": "Person is looking away and decreasing distance, suggesting obstruction; robot needs space to continue."}, "action_aligned": false, "eligible_to_first_completion_s": 3.032702290890485, "accepted_by_live_client": true}
+Operational qwen25-3b 3 S2
+{"scenario_id": "S2", "first_decision": {"action": "YIELD", "reason": "Person is looking at the robot and closing the distance, indicating a potential obstruction."}, "action_aligned": false, "eligible_to_first_completion_s": 1.807566499929726, "accepted_by_live_client": true}
+Operational qwen25-3b 3 S3
+{"scenario_id": "S3", "first_decision": {"action": "ENGAGE", "reason": "Person is looking at the robot within conversation distance and has sustained gaze, indicating interest in interaction."}, "action_aligned": true, "eligible_to_first_completion_s": 1.6545545001538993, "accepted_by_live_client": true}
+Operational qwen25-3b 3 S4
+{"scenario_id": "S4", "first_decision": {"action": "YIELD", "reason": "Person is looking away and robot-person distance is decreasing, suggesting obstruction without clear interest or permission."}, "action_aligned": true, "eligible_to_first_completion_s": 1.7994190838617086, "accepted_by_live_client": true}
+Operational qwen25-3b 3 S5
+{"scenario_id": "S5", "first_decision": {"action": "CONTINUE", "reason": "No person observed; robot is moving, no immediate interaction needed."}, "action_aligned": true, "eligible_to_first_completion_s": 0.8588660421279668, "accepted_by_live_client": true}
+Operational qwen25-3b 3 S6
+{"scenario_id": "S6", "first_decision": {"action": "YIELD", "reason": "Person detected within corridor, looking away; robot needs space to pass."}, "action_aligned": false, "eligible_to_first_completion_s": 1.804619874996066, "accepted_by_live_client": true}
+Operational qwen25-3b 3 S7
+{"scenario_id": "S7", "first_decision": {"action": "YIELD", "reason": "Person is within conversation distance and intermittently looking, suggesting a potential interaction request."}, "action_aligned": false, "eligible_to_first_completion_s": 1.7664440830997825, "accepted_by_live_client": false}
+Operational qwen25-3b 3 S8
+{"scenario_id": "S8", "first_decision": {"action": "CONTINUE", "reason": "No person observed; robot is moving, no immediate interaction needed."}, "action_aligned": true, "eligible_to_first_completion_s": 0.9417782918761373, "accepted_by_live_client": true}
+Operational qwen25-3b 3 S9
+{"scenario_id": "S9", "first_decision": {"action": "YIELD", "reason": "Person is looking at the robot from a distance, suggesting a need for space without approaching interaction."}, "action_aligned": false, "eligible_to_first_completion_s": 1.8425688329206704, "accepted_by_live_client": true}
+{
+  "stage": "stage8",
+  "results": {
+    "qwen25-7b": {
+      "trials": 27,
+      "aligned": 24,
+      "valid": 27,
+      "accepted": 20,
+      "aligned_and_accepted": 17,
+      "median_s": 3.198938208357364,
+      "p95_s": 6.339981895610437,
+      "median_first_client_completion_s": 3.170646249908805,
+      "truncated": 0,
+      "per_scenario_aligned": {
+        "S1": 3,
+        "S2": 3,
+        "S3": 3,
+        "S4": 0,
+        "S5": 3,
+        "S6": 3,
+        "S7": 3,
+        "S8": 3,
+        "S9": 3
+      },
+      "per_repeat_aligned": [
+        8,
+        8,
+        8
+      ]
+    },
+    "qwen25-3b": {
+      "trials": 27,
+      "aligned": 12,
+      "valid": 27,
+      "accepted": 22,
+      "aligned_and_accepted": 12,
+      "median_s": 1.806311459044069,
+      "p95_s": 3.115995929315433,
+      "median_first_client_completion_s": 1.7994190838617086,
+      "truncated": 0,
+      "per_scenario_aligned": {
+        "S1": 0,
+        "S2": 0,
+        "S3": 3,
+        "S4": 3,
+        "S5": 3,
+        "S6": 0,
+        "S7": 0,
+        "S8": 3,
+        "S9": 0
+      },
+      "per_repeat_aligned": [
+        4,
+        4,
+        4
+      ]
+    },
+    "qwen3-4b-instruct": {
+      "trials": 27,
+      "aligned": 21,
+      "valid": 27,
+      "accepted": 24,
+      "aligned_and_accepted": 18,
+      "median_s": 2.492149040759474,
+      "p95_s": 4.462340712705374,
+      "median_first_client_completion_s": 2.4785052092791795,
+      "truncated": 0,
+      "per_scenario_aligned": {
+        "S1": 0,
+        "S2": 3,
+        "S3": 3,
+        "S4": 0,
+        "S5": 3,
+        "S6": 3,
+        "S7": 3,
+        "S8": 3,
+        "S9": 3
+      },
+      "per_repeat_aligned": [
+        7,
+        7,
+        7
+      ]
+    },
+    "gemma3-4b": {
+      "trials": 27,
+      "aligned": 15,
+      "valid": 27,
+      "accepted": 21,
+      "aligned_and_accepted": 10,
+      "median_s": 2.955871250276983,
+      "p95_s": 4.083605058556169,
+      "median_first_client_completion_s": 2.9436479171566368,
+      "truncated": 0,
+      "per_scenario_aligned": {
+        "S1": 3,
+        "S2": 0,
+        "S3": 0,
+        "S4": 0,
+        "S5": 3,
+        "S6": 3,
+        "S7": 3,
+        "S8": 3,
+        "S9": 0
+      },
+      "per_repeat_aligned": [
+        5,
+        5,
+        5
+      ]
+    }
+  },
+  "selected": "qwen25-7b"
+}

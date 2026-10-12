@@ -1,0 +1,7 @@
+{
+  "model": "gemma3:4b",
+  "created_at": "2026-10-12T22:04:05.640214Z",
+  "response": "",
+  "done": true,
+  "done_reason": "load"
+}

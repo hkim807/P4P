@@ -1,0 +1,32 @@
+[
+  {
+    "source_state_id": null,
+    "source_robot_timestamp_us": null,
+    "state_sha256": "687334ab20a9c016cd85baa86977ea1a1f979bf14e94808aab9a10b80044e6a9",
+    "request_sha256": "eab24126e9ce41991a290c4cc900fdce6c8d342396b59ef736d8ac03fc633f49",
+    "request_bytes": 5288,
+    "input_characters": 4591,
+    "chat_start_elapsed_s": 1.1059604589827359,
+    "chat_end_elapsed_s": 2.8983547501266003,
+    "client_call_duration_s": 1.7923942911438644,
+    "request_preparation_s": 0.0003047077916562557,
+    "transport_duration_s": 1.792045958340168,
+    "response_validation_s": 4.3625012040138245e-05,
+    "ollama_metrics": {
+      "total_duration": 1791063000,
+      "load_duration": 1373125,
+      "prompt_eval_count": 914,
+      "prompt_eval_cached_count": 620,
+      "prompt_eval_duration": 820298000,
+      "eval_count": 32,
+      "eval_duration": 961170000
+    },
+    "request_duration_s": 1.7920479159802198,
+    "ok": true,
+    "decision": {
+      "action": "YIELD",
+      "reason": "Person is looking at the robot and closing the distance, indicating a potential obstruction."
+    },
+    "error": null
+  }
+]

@@ -335,3 +335,68 @@ Artifacts: [stage 6 report](/Users/eddiekim/Documents/Projects/P4P/var/evaluatio
 [summary definitions and method](/Users/eddiekim/Documents/Projects/P4P/docs/temporal-summary-experiments.md).
 The next planned stage is inference-setting optimization, with the selected
 v16 prompt and default v3 state held fixed.
+
+## Stages 7 and 8 — 13 October 2026: inference settings and models
+
+**Objective:** find faster first outputs without losing action alignment, then
+test whether alternative models reduce judgement errors. Shared DecisionState
+v3, disabled temporal additions, v16 instructions, original rules, first/later
+timestamps, allowed actions and acceptance checks are fixed throughout.
+
+**Stage 7:** screened context 2048, output ceiling 64 and their combination
+against a fresh 8192/192 Qwen 2.5 7B control. All direct screens retain eight
+aligned actions and valid whole prompts. The fastest screen, context 2048,
+received three operational repetitions plus nine later diagnostics, together
+with a freshly measured control. Arm order alternated by repetition.
+
+Both operational arms retain 24/27 alignment, 27/27 valid outputs and 21/27
+acceptance. Median complete-output time is 3.07 versus 3.13 seconds (-1.7%);
+95th percentile is 5.91 versus 5.84 seconds (+1.2%). Context 2048 saves about
+0.36 GB loaded memory, but fails the predeclared 10% speed-gain/no-worse-tail
+criterion. Reducing the output ceiling does not materially help because answers
+already end below 64 tokens. Retain context 8192 and output ceiling 192.
+
+**Stage 8:** downloaded Qwen 2.5 3B, Qwen 3 4B Instruct and Gemma 3 4B. All
+were tested with the retained settings alongside another fresh Qwen 2.5 7B
+control. Three operational repetitions per model rotate model order; nine later
+probes per model remain separate. One model is resident at a time, with warm
+weights. Digests, templates, quantization and runtime are recorded; application
+messages and structured-output schema are identical across models.
+
+| Model | Alignment in each of three passes | Median complete output | Acceptance |
+| --- | --- | ---: | ---: |
+| Qwen 2.5 7B | 8/9 | 3.20s | 20/27 |
+| Qwen 2.5 3B | 4/9 | 1.81s | 22/27 |
+| Qwen 3 4B Instruct | 7/9 | 2.49s | 24/27 |
+| Gemma 3 4B | 5/9 | 2.96s | 21/27 |
+
+All models return 27/27 valid first outputs, with no truncation. Qwen 2.5 3B
+fixes S4 but falsely yields in S1/S2/S6/S7/S9 and misstates corridor/proximity
+evidence. Qwen 3 4B Instruct wrongly approaches S1/S4, infers individual motion
+from relative separation and repeatedly claims interest as a fact. Gemma 3 4B
+selects CONTINUE for all first scenarios, missing S2/S3/S4/S9. The 7B control
+still misses S4 and retains known rationale errors about S6 looking and S7’s
+unknown trend. No tested model improves overall judgement quality.
+
+**Selection:** retain Qwen 2.5 7B and the original inference settings. None of
+the candidates meets the quality/speed criterion. No application, prompt,
+estimator, tracking, schema, rule or receiver-acceptance change is made.
+
+**Verification and limits:** 252 new decision calls: 36 direct screens, 162
+operational first trials and 54 later diagnostics. All strict outputs are valid;
+all actual messages/settings/schema/transport hashes are checked. Production
+rule/LLM input equality is checked for all first trials, and all 574 frames
+retain original rule decisions/readiness with 402 eligible. Original freezes
+remain unchanged. Six new selection/request/capacity checks pass. The full
+suite ran 679 methods with only the same pre-existing VLM/LLM wording method
+failing four subcases, with no new failures or errors.
+
+Gemma’s initial download failed on storage-host DNS; a retry succeeded during
+stage 7. Download activity overlaps screens/early setting blocks, limiting
+latency interpretation; all model-comparison calls follow completion. Results
+are local warm-model measurements on an M3/16 GB computer, not held-out accuracy
+or physical execution rates. Faster acceptance can accept more wrong actions;
+it does not override the primary first-action score.
+
+Artifacts: [stages 7/8 report](/Users/eddiekim/Documents/Projects/P4P/var/evaluation/llm-refinement-stage-7-8/REPORT.md),
+[method and retained settings](/Users/eddiekim/Documents/Projects/P4P/docs/inference-settings-and-models.md).

@@ -1,0 +1,32 @@
+[
+  {
+    "source_state_id": null,
+    "source_robot_timestamp_us": null,
+    "state_sha256": "687334ab20a9c016cd85baa86977ea1a1f979bf14e94808aab9a10b80044e6a9",
+    "request_sha256": "9b6dc2fb058b004ada12dac52798f1d241bcb7cf0872e80966b84a64df0705ae",
+    "request_bytes": 5295,
+    "input_characters": 4591,
+    "chat_start_elapsed_s": 1.111872041132301,
+    "chat_end_elapsed_s": 3.1168970414437354,
+    "client_call_duration_s": 2.0050250003114343,
+    "request_preparation_s": 0.0002955002710223198,
+    "transport_duration_s": 2.004626791924238,
+    "response_validation_s": 0.0001027081161737442,
+    "ollama_metrics": {
+      "total_duration": 2003401458,
+      "load_duration": 2829583,
+      "prompt_eval_count": 914,
+      "prompt_eval_cached_count": 620,
+      "prompt_eval_duration": 955649000,
+      "eval_count": 32,
+      "eval_duration": 1010379000
+    },
+    "request_duration_s": 2.0046291672624648,
+    "ok": true,
+    "decision": {
+      "action": "APPROACH",
+      "reason": "A face is detected with sustained gaze and decreasing distance, indicating clear interest and approachability."
+    },
+    "error": null
+  }
+]

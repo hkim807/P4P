@@ -1,0 +1,32 @@
+[
+  {
+    "source_state_id": null,
+    "source_robot_timestamp_us": null,
+    "state_sha256": "13a7fe7d417e419868ac3c96821b02e13fa2bfee21290c9883c1571bb733e98e",
+    "request_sha256": "96a3502eae7e62d5fe628d805729ac5b508fdeea75d70af31ecde7c7c51e6905",
+    "request_bytes": 5271,
+    "input_characters": 4574,
+    "chat_start_elapsed_s": null,
+    "chat_end_elapsed_s": null,
+    "client_call_duration_s": 1.6765527916140854,
+    "request_preparation_s": 0.00019704177975654602,
+    "transport_duration_s": 1.6763004171662033,
+    "response_validation_s": 5.5332668125629425e-05,
+    "ollama_metrics": {
+      "total_duration": 1675766041,
+      "load_duration": 746250,
+      "prompt_eval_count": 921,
+      "prompt_eval_cached_count": 601,
+      "prompt_eval_duration": 735036000,
+      "eval_count": 33,
+      "eval_duration": 935599000
+    },
+    "request_duration_s": 1.6763023328967392,
+    "ok": true,
+    "decision": {
+      "action": "YIELD",
+      "reason": "Person is looking away and increasing distance, suggesting they do not need space or interaction."
+    },
+    "error": null
+  }
+]

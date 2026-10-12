@@ -1,0 +1,32 @@
+[
+  {
+    "source_state_id": null,
+    "source_robot_timestamp_us": null,
+    "state_sha256": "4f7fc313e671f36c1b3a878c377ce1e05de17b0edce142717aed2de51e063329",
+    "request_sha256": "42c89b0bcadeca2292ba5cd5fc092da4b4f4893940f398b9f16942951b0b4bba",
+    "request_bytes": 5314,
+    "input_characters": 4617,
+    "chat_start_elapsed_s": null,
+    "chat_end_elapsed_s": null,
+    "client_call_duration_s": 1.941953375004232,
+    "request_preparation_s": 0.00018895789980888367,
+    "transport_duration_s": 1.9416930424049497,
+    "response_validation_s": 7.137469947338104e-05,
+    "ollama_metrics": {
+      "total_duration": 1941072458,
+      "load_duration": 754667,
+      "prompt_eval_count": 937,
+      "prompt_eval_cached_count": 620,
+      "prompt_eval_duration": 766929000,
+      "eval_count": 38,
+      "eval_duration": 1169157000
+    },
+    "request_duration_s": 1.9416950000450015,
+    "ok": true,
+    "decision": {
+      "action": "YIELD",
+      "reason": "Person is looking at the robot from a distance, suggesting a need for space as they are outside conversation distance."
+    },
+    "error": null
+  }
+]

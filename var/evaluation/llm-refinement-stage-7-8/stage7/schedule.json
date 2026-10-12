@@ -1,0 +1,23 @@
+[
+  {
+    "repetition": 1,
+    "order": [
+      "control",
+      "context-2048"
+    ]
+  },
+  {
+    "repetition": 2,
+    "order": [
+      "context-2048",
+      "control"
+    ]
+  },
+  {
+    "repetition": 3,
+    "order": [
+      "control",
+      "context-2048"
+    ]
+  }
+]

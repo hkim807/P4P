@@ -1,0 +1,32 @@
+[
+  {
+    "source_state_id": null,
+    "source_robot_timestamp_us": null,
+    "state_sha256": "13a7fe7d417e419868ac3c96821b02e13fa2bfee21290c9883c1571bb733e98e",
+    "request_sha256": "faa3a6e798a9ba90fa859f8c4bb120ec508d2880a31007258a67e71f63fb51fc",
+    "request_bytes": 5270,
+    "input_characters": 4574,
+    "chat_start_elapsed_s": null,
+    "chat_end_elapsed_s": null,
+    "client_call_duration_s": 2.3122135000303388,
+    "request_preparation_s": 0.00024512503296136856,
+    "transport_duration_s": 2.31188991619274,
+    "response_validation_s": 7.845880463719368e-05,
+    "ollama_metrics": {
+      "total_duration": 2311222584,
+      "load_duration": 892292,
+      "prompt_eval_count": 988,
+      "prompt_eval_cached_count": 489,
+      "prompt_eval_duration": 1429594000,
+      "eval_count": 27,
+      "eval_duration": 873085000
+    },
+    "request_duration_s": 2.311892167199403,
+    "ok": true,
+    "decision": {
+      "action": "CONTINUE",
+      "reason": "The person is beyond conversation distance and shows no sustained gaze, justifying continued route progress."
+    },
+    "error": null
+  }
+]

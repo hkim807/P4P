@@ -1,0 +1,32 @@
+[
+  {
+    "source_state_id": null,
+    "source_robot_timestamp_us": null,
+    "state_sha256": "7f5d15972d9822eaba243ac102c2243102fce3bd38e8eb352d7615d5b6b7c95b",
+    "request_sha256": "51d1ffa79dee5d4735040f71fb011b450e65db358a2fdacd3e719c31c7021f51",
+    "request_bytes": 5259,
+    "input_characters": 4563,
+    "chat_start_elapsed_s": null,
+    "chat_end_elapsed_s": null,
+    "client_call_duration_s": 2.5790542499162257,
+    "request_preparation_s": 0.0003047501668334007,
+    "transport_duration_s": 2.578498291783035,
+    "response_validation_s": 0.00025120796635746956,
+    "ollama_metrics": {
+      "total_duration": 2577782416,
+      "load_duration": 748208,
+      "prompt_eval_count": 978,
+      "prompt_eval_cached_count": 493,
+      "prompt_eval_duration": 1493664000,
+      "eval_count": 30,
+      "eval_duration": 1076523000
+    },
+    "request_duration_s": 2.578500332776457,
+    "ok": true,
+    "decision": {
+      "action": "CONTINUE",
+      "reason": "The robot is moving and observing a person within interaction range with intermittent looking, requiring continued route progress."
+    },
+    "error": null
+  }
+]

@@ -1,0 +1,32 @@
+[
+  {
+    "source_state_id": null,
+    "source_robot_timestamp_us": null,
+    "state_sha256": "349cc6d4229926a9c2ae0552404253eea702058e526b77644d07ad74588c6fbc",
+    "request_sha256": "fca48048d442d3318ab2390240b18b97ba3a07c1708ff611779d4015a75674ae",
+    "request_bytes": 5262,
+    "input_characters": 4565,
+    "chat_start_elapsed_s": 1.1022170409560204,
+    "chat_end_elapsed_s": 4.2143402909860015,
+    "client_call_duration_s": 3.112123250029981,
+    "request_preparation_s": 0.0003972090780735016,
+    "transport_duration_s": 3.1116779162548482,
+    "response_validation_s": 4.812469705939293e-05,
+    "ollama_metrics": {
+      "total_duration": 3111012625,
+      "load_duration": 3098792,
+      "prompt_eval_count": 906,
+      "prompt_eval_cached_count": 0,
+      "prompt_eval_duration": 2212954000,
+      "eval_count": 33,
+      "eval_duration": 884285000
+    },
+    "request_duration_s": 3.111679708119482,
+    "ok": true,
+    "decision": {
+      "action": "YIELD",
+      "reason": "Person is looking away and decreasing distance, suggesting obstruction; robot needs space to continue."
+    },
+    "error": null
+  }
+]

@@ -1,0 +1,32 @@
+[
+  {
+    "source_state_id": null,
+    "source_robot_timestamp_us": null,
+    "state_sha256": "4f7fc313e671f36c1b3a878c377ce1e05de17b0edce142717aed2de51e063329",
+    "request_sha256": "ab99ac3c1dcc2ddc0444b5a74a1a9dc0e080edb38789a3f918f521a6a54bbdfc",
+    "request_bytes": 5314,
+    "input_characters": 4617,
+    "chat_start_elapsed_s": null,
+    "chat_end_elapsed_s": null,
+    "client_call_duration_s": 2.994439125061035,
+    "request_preparation_s": 0.00030116690322756767,
+    "transport_duration_s": 2.9940384584479034,
+    "response_validation_s": 9.949970990419388e-05,
+    "ollama_metrics": {
+      "total_duration": 2993158541,
+      "load_duration": 970625,
+      "prompt_eval_count": 937,
+      "prompt_eval_cached_count": 620,
+      "prompt_eval_duration": 1581316000,
+      "eval_count": 28,
+      "eval_duration": 1404247000
+    },
+    "request_duration_s": 2.9940408328548074,
+    "ok": true,
+    "decision": {
+      "action": "APPROACH",
+      "reason": "Sustained gaze and steady proximity outside conversation distance."
+    },
+    "error": null
+  }
+]

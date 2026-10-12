@@ -1,0 +1,57 @@
+{
+  "scenario_id": "S8",
+  "first_source_state_id": "replay-246b41a68d212a1d60d24467:12",
+  "first_state_sha256": "5e5b1408334085e5e0a193e04a5c70e96b3f87ee42c4433fae095b82650d126e",
+  "expected_actions": [
+    "APPROACH",
+    "ENGAGE",
+    "CONTINUE"
+  ],
+  "first_decision": {
+    "action": "CONTINUE",
+    "reason": "No observed people or gaze, and no interaction target detected in the environment."
+  },
+  "first_output_valid": true,
+  "action_aligned": true,
+  "first_eligible_since_motion_s": 1.173908,
+  "output_since_motion_s": 2.2969302079182863,
+  "first_request_observed_elapsed_s": 1.0979223330505192,
+  "first_client_finished_elapsed_s": 2.200083499774337,
+  "first_eligible_to_validated_client_output_s": 1.1099204997743368,
+  "accepted_by_live_client": true,
+  "acceptance_details": {
+    "current_readiness": true,
+    "latest_observation_age_s": 0.03373,
+    "model_source_age_s": 1.123025,
+    "trial_phase": "DECIDED",
+    "failure_reason": null
+  },
+  "delivery_status": "succeeded",
+  "delivery_error": null,
+  "total_calls": 1,
+  "runner_status": "ACTION_RESOLVED",
+  "timing": {
+    "total_duration_s": 1.067766125,
+    "load_duration_s": 0.002624083,
+    "prompt_eval_duration_s": 0.22448,
+    "eval_duration_s": 0.801147,
+    "prompt_tokens": 650,
+    "cached_prompt_tokens": 586,
+    "output_tokens": 25,
+    "request_bytes": 4161,
+    "request_preparation_s": 0.00026516709476709366,
+    "response_validation_s": 0.00011370796710252762,
+    "transport_duration_s": 1.068962374702096,
+    "transport_minus_native_total_s": 0.001196249702096086,
+    "native_unattributed_s": 0.03951504199999989,
+    "eligible_to_observed_output_s": 1.1230222079182863,
+    "eligible_to_client_call_s": 0.040579250010371215,
+    "client_finished_to_observed_output_s": 0.013101708143949509
+  },
+  "first_error": null,
+  "repetition": 1,
+  "eligible_to_first_completion_s": 1.1099204997743368,
+  "first_done_reason": "stop",
+  "prompt_tokens": 650,
+  "output_tokens": 25
+}

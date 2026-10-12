@@ -1,0 +1,57 @@
+{
+  "scenario_id": "S8",
+  "first_source_state_id": "replay-246b41a68d212a1d60d24467:12",
+  "first_state_sha256": "5e5b1408334085e5e0a193e04a5c70e96b3f87ee42c4433fae095b82650d126e",
+  "expected_actions": [
+    "APPROACH",
+    "ENGAGE",
+    "CONTINUE"
+  ],
+  "first_decision": {
+    "action": "CONTINUE",
+    "reason": "No people observed and the robot is currently moving, so it should continue its route."
+  },
+  "first_output_valid": true,
+  "action_aligned": true,
+  "first_eligible_since_motion_s": 1.173908,
+  "output_since_motion_s": 2.9799179588918387,
+  "first_request_observed_elapsed_s": 1.0931309997104108,
+  "first_client_finished_elapsed_s": 2.874110291711986,
+  "first_eligible_to_validated_client_output_s": 1.783947291711986,
+  "accepted_by_live_client": false,
+  "acceptance_details": {
+    "current_readiness": false,
+    "latest_observation_age_s": 0.130173,
+    "model_source_age_s": 1.806017,
+    "trial_phase": "OBSERVING",
+    "failure_reason": null
+  },
+  "delivery_status": "succeeded",
+  "delivery_error": null,
+  "total_calls": 1,
+  "runner_status": "ACTION_RESOLVED",
+  "timing": {
+    "total_duration_s": 1.751876166,
+    "load_duration_s": 0.002259958,
+    "prompt_eval_duration_s": 0.716392,
+    "eval_duration_s": 1.019921,
+    "prompt_tokens": 686,
+    "cached_prompt_tokens": 478,
+    "output_tokens": 27,
+    "request_bytes": 4153,
+    "request_preparation_s": 0.0002642497420310974,
+    "response_validation_s": 4.224991425871849e-05,
+    "transport_duration_s": 1.7526790001429617,
+    "transport_minus_native_total_s": 0.0008028341429617836,
+    "native_unattributed_s": 0.013303207999999955,
+    "eligible_to_observed_output_s": 1.8060099588918388,
+    "eligible_to_client_call_s": 0.030961791912734515,
+    "client_finished_to_observed_output_s": 0.022062667179852724
+  },
+  "first_error": null,
+  "repetition": 2,
+  "eligible_to_first_completion_s": 1.783947291711986,
+  "first_done_reason": "stop",
+  "prompt_tokens": 686,
+  "output_tokens": 27
+}

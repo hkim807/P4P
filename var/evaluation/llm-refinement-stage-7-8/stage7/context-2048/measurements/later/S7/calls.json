@@ -1,0 +1,32 @@
+[
+  {
+    "source_state_id": null,
+    "source_robot_timestamp_us": null,
+    "state_sha256": "1d52101a732de6669958f720696b7de9d5d957f2070ee0b80b9e8bf9dc7aacd0",
+    "request_sha256": "13d46ac7cca74d90ce9d97c53fa5039a6cd7d71aebcae503e31560b0f50b6ca0",
+    "request_bytes": 5275,
+    "input_characters": 4578,
+    "chat_start_elapsed_s": null,
+    "chat_end_elapsed_s": null,
+    "client_call_duration_s": 2.8162803752347827,
+    "request_preparation_s": 0.0002137920819222927,
+    "transport_duration_s": 2.8158648749813437,
+    "response_validation_s": 0.00020170817151665688,
+    "ollama_metrics": {
+      "total_duration": 2814872500,
+      "load_duration": 1023000,
+      "prompt_eval_count": 933,
+      "prompt_eval_cached_count": 621,
+      "prompt_eval_duration": 1575642000,
+      "eval_count": 25,
+      "eval_duration": 1231531000
+    },
+    "request_duration_s": 2.8158676251769066,
+    "ok": true,
+    "decision": {
+      "action": "APPROACH",
+      "reason": "Person within interaction range with intermittent looking."
+    },
+    "error": null
+  }
+]

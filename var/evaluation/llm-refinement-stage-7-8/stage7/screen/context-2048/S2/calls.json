@@ -1,0 +1,32 @@
+[
+  {
+    "source_state_id": null,
+    "source_robot_timestamp_us": null,
+    "state_sha256": "687334ab20a9c016cd85baa86977ea1a1f979bf14e94808aab9a10b80044e6a9",
+    "request_sha256": "cdbee4d1e0751e193d59500f5ebf935c3736d3f3f01fd0142a1bebac159134b9",
+    "request_bytes": 5288,
+    "input_characters": 4591,
+    "chat_start_elapsed_s": null,
+    "chat_end_elapsed_s": null,
+    "client_call_duration_s": 3.00286674965173,
+    "request_preparation_s": 0.00015187496319413185,
+    "transport_duration_s": 3.002654083073139,
+    "response_validation_s": 6.079161539673805e-05,
+    "ollama_metrics": {
+      "total_duration": 3002056334,
+      "load_duration": 1016959,
+      "prompt_eval_count": 914,
+      "prompt_eval_cached_count": 620,
+      "prompt_eval_duration": 1656966000,
+      "eval_count": 22,
+      "eval_duration": 1337739000
+    },
+    "request_duration_s": 3.0026557496748865,
+    "ok": true,
+    "decision": {
+      "action": "APPROACH",
+      "reason": "Person within social range, sustained gaze at the robot."
+    },
+    "error": null
+  }
+]

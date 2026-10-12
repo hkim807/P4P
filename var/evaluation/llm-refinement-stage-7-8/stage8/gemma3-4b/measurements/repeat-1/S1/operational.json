@@ -1,0 +1,55 @@
+{
+  "scenario_id": "S1",
+  "first_source_state_id": "replay-c185d8773106dd7263c9682d:12",
+  "first_state_sha256": "349cc6d4229926a9c2ae0552404253eea702058e526b77644d07ad74588c6fbc",
+  "expected_actions": [
+    "CONTINUE"
+  ],
+  "first_decision": {
+    "action": "CONTINUE",
+    "reason": "The person is beyond conversation distance and shows no sustained gaze, justifying continued route progress."
+  },
+  "first_output_valid": true,
+  "action_aligned": true,
+  "first_eligible_since_motion_s": 1.178444,
+  "output_since_motion_s": 5.116214499819637,
+  "first_request_observed_elapsed_s": 1.0796315409243107,
+  "first_client_finished_elapsed_s": 4.986438250169158,
+  "first_eligible_to_validated_client_output_s": 3.910610250169158,
+  "accepted_by_live_client": true,
+  "acceptance_details": {
+    "current_readiness": true,
+    "latest_observation_age_s": 0.036421,
+    "model_source_age_s": 3.937773,
+    "trial_phase": "DECIDED",
+    "failure_reason": null
+  },
+  "delivery_status": "succeeded",
+  "delivery_error": null,
+  "total_calls": 1,
+  "runner_status": "ACTION_RESOLVED",
+  "timing": {
+    "total_duration_s": 3.87565225,
+    "load_duration_s": 0.005754833,
+    "prompt_eval_duration_s": 2.89883,
+    "eval_duration_s": 0.952799,
+    "prompt_tokens": 974,
+    "cached_prompt_tokens": 0,
+    "output_tokens": 27,
+    "request_bytes": 5261,
+    "request_preparation_s": 0.0005368753336369991,
+    "response_validation_s": 0.00013091741129755974,
+    "transport_duration_s": 3.876860666554421,
+    "transport_minus_native_total_s": 0.0012084165544212766,
+    "native_unattributed_s": 0.01826841700000026,
+    "eligible_to_observed_output_s": 3.9377704998196363,
+    "eligible_to_client_call_s": 0.03308179086980223,
+    "client_finished_to_observed_output_s": 0.027160249650478363
+  },
+  "first_error": null,
+  "repetition": 1,
+  "eligible_to_first_completion_s": 3.910610250169158,
+  "first_done_reason": "stop",
+  "prompt_tokens": 974,
+  "output_tokens": 27
+}

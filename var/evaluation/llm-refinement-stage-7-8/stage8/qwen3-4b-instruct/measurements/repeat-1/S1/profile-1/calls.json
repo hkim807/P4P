@@ -1,0 +1,32 @@
+[
+  {
+    "source_state_id": null,
+    "source_robot_timestamp_us": null,
+    "state_sha256": "349cc6d4229926a9c2ae0552404253eea702058e526b77644d07ad74588c6fbc",
+    "request_sha256": "42df897b023bb0a3806a25472a119cabec719c512309c73ef51b3268088a72f3",
+    "request_bytes": 5269,
+    "input_characters": 4565,
+    "chat_start_elapsed_s": 1.121353582944721,
+    "chat_end_elapsed_s": 5.101559582632035,
+    "client_call_duration_s": 3.980205999687314,
+    "request_preparation_s": 0.002181791700422764,
+    "transport_duration_s": 3.9775567911565304,
+    "response_validation_s": 0.00046741683036088943,
+    "ollama_metrics": {
+      "total_duration": 3976167833,
+      "load_duration": 5014458,
+      "prompt_eval_count": 906,
+      "prompt_eval_cached_count": 0,
+      "prompt_eval_duration": 2794523000,
+      "eval_count": 33,
+      "eval_duration": 1114392000
+    },
+    "request_duration_s": 3.9775583329610527,
+    "ok": true,
+    "decision": {
+      "action": "APPROACH",
+      "reason": "A face is detected with decreasing distance and low gaze, indicating a person approaching within social range."
+    },
+    "error": null
+  }
+]

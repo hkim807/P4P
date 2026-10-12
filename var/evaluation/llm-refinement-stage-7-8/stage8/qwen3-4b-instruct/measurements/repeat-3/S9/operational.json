@@ -1,0 +1,55 @@
+{
+  "scenario_id": "S9",
+  "first_source_state_id": "replay-077ff210a4441c83a39ff4a6:12",
+  "first_state_sha256": "f9127de9913dc53e096f89b3056e91d6a8e25ea59c096e4a5417d0fd1eb71c4b",
+  "expected_actions": [
+    "APPROACH"
+  ],
+  "first_decision": {
+    "action": "APPROACH",
+    "reason": "A face is detected with sustained gaze and high looking fraction, beyond conversation distance but within social range, indicating interest and need for interaction."
+  },
+  "first_output_valid": true,
+  "action_aligned": true,
+  "first_eligible_since_motion_s": 1.140807,
+  "output_since_motion_s": 3.609508040843308,
+  "first_request_observed_elapsed_s": 1.0794797078706324,
+  "first_client_finished_elapsed_s": 3.5312553332187235,
+  "first_eligible_to_validated_client_output_s": 2.4575633332187232,
+  "accepted_by_live_client": true,
+  "acceptance_details": {
+    "current_readiness": true,
+    "latest_observation_age_s": 0.151939,
+    "model_source_age_s": 2.468702,
+    "trial_phase": "DECIDED",
+    "failure_reason": null
+  },
+  "delivery_status": "succeeded",
+  "delivery_error": null,
+  "total_calls": 1,
+  "runner_status": "ACTION_RESOLVED",
+  "timing": {
+    "total_duration_s": 2.429096125,
+    "load_duration_s": 0.002753208,
+    "prompt_eval_duration_s": 1.062115,
+    "eval_duration_s": 1.327912,
+    "prompt_tokens": 918,
+    "cached_prompt_tokens": 586,
+    "output_tokens": 41,
+    "request_bytes": 5302,
+    "request_preparation_s": 0.0002592499367892742,
+    "response_validation_s": 6.133317947387695e-05,
+    "transport_duration_s": 2.4302575001493096,
+    "transport_minus_native_total_s": 0.0011613751493095847,
+    "native_unattributed_s": 0.03631591700000003,
+    "eligible_to_observed_output_s": 2.4687010408433077,
+    "eligible_to_client_call_s": 0.02698524995315066,
+    "client_finished_to_observed_output_s": 0.011137707624584436
+  },
+  "first_error": null,
+  "repetition": 3,
+  "eligible_to_first_completion_s": 2.4575633332187232,
+  "first_done_reason": "stop",
+  "prompt_tokens": 918,
+  "output_tokens": 41
+}

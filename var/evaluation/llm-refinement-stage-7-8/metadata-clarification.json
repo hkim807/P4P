@@ -1,0 +1,6 @@
+{
+  "original_settings_prompt_version": "social-state-llm-v14",
+  "actual_prompt_version": "decision-state-llm-v16",
+  "actual_requests_verified_against_stage5": true,
+  "explanation": "The copied historical settings prompt_version is unused by inference. Actual messages and audits use current v16; recommended settings metadata is updated."
+}

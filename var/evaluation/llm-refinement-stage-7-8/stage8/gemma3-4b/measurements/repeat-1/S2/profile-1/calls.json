@@ -1,0 +1,32 @@
+[
+  {
+    "source_state_id": null,
+    "source_robot_timestamp_us": null,
+    "state_sha256": "687334ab20a9c016cd85baa86977ea1a1f979bf14e94808aab9a10b80044e6a9",
+    "request_sha256": "1e94b2074fed2c4f67e4d6008b2ad0a24c126ae0819ff1e4195b4076974f89e8",
+    "request_bytes": 5287,
+    "input_characters": 4591,
+    "chat_start_elapsed_s": 1.1136019169352949,
+    "chat_end_elapsed_s": 4.680823582690209,
+    "client_call_duration_s": 3.5672216657549143,
+    "request_preparation_s": 0.00023116590455174446,
+    "transport_duration_s": 3.566926166880876,
+    "response_validation_s": 6.433296948671341e-05,
+    "ollama_metrics": {
+      "total_duration": 3564815167,
+      "load_duration": 3598875,
+      "prompt_eval_count": 983,
+      "prompt_eval_cached_count": 0,
+      "prompt_eval_duration": 2673544000,
+      "eval_count": 27,
+      "eval_duration": 867419000
+    },
+    "request_duration_s": 3.5669279168359935,
+    "ok": true,
+    "decision": {
+      "action": "CONTINUE",
+      "reason": "The person is observed with sustained gaze and decreasing distance, but remains outside interaction range."
+    },
+    "error": null
+  }
+]

@@ -1,0 +1,32 @@
+[
+  {
+    "source_state_id": null,
+    "source_robot_timestamp_us": null,
+    "state_sha256": "a26b19c2e0f20ff1c9afa0d1bea8303130e226e42fbedd66a7e97bd418f58037",
+    "request_sha256": "e970750bed9783ec406fd71806a3c6840895802f8fd20a75aba3f7bb1becef08",
+    "request_bytes": 5290,
+    "input_characters": 4593,
+    "chat_start_elapsed_s": 1.1620388748124242,
+    "chat_end_elapsed_s": 3.1753550837747753,
+    "client_call_duration_s": 2.013316208962351,
+    "request_preparation_s": 0.0002465839497745037,
+    "transport_duration_s": 2.0130024580284953,
+    "response_validation_s": 6.716698408126831e-05,
+    "ollama_metrics": {
+      "total_duration": 2012053459,
+      "load_duration": 1891959,
+      "prompt_eval_count": 924,
+      "prompt_eval_cached_count": 601,
+      "prompt_eval_duration": 885571000,
+      "eval_count": 29,
+      "eval_duration": 1112982000
+    },
+    "request_duration_s": 2.013004166074097,
+    "ok": true,
+    "decision": {
+      "action": "ENGAGE",
+      "reason": "Person is looking at the robot within conversation distance and has sustained gaze, indicating interest in interaction."
+    },
+    "error": null
+  }
+]

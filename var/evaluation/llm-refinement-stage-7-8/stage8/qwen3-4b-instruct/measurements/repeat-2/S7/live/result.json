@@ -1,0 +1,94 @@
+{
+  "scenario_id": "S7",
+  "policy": "llm",
+  "status": "ACTION_RESOLVED",
+  "action": "CONTINUE",
+  "decision": {
+    "action": "CONTINUE",
+    "reason": "Intermittent gaze and no sustained attention indicate no interest; person is beyond conversation distance and position is unknown."
+  },
+  "accepted_by_live_client": false,
+  "acceptance_details": {
+    "current_readiness": false,
+    "latest_observation_age_s": 0.089064,
+    "model_source_age_s": 2.518435,
+    "trial_phase": "OBSERVING",
+    "failure_reason": null
+  },
+  "resolved_elapsed_s": 4.182851916179061,
+  "stop_elapsed_s": 4.182851916179061,
+  "frames_ingested": 42,
+  "ready_frames": 16,
+  "readiness_counts": {
+    "INSUFFICIENT_GAZE_EVIDENCE": 18,
+    "NO_VISIBLE_PERSON": 8,
+    "READY": 16
+  },
+  "recording_exhausted": false,
+  "last_ingested_source_offset_s": 4.093789,
+  "last_ingested_line": 84,
+  "decision_source_offset_s": 1.664418,
+  "motion_start_monotonic_us": 2247095821,
+  "perception_origin_monotonic_us": 2247139027,
+  "decision_source_since_motion_s": 1.707624,
+  "max_dispatch_lag_s": 0.005283375270664692,
+  "model_failures": [],
+  "first_model_request": {
+    "decision": null,
+    "error": null,
+    "policy": "llm",
+    "request_id": "5f2d9fa7df174dbb9fa2b6b69b50a957",
+    "session_id": "replay-e25f14f5c9126f586b63f9e9",
+    "source_robot_timestamp_us": 2248803445,
+    "source_state_id": "replay-e25f14f5c9126f586b63f9e9:18",
+    "status": "pending",
+    "trial_id": "173f37d4eaee4c89832aae11aa48b5f7"
+  },
+  "resolved_output": {
+    "decision": {
+      "action": "CONTINUE",
+      "reason": "Intermittent gaze and no sustained attention indicate no interest; person is beyond conversation distance and position is unknown."
+    },
+    "error": null,
+    "policy": "llm",
+    "request_id": "5f2d9fa7df174dbb9fa2b6b69b50a957",
+    "session_id": "replay-e25f14f5c9126f586b63f9e9",
+    "source_robot_timestamp_us": 2248803445,
+    "source_state_id": "replay-e25f14f5c9126f586b63f9e9:18",
+    "status": "succeeded",
+    "trial_id": "173f37d4eaee4c89832aae11aa48b5f7",
+    "completed_at": "2026-10-12T21:58:29.317694+00:00",
+    "error_stage": null,
+    "ok": true,
+    "ollama_configuration": {
+      "base_url": "http://127.0.0.1:11434",
+      "generation_options": {
+        "num_ctx": 8192,
+        "num_predict": 192,
+        "seed": 42,
+        "temperature": 0.0
+      },
+      "model": "qwen3:4b-instruct",
+      "num_ctx": 8192,
+      "num_predict": 192,
+      "seed": 42,
+      "temperature": 0.0,
+      "timeout_seconds": 120.0
+    },
+    "prompt_version": "decision-state-llm-v16",
+    "raw_content": "{\"action\": \"CONTINUE\", \"reason\": \"Intermittent gaze and no sustained attention indicate no interest; person is beyond conversation distance and position is unknown.\"}",
+    "request_duration_s": 2.4694276247173548,
+    "requested_model": "qwen3:4b-instruct",
+    "returned_model": "qwen3:4b-instruct",
+    "delivery_status": "succeeded",
+    "delivery_error": null
+  },
+  "last_readiness": {
+    "reason_code": "INSUFFICIENT_GAZE_EVIDENCE",
+    "status": "OBSERVING"
+  },
+  "source_sha256": "b9f1f06c611c7d01c2c225095d193118ecc029c8202ca5635a963952fe9eb405",
+  "trial_id": "173f37d4eaee4c89832aae11aa48b5f7",
+  "clock_mapping": "original first perception receipt + real elapsed replay time",
+  "physical_execution": false
+}

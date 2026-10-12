@@ -1,0 +1,55 @@
+{
+  "scenario_id": "S6",
+  "first_source_state_id": "replay-c868e15ffc810edd0c196acc:12",
+  "first_state_sha256": "159a0ac453b5388f8ebd7d551a032c978d57733c4db4a97cceb72c252aad183b",
+  "expected_actions": [
+    "CONTINUE"
+  ],
+  "first_decision": {
+    "action": "CONTINUE",
+    "reason": "No sustained gaze or proximity within interaction range; face detected but not looking, and distance trend is unavailable."
+  },
+  "first_output_valid": true,
+  "action_aligned": true,
+  "first_eligible_since_motion_s": 1.108382,
+  "output_since_motion_s": 3.623271542204261,
+  "first_request_observed_elapsed_s": 1.071506875101477,
+  "first_client_finished_elapsed_s": 3.572851000353694,
+  "first_eligible_to_validated_client_output_s": 2.506198000353694,
+  "accepted_by_live_client": true,
+  "acceptance_details": {
+    "current_readiness": true,
+    "latest_observation_age_s": 0.07856,
+    "model_source_age_s": 2.514891,
+    "trial_phase": "DECIDED",
+    "failure_reason": null
+  },
+  "delivery_status": "succeeded",
+  "delivery_error": null,
+  "total_calls": 1,
+  "runner_status": "ACTION_RESOLVED",
+  "timing": {
+    "total_duration_s": 2.483891292,
+    "load_duration_s": 0.001326417,
+    "prompt_eval_duration_s": 1.127118,
+    "eval_duration_s": 1.324953,
+    "prompt_tokens": 917,
+    "cached_prompt_tokens": 586,
+    "output_tokens": 34,
+    "request_bytes": 5276,
+    "request_preparation_s": 0.00020470935851335526,
+    "response_validation_s": 9.604217484593391e-05,
+    "transport_duration_s": 2.48495241580531,
+    "transport_minus_native_total_s": 0.0010611238053099825,
+    "native_unattributed_s": 0.030493874999999893,
+    "eligible_to_observed_output_s": 2.5148895422042608,
+    "eligible_to_client_call_s": 0.02094483301502459,
+    "client_finished_to_observed_output_s": 0.008691541850566864
+  },
+  "first_error": null,
+  "repetition": 2,
+  "eligible_to_first_completion_s": 2.506198000353694,
+  "first_done_reason": "stop",
+  "prompt_tokens": 917,
+  "output_tokens": 34
+}

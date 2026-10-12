@@ -1,0 +1,36 @@
+Screen control S1 {'action': 'CONTINUE', 'reason': 'Person outside interaction range, no sustained looking.'} 6.212
+Screen control S2 {'action': 'APPROACH', 'reason': 'Person within social range, sustained gaze at the robot.'} 3.141
+Screen control S3 {'action': 'ENGAGE', 'reason': 'Sustained gaze and proximity within interaction range.'} 3.189
+Screen control S4 {'action': 'CONTINUE', 'reason': 'Person outside interaction range, decreasing distance but no sustained looking.'} 3.014
+Screen control S5 {'action': 'CONTINUE', 'reason': 'No people observed and robot is moving.'} 1.411
+Screen control S6 {'action': 'CONTINUE', 'reason': 'No recent looking and low gaze fraction outside interaction range.'} 3.052
+Screen control S7 {'action': 'CONTINUE', 'reason': 'Intermittent looking but no sustained gaze or closing distance.'} 3.457
+Screen control S8 {'action': 'CONTINUE', 'reason': 'No people observed and robot is moving.'} 1.689
+Screen control S9 {'action': 'APPROACH', 'reason': 'Person detected at approachable distance with sustained gaze.'} 3.247
+Screen context-2048 S1 {'action': 'CONTINUE', 'reason': 'Person outside interaction range, no sustained looking.'} 6.011
+Screen context-2048 S2 {'action': 'APPROACH', 'reason': 'Person within social range, sustained gaze at the robot.'} 3.003
+Screen context-2048 S3 {'action': 'ENGAGE', 'reason': 'Sustained gaze and proximity within interaction range.'} 2.992
+Screen context-2048 S4 {'action': 'CONTINUE', 'reason': 'Person outside interaction range, decreasing distance but no sustained looking.'} 3.035
+Screen context-2048 S5 {'action': 'CONTINUE', 'reason': 'No people observed and robot is moving.'} 1.521
+Screen context-2048 S6 {'action': 'CONTINUE', 'reason': 'No recent looking and low gaze fraction outside interaction range.'} 2.973
+Screen context-2048 S7 {'action': 'CONTINUE', 'reason': 'Intermittent looking but no sustained gaze or closing distance.'} 3.287
+Screen context-2048 S8 {'action': 'CONTINUE', 'reason': 'No people observed and robot is moving.'} 1.492
+Screen context-2048 S9 {'action': 'APPROACH', 'reason': 'Person detected at approachable distance with sustained gaze.'} 2.898
+Screen output-64 S1 {'action': 'CONTINUE', 'reason': 'Person outside interaction range, no sustained looking.'} 6.1
+Screen output-64 S2 {'action': 'APPROACH', 'reason': 'Person within social range, sustained gaze at the robot.'} 2.801
+Screen output-64 S3 {'action': 'ENGAGE', 'reason': 'Sustained gaze and proximity within interaction range.'} 2.973
+Screen output-64 S4 {'action': 'CONTINUE', 'reason': 'Person outside interaction range, decreasing distance but no sustained looking.'} 3.106
+Screen output-64 S5 {'action': 'CONTINUE', 'reason': 'No people observed and robot is moving.'} 1.33
+Screen output-64 S6 {'action': 'CONTINUE', 'reason': 'No recent looking and low gaze fraction outside interaction range.'} 3.058
+Screen output-64 S7 {'action': 'CONTINUE', 'reason': 'Intermittent looking but no sustained gaze or closing distance.'} 3.292
+Screen output-64 S8 {'action': 'CONTINUE', 'reason': 'No people observed and robot is moving.'} 1.852
+Screen output-64 S9 {'action': 'APPROACH', 'reason': 'Person detected at approachable distance with sustained gaze.'} 3.073
+Screen context-2048-output-64 S1 {'action': 'CONTINUE', 'reason': 'Person outside interaction range, no sustained looking.'} 6.063
+Screen context-2048-output-64 S2 {'action': 'APPROACH', 'reason': 'Person within social range, sustained gaze at the robot.'} 3.106
+Screen context-2048-output-64 S3 {'action': 'ENGAGE', 'reason': 'Sustained gaze and proximity within interaction range.'} 2.849
+Screen context-2048-output-64 S4 {'action': 'CONTINUE', 'reason': 'Person outside interaction range, decreasing distance but no sustained looking.'} 3.116
+Screen context-2048-output-64 S5 {'action': 'CONTINUE', 'reason': 'No people observed and robot is moving.'} 1.431
+Screen context-2048-output-64 S6 {'action': 'CONTINUE', 'reason': 'No recent looking and low gaze fraction outside interaction range.'} 2.917
+Screen context-2048-output-64 S7 {'action': 'CONTINUE', 'reason': 'Intermittent looking but no sustained gaze or closing distance.'} 3.302
+Screen context-2048-output-64 S8 {'action': 'CONTINUE', 'reason': 'No people observed and robot is moving.'} 1.347
+Screen context-2048-output-64 S9 {'action': 'APPROACH', 'reason': 'Person detected at approachable distance with sustained gaze.'} 3.002

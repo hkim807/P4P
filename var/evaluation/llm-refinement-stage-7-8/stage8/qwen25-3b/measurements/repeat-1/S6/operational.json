@@ -1,0 +1,55 @@
+{
+  "scenario_id": "S6",
+  "first_source_state_id": "replay-c868e15ffc810edd0c196acc:12",
+  "first_state_sha256": "159a0ac453b5388f8ebd7d551a032c978d57733c4db4a97cceb72c252aad183b",
+  "expected_actions": [
+    "CONTINUE"
+  ],
+  "first_decision": {
+    "action": "YIELD",
+    "reason": "Person detected within corridor, looking away; robot needs space to pass."
+  },
+  "first_output_valid": true,
+  "action_aligned": false,
+  "first_eligible_since_motion_s": 1.108382,
+  "output_since_motion_s": 2.9046845832594634,
+  "first_request_observed_elapsed_s": 1.0703978333622217,
+  "first_client_finished_elapsed_s": 2.8390528331510723,
+  "first_eligible_to_validated_client_output_s": 1.7723998331510722,
+  "accepted_by_live_client": false,
+  "acceptance_details": {
+    "current_readiness": false,
+    "latest_observation_age_s": 0.082404,
+    "model_source_age_s": 1.796304,
+    "trial_phase": "OBSERVING",
+    "failure_reason": null
+  },
+  "delivery_status": "succeeded",
+  "delivery_error": null,
+  "total_calls": 1,
+  "runner_status": "ACTION_RESOLVED",
+  "timing": {
+    "total_duration_s": 1.745419208,
+    "load_duration_s": 0.001185542,
+    "prompt_eval_duration_s": 0.85666,
+    "eval_duration_s": 0.879742,
+    "prompt_tokens": 917,
+    "cached_prompt_tokens": 586,
+    "output_tokens": 30,
+    "request_bytes": 5269,
+    "request_preparation_s": 0.00024229194968938828,
+    "response_validation_s": 4.8708170652389526e-05,
+    "transport_duration_s": 1.7463384997099638,
+    "transport_minus_native_total_s": 0.0009192917099638542,
+    "native_unattributed_s": 0.00783166599999996,
+    "eligible_to_observed_output_s": 1.7963025832594632,
+    "eligible_to_client_call_s": 0.025770333320766614,
+    "client_finished_to_observed_output_s": 0.023902750108391047
+  },
+  "first_error": null,
+  "repetition": 1,
+  "eligible_to_first_completion_s": 1.7723998331510722,
+  "first_done_reason": "stop",
+  "prompt_tokens": 917,
+  "output_tokens": 30
+}

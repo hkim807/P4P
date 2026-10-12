@@ -1,0 +1,61 @@
+{
+  "results": {
+    "control": {
+      "trials": 27,
+      "aligned": 24,
+      "valid": 27,
+      "accepted": 21,
+      "aligned_and_accepted": 18,
+      "median_s": 3.125866708720714,
+      "p95_s": 5.842532217288137,
+      "median_first_client_completion_s": 3.118116374968231,
+      "truncated": 0,
+      "per_scenario_aligned": {
+        "S1": 3,
+        "S2": 3,
+        "S3": 3,
+        "S4": 0,
+        "S5": 3,
+        "S6": 3,
+        "S7": 3,
+        "S8": 3,
+        "S9": 3
+      },
+      "per_repeat_aligned": [
+        8,
+        8,
+        8
+      ]
+    },
+    "context-2048": {
+      "trials": 27,
+      "aligned": 24,
+      "valid": 27,
+      "accepted": 21,
+      "aligned_and_accepted": 18,
+      "median_s": 3.0738009580239356,
+      "p95_s": 5.9101562501115055,
+      "median_first_client_completion_s": 3.053810790909052,
+      "truncated": 0,
+      "per_scenario_aligned": {
+        "S1": 3,
+        "S2": 3,
+        "S3": 3,
+        "S4": 0,
+        "S5": 3,
+        "S6": 3,
+        "S7": 3,
+        "S8": 3,
+        "S9": 3
+      },
+      "per_repeat_aligned": [
+        8,
+        8,
+        8
+      ]
+    }
+  },
+  "selected": "control",
+  "settings_variant": "context-2048",
+  "first_score_only": true
+}

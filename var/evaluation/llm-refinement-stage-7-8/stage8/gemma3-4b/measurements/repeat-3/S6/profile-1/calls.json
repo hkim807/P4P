@@ -1,0 +1,32 @@
+[
+  {
+    "source_state_id": null,
+    "source_robot_timestamp_us": null,
+    "state_sha256": "159a0ac453b5388f8ebd7d551a032c978d57733c4db4a97cceb72c252aad183b",
+    "request_sha256": "8eefdfe92e75429d90e3ead12b499862d09a650ec4867bf1fdb9b796a48103ef",
+    "request_bytes": 5268,
+    "input_characters": 4572,
+    "chat_start_elapsed_s": 1.1034267921932042,
+    "chat_end_elapsed_s": 3.499836292117834,
+    "client_call_duration_s": 2.39640949992463,
+    "request_preparation_s": 0.00027416693046689034,
+    "transport_duration_s": 2.3960804156959057,
+    "response_validation_s": 5.491729825735092e-05,
+    "ollama_metrics": {
+      "total_duration": 2395161208,
+      "load_duration": 2738500,
+      "prompt_eval_count": 985,
+      "prompt_eval_cached_count": 480,
+      "prompt_eval_duration": 1506132000,
+      "eval_count": 26,
+      "eval_duration": 867631000
+    },
+    "request_duration_s": 2.396082957740873,
+    "ok": true,
+    "decision": {
+      "action": "CONTINUE",
+      "reason": "The person is beyond conversation distance and shows little to no looking at the robot."
+    },
+    "error": null
+  }
+]

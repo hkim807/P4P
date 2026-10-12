@@ -1,0 +1,8 @@
+{
+  "history_window_s": 3.0,
+  "missing_grace_s": 0.75,
+  "max_samples_per_track": 64,
+  "max_tracks": 32,
+  "nose_reassociation_max_distance_m": 0.45,
+  "nose_reassociation_max_gap_s": 0.25
+}
