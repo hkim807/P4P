@@ -448,7 +448,7 @@
               "type": "null"
             }
           ],
-          "default": 0.5,
+          "default": null,
           "title": "Gaze Unavailable Score"
         },
         "far_gaze_distance_m": {

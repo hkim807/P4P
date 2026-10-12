@@ -37,7 +37,7 @@
   "far_gaze_distance_m": 2.75,
   "far_looking_enter": 0.97,
   "far_looking_exit": 0.95,
-  "gaze_unavailable_score": 0.5,
+  "gaze_unavailable_score": null,
   "allow_recurring_attention": false,
   "no_person_continue_after_s": 1.0
 }

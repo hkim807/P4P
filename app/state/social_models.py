@@ -25,7 +25,7 @@ class TemporalConfig(StrictModel):
     min_gaze_coverage_fraction: float = Field(default=0.6, gt=0, le=1)
     looking_enter: float = Field(default=0.8, ge=0, le=1)
     looking_exit: float = Field(default=0.7, ge=0, le=1)
-    gaze_unavailable_score: float | None = Field(default=0.5, ge=0, le=1)
+    gaze_unavailable_score: float | None = Field(default=None, ge=0, le=1)
     far_gaze_distance_m: float | None = Field(default=None, gt=0)
     far_looking_enter: float = Field(default=0.97, ge=0, le=1)
     far_looking_exit: float = Field(default=0.95, ge=0, le=1)

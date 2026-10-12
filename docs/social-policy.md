@@ -96,7 +96,10 @@ No ego-motion compensation or physical handler is added.
 Recurring attention qualifies only when `config.allow_recurring_attention` is
 true. The [final-scenario preset](final-scenario-tuning.md) disables it, uses a
 2 m interaction boundary, and requires stronger gaze scores beyond 2.75 m.
-The unavailable gaze sentinel (default 0.5) contributes no gaze evidence.
+Gaze overlap 0.5 is a usable low-gaze measurement under the default and current
+presets, based on robot tests while looking to the side. Missing gaze remains
+unavailable. `gaze_unavailable_score` defaults to null; an explicit numeric
+override can exclude a sentinel for a different source.
 
 The LLM prompt is `social-state-llm-v14`. It asks for an independent social
 judgment using the shared SocialState, readiness gate and four action meanings.

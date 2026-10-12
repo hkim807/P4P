@@ -27,6 +27,32 @@ def person(pipeline, f):
 
 
 class SocialTests(unittest.TestCase):
+    def test_half_gaze_is_valid_low_attention_and_null_remains_unavailable(self):
+        pipeline = SocialPipeline("half-gaze")
+        for i in range(21):
+            result = pipeline.process(sample(i, gaze=.5))
+        p = result["social_state"]["people"][0]
+        self.assertEqual(p["gaze_state"], "NONE")
+        self.assertTrue(p["evidence"]["gaze_valid"])
+        self.assertFalse(p["evidence"]["latest_gaze_looking"])
+        self.assertEqual(p["evidence"]["latest_gaze_overlap"], .5)
+        self.assertEqual(p["evidence"]["gaze_fraction"], 0)
+        self.assertEqual(result["final_decision"]["action"], "CONTINUE")
+        p = person(pipeline, sample(21, gaze=None))
+        self.assertEqual(p["gaze_state"], "UNKNOWN")
+        self.assertIsNone(p["evidence"]["latest_gaze_overlap"])
+        self.assertIn("GAZE_UNAVAILABLE", p["validity_flags"])
+
+    def test_explicit_unavailable_score_override_is_preserved(self):
+        pipeline = SocialPipeline("sentinel", temporal_config=TemporalConfig(gaze_unavailable_score=.5))
+        for i in range(21):
+            result = pipeline.process(sample(i, gaze=.5))
+        p = result["social_state"]["people"][0]
+        self.assertEqual(p["gaze_state"], "UNKNOWN")
+        self.assertIsNone(p["evidence"]["latest_gaze_overlap"])
+        self.assertEqual(p["evidence"]["gaze_valid_coverage_s"], 0)
+        self.assertIsNone(result["final_decision"])
+
     def test_warmup_then_sustained_then_null_immediately_unknown(self):
         pipeline = SocialPipeline("a")
         self.assertEqual(person(pipeline, sample(0))["gaze_state"], "UNKNOWN")

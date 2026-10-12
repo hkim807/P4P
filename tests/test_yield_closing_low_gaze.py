@@ -28,6 +28,16 @@ def sequence(**kwargs):
 
 
 class ClosingYieldTests(unittest.TestCase):
+    def test_half_gaze_supports_yield_with_valid_closing_corridor_evidence(self):
+        _, rows = sequence(gaze=.5)
+        first = next(row for row in rows if row['final_decision'])
+        self.assertEqual(first['final_decision']['action'], 'YIELD')
+        self.assertEqual(first['policy_decision']['reason_code'], 'IN_WAY_CLOSING_WITH_LOW_GAZE')
+        p = first['social_state']['people'][0]
+        self.assertEqual(p['gaze_state'], 'NONE')
+        self.assertTrue(p['evidence']['gaze_valid'])
+        self.assertEqual(p['evidence']['latest_gaze_overlap'], .5)
+
     def test_closing_low_gaze_resolves_after_warmup_and_robot_accepts_current_policy(self):
         _, rows = sequence()
         first = next(row for row in rows if row['final_decision'])

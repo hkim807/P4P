@@ -91,16 +91,17 @@ class FinalScenarioTuningTests(unittest.TestCase):
                 new = next(t for t in result['tracks'] if t['uid'] == 18)
                 self.assertEqual(new['observation_count'], 1)
 
-    def test_sentinel_is_unknown_and_raw_value_is_retained(self):
+    def test_half_gaze_is_low_attention_and_raw_value_is_retained(self):
         pipeline = self.pipeline()
         for i in range(16):
             result = pipeline.process(sample(i, gaze=.5))
         person = result['social_state']['people'][0]
         self.assertEqual(result['tracks'][0]['samples'][-1]['gaze_overlap'], .5)
-        self.assertIsNone(person['evidence']['latest_gaze_overlap'])
-        self.assertEqual(person['evidence']['gaze_valid_coverage_s'], 0)
-        self.assertEqual(person['gaze_state'], 'UNKNOWN')
-        self.assertIsNone(result['final_decision'])
+        self.assertEqual(person['evidence']['latest_gaze_overlap'], .5)
+        self.assertTrue(person['evidence']['gaze_valid'])
+        self.assertAlmostEqual(person['evidence']['gaze_valid_coverage_s'], 1.5)
+        self.assertEqual(person['gaze_state'], 'NONE')
+        self.assertEqual(result['final_decision']['action'], 'CONTINUE')
 
     def test_same_gaze_score_has_distance_appropriate_threshold(self):
         for distance, category, threshold in ((2.5, 'SUSTAINED', .93), (3., 'NONE', .97)):
