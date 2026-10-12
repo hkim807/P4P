@@ -149,8 +149,6 @@ class PersonSocialState(StrictModel):
     distance_zone: Zone
     relative_distance_trend: Trend
     evidence: TemporalEvidence
-    path_relation: Literal["UNKNOWN", "CLEAR", "CONFLICT"] = "UNKNOWN"
-    pass_gesture: Literal["UNKNOWN", "PASS"] = "UNKNOWN"
     face_detected: bool | None = None
     relative_head_position: dict[str, str | float] | None = None
     relative_nose_position: RelativeHeadPosition | None = None
@@ -246,8 +244,7 @@ def observation_hold_reason(state: SocialState) -> str | None:
     """Identical eligibility for rules, structured LLM, production and replay.
 
     Configured sustained empty observations permit a nominal CONTINUE.
-    Explicit conflict and pass cues need no gaze history. Proximity alone
-    does not establish a social action.
+    Proximity alone does not establish a social action.
     """
     visible = [p for p in state.people if p.visibility == "OBSERVED"]
     if not visible:
@@ -259,13 +256,9 @@ def observation_hold_reason(state: SocialState) -> str | None:
     if len(visible) != 1:
         return "MULTIPLE_VISIBLE_PEOPLE"
     person = visible[0]
-    if person.path_relation == "CONFLICT":
-        return None
     if (not person.evidence.latest_distance_valid or person.latest_distance_m is None
             or person.latest_distance_m < 0 or person.distance_zone == "UNKNOWN"):
         return "DISTANCE_UNKNOWN"
-    if person.pass_gesture == "PASS":
-        return None
     if not person.evidence.gaze_valid:
         return "INSUFFICIENT_GAZE_EVIDENCE"
     if person.gaze_state == "UNKNOWN":

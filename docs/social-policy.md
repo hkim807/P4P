@@ -37,16 +37,14 @@ permits CONTINUE after that duration of contiguous empty observations and at
 least `min_samples`; its default is disabled. Source gaps and detected people reset
 the empty interval. No stationary-window, human-motion,
 identity-lock or distance-trend prerequisite is added to general readiness.
-Explicit path conflict can resolve before distance/gaze warmup, and PASS can
-resolve with valid current distance before gaze warmup. Proximity alone cannot.
+Only supported Navel observations determine readiness. Proximity alone cannot
+bypass gaze warmup.
 
 Eligible `social-rules-v7` observations use this order:
 
 | Evidence | Action |
 | --- | --- |
 | Configured continuous empty observation interval completed | CONTINUE |
-| Explicit upstream path CONFLICT | YIELD |
-| Measured PASS invitation | CONTINUE |
 | Current nose classified IN_WAY, face detected, distance within `config.yield_closing_max_distance_m`, valid DECREASING trend, valid NONE gaze, latest looking false and latest gaze score ≤`evidence.looking_exit_threshold` (fallback `config.looking_exit`) | YIELD |
 | Same closing/low-gaze evidence with nose classified TO_SIDE | CONTINUE |
 | Latest looking false while historical SUSTAINED category is held | CONTINUE |
@@ -58,8 +56,7 @@ Eligible `social-rules-v7` observations use this order:
 The nose corridor gates v5's closing/low-gaze trigger. `path_position` must be
 `IN_WAY`; `TO_SIDE`, `BEHIND` and `UNKNOWN` cannot activate that trigger.
 See [nose-based path position](path-position.md) for the fixed-head assumption,
-coordinate mapping, thresholds and hysteresis. An explicit upstream
-`path_relation: CONFLICT` still takes priority over the inferred corridor.
+coordinate mapping, thresholds and hysteresis.
 Unknown position does not establish a clear route and does not prevent normal
 attention-based decisions. Older raw captures without nose geometry therefore
 cannot activate the corridor trigger; replay a full SDK capture to recover it.

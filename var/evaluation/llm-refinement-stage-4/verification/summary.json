@@ -1,0 +1,12 @@
+{
+  "test_methods_run": 664,
+  "passing_methods": 663,
+  "failing_methods": 1,
+  "failing_subcases": 4,
+  "new_failures": 0,
+  "known_failure": "VLM/LLM verbatim action wording predates stages 3 and 4",
+  "local_http_errors_with_fixtures_enabled": 0,
+  "rule_frames_verified": 574,
+  "paired_primary_inputs_verified": 27,
+  "exact_requests_verified": 36
+}

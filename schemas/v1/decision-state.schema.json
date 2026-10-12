@@ -91,6 +91,50 @@
       "title": "DecisionEvidence",
       "type": "object"
     },
+    "DecisionObservationLabels": {
+      "additionalProperties": false,
+      "description": "Deterministic descriptions of measurements, never inferred social intent.",
+      "properties": {
+        "version": {
+          "const": 3,
+          "default": 3,
+          "title": "Version",
+          "type": "integer"
+        },
+        "attention_over_time": {
+          "default": "Looking history is unavailable or insufficient.",
+          "title": "Attention Over Time",
+          "type": "string"
+        },
+        "current_gaze": {
+          "default": "Latest gaze classification is unavailable.",
+          "title": "Current Gaze",
+          "type": "string"
+        },
+        "proximity": {
+          "default": "Current distance category is unavailable.",
+          "title": "Proximity",
+          "type": "string"
+        },
+        "corridor_position": {
+          "default": "Position relative to the robot forward corridor is unavailable.",
+          "title": "Corridor Position",
+          "type": "string"
+        },
+        "relative_separation": {
+          "default": "Recent robot-person distance trend is unavailable or unreliable.",
+          "title": "Relative Separation",
+          "type": "string"
+        },
+        "face_detection": {
+          "default": "Face detection information is unavailable.",
+          "title": "Face Detection",
+          "type": "string"
+        }
+      },
+      "title": "DecisionObservationLabels",
+      "type": "object"
+    },
     "DecisionPerson": {
       "additionalProperties": false,
       "properties": {
@@ -142,23 +186,6 @@
           "title": "Relative Distance Trend",
           "type": "string"
         },
-        "path_relation": {
-          "enum": [
-            "UNKNOWN",
-            "CLEAR",
-            "CONFLICT"
-          ],
-          "title": "Path Relation",
-          "type": "string"
-        },
-        "pass_gesture": {
-          "enum": [
-            "UNKNOWN",
-            "PASS"
-          ],
-          "title": "Pass Gesture",
-          "type": "string"
-        },
         "face_detected": {
           "anyOf": [
             {
@@ -184,7 +211,7 @@
           "$ref": "#/$defs/DecisionEvidence"
         },
         "observation_labels": {
-          "$ref": "#/$defs/ObservationLabels"
+          "$ref": "#/$defs/DecisionObservationLabels"
         }
       },
       "required": [
@@ -192,12 +219,9 @@
         "gaze_state",
         "distance_zone",
         "relative_distance_trend",
-        "path_relation",
-        "pass_gesture",
         "face_detected",
         "path_position",
-        "evidence",
-        "observation_labels"
+        "evidence"
       ],
       "title": "DecisionPerson",
       "type": "object"
@@ -213,6 +237,11 @@
           ],
           "title": "Motion State",
           "type": "string"
+        },
+        "motion_description": {
+          "default": "Robot motion information is unavailable.",
+          "title": "Motion Description",
+          "type": "string"
         }
       },
       "required": [
@@ -220,82 +249,13 @@
       ],
       "title": "DecisionRobot",
       "type": "object"
-    },
-    "ObservationLabels": {
-      "additionalProperties": false,
-      "description": "Shared descriptive aliases, never interaction intent or policy advice.",
-      "properties": {
-        "version": {
-          "const": 1,
-          "default": 1,
-          "title": "Version",
-          "type": "integer"
-        },
-        "attention_over_time": {
-          "default": "UNKNOWN",
-          "enum": [
-            "LITTLE_OR_NO_LOOKING_AT_ROBOT",
-            "INTERMITTENT_LOOKING_AT_ROBOT",
-            "SUSTAINED_LOOKING_AT_ROBOT",
-            "UNKNOWN"
-          ],
-          "title": "Attention Over Time",
-          "type": "string"
-        },
-        "current_gaze": {
-          "default": "UNKNOWN",
-          "enum": [
-            "LOOKING_AT_ROBOT",
-            "NOT_LOOKING_AT_ROBOT",
-            "UNKNOWN"
-          ],
-          "title": "Current Gaze",
-          "type": "string"
-        },
-        "proximity": {
-          "default": "UNKNOWN",
-          "enum": [
-            "CLOSER_THAN_CONVERSATION_DISTANCE",
-            "WITHIN_CONVERSATION_DISTANCE",
-            "BEYOND_CONVERSATION_DISTANCE",
-            "BEYOND_CONFIGURED_SOCIAL_RANGE",
-            "UNKNOWN"
-          ],
-          "title": "Proximity",
-          "type": "string"
-        },
-        "corridor_position": {
-          "default": "UNKNOWN",
-          "enum": [
-            "IN_ROBOT_FORWARD_CORRIDOR",
-            "BESIDE_ROBOT_FORWARD_CORRIDOR",
-            "BEHIND_ROBOT",
-            "UNKNOWN"
-          ],
-          "title": "Corridor Position",
-          "type": "string"
-        },
-        "relative_separation": {
-          "default": "UNKNOWN",
-          "enum": [
-            "GETTING_CLOSER",
-            "STEADY",
-            "GETTING_FARTHER",
-            "UNKNOWN"
-          ],
-          "title": "Relative Separation",
-          "type": "string"
-        }
-      },
-      "title": "ObservationLabels",
-      "type": "object"
     }
   },
   "additionalProperties": false,
   "properties": {
     "schema_version": {
-      "const": 1,
-      "default": 1,
+      "const": 3,
+      "default": 3,
       "title": "Schema Version",
       "type": "integer"
     },

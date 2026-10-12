@@ -9,6 +9,7 @@ from app.policy.llm import build_llm_prompt
 from app.policy.rules import decide
 from app.social_pipeline import SocialPipeline
 from app.state.social_models import PersonSocialState, SocialState
+from app.replay.legacy import remove_legacy_unknown_cues
 from tests.test_llm_policy import social_state
 from tests.test_social_state import sample
 
@@ -100,7 +101,7 @@ class ObservationLabelTests(unittest.TestCase):
         for i, action in enumerate(expected, 1):
             with self.subTest(scenario=i):
                 path = Path(f'var/evaluation/final-scenario-tuning/run-02/llm/S{i}/models.jsonl')
-                original = json.loads(path.read_text().splitlines()[0])['social_state']
+                original = remove_legacy_unknown_cues(json.loads(path.read_text().splitlines()[0])['social_state'])
                 state = SocialState.model_validate(original)
                 self.assertEqual(decide(state).decision, action)
                 upgraded = json.loads(build_llm_prompt(state).social_state_json)

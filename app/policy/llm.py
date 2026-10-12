@@ -10,7 +10,7 @@ from app.state.social_models import SocialState
 from app.state.decision_models import decision_hold_reason, prepare_decision_input
 
 
-PROMPT_VERSION = "social-state-llm-v14-compact-v1"
+PROMPT_VERSION = "social-state-llm-v14-semantic-v3-navel-cues"
 SYSTEM_PROMPT = """You select social-navigation actions for a robot roaming a fixed route in a museum or laboratory. Use your own judgment to choose the most appropriate next action from the supplied SocialState. Balance human safety and comfort, willingness to interact, and progress along the route. A separate controller executes the selected action.
 
 Available actions:

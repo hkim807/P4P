@@ -1,4 +1,4 @@
-"""Unchanged v7 rule conditions evaluated on shared compact evidence."""
+"""Navel v7 rule conditions evaluated on supported shared compact evidence."""
 from __future__ import annotations
 
 from typing import Literal
@@ -26,8 +26,6 @@ class PolicyDecision(StrictModel):
 
 
 _FINAL_REASONS = {
-    "HUMAN_PATH_CONFLICT": "An upstream observation reports a likely route conflict; give the person priority.",
-    "PASS_GESTURE": "An upstream observation reports a gesture inviting the robot to pass; continue along the route.",
     "ATTENTION_ENDED": "The latest valid gaze observation no longer shows attention; continue along the route.",
     "RELATIVE_SEPARATION_INCREASING": "Separation is increasing outside conversation range; avoid pursuing the person.",
     "RECURRING_ATTENTION_IN_INTERACTION_RANGE": "Repeated measured attention supports a conversation at the current distance.",
@@ -97,10 +95,6 @@ def decide(state: SocialState | dict | DecisionInput, *, stale: bool = False,
 
     if person is None:
         return result("CONTINUE", "NO_PERSON_OBSERVED")
-    if person.path_relation == "CONFLICT":
-        return result("YIELD", "HUMAN_PATH_CONFLICT")
-    if person.pass_gesture == "PASS":
-        return result("CONTINUE", "PASS_GESTURE")
     c, e = inputs.parameters, person.evidence
     looking_exit = e.looking_exit_threshold if e.looking_exit_threshold is not None else c.looking_exit
     if (person.face_detected is True and e.distance_trend_valid

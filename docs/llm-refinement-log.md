@@ -107,3 +107,66 @@ runs on the same tuning recordings; they do not establish held-out accuracy.
 Artifacts: [stage 3 report](/Users/eddiekim/Documents/Projects/P4P/var/evaluation/llm-refinement-stage-3/REPORT.md),
 [representation guide](/Users/eddiekim/Documents/Projects/P4P/docs/compact-decision-state.md),
 [comparison metrics](/Users/eddiekim/Documents/Projects/P4P/var/evaluation/llm-refinement-stage-3/comparison.json).
+
+## Stage 4 — 13 October 2026: shared semantic descriptions
+
+**Objective:** make the compact evidence easier to interpret in the robot's
+social-navigation context without adding inferred intent or changing the rules.
+
+**Change:** DecisionState v2 replaces terse observation aliases with short
+measurement descriptions. Recent gaze history and latest gaze remain separate;
+proximity describes configured distance categories; corridor position is an
+estimate rather than a collision prediction; relative separation can be caused
+by either participant. Added descriptions distinguish face detection from
+facing the robot, unknown upstream path/gesture measurements from negative
+observations, and robot movement from individual person movement. Labels are
+recomputed from authoritative categories/validity during compact validation.
+SocialState's original diagnostic labels remain unchanged.
+
+**Controls:** both policies receive exactly the same enriched compact object.
+All numeric operands and categories are unchanged. The v14 instructions/user
+prefix, model digest/runtime, generation settings, first/later timestamps,
+expected-action lists and acceptance limits remain frozen. Prompt metadata is
+`social-state-llm-v14-semantic-v2`. Stage 3's sealed results were verified before
+and after measurement.
+
+**Verification:** all 574 frames match frozen v7 readiness, complete decisions,
+reasons, target IDs/epochs and source/session IDs; 402 remain eligible. The
+actual rule and model input hashes match in all 27 operational trials. Every
+non-label stage 3 operand matches across all 18 first/later snapshots. All 36
+model requests (27 primary, 9 later) retain response/native metrics and verified
+exact request bytes.
+
+**Results:** alignment remains 8/9 in each repetition (24/27). S4 still selects
+CONTINUE instead of YIELD; no first action changed from stage 3. Median prompt
+size rose from 794 to 880 tokens (+10.8%). Median eligibility-to-complete-output
+time rose from 2.76 to 3.72 seconds (+35.0%). All 27 first outputs were valid.
+Live replay acceptance fell from 24/27 to 22/27 (6/9, 9/9, 7/9); aligned and
+accepted fell from 21/27 to 19/27. Three rejections had observations older than
+the existing one-second limit; two had current readiness gaps. All model source
+ages were below the existing ten-second limit.
+
+**Explanation quality:** the labels themselves do not invent intent, but the
+LLM still describes sustained gaze as indicating interest (S2) or willingness
+(S3). Semantic descriptions do not guarantee grounded model explanations.
+Later diagnostics still disagree with the rules at S4/S6/S7 and do not count
+toward the primary score.
+
+**Tests:** 664 methods were run with local HTTP fixtures enabled. All stage 4,
+rule parity and integration checks passed. The same pre-existing VLM/LLM
+verbatim-action-wording test fails four subcases; no new test failure occurred.
+The initial sandbox run's 14 local-HTTP permission errors disappear with fixtures
+enabled. The LLM instructions remain byte-identical to the frozen baseline.
+
+**Interpretation:** this stage improves the explicit meaning of the shared
+state but does not improve first-action alignment on the tuning recordings.
+It has a measured text/latency cost and lower acceptance in this run. Retain
+stage 3 as the faster comparison reference; stage 4 is an experiment, not a
+claimed operational improvement. Separate warm-run runtime/cache effects also
+influence latency. A subsequent prompt experiment can test explanation grounding
+and treatment of closing/corridor evidence without encoding recommended actions
+in the state. No physical robot action was executed.
+
+Artifacts: [stage 4 report](/Users/eddiekim/Documents/Projects/P4P/var/evaluation/llm-refinement-stage-4/REPORT.md),
+[label meanings and derivation](/Users/eddiekim/Documents/Projects/P4P/docs/semantic-decision-state.md),
+[comparison metrics](/Users/eddiekim/Documents/Projects/P4P/var/evaluation/llm-refinement-stage-4/comparison.json).

@@ -1,0 +1,434 @@
+[
+  {
+    "scenario_id": "S1",
+    "snapshot": {
+      "timestamp_us": 1907261075,
+      "since_motion_s": 10.472695,
+      "state_id": "replay-c185d8773106dd7263c9682d:105",
+      "state_sha256": "d1a9a5a779a963c9b316b16aa7d703606f8792e26a6f202f8fea0eb2e770de36",
+      "rule_decision": {
+        "action": "CONTINUE",
+        "reason": "No person has been detected throughout the configured observation interval; continue along the route without initiating interaction."
+      },
+      "full_social_state_sha256": "8efc97e51030dd974bff1bbfed7067ffa1b9e8a101c43417cd8053eb04ad4ace"
+    },
+    "llm": {
+      "source_state_id": "replay-c185d8773106dd7263c9682d:105",
+      "session_id": "replay-c185d8773106dd7263c9682d",
+      "source_robot_timestamp_us": 1907261075,
+      "prompt_version": "social-state-llm-v14-semantic-v2",
+      "ok": true,
+      "decision": {
+        "action": "CONTINUE",
+        "reason": "Robot is moving; no person observed."
+      },
+      "error": null,
+      "requested_model": "qwen2.5:7b",
+      "returned_model": "qwen2.5:7b",
+      "raw_content": "{\"action\":\"CONTINUE\",\"reason\":\"Robot is moving; no person observed.\"}",
+      "request_duration_s": 1.6735653327777982,
+      "status": "DECIDED",
+      "action": "CONTINUE"
+    },
+    "timing": {
+      "total_duration_s": 1.668555792,
+      "load_duration_s": 0.010598958,
+      "prompt_eval_duration_s": 0.432917,
+      "eval_duration_s": 1.196719,
+      "prompt_tokens": 575,
+      "cached_prompt_tokens": 511,
+      "output_tokens": 18,
+      "request_bytes": 3668,
+      "request_preparation_s": 0.010520374868065119,
+      "response_validation_s": 0.00048558274284005165,
+      "transport_duration_s": 1.6735584582202137,
+      "transport_minus_native_total_s": 0.005002666220213614,
+      "native_unattributed_s": 0.02832083399999985
+    },
+    "primary_score": false
+  },
+  {
+    "scenario_id": "S2",
+    "snapshot": {
+      "timestamp_us": 2014613135,
+      "since_motion_s": 4.706534,
+      "state_id": "replay-bd5e83b6a4070146c505ec1e:48",
+      "state_sha256": "a3fe11929967346b673084c8a542967bc3c382552b87fdffb1259928b3bfd04d",
+      "rule_decision": {
+        "action": "APPROACH",
+        "reason": "The person is looking steadily at the robot and is within approach distance."
+      },
+      "full_social_state_sha256": "9f1a4ec6dfdb3efbbba00fb6c9d6affe348a20d5c5c3aad1709cf5b5edabd9e4"
+    },
+    "llm": {
+      "source_state_id": "replay-bd5e83b6a4070146c505ec1e:48",
+      "session_id": "replay-bd5e83b6a4070146c505ec1e",
+      "source_robot_timestamp_us": 2014613135,
+      "prompt_version": "social-state-llm-v14-semantic-v2",
+      "ok": true,
+      "decision": {
+        "action": "APPROACH",
+        "reason": "Person observed with sustained gaze and within approachable distance."
+      },
+      "error": null,
+      "requested_model": "qwen2.5:7b",
+      "returned_model": "qwen2.5:7b",
+      "raw_content": "{\"action\":\"APPROACH\",\"reason\":\"Person observed with sustained gaze and within approachable distance.\"}",
+      "request_duration_s": 3.8732860418967903,
+      "status": "DECIDED",
+      "action": "APPROACH"
+    },
+    "timing": {
+      "total_duration_s": 3.870411625,
+      "load_duration_s": 0.000721333,
+      "prompt_eval_duration_s": 2.615566,
+      "eval_duration_s": 1.234697,
+      "prompt_tokens": 901,
+      "cached_prompt_tokens": 511,
+      "output_tokens": 22,
+      "request_bytes": 5041,
+      "request_preparation_s": 0.0008545001037418842,
+      "response_validation_s": 0.0006402917206287384,
+      "transport_duration_s": 3.8732670000754297,
+      "transport_minus_native_total_s": 0.002855375075429656,
+      "native_unattributed_s": 0.01942729200000004
+    },
+    "primary_score": false
+  },
+  {
+    "scenario_id": "S3",
+    "snapshot": {
+      "timestamp_us": 2050804770,
+      "since_motion_s": 4.698744,
+      "state_id": "replay-7a43024a2619ec806420c762:47",
+      "state_sha256": "f2cda0a7cbd237b9d4d1cdbe4726896ba6d06b718ddad5575aa6a2cb3e81d839",
+      "rule_decision": {
+        "action": "ENGAGE",
+        "reason": "The person is looking steadily at the robot and is within conversation distance."
+      },
+      "full_social_state_sha256": "4f1144f58faf95689e598f23b38a1d51badbdf2daf16def975256b18658fdd08"
+    },
+    "llm": {
+      "source_state_id": "replay-7a43024a2619ec806420c762:47",
+      "session_id": "replay-7a43024a2619ec806420c762",
+      "source_robot_timestamp_us": 2050804770,
+      "prompt_version": "social-state-llm-v14-semantic-v2",
+      "ok": true,
+      "decision": {
+        "action": "ENGAGE",
+        "reason": "Sustained gaze and face detected within interaction range."
+      },
+      "error": null,
+      "requested_model": "qwen2.5:7b",
+      "returned_model": "qwen2.5:7b",
+      "raw_content": "{\"action\":\"ENGAGE\",\"reason\":\"Sustained gaze and face detected within interaction range.\"}",
+      "request_duration_s": 3.32947541680187,
+      "status": "DECIDED",
+      "action": "ENGAGE"
+    },
+    "timing": {
+      "total_duration_s": 3.328288375,
+      "load_duration_s": 0.001327041,
+      "prompt_eval_duration_s": 2.071233,
+      "eval_duration_s": 1.245606,
+      "prompt_tokens": 876,
+      "cached_prompt_tokens": 526,
+      "output_tokens": 21,
+      "request_bytes": 5005,
+      "request_preparation_s": 0.0011057499796152115,
+      "response_validation_s": 0.00013816682621836662,
+      "transport_duration_s": 3.3294716253876686,
+      "transport_minus_native_total_s": 0.001183250387668533,
+      "native_unattributed_s": 0.010122334000000066
+    },
+    "primary_score": false
+  },
+  {
+    "scenario_id": "S4",
+    "snapshot": {
+      "timestamp_us": 2102077205,
+      "since_motion_s": 5.996339,
+      "state_id": "replay-6c13d1e775b7489493285686:61",
+      "state_sha256": "03cc09167b430bdde7a77a6fd922d917bf410cbc0098ae45152d8784abf11c17",
+      "rule_decision": {
+        "action": "CONTINUE",
+        "reason": "Usable gaze evidence does not show sustained attention; continue along the fixed route."
+      },
+      "full_social_state_sha256": "8683a1c27f5930509d69bbbfaf4a9d5b5c2e8d390800f839a5056327fbe38501"
+    },
+    "llm": {
+      "source_state_id": "replay-6c13d1e775b7489493285686:61",
+      "session_id": "replay-6c13d1e775b7489493285686",
+      "source_robot_timestamp_us": 2102077205,
+      "prompt_version": "social-state-llm-v14-semantic-v2",
+      "ok": true,
+      "decision": {
+        "action": "APPROACH",
+        "reason": "Person within interaction range, intermittent looking suggests potential interest."
+      },
+      "error": null,
+      "requested_model": "qwen2.5:7b",
+      "returned_model": "qwen2.5:7b",
+      "raw_content": "{\"action\":\"APPROACH\",\"reason\":\"Person within interaction range, intermittent looking suggests potential interest.\"}",
+      "request_duration_s": 3.6157213752157986,
+      "status": "DECIDED",
+      "action": "APPROACH"
+    },
+    "timing": {
+      "total_duration_s": 3.612748083,
+      "load_duration_s": 0.000958708,
+      "prompt_eval_duration_s": 2.018425,
+      "eval_duration_s": 1.585666,
+      "prompt_tokens": 873,
+      "cached_prompt_tokens": 544,
+      "output_tokens": 22,
+      "request_bytes": 4986,
+      "request_preparation_s": 0.0005823750980198383,
+      "response_validation_s": 0.0005490412004292011,
+      "transport_duration_s": 3.615705333650112,
+      "transport_minus_native_total_s": 0.0029572506501120976,
+      "native_unattributed_s": 0.007698374999999924
+    },
+    "primary_score": false
+  },
+  {
+    "scenario_id": "S5",
+    "snapshot": {
+      "timestamp_us": 2145178517,
+      "since_motion_s": 6.872672,
+      "state_id": "replay-f9e815a071393de98a4bc3d1:69",
+      "state_sha256": "546dff60d1db687919b7db5053c7ae2e43e3bc63765c43192bd6d87111fd483d",
+      "rule_decision": {
+        "action": "CONTINUE",
+        "reason": "No person has been detected throughout the configured observation interval; continue along the route without initiating interaction."
+      },
+      "full_social_state_sha256": "fbb018aada2255a3b37a464ce95baf0b98d414e2a9a8d5da4b74686a7f0166a5"
+    },
+    "llm": {
+      "source_state_id": "replay-f9e815a071393de98a4bc3d1:69",
+      "session_id": "replay-f9e815a071393de98a4bc3d1",
+      "source_robot_timestamp_us": 2145178517,
+      "prompt_version": "social-state-llm-v14-semantic-v2",
+      "ok": true,
+      "decision": {
+        "action": "CONTINUE",
+        "reason": "Robot is moving; no person observed."
+      },
+      "error": null,
+      "requested_model": "qwen2.5:7b",
+      "returned_model": "qwen2.5:7b",
+      "raw_content": "{\"action\":\"CONTINUE\",\"reason\":\"Robot is moving; no person observed.\"}",
+      "request_duration_s": 1.6468634591437876,
+      "status": "DECIDED",
+      "action": "CONTINUE"
+    },
+    "timing": {
+      "total_duration_s": 1.643364125,
+      "load_duration_s": 0.011361792,
+      "prompt_eval_duration_s": 0.424433,
+      "eval_duration_s": 1.185203,
+      "prompt_tokens": 575,
+      "cached_prompt_tokens": 511,
+      "output_tokens": 18,
+      "request_bytes": 3668,
+      "request_preparation_s": 0.010731874965131283,
+      "response_validation_s": 0.00020708423107862473,
+      "transport_duration_s": 1.6468569580465555,
+      "transport_minus_native_total_s": 0.0034928330465555657,
+      "native_unattributed_s": 0.022366332999999905
+    },
+    "primary_score": false
+  },
+  {
+    "scenario_id": "S6",
+    "snapshot": {
+      "timestamp_us": 2202727824,
+      "since_motion_s": 4.615296,
+      "state_id": "replay-c868e15ffc810edd0c196acc:47",
+      "state_sha256": "5dfdf6d806c100903d6c15ac8511ab41c635eb57ca798740920c14f31d3c701a",
+      "rule_decision": {
+        "action": "CONTINUE",
+        "reason": "Usable gaze evidence does not show sustained attention; continue along the fixed route."
+      },
+      "full_social_state_sha256": "1c91a8ffe86cd203b70885c0f2d14ce792f3ba943328431864e904673163af04"
+    },
+    "llm": {
+      "source_state_id": "replay-c868e15ffc810edd0c196acc:47",
+      "session_id": "replay-c868e15ffc810edd0c196acc",
+      "source_robot_timestamp_us": 2202727824,
+      "prompt_version": "social-state-llm-v14-semantic-v2",
+      "ok": true,
+      "decision": {
+        "action": "APPROACH",
+        "reason": "Person within interaction range, intermittent gaze suggests potential interest."
+      },
+      "error": null,
+      "requested_model": "qwen2.5:7b",
+      "returned_model": "qwen2.5:7b",
+      "raw_content": "{\"action\":\"APPROACH\",\"reason\":\"Person within interaction range, intermittent gaze suggests potential interest.\"}",
+      "request_duration_s": 3.469274084083736,
+      "status": "DECIDED",
+      "action": "APPROACH"
+    },
+    "timing": {
+      "total_duration_s": 3.467005375,
+      "load_duration_s": 0.00070575,
+      "prompt_eval_duration_s": 2.043412,
+      "eval_duration_s": 1.416488,
+      "prompt_tokens": 867,
+      "cached_prompt_tokens": 511,
+      "output_tokens": 22,
+      "request_bytes": 4976,
+      "request_preparation_s": 0.00031529227271676064,
+      "response_validation_s": 0.0006027501076459885,
+      "transport_duration_s": 3.469255790580064,
+      "transport_minus_native_total_s": 0.0022504155800642245,
+      "native_unattributed_s": 0.006399624999999798
+    },
+    "primary_score": false
+  },
+  {
+    "scenario_id": "S7",
+    "snapshot": {
+      "timestamp_us": 2255911225,
+      "since_motion_s": 8.815404,
+      "state_id": "replay-e25f14f5c9126f586b63f9e9:89",
+      "state_sha256": "86b1d0783487c3970cf28587c4435335e5e6610e68986593e3ebb88263a2ca5c",
+      "rule_decision": {
+        "action": "CONTINUE",
+        "reason": "Usable gaze evidence does not show sustained attention; continue along the fixed route."
+      },
+      "full_social_state_sha256": "3ae6d253bbfda46e025660be91158265b9c1f55fd89b246036e36b8a49bf9f80"
+    },
+    "llm": {
+      "source_state_id": "replay-e25f14f5c9126f586b63f9e9:89",
+      "session_id": "replay-e25f14f5c9126f586b63f9e9",
+      "source_robot_timestamp_us": 2255911225,
+      "prompt_version": "social-state-llm-v14-semantic-v2",
+      "ok": true,
+      "decision": {
+        "action": "APPROACH",
+        "reason": "Intermittent looking at the robot and within interaction range."
+      },
+      "error": null,
+      "requested_model": "qwen2.5:7b",
+      "returned_model": "qwen2.5:7b",
+      "raw_content": "{\"action\":\"APPROACH\",\"reason\":\"Intermittent looking at the robot and within interaction range.\"}",
+      "request_duration_s": 3.306641499977559,
+      "status": "DECIDED",
+      "action": "APPROACH"
+    },
+    "timing": {
+      "total_duration_s": 3.305450042,
+      "load_duration_s": 0.001186208,
+      "prompt_eval_duration_s": 1.992094,
+      "eval_duration_s": 1.298653,
+      "prompt_tokens": 896,
+      "cached_prompt_tokens": 546,
+      "output_tokens": 23,
+      "request_bytes": 5001,
+      "request_preparation_s": 0.0010887086391448975,
+      "response_validation_s": 0.00014799972996115685,
+      "transport_duration_s": 3.30663845827803,
+      "transport_minus_native_total_s": 0.0011884162780302354,
+      "native_unattributed_s": 0.013516833999999811
+    },
+    "primary_score": false
+  },
+  {
+    "scenario_id": "S8",
+    "snapshot": {
+      "timestamp_us": 2298399676,
+      "since_motion_s": 7.162199,
+      "state_id": "replay-246b41a68d212a1d60d24467:72",
+      "state_sha256": "ef47b197a0bf83eb95f34e20d16dea664fe245498163396fc0ccdaf094c9eb63",
+      "rule_decision": {
+        "action": "CONTINUE",
+        "reason": "Separation is increasing outside conversation range; avoid pursuing the person."
+      },
+      "full_social_state_sha256": "b166eb77489740547f8e6893a2341c17b58725dbf9d52e893f6e8cf81647b5bb"
+    },
+    "llm": {
+      "source_state_id": "replay-246b41a68d212a1d60d24467:72",
+      "session_id": "replay-246b41a68d212a1d60d24467",
+      "source_robot_timestamp_us": 2298399676,
+      "prompt_version": "social-state-llm-v14-semantic-v2",
+      "ok": true,
+      "decision": {
+        "action": "CONTINUE",
+        "reason": "Person not looking at the robot and beyond conversation distance."
+      },
+      "error": null,
+      "requested_model": "qwen2.5:7b",
+      "returned_model": "qwen2.5:7b",
+      "raw_content": "{\"action\":\"CONTINUE\",\"reason\":\"Person not looking at the robot and beyond conversation distance.\"}",
+      "request_duration_s": 3.441037999931723,
+      "status": "DECIDED",
+      "action": "CONTINUE"
+    },
+    "timing": {
+      "total_duration_s": 3.432995875,
+      "load_duration_s": 0.000817292,
+      "prompt_eval_duration_s": 2.153647,
+      "eval_duration_s": 1.272421,
+      "prompt_tokens": 884,
+      "cached_prompt_tokens": 526,
+      "output_tokens": 21,
+      "request_bytes": 4997,
+      "request_preparation_s": 0.0002811248414218426,
+      "response_validation_s": 0.0009063328616321087,
+      "transport_duration_s": 3.4410264170728624,
+      "transport_minus_native_total_s": 0.008030542072862357,
+      "native_unattributed_s": 0.006110583000000336
+    },
+    "primary_score": false
+  },
+  {
+    "scenario_id": "S9",
+    "snapshot": {
+      "timestamp_us": 2341464704,
+      "since_motion_s": 3.45757,
+      "state_id": "replay-077ff210a4441c83a39ff4a6:35",
+      "state_sha256": "e6fecca7b689357b7560de866a197803e85dab017324c5f326be352bdf69c232",
+      "rule_decision": {
+        "action": "APPROACH",
+        "reason": "The person is looking steadily at the robot and is within approach distance."
+      },
+      "full_social_state_sha256": "a1259f6c189911f77d0e530b6552b1f454caf35f105c5831c0cffc7ed3531434"
+    },
+    "llm": {
+      "source_state_id": "replay-077ff210a4441c83a39ff4a6:35",
+      "session_id": "replay-077ff210a4441c83a39ff4a6",
+      "source_robot_timestamp_us": 2341464704,
+      "prompt_version": "social-state-llm-v14-semantic-v2",
+      "ok": true,
+      "decision": {
+        "action": "APPROACH",
+        "reason": "Person is looking at the robot and within approachable distance."
+      },
+      "error": null,
+      "requested_model": "qwen2.5:7b",
+      "returned_model": "qwen2.5:7b",
+      "raw_content": "{\"action\":\"APPROACH\",\"reason\":\"Person is looking at the robot and within approachable distance.\"}",
+      "request_duration_s": 3.4445331250317395,
+      "status": "DECIDED",
+      "action": "APPROACH"
+    },
+    "timing": {
+      "total_duration_s": 3.442765125,
+      "load_duration_s": 0.000972458,
+      "prompt_eval_duration_s": 2.142987999,
+      "eval_duration_s": 1.283961,
+      "prompt_tokens": 900,
+      "cached_prompt_tokens": 545,
+      "output_tokens": 23,
+      "request_bytes": 5040,
+      "request_preparation_s": 0.0008138748817145824,
+      "response_validation_s": 0.0003064996562898159,
+      "transport_duration_s": 3.44452862534672,
+      "transport_minus_native_total_s": 0.001763500346720015,
+      "native_unattributed_s": 0.014843668000000587
+    },
+    "primary_score": false
+  }
+]

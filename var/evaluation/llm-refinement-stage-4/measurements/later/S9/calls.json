@@ -1,0 +1,32 @@
+[
+  {
+    "source_state_id": null,
+    "source_robot_timestamp_us": null,
+    "state_sha256": "e6fecca7b689357b7560de866a197803e85dab017324c5f326be352bdf69c232",
+    "request_sha256": "3ab249a50f0a978abd0eb4c3a722c2c24ef360432460eaa2fc1a141af47571b1",
+    "request_bytes": 5040,
+    "input_characters": 4328,
+    "chat_start_elapsed_s": null,
+    "chat_end_elapsed_s": null,
+    "client_call_duration_s": 3.4456489998847246,
+    "request_preparation_s": 0.0008138748817145824,
+    "transport_duration_s": 3.44452862534672,
+    "response_validation_s": 0.0003064996562898159,
+    "ollama_metrics": {
+      "total_duration": 3442765125,
+      "load_duration": 972458,
+      "prompt_eval_count": 900,
+      "prompt_eval_cached_count": 545,
+      "prompt_eval_duration": 2142987999,
+      "eval_count": 23,
+      "eval_duration": 1283961000
+    },
+    "request_duration_s": 3.4445331250317395,
+    "ok": true,
+    "decision": {
+      "action": "APPROACH",
+      "reason": "Person is looking at the robot and within approachable distance."
+    },
+    "error": null
+  }
+]

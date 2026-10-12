@@ -1,5 +1,10 @@
 # Compact shared decision state — stage 3
 
+This page records the stage 3 representation. Stage 4's label experiment
+is documented in [shared measurement descriptions](/Users/eddiekim/Documents/Projects/P4P/docs/semantic-decision-state.md).
+The current contract after removing unsupported cues is documented in
+[supported Navel cues](/Users/eddiekim/Documents/Projects/P4P/docs/navel-supported-cues.md).
+
 `SocialState` remains the full diagnostic/replay record. `DecisionState` is a
 deterministic projection used by both the v7 rules and the LLM. The estimator,
 tracking, thresholds, readiness conditions and rule precedence are unchanged.

@@ -1,0 +1,32 @@
+[
+  {
+    "source_state_id": null,
+    "source_robot_timestamp_us": null,
+    "state_sha256": "a3fe11929967346b673084c8a542967bc3c382552b87fdffb1259928b3bfd04d",
+    "request_sha256": "2093791c9944f6585fcbcc015c2ad6850a3adefdbb544aaa8938974e836431ee",
+    "request_bytes": 5041,
+    "input_characters": 4329,
+    "chat_start_elapsed_s": null,
+    "chat_end_elapsed_s": null,
+    "client_call_duration_s": 3.8747617918998003,
+    "request_preparation_s": 0.0008545001037418842,
+    "transport_duration_s": 3.8732670000754297,
+    "response_validation_s": 0.0006402917206287384,
+    "ollama_metrics": {
+      "total_duration": 3870411625,
+      "load_duration": 721333,
+      "prompt_eval_count": 901,
+      "prompt_eval_cached_count": 511,
+      "prompt_eval_duration": 2615566000,
+      "eval_count": 22,
+      "eval_duration": 1234697000
+    },
+    "request_duration_s": 3.8732860418967903,
+    "ok": true,
+    "decision": {
+      "action": "APPROACH",
+      "reason": "Person observed with sustained gaze and within approachable distance."
+    },
+    "error": null
+  }
+]

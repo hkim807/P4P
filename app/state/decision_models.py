@@ -9,9 +9,9 @@ import hashlib
 import json
 from typing import Literal
 
-from pydantic import ConfigDict, Field
+from pydantic import ConfigDict, Field, model_validator
 
-from app.state.social_models import (Gaze, ObservationLabels, PathPosition,
+from app.state.social_models import (Gaze, PathPosition,
     SocialState, StrictModel, TemporalConfig, Trend, Zone)
 
 
@@ -32,26 +32,103 @@ class DecisionEvidence(FrozenModel):
     sustained_gaze_s: float
 
 
+ATTENTION_DESCRIPTIONS = {
+    'NONE': 'Little or no looking at the robot during the recent observation window.',
+    'INTERMITTENT': 'Intermittent looking at the robot during the recent observation window.',
+    'SUSTAINED': 'Looking at the robot for a high fraction of covered recent time; not necessarily continuously.',
+    'UNKNOWN': 'Looking history is unavailable or insufficient.',
+}
+CURRENT_GAZE_DESCRIPTIONS = {
+    True: 'Latest gaze sample is classified as looking at the robot.',
+    False: 'Latest gaze sample is classified as not looking at the robot.',
+    None: 'Latest gaze classification is unavailable.',
+}
+PROXIMITY_DESCRIPTIONS = {
+    'TOO_CLOSE': 'Closer than the configured conversation distance.',
+    'INTERACTION_RANGE': 'Within the configured conversation distance.',
+    'APPROACHABLE': 'Beyond conversation distance, within the configured social range.',
+    'FAR': 'Beyond the configured social range.',
+    'UNKNOWN': 'Current distance category is unavailable.',
+}
+CORRIDOR_DESCRIPTIONS = {
+    'IN_WAY': 'Position estimate is inside the robot forward corridor; future obstruction is unknown.',
+    'TO_SIDE': 'Position estimate is beside the robot forward corridor; future clearance is unknown.',
+    'BEHIND': 'Position estimate is behind the robot.',
+    'UNKNOWN': 'Position relative to the robot forward corridor is unavailable.',
+}
+SEPARATION_DESCRIPTIONS = {
+    'DECREASING': 'Robot-person distance is decreasing; either participant may cause this.',
+    'STABLE': 'Robot-person distance is approximately steady; individual motion is unknown.',
+    'INCREASING': 'Robot-person distance is increasing; either participant may cause this.',
+    'UNKNOWN': 'Recent robot-person distance trend is unavailable or unreliable.',
+}
+FACE_DESCRIPTIONS = {
+    True: 'A face was detected; facing the robot is not established.',
+    False: 'No face was detected in the latest observation.',
+    None: 'Face detection information is unavailable.',
+}
+MOTION_DESCRIPTIONS = {
+    'MOVING': 'Measured robot motion exceeds stationary tolerances; it may be translating or turning.',
+    'STATIONARY': 'Measured robot translation and rotation are within stationary tolerances.',
+    'UNKNOWN': 'Robot motion information is unavailable.',
+}
+
+
+class DecisionObservationLabels(FrozenModel):
+    """Deterministic descriptions of measurements, never inferred social intent."""
+    version: Literal[3] = 3
+    attention_over_time: str = ATTENTION_DESCRIPTIONS['UNKNOWN']
+    current_gaze: str = CURRENT_GAZE_DESCRIPTIONS[None]
+    proximity: str = PROXIMITY_DESCRIPTIONS['UNKNOWN']
+    corridor_position: str = CORRIDOR_DESCRIPTIONS['UNKNOWN']
+    relative_separation: str = SEPARATION_DESCRIPTIONS['UNKNOWN']
+    face_detection: str = FACE_DESCRIPTIONS[None]
+
+
 class DecisionPerson(FrozenModel):
     visibility: Literal['OBSERVED'] = 'OBSERVED'
     latest_distance_m: float | None
     gaze_state: Gaze
     distance_zone: Zone
     relative_distance_trend: Trend
-    path_relation: Literal['UNKNOWN', 'CLEAR', 'CONFLICT']
-    pass_gesture: Literal['UNKNOWN', 'PASS']
     face_detected: bool | None
     path_position: PathPosition
     evidence: DecisionEvidence
-    observation_labels: ObservationLabels
+    observation_labels: DecisionObservationLabels = Field(default_factory=DecisionObservationLabels)
+
+    @model_validator(mode='after')
+    def derive_descriptions(self):
+        # Recompute from exact categories/validity, including detached compact
+        # input. Saved or caller-supplied prose cannot become policy evidence.
+        e = self.evidence
+        labels = DecisionObservationLabels(
+            attention_over_time=ATTENTION_DESCRIPTIONS[self.gaze_state if e.gaze_valid else 'UNKNOWN'],
+            current_gaze=CURRENT_GAZE_DESCRIPTIONS[e.latest_gaze_looking
+                if e.latest_gaze_overlap is not None else None],
+            proximity=PROXIMITY_DESCRIPTIONS[self.distance_zone
+                if e.latest_distance_valid and self.latest_distance_m is not None
+                and self.latest_distance_m >= 0 else 'UNKNOWN'],
+            corridor_position=CORRIDOR_DESCRIPTIONS[self.path_position],
+            relative_separation=SEPARATION_DESCRIPTIONS[self.relative_distance_trend
+                if e.distance_trend_valid else 'UNKNOWN'],
+            face_detection=FACE_DESCRIPTIONS[self.face_detected],
+        )
+        object.__setattr__(self, 'observation_labels', labels)
+        return self
 
 
 class DecisionRobot(FrozenModel):
     motion_state: Literal['STATIONARY', 'MOVING', 'UNKNOWN']
+    motion_description: str = MOTION_DESCRIPTIONS['UNKNOWN']
+
+    @model_validator(mode='after')
+    def derive_description(self):
+        object.__setattr__(self, 'motion_description', MOTION_DESCRIPTIONS[self.motion_state])
+        return self
 
 
 class DecisionState(FrozenModel):
-    schema_version: Literal[1] = 1
+    schema_version: Literal[3] = 3
     observation_readiness: Literal['READY', 'NOT_READY']
     readiness_reason: str
     robot: DecisionRobot
@@ -123,10 +200,8 @@ def prepare_decision_input(state: SocialState | dict | DecisionInput) -> Decisio
         people=[DecisionPerson(
             latest_distance_m=p.latest_distance_m, gaze_state=p.gaze_state,
             distance_zone=p.distance_zone, relative_distance_trend=p.relative_distance_trend,
-            path_relation=p.path_relation, pass_gesture=p.pass_gesture,
             face_detected=p.face_detected, path_position=p.path_position,
             evidence=DecisionEvidence(**{name: getattr(p.evidence, name) for name in evidence_fields}),
-            observation_labels=ObservationLabels.model_validate(p.observation_labels.model_dump()),
         ) for p in people],
         no_person_observed_s=snapshot.no_person_observed_s,
     )

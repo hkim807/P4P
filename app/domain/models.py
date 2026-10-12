@@ -31,9 +31,6 @@ class RawPerson(RawModel):
     face_detected: bool | None = None
     optional_relative_head_position: RelativeHeadPosition | None = None
     optional_relative_nose_position: RelativeHeadPosition | None = None
-    # Optional upstream measurements. The SDK adapter does not infer these.
-    path_relation: Literal["UNKNOWN", "CLEAR", "CONFLICT"] = "UNKNOWN"
-    pass_gesture: Literal["UNKNOWN", "PASS"] = "UNKNOWN"
 
 
 class RawRobot(RawModel):

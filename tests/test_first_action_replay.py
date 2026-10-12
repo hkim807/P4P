@@ -10,6 +10,8 @@ from unittest.mock import patch
 from app.domain.model_decision import ModelDecision
 from app.inference.ollama import OllamaResult
 from app.replay.llm_inputs import ReplayState
+from app.state.estimator import SocialStateEstimator
+from app.state.social_models import SocialState
 from scripts.replay_first_action import replay
 from tests.fixtures import frame
 
@@ -17,8 +19,7 @@ from tests.fixtures import frame
 def item(index, *, people=True):
     raw = frame()
     raw['timestamp'] += index * 100_000
-    raw['people'] = [{'uid': 17, 'distance_m': .5, 'gaze_overlap': .95,
-                      'path_relation': 'CONFLICT'}] if people else []
+    raw['people'] = [{'uid': 17, 'distance_m': .5, 'gaze_overlap': .95}] if people else []
     capture = {'capture_version': 1, 'session_id': 'test', 'stream': 'perception',
         'sequence': index + 1, 'received_monotonic_us': raw['timestamp'],
         'received_unix_us': 2_000_000 + index * 100_000,
@@ -36,6 +37,22 @@ class FirstActionReplayTests(unittest.TestCase):
         self.settings = json.loads(Path('config/policy-comparison.json').read_text())
         self.settings['base_url'] = 'http://127.0.0.1:11434'
         self.scene = {'scenario_id': 'test', 'recording': 'unused'}
+        # These tests isolate stop/delivery timing. Supply ready temporal gaze
+        # evidence immediately instead of using a synthetic unsupported cue.
+        original_update = SocialStateEstimator.update
+        def immediately_ready(estimator, snapshot):
+            state = original_update(estimator, snapshot)
+            if state.people:
+                person = state.people[0]
+                person.gaze_state = 'SUSTAINED'
+                person.evidence.gaze_valid = True
+                person.evidence.latest_gaze_looking = True
+                person.evidence.latest_gaze_overlap = .95
+                person.evidence.sustained_gaze_s = 1.
+            return SocialState.model_validate(state.model_dump())
+        patcher = patch.object(SocialStateEstimator, 'update', autospec=True, side_effect=immediately_ready)
+        patcher.start()
+        self.addCleanup(patcher.stop)
 
     def test_stops_without_reading_the_next_observation(self):
         def observations():
@@ -43,7 +60,7 @@ class FirstActionReplayTests(unittest.TestCase):
             self.fail('Source advanced after first action')
         result = replay(self.scene, 'rules', self.root / 'stop', self.settings,
                         iterator=observations())
-        self.assertEqual(result['action'], 'YIELD')
+        self.assertEqual(result['action'], 'ENGAGE')
         self.assertTrue(result['accepted_by_live_client'])
         self.assertEqual(result['frames_ingested'], 1)
         self.assertFalse(result['recording_exhausted'])
@@ -65,7 +82,7 @@ class FirstActionReplayTests(unittest.TestCase):
                 self.config = config
             def chat(self, messages):
                 time.sleep(delay)
-                decision = ModelDecision(action='YIELD', reason='An upstream observation reports a path conflict.')
+                decision = ModelDecision(action='YIELD', reason='Synthetic model answer for delivery timing.')
                 return OllamaResult(self.config.model, self.config.model,
                                     decision.model_dump_json(), delay, decision, None)
         return patch('app.inference.live.OllamaClient', Client)

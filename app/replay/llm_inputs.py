@@ -18,6 +18,7 @@ from typing import Any, Iterator
 
 from app.pipeline import TrackingPipeline
 from app.recording import read_frame_records
+from app.replay.legacy import remove_legacy_unknown_cues
 from app.sdk_capture import validate_sdk_capture
 from app.state.estimator import SocialStateEstimator
 from app.state.social_models import SocialState, TemporalConfig
@@ -177,7 +178,7 @@ def _social_states(path: Path, digest: str) -> Iterator[ReplayState]:
     processing_id = ""
     for line, count, record in _json_records(path):
         try:
-            state = SocialState.model_validate(record)
+            state = SocialState.model_validate(remove_legacy_unknown_cues(record))
         except ValueError as error:
             raise _error(path, line, f"invalid current SocialState: {error}") from error
         if state.session_id != current_session:

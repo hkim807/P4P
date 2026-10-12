@@ -3,13 +3,11 @@ import argparse
 from copy import deepcopy
 from datetime import datetime, timezone
 import hashlib
-import importlib.util
 import json
 from pathlib import Path
 import shutil
 import statistics
 import subprocess
-import sys
 from unittest.mock import patch
 
 from app.policy.llm import PROMPT_VERSION, build_llm_prompt, classify_llm
@@ -18,18 +16,15 @@ from app.replay.llm_inputs import iter_replay_states
 from app.state.decision_models import prepare_decision_input
 from app.state.social_models import SocialState, TemporalConfig
 from app.state.tracks import TrackConfig
+from app.replay.legacy import remove_legacy_unknown_cues
+from scripts.frozen_rule_reference import load_frozen_rules
 from scripts.profile_llm_baseline import (ProfiledClient, ReplayClock, operational_row,
     profile_config, sha, source_paths, timing_breakdown, verify_freeze, write_json)
 from scripts.replay_first_action import replay, request_json
 
 
 def load_reference(baseline):
-    name = '_compact_experiment_frozen_rules'
-    spec = importlib.util.spec_from_file_location(name, baseline/'freeze/source/app/policy/rules.py')
-    module = importlib.util.module_from_spec(spec)
-    sys.modules[name] = module
-    spec.loader.exec_module(module)
-    return module
+    return load_frozen_rules(baseline/'freeze/source')
 
 
 def prepare(baseline, output):
@@ -58,15 +53,22 @@ def prepare(baseline, output):
                 ready += 1
             count += 1
         for point in ('first','later'):
-            state = SocialState.model_validate_json((baseline/f'freeze/snapshots/{scene["scenario_id"]}/{point}.state.json').read_text())
+            saved = json.loads((baseline/f'freeze/snapshots/{scene["scenario_id"]}/{point}.state.json').read_text())
+            state = SocialState.model_validate(remove_legacy_unknown_cues(saved))
             prompt = build_llm_prompt(state)
             old = json.loads((baseline/f'freeze/snapshots/{scene["scenario_id"]}/{point}.messages.json').read_text())
             if prompt.instructions != old[0]['content']:
                 raise ValueError('System instructions changed; stage 3 isolates payload reduction')
             snapshot = scene['snapshots'][point]
-            if sha(prompt.social_state_json.encode()) != snapshot['state_sha256']:
-                raise ValueError('Full source differs from frozen baseline')
-            snapshot['full_social_state_sha256'] = snapshot['state_sha256']
+            original_json = old[1]['content'].split('\n', 1)[1]
+            if sha(original_json.encode()) != snapshot['state_sha256']:
+                raise ValueError('Frozen full source hash changed')
+            supported_json = json.dumps(remove_legacy_unknown_cues(json.loads(original_json)),
+                sort_keys=True, separators=(',', ':'), ensure_ascii=False, allow_nan=False)
+            if prompt.social_state_json != supported_json:
+                raise ValueError('Supported full evidence differs from frozen baseline')
+            snapshot['frozen_full_social_state_sha256'] = snapshot['state_sha256']
+            snapshot['full_social_state_sha256'] = sha(prompt.social_state_json.encode())
             snapshot['state_sha256'] = sha(prompt.decision_state_json.encode())
             if decide(state).model_dump()['decision'] != snapshot['rule_decision']['action']:
                 raise ValueError('Frozen first/later rule action changed')
@@ -86,7 +88,8 @@ def prepare(baseline, output):
         'first_actions':[s['snapshots']['first']['rule_decision'] for s in original['scenarios']]})
     write_json(output/'payload-sizes.json',sizes)
     paths = set(source_paths()) | {Path(__file__).resolve().relative_to(Path.cwd()),
-                                  Path('scripts/profile_llm_baseline.py')}
+                                  Path('scripts/profile_llm_baseline.py'),
+                                  Path('scripts/frozen_rule_reference.py')}
     hashes={}
     for path in sorted(paths):
         target=output/'source'/path

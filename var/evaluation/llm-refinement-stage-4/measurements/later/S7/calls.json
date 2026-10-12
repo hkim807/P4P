@@ -1,0 +1,32 @@
+[
+  {
+    "source_state_id": null,
+    "source_robot_timestamp_us": null,
+    "state_sha256": "86b1d0783487c3970cf28587c4435335e5e6610e68986593e3ebb88263a2ca5c",
+    "request_sha256": "28a2c413f3ebf4e2079426c0d13c04038ec169d5a65f12682e6bac89f5ae2138",
+    "request_bytes": 5001,
+    "input_characters": 4289,
+    "chat_start_elapsed_s": null,
+    "chat_end_elapsed_s": null,
+    "client_call_duration_s": 3.307875166647136,
+    "request_preparation_s": 0.0010887086391448975,
+    "transport_duration_s": 3.30663845827803,
+    "response_validation_s": 0.00014799972996115685,
+    "ollama_metrics": {
+      "total_duration": 3305450042,
+      "load_duration": 1186208,
+      "prompt_eval_count": 896,
+      "prompt_eval_cached_count": 546,
+      "prompt_eval_duration": 1992094000,
+      "eval_count": 23,
+      "eval_duration": 1298653000
+    },
+    "request_duration_s": 3.306641499977559,
+    "ok": true,
+    "decision": {
+      "action": "APPROACH",
+      "reason": "Intermittent looking at the robot and within interaction range."
+    },
+    "error": null
+  }
+]

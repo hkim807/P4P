@@ -1,0 +1,46 @@
+{
+  "no_person_observed_s": 0.0,
+  "observation_readiness": "READY",
+  "people": [
+    {
+      "distance_zone": "INTERACTION_RANGE",
+      "evidence": {
+        "distance_trend_valid": true,
+        "gaze_fraction": 1.0,
+        "gaze_valid": true,
+        "latest_distance_valid": true,
+        "latest_gaze_looking": true,
+        "latest_gaze_overlap": 0.9608641862869263,
+        "looking_bouts": 1,
+        "looking_exit_threshold": 0.9,
+        "looking_time_s": 2.87918,
+        "sustained_gaze_s": 2.87918
+      },
+      "face_detected": true,
+      "gaze_state": "SUSTAINED",
+      "latest_distance_m": 1.3376136474609375,
+      "observation_labels": {
+        "attention_over_time": "Looking at the robot for a high fraction of covered recent time; not necessarily continuously.",
+        "corridor_position": "Position estimate is inside the robot forward corridor; future obstruction is unknown.",
+        "current_gaze": "Latest gaze sample is classified as looking at the robot.",
+        "face_detection": "A face was detected; facing the robot is not established.",
+        "measured_pass_gesture": "No pass gesture measurement is available.",
+        "measured_path_relation": "Path conflict or clearance has not been measured.",
+        "proximity": "Within the configured conversation distance.",
+        "relative_separation": "Robot-person distance is approximately steady; individual motion is unknown.",
+        "version": 2
+      },
+      "pass_gesture": "UNKNOWN",
+      "path_position": "IN_WAY",
+      "path_relation": "UNKNOWN",
+      "relative_distance_trend": "STABLE",
+      "visibility": "OBSERVED"
+    }
+  ],
+  "readiness_reason": "OBSERVATIONS_AVAILABLE",
+  "robot": {
+    "motion_description": "Measured robot motion exceeds stationary tolerances; it may be translating or turning.",
+    "motion_state": "MOVING"
+  },
+  "schema_version": 2
+}

@@ -9,13 +9,14 @@ import sys
 from app.pipeline import trace_line
 from app.policy.rules import decide, normalise_rule_decision, rule_readiness
 from app.state.social_models import SocialState
+from app.replay.legacy import remove_legacy_unknown_cues
 
 
 def read_states(path):
     with Path(path).open(encoding="utf-8") as stream:
         for line_number, line in enumerate(stream, 1):
             try:
-                yield SocialState.model_validate_json(line)
+                yield SocialState.model_validate(remove_legacy_unknown_cues(json.loads(line)))
             except ValueError as error:
                 raise ValueError(f"{path}:{line_number}: invalid SocialState: {error}") from error
 

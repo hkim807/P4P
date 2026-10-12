@@ -1,10 +1,8 @@
 """Compare compact rules with the actual frozen v7 policy, not a rewritten oracle."""
 from copy import deepcopy
-import importlib.util
 import itertools
 import json
 from pathlib import Path
-import sys
 import unittest
 
 from app.policy.llm import build_llm_prompt
@@ -13,19 +11,15 @@ from app.replay.llm_inputs import iter_replay_states
 from app.state.decision_models import prepare_decision_input, rule_parameters
 from app.state.social_models import SocialState, TemporalConfig
 from app.state.tracks import TrackConfig
+from app.replay.legacy import remove_legacy_unknown_cues
+from scripts.frozen_rule_reference import load_frozen_rules
 
 
 BASELINE = Path('var/evaluation/llm-refinement-stage-1-2/freeze')
 
 
 def frozen_rules():
-    name = '_frozen_v7_decision_state_oracle'
-    if name not in sys.modules:
-        spec = importlib.util.spec_from_file_location(name, BASELINE/'source/app/policy/rules.py')
-        module = importlib.util.module_from_spec(spec)
-        sys.modules[name] = module
-        spec.loader.exec_module(module)
-    return sys.modules[name]
+    return load_frozen_rules(BASELINE/'source')
 
 
 class DecisionStateTests(unittest.TestCase):
@@ -44,7 +38,7 @@ class DecisionStateTests(unittest.TestCase):
             self.assertEqual(decide(compact, **flags).model_dump(), expected)
 
     def state(self):
-        return json.loads((BASELINE/'snapshots/S4/first.state.json').read_text())
+        return remove_legacy_unknown_cues(json.loads((BASELINE/'snapshots/S4/first.state.json').read_text()))
 
     def test_all_574_recorded_frames_preserve_readiness_actions_reasons_targets_and_ids(self):
         protocol = json.loads((BASELINE/'protocol.json').read_text())
@@ -99,12 +93,11 @@ class DecisionStateTests(unittest.TestCase):
 
     def test_readiness_exceptions_missing_multiple_empty_and_failure_flags(self):
         template = self.state()
-        for conflict, passing, validity in itertools.product(
-                ('UNKNOWN','CONFLICT'), ('UNKNOWN','PASS'), (True,False)):
+        for validity, gaze_valid in itertools.product((True,False), (True,False)):
             value = deepcopy(template)
             p = value['people'][0]
-            p.update(path_relation=conflict, pass_gesture=passing, gaze_state='UNKNOWN')
-            p['evidence'].update(gaze_valid=False, latest_distance_valid=validity)
+            p['gaze_state'] = 'SUSTAINED' if gaze_valid else 'UNKNOWN'
+            p['evidence'].update(gaze_valid=gaze_valid, latest_distance_valid=validity)
             self.assert_equivalent(value)
             self.assert_equivalent(value, stale=True)
             self.assert_equivalent(value, stale=True, processing_failed=True)

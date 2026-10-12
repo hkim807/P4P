@@ -1,0 +1,139 @@
+Compact repeat 1: S1
+{"scenario_id": "S1", "first_decision": {"action": "CONTINUE", "reason": "Person not looking at the robot and beyond conversation distance."}, "action_aligned": true, "first_eligible_to_validated_client_output_s": 6.778693917179227, "accepted_by_live_client": true}
+Compact repeat 1: S2
+{"scenario_id": "S2", "first_decision": {"action": "APPROACH", "reason": "Sustained gaze and decreasing distance indicate interest in interaction."}, "action_aligned": true, "first_eligible_to_validated_client_output_s": 4.627810875080376, "accepted_by_live_client": false}
+Compact repeat 1: S3
+{"scenario_id": "S3", "first_decision": {"action": "ENGAGE", "reason": "Sustained gaze within interaction range indicates willingness to interact."}, "action_aligned": true, "first_eligible_to_validated_client_output_s": 3.7923904591264725, "accepted_by_live_client": true}
+Compact repeat 1: S4
+{"scenario_id": "S4", "first_decision": {"action": "CONTINUE", "reason": "Person not looking at the robot and beyond conversation distance."}, "action_aligned": false, "first_eligible_to_validated_client_output_s": 3.8600309581924974, "accepted_by_live_client": true}
+Compact repeat 1: S5
+{"scenario_id": "S5", "first_decision": {"action": "CONTINUE", "reason": "Robot is moving; no person observed."}, "action_aligned": true, "first_eligible_to_validated_client_output_s": 1.6236697497276067, "accepted_by_live_client": true}
+Compact repeat 1: S6
+{"scenario_id": "S6", "first_decision": {"action": "CONTINUE", "reason": "Person not looking at the robot and beyond conversation distance."}, "action_aligned": true, "first_eligible_to_validated_client_output_s": 3.5967847082809805, "accepted_by_live_client": true}
+Compact repeat 1: S7
+{"scenario_id": "S7", "first_decision": {"action": "CONTINUE", "reason": "Person not looking at the robot and beyond conversation distance."}, "action_aligned": true, "first_eligible_to_validated_client_output_s": 3.7895842499859334, "accepted_by_live_client": true}
+Compact repeat 1: S8
+{"scenario_id": "S8", "first_decision": {"action": "CONTINUE", "reason": "Robot is moving; no person observed."}, "action_aligned": true, "first_eligible_to_validated_client_output_s": 1.88248833401379, "accepted_by_live_client": false}
+Compact repeat 1: S9
+{"scenario_id": "S9", "first_decision": {"action": "APPROACH", "reason": "Sustained gaze and proximity within social range"}, "action_aligned": true, "first_eligible_to_validated_client_output_s": 3.6475850837359127, "accepted_by_live_client": false}
+Compact repeat 2: S1
+{"scenario_id": "S1", "first_decision": {"action": "CONTINUE", "reason": "Person not looking at the robot and beyond conversation distance."}, "action_aligned": true, "first_eligible_to_validated_client_output_s": 3.7603206671492457, "accepted_by_live_client": true}
+Compact repeat 2: S2
+{"scenario_id": "S2", "first_decision": {"action": "APPROACH", "reason": "Sustained gaze and decreasing distance indicate interest in interaction."}, "action_aligned": true, "first_eligible_to_validated_client_output_s": 3.407245958816111, "accepted_by_live_client": true}
+Compact repeat 2: S3
+{"scenario_id": "S3", "first_decision": {"action": "ENGAGE", "reason": "Sustained gaze within interaction range indicates willingness to interact."}, "action_aligned": true, "first_eligible_to_validated_client_output_s": 3.9099982906157673, "accepted_by_live_client": true}
+Compact repeat 2: S4
+{"scenario_id": "S4", "first_decision": {"action": "CONTINUE", "reason": "Person not looking at the robot and beyond conversation distance."}, "action_aligned": false, "first_eligible_to_validated_client_output_s": 3.8319071668629348, "accepted_by_live_client": true}
+Compact repeat 2: S5
+{"scenario_id": "S5", "first_decision": {"action": "CONTINUE", "reason": "Robot is moving; no person observed."}, "action_aligned": true, "first_eligible_to_validated_client_output_s": 1.8315964580011963, "accepted_by_live_client": true}
+Compact repeat 2: S6
+{"scenario_id": "S6", "first_decision": {"action": "CONTINUE", "reason": "Person not looking at the robot and beyond conversation distance."}, "action_aligned": true, "first_eligible_to_validated_client_output_s": 4.148272542008131, "accepted_by_live_client": true}
+Compact repeat 2: S7
+{"scenario_id": "S7", "first_decision": {"action": "CONTINUE", "reason": "Person not looking at the robot and beyond conversation distance."}, "action_aligned": true, "first_eligible_to_validated_client_output_s": 3.7162849160670937, "accepted_by_live_client": true}
+Compact repeat 2: S8
+{"scenario_id": "S8", "first_decision": {"action": "CONTINUE", "reason": "Robot is moving; no person observed."}, "action_aligned": true, "first_eligible_to_validated_client_output_s": 1.4958548750008345, "accepted_by_live_client": true}
+Compact repeat 2: S9
+{"scenario_id": "S9", "first_decision": {"action": "APPROACH", "reason": "Sustained gaze and proximity within social range"}, "action_aligned": true, "first_eligible_to_validated_client_output_s": 3.2864646250436005, "accepted_by_live_client": true}
+Compact repeat 3: S1
+{"scenario_id": "S1", "first_decision": {"action": "CONTINUE", "reason": "Person not looking at the robot and beyond conversation distance."}, "action_aligned": true, "first_eligible_to_validated_client_output_s": 3.82302679118675, "accepted_by_live_client": true}
+Compact repeat 3: S2
+{"scenario_id": "S2", "first_decision": {"action": "APPROACH", "reason": "Sustained gaze and decreasing distance indicate interest in interaction."}, "action_aligned": true, "first_eligible_to_validated_client_output_s": 3.808512250088006, "accepted_by_live_client": true}
+Compact repeat 3: S3
+{"scenario_id": "S3", "first_decision": {"action": "ENGAGE", "reason": "Sustained gaze within interaction range indicates willingness to interact."}, "action_aligned": true, "first_eligible_to_validated_client_output_s": 3.711285916997731, "accepted_by_live_client": true}
+Compact repeat 3: S4
+{"scenario_id": "S4", "first_decision": {"action": "CONTINUE", "reason": "Person not looking at the robot and beyond conversation distance."}, "action_aligned": false, "first_eligible_to_validated_client_output_s": 4.184489290924818, "accepted_by_live_client": true}
+Compact repeat 3: S5
+{"scenario_id": "S5", "first_decision": {"action": "CONTINUE", "reason": "Robot is moving; no person observed."}, "action_aligned": true, "first_eligible_to_validated_client_output_s": 1.7218194167559444, "accepted_by_live_client": true}
+Compact repeat 3: S6
+{"scenario_id": "S6", "first_decision": {"action": "CONTINUE", "reason": "Person not looking at the robot and beyond conversation distance."}, "action_aligned": true, "first_eligible_to_validated_client_output_s": 3.4281500412197112, "accepted_by_live_client": true}
+Compact repeat 3: S7
+{"scenario_id": "S7", "first_decision": {"action": "CONTINUE", "reason": "Person not looking at the robot and beyond conversation distance."}, "action_aligned": true, "first_eligible_to_validated_client_output_s": 3.483885500376642, "accepted_by_live_client": false}
+Compact repeat 3: S8
+{"scenario_id": "S8", "first_decision": {"action": "CONTINUE", "reason": "Robot is moving; no person observed."}, "action_aligned": true, "first_eligible_to_validated_client_output_s": 1.5667197917799354, "accepted_by_live_client": true}
+Compact repeat 3: S9
+{"scenario_id": "S9", "first_decision": {"action": "APPROACH", "reason": "Sustained gaze and proximity within social range"}, "action_aligned": true, "first_eligible_to_validated_client_output_s": 3.35005891696158, "accepted_by_live_client": false}
+{
+  "original_full_baseline": {
+    "trials": 27,
+    "aligned": 18,
+    "accepted": 5,
+    "aligned_and_accepted": 5,
+    "valid_first_outputs": 27,
+    "median_eligible_to_output_s": 6.2106557500377,
+    "median_prompt_tokens": 1766,
+    "per_repetition": [
+      {
+        "repeat": 1,
+        "aligned": 6,
+        "accepted": 1
+      },
+      {
+        "repeat": 2,
+        "aligned": 6,
+        "accepted": 2
+      },
+      {
+        "repeat": 3,
+        "aligned": 6,
+        "accepted": 2
+      }
+    ]
+  },
+  "stage3": {
+    "trials": 27,
+    "aligned": 24,
+    "accepted": 24,
+    "aligned_and_accepted": 21,
+    "valid_first_outputs": 27,
+    "median_eligible_to_output_s": 2.758161540735364,
+    "median_prompt_tokens": 794,
+    "per_repetition": [
+      {
+        "repeat": 1,
+        "aligned": 8,
+        "accepted": 8
+      },
+      {
+        "repeat": 2,
+        "aligned": 8,
+        "accepted": 8
+      },
+      {
+        "repeat": 3,
+        "aligned": 8,
+        "accepted": 8
+      }
+    ]
+  },
+  "stage4": {
+    "trials": 27,
+    "aligned": 24,
+    "accepted": 22,
+    "aligned_and_accepted": 19,
+    "valid_first_outputs": 27,
+    "median_eligible_to_output_s": 3.7239434158257843,
+    "median_prompt_tokens": 880,
+    "per_repetition": [
+      {
+        "repeat": 1,
+        "aligned": 8,
+        "accepted": 6
+      },
+      {
+        "repeat": 2,
+        "aligned": 8,
+        "accepted": 9
+      },
+      {
+        "repeat": 3,
+        "aligned": 8,
+        "accepted": 7
+      }
+    ]
+  },
+  "rule_frames_unchanged": 574,
+  "eligible_frames_unchanged": 402,
+  "paired_inputs_verified": 27,
+  "median_latency_change_percent": 35.015420990640365,
+  "median_prompt_token_change_percent": 10.831234256926958
+}
