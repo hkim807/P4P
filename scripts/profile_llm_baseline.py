@@ -103,8 +103,10 @@ class ProfiledClient(OllamaClient):
         state_json = user.split('\n', 1)[1]
         state = json.loads(state_json)
         row = {
-            'source_state_id': state['state_id'],
-            'source_robot_timestamp_us': state['robot_timestamp_us'],
+            # Compact payloads deliberately omit correlation identifiers. Their
+            # source is linked from the model audit envelope by experiment tools.
+            'source_state_id': state.get('state_id'),
+            'source_robot_timestamp_us': state.get('robot_timestamp_us'),
             'state_sha256': sha(state_json.encode()),
             'request_sha256': sha(capture['request_body']),
             'request_bytes': len(capture['request_body']),

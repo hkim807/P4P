@@ -1,0 +1,32 @@
+[
+  {
+    "source_state_id": null,
+    "source_robot_timestamp_us": null,
+    "state_sha256": "8a22597529530f4d77f1a005460daaee69ceee6b351161933768e8e3fee20193",
+    "request_sha256": "abf2269f90b731834fdd71eb94ce07e8995682cd6b585820706fc3a92bbf279c",
+    "request_bytes": 4401,
+    "input_characters": 3705,
+    "chat_start_elapsed_s": null,
+    "chat_end_elapsed_s": null,
+    "client_call_duration_s": 2.8599236248992383,
+    "request_preparation_s": 0.0007901657372713089,
+    "transport_duration_s": 2.855757084209472,
+    "response_validation_s": 0.003376374952495098,
+    "ollama_metrics": {
+      "total_duration": 2853501292,
+      "load_duration": 1234667,
+      "prompt_eval_count": 790,
+      "prompt_eval_cached_count": 526,
+      "prompt_eval_duration": 1628704000,
+      "eval_count": 20,
+      "eval_duration": 1212226000
+    },
+    "request_duration_s": 2.855763209052384,
+    "ok": true,
+    "decision": {
+      "action": "ENGAGE",
+      "reason": "Sustained looking at robot within conversation distance."
+    },
+    "error": null
+  }
+]

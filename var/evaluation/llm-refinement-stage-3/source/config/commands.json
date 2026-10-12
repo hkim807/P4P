@@ -1,0 +1,5 @@
+{
+  "max_source_age_s": 1.0,
+  "execution_lease_s": 2.0,
+  "max_commands_per_session": 256
+}

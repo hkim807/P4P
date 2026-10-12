@@ -123,8 +123,8 @@ def main(argv: list[str] | None = None) -> int:
                         status = "succeeded" if result.ok else "failed"
                     counter = {"prepared": "prepared", "succeeded": "successes", "failed": "failures"}[status]
                     summary[counter] += 1
-                    # The returned prompt is the frozen input actually sent, even
-                    # if the caller's state was changed while the HTTP call ran.
+                    # Retain full diagnostics separately from the frozen compact
+                    # input actually sent, even if the caller mutated the state.
                     row = {
                         "schema_version": 1, "status": status,
                         "source": item.source, "processing": item.processing,

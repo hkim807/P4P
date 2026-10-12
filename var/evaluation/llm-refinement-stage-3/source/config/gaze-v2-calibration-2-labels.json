@@ -1,0 +1,19 @@
+{
+  "label_version": 1,
+  "source_sha256": "f808e02fb71c040779297a42f1b583849acc74cc2a348790cf0eadb5894cbd26",
+  "session_id": "cf56291137a9444ca244d97b899e697c",
+  "label_origin": "Provisional settled intervals from the user's ordered actions and inspection of these same signals. User confirms brief neutral resets and starting the first hold when seated in view. No independently logged cue times.",
+  "notes": "Uses the settled intervals inspected before retraining, not intervals selected by the new model's scores. Initial visible settling and brief neutral resets are excluded. The head-and-eyes-left interval uses only the late established turn (61-64s). Direction plus head pose features are being developed using this recording, so cross-recording tests remain exploratory.",
+  "intervals": [
+    {"name": "initial_direct", "start_s": 16, "end_s": 21, "uid": 1783940805, "target": "DIRECT", "split": "train"},
+    {"name": "eyes_left", "start_s": 25, "end_s": 31, "uid": 1783940805, "target": "AWAY", "split": "train"},
+    {"name": "eyes_right", "start_s": 33, "end_s": 39, "uid": 1783940805, "target": "AWAY", "split": "train"},
+    {"name": "eyes_up", "start_s": 41, "end_s": 47, "uid": 1783940805, "target": "AWAY", "split": "train"},
+    {"name": "eyes_down", "start_s": 49, "end_s": 55, "uid": 1783940805, "target": "AWAY", "split": "train"},
+    {"name": "head_and_eyes_left", "start_s": 61, "end_s": 64, "uid": 1783940805, "target": "AWAY", "split": "train"},
+    {"name": "head_and_eyes_right", "start_s": 65, "end_s": 71, "uid": 1783940805, "target": "AWAY", "split": "train"},
+    {"name": "head_left_eyes_direct", "start_s": 74, "end_s": 79, "uid": 1783940805, "target": "DIRECT", "split": "train"},
+    {"name": "head_right_eyes_direct", "start_s": 81, "end_s": 87, "uid": 1783940805, "target": "DIRECT", "split": "train"},
+    {"name": "final_direct", "start_s": 89, "end_s": 103, "uid": 1783940805, "target": "DIRECT", "split": "train"}
+  ]
+}

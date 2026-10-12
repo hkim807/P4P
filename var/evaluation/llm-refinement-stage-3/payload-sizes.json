@@ -1,0 +1,110 @@
+[
+  {
+    "scenario_id": "S1",
+    "point": "first",
+    "full_state_bytes": 3530,
+    "compact_state_bytes": 950
+  },
+  {
+    "scenario_id": "S1",
+    "point": "later",
+    "full_state_bytes": 1633,
+    "compact_state_bytes": 174
+  },
+  {
+    "scenario_id": "S2",
+    "point": "first",
+    "full_state_bytes": 3550,
+    "compact_state_bytes": 950
+  },
+  {
+    "scenario_id": "S2",
+    "point": "later",
+    "full_state_bytes": 3220,
+    "compact_state_bytes": 964
+  },
+  {
+    "scenario_id": "S3",
+    "point": "first",
+    "full_state_bytes": 3369,
+    "compact_state_bytes": 954
+  },
+  {
+    "scenario_id": "S3",
+    "point": "later",
+    "full_state_bytes": 3144,
+    "compact_state_bytes": 943
+  },
+  {
+    "scenario_id": "S4",
+    "point": "first",
+    "full_state_bytes": 3422,
+    "compact_state_bytes": 965
+  },
+  {
+    "scenario_id": "S4",
+    "point": "later",
+    "full_state_bytes": 3208,
+    "compact_state_bytes": 963
+  },
+  {
+    "scenario_id": "S5",
+    "point": "first",
+    "full_state_bytes": 1631,
+    "compact_state_bytes": 174
+  },
+  {
+    "scenario_id": "S5",
+    "point": "later",
+    "full_state_bytes": 1645,
+    "compact_state_bytes": 174
+  },
+  {
+    "scenario_id": "S6",
+    "point": "first",
+    "full_state_bytes": 3389,
+    "compact_state_bytes": 957
+  },
+  {
+    "scenario_id": "S6",
+    "point": "later",
+    "full_state_bytes": 3428,
+    "compact_state_bytes": 959
+  },
+  {
+    "scenario_id": "S7",
+    "point": "first",
+    "full_state_bytes": 3633,
+    "compact_state_bytes": 963
+  },
+  {
+    "scenario_id": "S7",
+    "point": "later",
+    "full_state_bytes": 4588,
+    "compact_state_bytes": 984
+  },
+  {
+    "scenario_id": "S8",
+    "point": "first",
+    "full_state_bytes": 1631,
+    "compact_state_bytes": 174
+  },
+  {
+    "scenario_id": "S8",
+    "point": "later",
+    "full_state_bytes": 3206,
+    "compact_state_bytes": 973
+  },
+  {
+    "scenario_id": "S9",
+    "point": "first",
+    "full_state_bytes": 3350,
+    "compact_state_bytes": 944
+  },
+  {
+    "scenario_id": "S9",
+    "point": "later",
+    "full_state_bytes": 3220,
+    "compact_state_bytes": 963
+  }
+]

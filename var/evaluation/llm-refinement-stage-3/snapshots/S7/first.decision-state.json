@@ -1,0 +1,42 @@
+{
+  "no_person_observed_s": 0.0,
+  "observation_readiness": "READY",
+  "people": [
+    {
+      "distance_zone": "APPROACHABLE",
+      "evidence": {
+        "distance_trend_valid": false,
+        "gaze_fraction": 0.6934567679672203,
+        "gaze_valid": true,
+        "latest_distance_valid": true,
+        "latest_gaze_looking": false,
+        "latest_gaze_overlap": 0.5,
+        "looking_bouts": 1,
+        "looking_exit_threshold": 0.9,
+        "looking_time_s": 0.6877939999999999,
+        "sustained_gaze_s": 0.0
+      },
+      "face_detected": true,
+      "gaze_state": "INTERMITTENT",
+      "latest_distance_m": 2.404617919921875,
+      "observation_labels": {
+        "attention_over_time": "INTERMITTENT_LOOKING_AT_ROBOT",
+        "corridor_position": "BESIDE_ROBOT_FORWARD_CORRIDOR",
+        "current_gaze": "NOT_LOOKING_AT_ROBOT",
+        "proximity": "BEYOND_CONVERSATION_DISTANCE",
+        "relative_separation": "UNKNOWN",
+        "version": 1
+      },
+      "pass_gesture": "UNKNOWN",
+      "path_position": "TO_SIDE",
+      "path_relation": "UNKNOWN",
+      "relative_distance_trend": "UNKNOWN",
+      "visibility": "OBSERVED"
+    }
+  ],
+  "readiness_reason": "OBSERVATIONS_AVAILABLE",
+  "robot": {
+    "motion_state": "MOVING"
+  },
+  "schema_version": 1
+}

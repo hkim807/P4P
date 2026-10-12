@@ -1,0 +1,338 @@
+{
+  "$defs": {
+    "DecisionEvidence": {
+      "additionalProperties": false,
+      "properties": {
+        "gaze_valid": {
+          "title": "Gaze Valid",
+          "type": "boolean"
+        },
+        "distance_trend_valid": {
+          "title": "Distance Trend Valid",
+          "type": "boolean"
+        },
+        "latest_distance_valid": {
+          "title": "Latest Distance Valid",
+          "type": "boolean"
+        },
+        "latest_gaze_looking": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Latest Gaze Looking"
+        },
+        "latest_gaze_overlap": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Latest Gaze Overlap"
+        },
+        "looking_exit_threshold": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Looking Exit Threshold"
+        },
+        "looking_bouts": {
+          "title": "Looking Bouts",
+          "type": "integer"
+        },
+        "looking_time_s": {
+          "title": "Looking Time S",
+          "type": "number"
+        },
+        "gaze_fraction": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Gaze Fraction"
+        },
+        "sustained_gaze_s": {
+          "title": "Sustained Gaze S",
+          "type": "number"
+        }
+      },
+      "required": [
+        "gaze_valid",
+        "distance_trend_valid",
+        "latest_distance_valid",
+        "latest_gaze_looking",
+        "latest_gaze_overlap",
+        "looking_exit_threshold",
+        "looking_bouts",
+        "looking_time_s",
+        "gaze_fraction",
+        "sustained_gaze_s"
+      ],
+      "title": "DecisionEvidence",
+      "type": "object"
+    },
+    "DecisionPerson": {
+      "additionalProperties": false,
+      "properties": {
+        "visibility": {
+          "const": "OBSERVED",
+          "default": "OBSERVED",
+          "title": "Visibility",
+          "type": "string"
+        },
+        "latest_distance_m": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Latest Distance M"
+        },
+        "gaze_state": {
+          "enum": [
+            "NONE",
+            "INTERMITTENT",
+            "SUSTAINED",
+            "UNKNOWN"
+          ],
+          "title": "Gaze State",
+          "type": "string"
+        },
+        "distance_zone": {
+          "enum": [
+            "TOO_CLOSE",
+            "INTERACTION_RANGE",
+            "APPROACHABLE",
+            "FAR",
+            "UNKNOWN"
+          ],
+          "title": "Distance Zone",
+          "type": "string"
+        },
+        "relative_distance_trend": {
+          "enum": [
+            "DECREASING",
+            "STABLE",
+            "INCREASING",
+            "UNKNOWN"
+          ],
+          "title": "Relative Distance Trend",
+          "type": "string"
+        },
+        "path_relation": {
+          "enum": [
+            "UNKNOWN",
+            "CLEAR",
+            "CONFLICT"
+          ],
+          "title": "Path Relation",
+          "type": "string"
+        },
+        "pass_gesture": {
+          "enum": [
+            "UNKNOWN",
+            "PASS"
+          ],
+          "title": "Pass Gesture",
+          "type": "string"
+        },
+        "face_detected": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Face Detected"
+        },
+        "path_position": {
+          "enum": [
+            "IN_WAY",
+            "TO_SIDE",
+            "BEHIND",
+            "UNKNOWN"
+          ],
+          "title": "Path Position",
+          "type": "string"
+        },
+        "evidence": {
+          "$ref": "#/$defs/DecisionEvidence"
+        },
+        "observation_labels": {
+          "$ref": "#/$defs/ObservationLabels"
+        }
+      },
+      "required": [
+        "latest_distance_m",
+        "gaze_state",
+        "distance_zone",
+        "relative_distance_trend",
+        "path_relation",
+        "pass_gesture",
+        "face_detected",
+        "path_position",
+        "evidence",
+        "observation_labels"
+      ],
+      "title": "DecisionPerson",
+      "type": "object"
+    },
+    "DecisionRobot": {
+      "additionalProperties": false,
+      "properties": {
+        "motion_state": {
+          "enum": [
+            "STATIONARY",
+            "MOVING",
+            "UNKNOWN"
+          ],
+          "title": "Motion State",
+          "type": "string"
+        }
+      },
+      "required": [
+        "motion_state"
+      ],
+      "title": "DecisionRobot",
+      "type": "object"
+    },
+    "ObservationLabels": {
+      "additionalProperties": false,
+      "description": "Shared descriptive aliases, never interaction intent or policy advice.",
+      "properties": {
+        "version": {
+          "const": 1,
+          "default": 1,
+          "title": "Version",
+          "type": "integer"
+        },
+        "attention_over_time": {
+          "default": "UNKNOWN",
+          "enum": [
+            "LITTLE_OR_NO_LOOKING_AT_ROBOT",
+            "INTERMITTENT_LOOKING_AT_ROBOT",
+            "SUSTAINED_LOOKING_AT_ROBOT",
+            "UNKNOWN"
+          ],
+          "title": "Attention Over Time",
+          "type": "string"
+        },
+        "current_gaze": {
+          "default": "UNKNOWN",
+          "enum": [
+            "LOOKING_AT_ROBOT",
+            "NOT_LOOKING_AT_ROBOT",
+            "UNKNOWN"
+          ],
+          "title": "Current Gaze",
+          "type": "string"
+        },
+        "proximity": {
+          "default": "UNKNOWN",
+          "enum": [
+            "CLOSER_THAN_CONVERSATION_DISTANCE",
+            "WITHIN_CONVERSATION_DISTANCE",
+            "BEYOND_CONVERSATION_DISTANCE",
+            "BEYOND_CONFIGURED_SOCIAL_RANGE",
+            "UNKNOWN"
+          ],
+          "title": "Proximity",
+          "type": "string"
+        },
+        "corridor_position": {
+          "default": "UNKNOWN",
+          "enum": [
+            "IN_ROBOT_FORWARD_CORRIDOR",
+            "BESIDE_ROBOT_FORWARD_CORRIDOR",
+            "BEHIND_ROBOT",
+            "UNKNOWN"
+          ],
+          "title": "Corridor Position",
+          "type": "string"
+        },
+        "relative_separation": {
+          "default": "UNKNOWN",
+          "enum": [
+            "GETTING_CLOSER",
+            "STEADY",
+            "GETTING_FARTHER",
+            "UNKNOWN"
+          ],
+          "title": "Relative Separation",
+          "type": "string"
+        }
+      },
+      "title": "ObservationLabels",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": 1,
+      "default": 1,
+      "title": "Schema Version",
+      "type": "integer"
+    },
+    "observation_readiness": {
+      "enum": [
+        "READY",
+        "NOT_READY"
+      ],
+      "title": "Observation Readiness",
+      "type": "string"
+    },
+    "readiness_reason": {
+      "title": "Readiness Reason",
+      "type": "string"
+    },
+    "robot": {
+      "$ref": "#/$defs/DecisionRobot"
+    },
+    "people": {
+      "items": {
+        "$ref": "#/$defs/DecisionPerson"
+      },
+      "title": "People",
+      "type": "array"
+    },
+    "no_person_observed_s": {
+      "title": "No Person Observed S",
+      "type": "number"
+    }
+  },
+  "required": [
+    "observation_readiness",
+    "readiness_reason",
+    "robot",
+    "people",
+    "no_person_observed_s"
+  ],
+  "title": "DecisionState",
+  "type": "object"
+}

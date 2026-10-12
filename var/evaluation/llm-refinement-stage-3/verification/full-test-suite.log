@@ -1,0 +1,390 @@
+..127.0.0.1 - - [12/Oct/2026 20:03:24] "POST /api/v1/camera-frames HTTP/1.1" 200 -
+127.0.0.1 - - [12/Oct/2026 20:03:24] "POST /api/v1/camera-frames HTTP/1.1" 200 -
+127.0.0.1 - - [12/Oct/2026 20:03:24] "[31m[1mPOST /api/v1/camera-frames HTTP/1.1[0m" 400 -
+.camera=head unavailable: camera class is absent from installed Navel SDK
+camera=chest unavailable: NotImplementedError: camera socket is not available
+127.0.0.1 - - [12/Oct/2026 20:03:24] "POST /api/v1/camera-frames HTTP/1.1" 200 -
+127.0.0.1 - - [12/Oct/2026 20:03:24] "POST /api/v1/camera-frames HTTP/1.1" 200 -
+.127.0.0.1 - - [12/Oct/2026 20:03:25] "POST /api/v1/camera-frames HTTP/1.1" 200 -
+..........................single_trial behaviour_failed action=APPROACH
+Traceback (most recent call last):
+  File "/Users/eddiekim/Documents/Projects/P4P/robot/navel_client/behaviour_dispatch.py", line 264, in _execute
+    succeeded = task.result()
+                ^^^^^^^^^^^^^
+  File "/Users/eddiekim/Documents/Projects/P4P/robot/navel_client/behaviour_dispatch.py", line 250, in run_handler
+    await handler(context)
+  File "/Users/eddiekim/Documents/Projects/P4P/tests/test_client.py", line 547, in handler
+    raise RuntimeError("mock handler failed")
+RuntimeError: mock handler failed
+.single_trial behaviour_failed action=CONTINUE
+Traceback (most recent call last):
+  File "/Users/eddiekim/Documents/Projects/P4P/robot/navel_client/behaviour_dispatch.py", line 264, in _execute
+    succeeded = task.result()
+                ^^^^^^^^^^^^^
+  File "/Users/eddiekim/Documents/Projects/P4P/robot/navel_client/behaviour_dispatch.py", line 250, in run_handler
+    await handler(context)
+  File "/Users/eddiekim/Documents/Projects/P4P/robot/navel_client/behaviour_dispatch.py", line 22, in continue_route
+    await context.route.task
+  File "/Users/eddiekim/Documents/Projects/P4P/tests/test_client.py", line 607, in move
+    raise OSError("movement failed")
+OSError: movement failed
+..{
+  "timestamp": 1,
+  "people": [
+    {
+      "uid": 17,
+      "distance_m": 1.85,
+      "gaze_overlap": 0.75
+    }
+  ],
+  "robot": {
+    "linear_velocity": 0.2,
+    "angular_velocity": -0.1
+  },
+  "safety": {
+    "lidar": [
+      2.0,
+      1.0
+    ],
+    "sonar": [
+      0.5,
+      0.7,
+      1.2
+    ]
+  }
+}
+{
+  "timestamp": 3,
+  "people": [
+    {
+      "uid": 17,
+      "distance_m": 1.85,
+      "gaze_overlap": 0.75
+    }
+  ],
+  "robot": {
+    "linear_velocity": 0.2,
+    "angular_velocity": -0.1
+  },
+  "safety": {
+    "lidar": [
+      2.0,
+      1.0
+    ],
+    "sonar": [
+      0.5,
+      0.7,
+      1.2
+    ]
+  }
+}
+...single_trial behaviour_failed action=APPROACH
+Traceback (most recent call last):
+  File "/Users/eddiekim/Documents/Projects/P4P/robot/navel_client/approach.py", line 264, in motion
+    self.check(require_perception=require_perception)
+  File "/Users/eddiekim/Documents/Projects/P4P/robot/navel_client/approach.py", line 149, in check
+    self.pose()
+  File "/Users/eddiekim/Documents/Projects/P4P/robot/navel_client/approach.py", line 143, in pose
+    raise RuntimeError('Odometry unavailable/stale: '+str(self.errors))
+RuntimeError: Odometry unavailable/stale: {}
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/eddiekim/Documents/Projects/P4P/robot/navel_client/behaviour_dispatch.py", line 264, in _execute
+    succeeded = task.result()
+                ^^^^^^^^^^^^^
+  File "/Users/eddiekim/Documents/Projects/P4P/robot/navel_client/behaviour_dispatch.py", line 250, in run_handler
+    await handler(context)
+  File "/Users/eddiekim/Documents/Projects/P4P/robot/navel_client/behaviour_dispatch.py", line 36, in approach_person
+    result = context.approach_result = await approach_human(runtime, uid)
+                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/eddiekim/Documents/Projects/P4P/robot/navel_client/approach.py", line 427, in approach_human
+    await run_arc(rt, target, rt.cfg.stop_distance)
+  File "/Users/eddiekim/Documents/Projects/P4P/robot/navel_client/approach.py", line 394, in run_arc
+    reason = await rt.motion(lambda: rt.robot.move_and_rotate_base(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/eddiekim/Documents/Projects/P4P/robot/navel_client/approach.py", line 286, in motion
+    await asyncio.shield(cleanup)
+  File "/Users/eddiekim/Documents/Projects/P4P/robot/navel_client/approach.py", line 301, in _finish_motion
+    await self.settle()
+  File "/Users/eddiekim/Documents/Projects/P4P/robot/navel_client/approach.py", line 240, in settle
+    pose = self.pose()
+           ^^^^^^^^^^^
+  File "/Users/eddiekim/Documents/Projects/P4P/robot/navel_client/approach.py", line 143, in pose
+    raise RuntimeError('Odometry unavailable/stale: '+str(self.errors))
+RuntimeError: Odometry unavailable/stale: {'perception': 'Odometry unavailable/stale: {}'}
+single_trial behaviour_failed action=APPROACH
+Traceback (most recent call last):
+  File "/Users/eddiekim/Documents/Projects/P4P/robot/navel_client/behaviour_dispatch.py", line 264, in _execute
+    succeeded = task.result()
+                ^^^^^^^^^^^^^
+  File "/Users/eddiekim/Documents/Projects/P4P/robot/navel_client/behaviour_dispatch.py", line 250, in run_handler
+    await handler(context)
+  File "/Users/eddiekim/Documents/Projects/P4P/robot/navel_client/behaviour_dispatch.py", line 48, in approach_person
+    await context.own_task(context.robot.say("Hi! Do you need any help?"))
+  File "/Users/eddiekim/Documents/Projects/P4P/tests/test_client.py", line 881, in speech
+    raise OSError('speech failed')
+OSError: speech failed
+.yield_failed stage=ESCAPE error=CancelledError
+yield_failed stage=WAIT error=CancelledError
+yield_failed stage=RETURN error=CancelledError
+yield_failed stage=ADVANCE error=CancelledError
+yield_failed stage=ESCAPE error=escape failed
+single_trial behaviour_failed action=YIELD
+Traceback (most recent call last):
+  File "/Users/eddiekim/Documents/Projects/P4P/robot/navel_client/behaviour_dispatch.py", line 264, in _execute
+    succeeded = task.result()
+                ^^^^^^^^^^^^^
+  File "/Users/eddiekim/Documents/Projects/P4P/robot/navel_client/behaviour_dispatch.py", line 250, in run_handler
+    await handler(context)
+  File "/Users/eddiekim/Documents/Projects/P4P/robot/navel_client/behaviour_dispatch.py", line 72, in yield_space
+    await movement("ESCAPE", lambda: context.robot.move_and_rotate_base(
+  File "/Users/eddiekim/Documents/Projects/P4P/robot/navel_client/behaviour_dispatch.py", line 66, in movement
+    await runtime.motion(command, timeout=context.timeout_s,
+  File "/Users/eddiekim/Documents/Projects/P4P/tests/test_client.py", line 1076, in supervised_motion
+    return await original_motion(runtime, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/eddiekim/Documents/Projects/P4P/robot/navel_client/approach.py", line 275, in motion
+    await task
+  File "/Users/eddiekim/Documents/Projects/P4P/tests/test_client.py", line 1019, in sender
+    raise OSError(stage+' failed')
+OSError: escape failed
+yield_failed stage=RETURN error=return failed
+single_trial behaviour_failed action=YIELD
+Traceback (most recent call last):
+  File "/Users/eddiekim/Documents/Projects/P4P/robot/navel_client/behaviour_dispatch.py", line 264, in _execute
+    succeeded = task.result()
+                ^^^^^^^^^^^^^
+  File "/Users/eddiekim/Documents/Projects/P4P/robot/navel_client/behaviour_dispatch.py", line 250, in run_handler
+    await handler(context)
+  File "/Users/eddiekim/Documents/Projects/P4P/robot/navel_client/behaviour_dispatch.py", line 80, in yield_space
+    await movement("RETURN", lambda: context.robot.move_and_rotate_base(
+  File "/Users/eddiekim/Documents/Projects/P4P/robot/navel_client/behaviour_dispatch.py", line 66, in movement
+    await runtime.motion(command, timeout=context.timeout_s,
+  File "/Users/eddiekim/Documents/Projects/P4P/tests/test_client.py", line 1076, in supervised_motion
+    return await original_motion(runtime, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/eddiekim/Documents/Projects/P4P/robot/navel_client/approach.py", line 275, in motion
+    await task
+  File "/Users/eddiekim/Documents/Projects/P4P/tests/test_client.py", line 1019, in sender
+    raise OSError(stage+' failed')
+OSError: return failed
+yield_failed stage=ADVANCE error=advance failed
+single_trial behaviour_failed action=YIELD
+Traceback (most recent call last):
+  File "/Users/eddiekim/Documents/Projects/P4P/robot/navel_client/behaviour_dispatch.py", line 264, in _execute
+    succeeded = task.result()
+                ^^^^^^^^^^^^^
+  File "/Users/eddiekim/Documents/Projects/P4P/robot/navel_client/behaviour_dispatch.py", line 250, in run_handler
+    await handler(context)
+  File "/Users/eddiekim/Documents/Projects/P4P/robot/navel_client/behaviour_dispatch.py", line 82, in yield_space
+    await movement("ADVANCE", lambda: context.robot.move_base(
+  File "/Users/eddiekim/Documents/Projects/P4P/robot/navel_client/behaviour_dispatch.py", line 66, in movement
+    await runtime.motion(command, timeout=context.timeout_s,
+  File "/Users/eddiekim/Documents/Projects/P4P/tests/test_client.py", line 1076, in supervised_motion
+    return await original_motion(runtime, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/eddiekim/Documents/Projects/P4P/robot/navel_client/approach.py", line 275, in motion
+    await task
+  File "/Users/eddiekim/Documents/Projects/P4P/tests/test_client.py", line 1019, in sender
+    raise OSError(stage+' failed')
+OSError: advance failed
+yield_failed stage=PASS_SPEECH error=speech failed
+single_trial behaviour_failed action=YIELD
+Traceback (most recent call last):
+  File "/Users/eddiekim/Documents/Projects/P4P/robot/navel_client/behaviour_dispatch.py", line 264, in _execute
+    succeeded = task.result()
+                ^^^^^^^^^^^^^
+  File "/Users/eddiekim/Documents/Projects/P4P/robot/navel_client/behaviour_dispatch.py", line 250, in run_handler
+    await handler(context)
+  File "/Users/eddiekim/Documents/Projects/P4P/robot/navel_client/behaviour_dispatch.py", line 76, in yield_space
+    await context.own_task(context.robot.say("Please go ahead."))
+  File "/Users/eddiekim/Documents/Projects/P4P/tests/test_client.py", line 1053, in speech
+    raise OSError('speech failed')
+OSError: speech failed
+yield_failed stage=COMPLETE_SPEECH error=speech failed
+single_trial behaviour_failed action=YIELD
+Traceback (most recent call last):
+  File "/Users/eddiekim/Documents/Projects/P4P/robot/navel_client/behaviour_dispatch.py", line 264, in _execute
+    succeeded = task.result()
+                ^^^^^^^^^^^^^
+  File "/Users/eddiekim/Documents/Projects/P4P/robot/navel_client/behaviour_dispatch.py", line 250, in run_handler
+    await handler(context)
+  File "/Users/eddiekim/Documents/Projects/P4P/robot/navel_client/behaviour_dispatch.py", line 86, in yield_space
+    await context.own_task(context.robot.say("Yield complete."))
+  File "/Users/eddiekim/Documents/Projects/P4P/tests/test_client.py", line 1053, in speech
+    raise OSError('speech failed')
+OSError: speech failed
+yield_failed stage=ESCAPE error=CancelledError
+.timestamp=4033047188420 transport_error=offline
+timestamp=4033047218868 status=503 response={'accepted': False}
+single_trial stop_failed physical_stop_verified=false
+Traceback (most recent call last):
+  File "/Users/eddiekim/Documents/Projects/P4P/robot/navel_client/main.py", line 485, in collect_and_stream
+    await asyncio.shield(cleanup)
+  File "/Users/eddiekim/Documents/Projects/P4P/robot/navel_client/main.py", line 480, in stop_local
+    await head_focus.suspend_and_settle()
+  File "/Users/eddiekim/Documents/Projects/P4P/robot/navel_client/head_focus.py", line 182, in suspend_and_settle
+    raise self._command_error
+  File "/Users/eddiekim/Documents/Projects/P4P/robot/navel_client/main.py", line 449, in collect_and_stream
+    task.result()
+  File "/Users/eddiekim/Documents/Projects/P4P/robot/navel_client/head_focus.py", line 162, in watch_failures
+    raise self._command_error
+  File "/Users/eddiekim/Documents/Projects/P4P/tests/test_client.py", line 230, in look_at_person
+    raise OSError("head failed")
+OSError: head failed
+...{
+  "timestamp": 2,
+  "people": [
+    {
+      "uid": 17,
+      "distance_m": 1.85,
+      "gaze_overlap": 0.75
+    }
+  ],
+  "robot": {
+    "linear_velocity": 0.2,
+    "angular_velocity": -0.1
+  },
+  "safety": {
+    "lidar": [
+      2.0,
+      1.0
+    ],
+    "sonar": [
+      0.5,
+      0.7,
+      1.2
+    ]
+  }
+}
+.......................................................................................single_trial stop_failed physical_stop_verified=false
+Traceback (most recent call last):
+  File "/Users/eddiekim/Documents/Projects/P4P/robot/navel_client/main.py", line 485, in collect_and_stream
+    await asyncio.shield(cleanup)
+  File "/Users/eddiekim/Documents/Projects/P4P/robot/navel_client/main.py", line 480, in stop_local
+    await head_focus.suspend_and_settle()
+  File "/Users/eddiekim/Documents/Projects/P4P/robot/navel_client/head_focus.py", line 182, in suspend_and_settle
+    raise self._command_error
+  File "/Users/eddiekim/Documents/Projects/P4P/robot/navel_client/main.py", line 449, in collect_and_stream
+    task.result()
+  File "/Users/eddiekim/Documents/Projects/P4P/robot/navel_client/head_focus.py", line 162, in watch_failures
+    raise self._command_error
+  File "/Users/eddiekim/Documents/Projects/P4P/tests/test_head_focus.py", line 354, in command
+    raise OSError('async route head failure')
+OSError: async route head failure
+single_trial stop_failed physical_stop_verified=false
+Traceback (most recent call last):
+  File "/Users/eddiekim/Documents/Projects/P4P/robot/navel_client/main.py", line 485, in collect_and_stream
+    await asyncio.shield(cleanup)
+  File "/Users/eddiekim/Documents/Projects/P4P/robot/navel_client/main.py", line 477, in stop_local
+    await route.stop()
+  File "/Users/eddiekim/Documents/Projects/P4P/robot/navel_client/straight_route.py", line 41, in stop
+    self.robot.base_vel(0.0, 0.0)
+  File "/Users/eddiekim/Documents/Projects/P4P/tests/test_head_focus.py", line 374, in base_vel
+    raise OSError('mock stop failure')
+OSError: mock stop failure
+...............................................................................................................................................Frozen baseline: /var/folders/7f/ql_2ft412k55swf11j8z_qqm0000gn/T/tmpj5wf40ds/baseline
+......................................................................................................127.0.0.1 - - [12/Oct/2026 20:03:58] "POST /api/v1/observations HTTP/1.1" 200 -
+127.0.0.1 - - [12/Oct/2026 20:03:58] "POST /api/v1/observations HTTP/1.1" 200 -
+127.0.0.1 - - [12/Oct/2026 20:03:58] "POST /api/v1/observations HTTP/1.1" 200 -
+127.0.0.1 - - [12/Oct/2026 20:03:58] "POST /api/v1/observations HTTP/1.1" 200 -
+127.0.0.1 - - [12/Oct/2026 20:03:58] "POST /api/v1/observations HTTP/1.1" 200 -
+127.0.0.1 - - [12/Oct/2026 20:03:58] "POST /api/v1/observations HTTP/1.1" 200 -
+127.0.0.1 - - [12/Oct/2026 20:03:58] "POST /api/v1/observations HTTP/1.1" 200 -
+127.0.0.1 - - [12/Oct/2026 20:03:58] "POST /api/v1/observations HTTP/1.1" 200 -
+127.0.0.1 - - [12/Oct/2026 20:03:58] "POST /api/v1/observations HTTP/1.1" 200 -
+127.0.0.1 - - [12/Oct/2026 20:03:58] "POST /api/v1/observations HTTP/1.1" 200 -
+127.0.0.1 - - [12/Oct/2026 20:03:58] "POST /api/v1/observations HTTP/1.1" 200 -
+127.0.0.1 - - [12/Oct/2026 20:03:58] "POST /api/v1/observations HTTP/1.1" 200 -
+127.0.0.1 - - [12/Oct/2026 20:03:58] "POST /api/v1/observations HTTP/1.1" 200 -
+127.0.0.1 - - [12/Oct/2026 20:03:58] "POST /api/v1/observations HTTP/1.1" 200 -
+127.0.0.1 - - [12/Oct/2026 20:03:58] "POST /api/v1/execution-events HTTP/1.1" 200 -
+127.0.0.1 - - [12/Oct/2026 20:03:58] "POST /api/v1/execution-events HTTP/1.1" 200 -
+127.0.0.1 - - [12/Oct/2026 20:03:58] "POST /api/v1/observations HTTP/1.1" 200 -
+.127.0.0.1 - - [12/Oct/2026 20:03:58] "POST /api/v1/observations HTTP/1.1" 200 -
+{
+  "timestamp": 4033059250587,
+  "people": [
+    {
+      "uid": 17,
+      "distance_m": 1.85,
+      "gaze_overlap": 0.75,
+      "optional_relative_head_position": {
+        "coordinate_frame": "CAM_HEAD",
+        "x": 1.8,
+        "y": 0.3,
+        "z": 0.1
+      }
+    }
+  ],
+  "robot": {
+    "linear_velocity": 0.2,
+    "angular_velocity": -0.1
+  },
+  "safety": {
+    "lidar": [
+      2.0,
+      1.0
+    ],
+    "sonar": [
+      0.5,
+      0.7,
+      1.2
+    ]
+  }
+}
+.127.0.0.1 - - [12/Oct/2026 20:03:58] "POST /api/v1/observations HTTP/1.1" 200 -
+127.0.0.1 - - [12/Oct/2026 20:03:58] "POST /api/v1/observations HTTP/1.1" 200 -
+127.0.0.1 - - [12/Oct/2026 20:03:58] "POST /api/v1/observations HTTP/1.1" 200 -
+127.0.0.1 - - [12/Oct/2026 20:03:58] "POST /api/v1/observations HTTP/1.1" 200 -
+.127.0.0.1 - - [12/Oct/2026 20:03:58] "[31m[1mPOST /api/v1/observations HTTP/1.1[0m" 400 -
+.127.0.0.1 - - [12/Oct/2026 20:03:58] "POST /api/v1/observations HTTP/1.1" 200 -
+...........................................................................................127.0.0.1 - - [12/Oct/2026 20:04:00] "POST /api/v1/sdk-packets HTTP/1.1" 200 -
+127.0.0.1 - - [12/Oct/2026 20:04:00] "POST /api/v1/sdk-packets HTTP/1.1" 200 -
+..127.0.0.1 - - [12/Oct/2026 20:04:00] "POST /api/v1/sdk-packets HTTP/1.1" 200 -
+127.0.0.1 - - [12/Oct/2026 20:04:00] "POST /api/v1/sdk-packets HTTP/1.1" 200 -
+127.0.0.1 - - [12/Oct/2026 20:04:00] "POST /api/v1/sdk-packets HTTP/1.1" 200 -
+127.0.0.1 - - [12/Oct/2026 20:04:00] "[31m[1mPOST /api/v1/sdk-packets HTTP/1.1[0m" 409 -
+...127.0.0.1 - - [12/Oct/2026 20:04:00] "POST /api/v1/sdk-packets HTTP/1.1" 200 -
+127.0.0.1 - - [12/Oct/2026 20:04:00] "POST /api/v1/camera-frames HTTP/1.1" 200 -
+127.0.0.1 - - [12/Oct/2026 20:04:00] "POST /api/v1/sdk-packets HTTP/1.1" 200 -
+127.0.0.1 - - [12/Oct/2026 20:04:00] "POST /api/v1/camera-frames HTTP/1.1" 200 -
+....................................................................................................................................................FFFF....................................
+======================================================================
+FAIL: test_task_context_and_definitions_match_llm_verbatim (test_vlm_policy.VLMPromptTests.test_task_context_and_definitions_match_llm_verbatim) (definition='- CONTINUE: Follow the existing route without initiating interaction.')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/eddiekim/Documents/Projects/P4P/tests/test_vlm_policy.py", line 103, in test_task_context_and_definitions_match_llm_verbatim
+    self.assertIn(line, text.splitlines())
+AssertionError: '- CONTINUE: Follow the existing route without initiating interaction.' not found in ['A robot is assigned to travel along a fixed route inside a laboratory. It must choose its next behaviour around people.', '', 'Choose the most appropriate next action using only the attached image:', '- CONTINUE: Continue along the existing fixed route without approaching the person or initiating an interaction. During execution, the robot will complete the remaining route.', '- APPROACH: Leave the existing route, move towards the observed person, and stop at a suitable distance for conversation.', '- ENGAGE: The person is already at a suitable interaction distance. Stop or remain stationary and initiate an interaction, such as a greeting.', '- YIELD: Give the person room to pass by temporarily moving aside and backwards, waiting, returning towards the route and advancing a short distance.', '', 'Do not invent rotation angles, distances, speeds or an exact manoeuvre sequence for YIELD.', 'One image cannot establish movement over time or sustained gaze. Do not invent measured distances, durations or velocities. Give a brief explanation grounded in visible evidence.', '', 'Select exactly one of the four actions. Return exactly one JSON object with only the required fields action and reason. action must be exactly CONTINUE, APPROACH, ENGAGE or YIELD; reason must be a string containing non-whitespace text. Do not return prose, code fences or additional fields.']
+
+======================================================================
+FAIL: test_task_context_and_definitions_match_llm_verbatim (test_vlm_policy.VLMPromptTests.test_task_context_and_definitions_match_llm_verbatim) (definition='- APPROACH: Leave the route and move toward an observed person, stopping at conversation distance.')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/eddiekim/Documents/Projects/P4P/tests/test_vlm_policy.py", line 103, in test_task_context_and_definitions_match_llm_verbatim
+    self.assertIn(line, text.splitlines())
+AssertionError: '- APPROACH: Leave the route and move toward an observed person, stopping at conversation distance.' not found in ['A robot is assigned to travel along a fixed route inside a laboratory. It must choose its next behaviour around people.', '', 'Choose the most appropriate next action using only the attached image:', '- CONTINUE: Continue along the existing fixed route without approaching the person or initiating an interaction. During execution, the robot will complete the remaining route.', '- APPROACH: Leave the existing route, move towards the observed person, and stop at a suitable distance for conversation.', '- ENGAGE: The person is already at a suitable interaction distance. Stop or remain stationary and initiate an interaction, such as a greeting.', '- YIELD: Give the person room to pass by temporarily moving aside and backwards, waiting, returning towards the route and advancing a short distance.', '', 'Do not invent rotation angles, distances, speeds or an exact manoeuvre sequence for YIELD.', 'One image cannot establish movement over time or sustained gaze. Do not invent measured distances, durations or velocities. Give a brief explanation grounded in visible evidence.', '', 'Select exactly one of the four actions. Return exactly one JSON object with only the required fields action and reason. action must be exactly CONTINUE, APPROACH, ENGAGE or YIELD; reason must be a string containing non-whitespace text. Do not return prose, code fences or additional fields.']
+
+======================================================================
+FAIL: test_task_context_and_definitions_match_llm_verbatim (test_vlm_policy.VLMPromptTests.test_task_context_and_definitions_match_llm_verbatim) (definition='- ENGAGE: Stop or remain stationary and begin an interaction with someone already at conversation distance.')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/eddiekim/Documents/Projects/P4P/tests/test_vlm_policy.py", line 103, in test_task_context_and_definitions_match_llm_verbatim
+    self.assertIn(line, text.splitlines())
+AssertionError: '- ENGAGE: Stop or remain stationary and begin an interaction with someone already at conversation distance.' not found in ['A robot is assigned to travel along a fixed route inside a laboratory. It must choose its next behaviour around people.', '', 'Choose the most appropriate next action using only the attached image:', '- CONTINUE: Continue along the existing fixed route without approaching the person or initiating an interaction. During execution, the robot will complete the remaining route.', '- APPROACH: Leave the existing route, move towards the observed person, and stop at a suitable distance for conversation.', '- ENGAGE: The person is already at a suitable interaction distance. Stop or remain stationary and initiate an interaction, such as a greeting.', '- YIELD: Give the person room to pass by temporarily moving aside and backwards, waiting, returning towards the route and advancing a short distance.', '', 'Do not invent rotation angles, distances, speeds or an exact manoeuvre sequence for YIELD.', 'One image cannot establish movement over time or sustained gaze. Do not invent measured distances, durations or velocities. Give a brief explanation grounded in visible evidence.', '', 'Select exactly one of the four actions. Return exactly one JSON object with only the required fields action and reason. action must be exactly CONTINUE, APPROACH, ENGAGE or YIELD; reason must be a string containing non-whitespace text. Do not return prose, code fences or additional fields.']
+
+======================================================================
+FAIL: test_task_context_and_definitions_match_llm_verbatim (test_vlm_policy.VLMPromptTests.test_task_context_and_definitions_match_llm_verbatim) (definition='- YIELD: Temporarily move aside and backwards to give someone room to pass, then return toward the route.')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/eddiekim/Documents/Projects/P4P/tests/test_vlm_policy.py", line 103, in test_task_context_and_definitions_match_llm_verbatim
+    self.assertIn(line, text.splitlines())
+AssertionError: '- YIELD: Temporarily move aside and backwards to give someone room to pass, then return toward the route.' not found in ['A robot is assigned to travel along a fixed route inside a laboratory. It must choose its next behaviour around people.', '', 'Choose the most appropriate next action using only the attached image:', '- CONTINUE: Continue along the existing fixed route without approaching the person or initiating an interaction. During execution, the robot will complete the remaining route.', '- APPROACH: Leave the existing route, move towards the observed person, and stop at a suitable distance for conversation.', '- ENGAGE: The person is already at a suitable interaction distance. Stop or remain stationary and initiate an interaction, such as a greeting.', '- YIELD: Give the person room to pass by temporarily moving aside and backwards, waiting, returning towards the route and advancing a short distance.', '', 'Do not invent rotation angles, distances, speeds or an exact manoeuvre sequence for YIELD.', 'One image cannot establish movement over time or sustained gaze. Do not invent measured distances, durations or velocities. Give a brief explanation grounded in visible evidence.', '', 'Select exactly one of the four actions. Return exactly one JSON object with only the required fields action and reason. action must be exactly CONTINUE, APPROACH, ENGAGE or YIELD; reason must be a string containing non-whitespace text. Do not return prose, code fences or additional fields.']
+
+----------------------------------------------------------------------
+Ran 658 tests in 38.497s
+
+FAILED (failures=4)

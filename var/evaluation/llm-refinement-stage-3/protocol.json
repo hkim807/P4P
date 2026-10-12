@@ -1,0 +1,382 @@
+{
+  "version": "compact-decision-state-v1",
+  "settings": {
+    "action_version": "social-actions-v3",
+    "rule_version": "social-rules-v7",
+    "prompt_version": "social-state-llm-v14",
+    "temporal_config": "config/temporal-final-scenarios.json",
+    "track_config": "config/person-tracking-final-scenarios.json",
+    "evaluation_contract": "config/final-scenarios.json",
+    "model": "qwen2.5:7b",
+    "temperature": 0.0,
+    "seed": 42,
+    "num_ctx": 8192,
+    "num_predict": 192,
+    "timeout_seconds": 120.0,
+    "diagnostic_interval_s": 1.0,
+    "model_trial_max_age_s": 10.0,
+    "design": "First-action fit to nine user-labelled motion-trimmed recordings; not held-out evaluation; no physical execution",
+    "base_url": "http://127.0.0.1:11434"
+  },
+  "scenarios": [
+    {
+      "scenario_id": "S1",
+      "recording": "var/evaluation/final-scenarios-audit/trimmed/final_scenario_1-sdk.jsonl",
+      "source_sha256": "0bfc5da545ab0634876c584913affcd5d697af9d4ad912aca0e8a72c9fc8e21a",
+      "expected_actions": [
+        "CONTINUE"
+      ],
+      "motion_start_monotonic_us": 1896788380,
+      "observations": 105,
+      "eligible_observations": 82,
+      "first_perception_us": 1896890996,
+      "snapshots": {
+        "first": {
+          "timestamp_us": 1897966824,
+          "since_motion_s": 1.178444,
+          "state_id": "replay-c185d8773106dd7263c9682d:12",
+          "state_sha256": "9c4167c92228f2c9242f33f38a745d17352afaf61d0407c9eca997394dc7cfa9",
+          "rule_decision": {
+            "action": "CONTINUE",
+            "reason": "Gaze evidence is classified as no attention; continue along the fixed route."
+          },
+          "full_social_state_sha256": "1d449d0cf8cb8ce598465ff3fe3f68be6a2c344c2c121836b6fa6a8315797be0"
+        },
+        "later": {
+          "timestamp_us": 1907261075,
+          "since_motion_s": 10.472695,
+          "state_id": "replay-c185d8773106dd7263c9682d:105",
+          "state_sha256": "f6ac9221ace716641f000c7e6cc9d300a5c098afc99c2ee63a3ed2e07aa1d334",
+          "rule_decision": {
+            "action": "CONTINUE",
+            "reason": "No person has been detected throughout the configured observation interval; continue along the route without initiating interaction."
+          },
+          "full_social_state_sha256": "8efc97e51030dd974bff1bbfed7067ffa1b9e8a101c43417cd8053eb04ad4ace"
+        }
+      }
+    },
+    {
+      "scenario_id": "S2",
+      "recording": "var/evaluation/final-scenarios-audit/trimmed/final_scenario_2-sdk.jsonl",
+      "source_sha256": "08a9f4e035e8ff1b5ca4ad5f807dd5b9a4e94bc55c916da9412365813df506bb",
+      "expected_actions": [
+        "APPROACH"
+      ],
+      "motion_start_monotonic_us": 2009906601,
+      "observations": 48,
+      "eligible_observations": 37,
+      "first_perception_us": 2009938706,
+      "snapshots": {
+        "first": {
+          "timestamp_us": 2011010671,
+          "since_motion_s": 1.10407,
+          "state_id": "replay-bd5e83b6a4070146c505ec1e:12",
+          "state_sha256": "cb450efd6ce0a931d9c3df845e79c2e73655786df17c14524ad71e2faa5c9477",
+          "rule_decision": {
+            "action": "APPROACH",
+            "reason": "The person is looking steadily at the robot and is within approach distance."
+          },
+          "full_social_state_sha256": "c9bef2b0c72b5223c40b841e0083629c8f62ecd3ac38088c8eef10c6696096cf"
+        },
+        "later": {
+          "timestamp_us": 2014613135,
+          "since_motion_s": 4.706534,
+          "state_id": "replay-bd5e83b6a4070146c505ec1e:48",
+          "state_sha256": "5b5a979b4de8a370caff42a5309e790d1ab9286bf86f767aaa3fc7cf2ad116f8",
+          "rule_decision": {
+            "action": "APPROACH",
+            "reason": "The person is looking steadily at the robot and is within approach distance."
+          },
+          "full_social_state_sha256": "9f1a4ec6dfdb3efbbba00fb6c9d6affe348a20d5c5c3aad1709cf5b5edabd9e4"
+        }
+      }
+    },
+    {
+      "scenario_id": "S3",
+      "recording": "var/evaluation/final-scenarios-audit/trimmed/final_scenario_3-sdk.jsonl",
+      "source_sha256": "4281527e087f3bf89ac1e9c19a274ed1ca0892e5b509a2ec7dc6a2954ecaafb9",
+      "expected_actions": [
+        "ENGAGE",
+        "APPROACH"
+      ],
+      "motion_start_monotonic_us": 2046106026,
+      "observations": 47,
+      "eligible_observations": 36,
+      "first_perception_us": 2046192337,
+      "snapshots": {
+        "first": {
+          "timestamp_us": 2047319068,
+          "since_motion_s": 1.213042,
+          "state_id": "replay-7a43024a2619ec806420c762:12",
+          "state_sha256": "84c7d660ed56dbac51b09206e445f3f264fe400a8e69a116cc4982457fcc1e6a",
+          "rule_decision": {
+            "action": "ENGAGE",
+            "reason": "The person is looking steadily at the robot and is within conversation distance."
+          },
+          "full_social_state_sha256": "7406552656ae43d27f69e2ffbbff58b18ef99cd14f7b59b8f16c647bf391795d"
+        },
+        "later": {
+          "timestamp_us": 2050804770,
+          "since_motion_s": 4.698744,
+          "state_id": "replay-7a43024a2619ec806420c762:47",
+          "state_sha256": "8a22597529530f4d77f1a005460daaee69ceee6b351161933768e8e3fee20193",
+          "rule_decision": {
+            "action": "ENGAGE",
+            "reason": "The person is looking steadily at the robot and is within conversation distance."
+          },
+          "full_social_state_sha256": "4f1144f58faf95689e598f23b38a1d51badbdf2daf16def975256b18658fdd08"
+        }
+      }
+    },
+    {
+      "scenario_id": "S4",
+      "recording": "var/evaluation/final-scenarios-audit/trimmed/final_scenario_4-sdk.jsonl",
+      "source_sha256": "37a122fd2fa1aa2e62772c10a9d88152e0dcc1d3ba08f84428c59ae7d8d290d6",
+      "expected_actions": [
+        "YIELD"
+      ],
+      "motion_start_monotonic_us": 2096080866,
+      "observations": 62,
+      "eligible_observations": 50,
+      "first_perception_us": 2096097493,
+      "snapshots": {
+        "first": {
+          "timestamp_us": 2097183323,
+          "since_motion_s": 1.102457,
+          "state_id": "replay-6c13d1e775b7489493285686:12",
+          "state_sha256": "6f6e50bb99e6cb748d97dd6d5d3778049514ab21b242391e7e7e3687e9871f2f",
+          "rule_decision": {
+            "action": "YIELD",
+            "reason": "The current nose position lies within the configured forward corridor, separation is decreasing within yield range, and face and low-gaze evidence are valid; give the person room to pass."
+          },
+          "full_social_state_sha256": "928b54be0b24a4e57a90d26fb409e9ba5ae37a1a1bbe70759d174a15169648ad"
+        },
+        "later": {
+          "timestamp_us": 2102077205,
+          "since_motion_s": 5.996339,
+          "state_id": "replay-6c13d1e775b7489493285686:61",
+          "state_sha256": "935f1ad114ba6169d4c9a7f10d02fcf9b0cef6e21a78eecdc69750780a4470b9",
+          "rule_decision": {
+            "action": "CONTINUE",
+            "reason": "Usable gaze evidence does not show sustained attention; continue along the fixed route."
+          },
+          "full_social_state_sha256": "8683a1c27f5930509d69bbbfaf4a9d5b5c2e8d390800f839a5056327fbe38501"
+        }
+      }
+    },
+    {
+      "scenario_id": "S5",
+      "recording": "var/evaluation/final-scenarios-audit/trimmed/final_scenario_5-sdk.jsonl",
+      "source_sha256": "8598b85db20dc43044da5392b69a14b55ff7a3ea080ec53663765670287fba4c",
+      "expected_actions": [
+        "CONTINUE"
+      ],
+      "motion_start_monotonic_us": 2138305845,
+      "observations": 69,
+      "eligible_observations": 58,
+      "first_perception_us": 2138350000,
+      "snapshots": {
+        "first": {
+          "timestamp_us": 2139472694,
+          "since_motion_s": 1.166849,
+          "state_id": "replay-f9e815a071393de98a4bc3d1:12",
+          "state_sha256": "39a62291e95688ed01da2bb1f0d079bc7f6a83051ee1f427f459d940178e10f6",
+          "rule_decision": {
+            "action": "CONTINUE",
+            "reason": "No person has been detected throughout the configured observation interval; continue along the route without initiating interaction."
+          },
+          "full_social_state_sha256": "4f2a42a4c0dd32b4b42f50783c47e9c5242dcf0908d0e79ce2d353b563638c46"
+        },
+        "later": {
+          "timestamp_us": 2145178517,
+          "since_motion_s": 6.872672,
+          "state_id": "replay-f9e815a071393de98a4bc3d1:69",
+          "state_sha256": "b4d0e557d2463d3ce618131137dac5a78636f237a98c4755607a5655db1c60fe",
+          "rule_decision": {
+            "action": "CONTINUE",
+            "reason": "No person has been detected throughout the configured observation interval; continue along the route without initiating interaction."
+          },
+          "full_social_state_sha256": "fbb018aada2255a3b37a464ce95baf0b98d414e2a9a8d5da4b74686a7f0166a5"
+        }
+      }
+    },
+    {
+      "scenario_id": "S6",
+      "recording": "var/evaluation/final-scenarios-audit/trimmed/final_scenario_6-sdk.jsonl",
+      "source_sha256": "81d07a1936abdf41ae7a6d740ec2288ccedb2806cc7c40dfb2d66941783b43da",
+      "expected_actions": [
+        "CONTINUE"
+      ],
+      "motion_start_monotonic_us": 2198112528,
+      "observations": 47,
+      "eligible_observations": 35,
+      "first_perception_us": 2198154257,
+      "snapshots": {
+        "first": {
+          "timestamp_us": 2199220910,
+          "since_motion_s": 1.108382,
+          "state_id": "replay-c868e15ffc810edd0c196acc:12",
+          "state_sha256": "079604827639750f87c726a3deeb41566ed06ce4cb6bcc5409b2f85140404291",
+          "rule_decision": {
+            "action": "CONTINUE",
+            "reason": "Gaze evidence is classified as no attention; continue along the fixed route."
+          },
+          "full_social_state_sha256": "1083558d0ff3155e47bf644fb4acd7c6ab77fe47ae4b34b245b7eddb16430c71"
+        },
+        "later": {
+          "timestamp_us": 2202727824,
+          "since_motion_s": 4.615296,
+          "state_id": "replay-c868e15ffc810edd0c196acc:47",
+          "state_sha256": "e546e9b71b54d92ee7511691e8a971fb6e0359d4a5cd2e7c74fa06650204644d",
+          "rule_decision": {
+            "action": "CONTINUE",
+            "reason": "Usable gaze evidence does not show sustained attention; continue along the fixed route."
+          },
+          "full_social_state_sha256": "1c91a8ffe86cd203b70885c0f2d14ce792f3ba943328431864e904673163af04"
+        }
+      }
+    },
+    {
+      "scenario_id": "S7",
+      "recording": "var/evaluation/final-scenarios-audit/trimmed/final_scenario_7-sdk.jsonl",
+      "source_sha256": "b9f1f06c611c7d01c2c225095d193118ecc029c8202ca5635a963952fe9eb405",
+      "expected_actions": [
+        "CONTINUE"
+      ],
+      "motion_start_monotonic_us": 2247095821,
+      "observations": 89,
+      "eligible_observations": 30,
+      "first_perception_us": 2247139027,
+      "snapshots": {
+        "first": {
+          "timestamp_us": 2248803445,
+          "since_motion_s": 1.707624,
+          "state_id": "replay-e25f14f5c9126f586b63f9e9:18",
+          "state_sha256": "973825fe8cf16218a96af69080ebc7fa0a6b0bac9135df448239b1f32c5cfdc1",
+          "rule_decision": {
+            "action": "CONTINUE",
+            "reason": "Usable gaze evidence does not show sustained attention; continue along the fixed route."
+          },
+          "full_social_state_sha256": "a5123906f9cad0d7ba230d3b800001eb510eac9399bad24145f5bfaf51dc8265"
+        },
+        "later": {
+          "timestamp_us": 2255911225,
+          "since_motion_s": 8.815404,
+          "state_id": "replay-e25f14f5c9126f586b63f9e9:89",
+          "state_sha256": "1a330f2b0254e5e809d21bdbdbe847f86b275295ae23e0266f08ea832be0bfaf",
+          "rule_decision": {
+            "action": "CONTINUE",
+            "reason": "Usable gaze evidence does not show sustained attention; continue along the fixed route."
+          },
+          "full_social_state_sha256": "3ae6d253bbfda46e025660be91158265b9c1f55fd89b246036e36b8a49bf9f80"
+        }
+      }
+    },
+    {
+      "scenario_id": "S8",
+      "recording": "var/evaluation/final-scenarios-audit/trimmed/final_scenario_8-sdk.jsonl",
+      "source_sha256": "240fff11df215f5bb491c93db59827a6b4dc507f7981e870a2abc77cd2b6d12f",
+      "expected_actions": [
+        "APPROACH",
+        "ENGAGE",
+        "CONTINUE"
+      ],
+      "motion_start_monotonic_us": 2291237477,
+      "observations": 72,
+      "eligible_observations": 50,
+      "first_perception_us": 2291321222,
+      "snapshots": {
+        "first": {
+          "timestamp_us": 2292411385,
+          "since_motion_s": 1.173908,
+          "state_id": "replay-246b41a68d212a1d60d24467:12",
+          "state_sha256": "78631edd42638e2906328fa4ed8f6585284a4c0e8d44bbcf5bac0a2c845e9c2b",
+          "rule_decision": {
+            "action": "CONTINUE",
+            "reason": "No person has been detected throughout the configured observation interval; continue along the route without initiating interaction."
+          },
+          "full_social_state_sha256": "0f4e00cdf7ebcbfdd0c5dd639cc3d193a655068dfd7ac5bbdcbb00ec9b4a765a"
+        },
+        "later": {
+          "timestamp_us": 2298399676,
+          "since_motion_s": 7.162199,
+          "state_id": "replay-246b41a68d212a1d60d24467:72",
+          "state_sha256": "3678fa417699d62bda122bbe4bb564540b8a65fb86e9ee2b7722e4492f357d13",
+          "rule_decision": {
+            "action": "CONTINUE",
+            "reason": "Separation is increasing outside conversation range; avoid pursuing the person."
+          },
+          "full_social_state_sha256": "b166eb77489740547f8e6893a2341c17b58725dbf9d52e893f6e8cf81647b5bb"
+        }
+      }
+    },
+    {
+      "scenario_id": "S9",
+      "recording": "var/evaluation/final-scenarios-audit/trimmed/final_scenario_9-sdk.jsonl",
+      "source_sha256": "56793886eec65c069a2861f87ad0f01b67dc8445d8b3dfa756a5a86c0b8c57d8",
+      "expected_actions": [
+        "APPROACH"
+      ],
+      "motion_start_monotonic_us": 2338007134,
+      "observations": 35,
+      "eligible_observations": 24,
+      "first_perception_us": 2338074249,
+      "snapshots": {
+        "first": {
+          "timestamp_us": 2339147941,
+          "since_motion_s": 1.140807,
+          "state_id": "replay-077ff210a4441c83a39ff4a6:12",
+          "state_sha256": "adc8f1fe10979969833e8e66ff3f9bbf1b39d74e2d7a5cbfc235c5130c10c35d",
+          "rule_decision": {
+            "action": "APPROACH",
+            "reason": "The person is looking steadily at the robot and is within approach distance."
+          },
+          "full_social_state_sha256": "6d10d5c33e76a78513109e06a90ef07b1a6791edd3dcaf1706e549c7d82c3976"
+        },
+        "later": {
+          "timestamp_us": 2341464704,
+          "since_motion_s": 3.45757,
+          "state_id": "replay-077ff210a4441c83a39ff4a6:35",
+          "state_sha256": "61ad7524ebbff1a43af0c0d5a5188ed32d2b62a5674db900c9db9a6b2cf9f3b3",
+          "rule_decision": {
+            "action": "APPROACH",
+            "reason": "The person is looking steadily at the robot and is within approach distance."
+          },
+          "full_social_state_sha256": "a1259f6c189911f77d0e530b6552b1f454caf35f105c5831c0cffc7ed3531434"
+        }
+      }
+    }
+  ],
+  "primary": "The output from the first eligible observation, never a later successful retry or best frame",
+  "alignment": "Equal scenario weight; action in unchanged expected_actions; invalid/failed/missing first outputs count as nonalignment",
+  "primary_times": [
+    "motion onset to first eligible observation",
+    "first eligible observation to complete validated output",
+    "motion onset to complete validated output"
+  ],
+  "acceptance": "Separate secondary measure; unchanged 30s wait, 10s model source age, 1s latest observation age",
+  "later": "Last eligible observation before each original recording ends; timestamps frozen before inference; diagnostic only",
+  "repetitions": 3,
+  "order": [
+    "S1",
+    "S2",
+    "S3",
+    "S4",
+    "S5",
+    "S6",
+    "S7",
+    "S8",
+    "S9"
+  ],
+  "model_condition": "Warm model before each primary repetition; cold-load probe separate; unchanged generation options",
+  "fairness": "Rules and LLM receive identical canonical SocialState snapshots; assert content SHA-256 and timestamps",
+  "limitations": [
+    "Nine recordings are a tuning set, not held-out accuracy",
+    "S3 and S8 retain their existing multiple allowed actions",
+    "S8 first decision occurs before the detected person appears; later diagnosis is separate",
+    "SDK replay cannot recover outgoing transport drops; receiver HTTP is in-process; no LAN timing or physical execution",
+    "Finite clips can end while inference runs, making latest observation stale"
+  ],
+  "prompt_version": "social-state-llm-v14-compact-v1",
+  "baseline": "/Users/eddiekim/Documents/Projects/P4P/var/evaluation/llm-refinement-stage-1-2"
+}

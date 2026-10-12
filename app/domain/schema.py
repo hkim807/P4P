@@ -8,6 +8,7 @@ from pathlib import Path
 from app.domain.models import RawObservationFrame
 from app.domain.model_decision import model_decision_schema
 from app.policy.rules import PolicyDecision
+from app.state.decision_models import DecisionState
 
 
 SCHEMA_PATH = Path(__file__).resolve().parents[2] / "schemas/v1/raw-observation-frame.schema.json"
@@ -28,6 +29,9 @@ def main() -> None:
     path = SCHEMA_PATH.with_name("model-decision.schema.json")
     path.write_text(json.dumps(model_decision_schema(), indent=2, sort_keys=True) + "\n",
                     encoding="utf-8")
+    print(path)
+    path = SCHEMA_PATH.with_name("decision-state.schema.json")
+    path.write_text(json.dumps(DecisionState.model_json_schema(), indent=2) + "\n", encoding="utf-8")
     print(path)
     path = SCHEMA_PATH.with_name("policy-decision.schema.json")
     path.write_text(json.dumps(PolicyDecision.model_json_schema(), indent=2) + "\n", encoding="utf-8")

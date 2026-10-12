@@ -213,7 +213,7 @@ class ReplayRunnerTests(unittest.TestCase):
             self.assertTrue(row["ok"])
             self.assertEqual([message.role for message in messages], ["system", "user"])
             self.assertEqual(messages[1].content,
-                             SOCIAL_STATE_PREFIX + row["social_state_json"])
+                             SOCIAL_STATE_PREFIX + row["decision_state_json"])
             self.assertEqual(json.loads(row["social_state_json"]), row["social_state"])
             self.assertTrue(all(message.images is None for message in messages))
             self.assertNotIn(self.input.name, messages[1].content)
@@ -272,7 +272,7 @@ class ReplayRunnerTests(unittest.TestCase):
         self.assertEqual(rows[0]["session_id"], expected["session_id"])
         self.assertEqual(rows[0]["source_robot_timestamp_us"], expected["robot_timestamp_us"])
         self.assertEqual(fake.messages[0][1].content,
-                         SOCIAL_STATE_PREFIX + rows[0]["social_state_json"])
+                         SOCIAL_STATE_PREFIX + rows[0]["decision_state_json"])
         self.assertNotIn(self.input.name, fake.messages[0][1].content)
         self.assertNotEqual(state.state_id, rows[0]["source_state_id"])
 

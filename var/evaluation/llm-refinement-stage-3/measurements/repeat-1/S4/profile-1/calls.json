@@ -1,0 +1,32 @@
+[
+  {
+    "source_state_id": null,
+    "source_robot_timestamp_us": null,
+    "state_sha256": "6f6e50bb99e6cb748d97dd6d5d3778049514ab21b242391e7e7e3687e9871f2f",
+    "request_sha256": "27b38644a5f3fae0ef61c6d0f5f4d6a543bf0a9b2b6fb49dedfe8846e70e3127",
+    "request_bytes": 4423,
+    "input_characters": 3727,
+    "chat_start_elapsed_s": 1.1085997079499066,
+    "chat_end_elapsed_s": 4.517252250108868,
+    "client_call_duration_s": 3.4086525421589613,
+    "request_preparation_s": 0.0009007090702652931,
+    "transport_duration_s": 3.4067265829071403,
+    "response_validation_s": 0.001025250181555748,
+    "ollama_metrics": {
+      "total_duration": 3403792834,
+      "load_duration": 3675750,
+      "prompt_eval_count": 808,
+      "prompt_eval_cached_count": 526,
+      "prompt_eval_duration": 1713825000,
+      "eval_count": 27,
+      "eval_duration": 1665107000
+    },
+    "request_duration_s": 3.4067452088929713,
+    "ok": true,
+    "decision": {
+      "action": "CONTINUE",
+      "reason": "LITTLE_OR_NO_LOOKING_AT_ROBOT and BEYOND_CONVERSATION_DISTANCE"
+    },
+    "error": null
+  }
+]

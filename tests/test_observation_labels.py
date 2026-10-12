@@ -82,15 +82,16 @@ class ObservationLabelTests(unittest.TestCase):
         result.pop('observation_labels'); before.pop('observation_labels')
         self.assertEqual(result, before)
 
-    def test_rules_and_llm_receive_the_same_complete_pipeline_state(self):
+    def test_rules_and_llm_receive_the_same_compact_pipeline_state(self):
         pipeline = SocialPipeline('shared-label-test')
         for i in range(20):
             pipeline.process(sample(i))
         with patch('app.social_pipeline.decide', wraps=decide) as rule:
             result = pipeline.process(sample(20))
-        rule_input = rule.call_args.args[0]
-        llm_input = json.loads(build_llm_prompt(SocialState.model_validate(result['social_state'])).social_state_json)
+        rule_input = rule.call_args.args[0].state.model_dump(mode='json')
+        llm_input = json.loads(build_llm_prompt(SocialState.model_validate(result['social_state'])).decision_state_json)
         self.assertEqual(rule_input, llm_input)
+        self.assertEqual(rule_input, result['decision_state'])
         self.assertIn('observation_labels', rule_input['people'][0])
 
     def test_historical_nine_states_retain_every_original_field_and_rule_action(self):

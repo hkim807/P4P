@@ -53,3 +53,57 @@ inference-speed improvement.
 Artifacts: [full report](/Users/eddiekim/Documents/Projects/P4P/var/evaluation/llm-refinement-stage-1-2/REPORT.md),
 [frozen contract](/Users/eddiekim/Documents/Projects/P4P/var/evaluation/llm-refinement-stage-1-2/freeze/protocol.json),
 [profiling method](/Users/eddiekim/Documents/Projects/P4P/docs/llm-baseline-profiling.md).
+
+## Stage 3 — measured 12 October, documented 13 October 2026
+
+**Objective:** reduce irrelevant decision input while preserving the tuned
+rule behaviour and the frozen first-decision comparison.
+
+**Change:** added a shared compact DecisionState. It retains observed people,
+the existing social categories/labels, robot motion state, readiness and all
+numeric operands used by the rules. Seven rule constants are cached outside
+the observation payload; IDs/timestamps remain in correlation context.
+Configuration, raw head/nose coordinates and unused fit statistics stay in
+the full SocialState diagnostic record. Both live and offline LLM audits now
+save full diagnostics and the exact compact input separately.
+
+**Controls:** the v14 system instructions and user prefix, estimator/tracking
+settings, rule conditions/precedence, model digest/runtime, generation options,
+allowed actions, first/later timestamps and acceptance limits were unchanged.
+Prompt metadata is `social-state-llm-v14-compact-v1` to identify the payload
+change. No new semantic labels or action recommendations were introduced.
+
+**Rule verification:** the original frozen implementation and compact policy
+match on all 574 frames: readiness, actions, reasons, target UIDs/epochs and
+source/decision IDs. The eligible count remains 402. Independent threshold,
+null, attention, missing/multiple-person and readiness boundary tests pass.
+Actual compact rule/LLM input hashes match in all 27 operational trials.
+
+**Results:** LLM first-action alignment increased from 6/9 to 8/9 in each of
+three repetitions (18/27 to 24/27). S1 now continues and S9 now approaches;
+S4 remains incorrect, selecting CONTINUE instead of YIELD. Median prompt
+size, including unchanged instructions, fell from 1,766 to 794 tokens (55.0%).
+Median eligibility-to-complete-output time fell from 6.21 to 2.76 seconds
+(55.6%). All 27 first outputs were valid.
+
+**Acceptance:** increased from 5/27 to 24/27, with eight accepted per run.
+This is distinct from alignment: S4's incorrect action was accepted, while
+S7's aligned CONTINUE was rejected because current gaze evidence was
+insufficient at delivery. S7 observations were fresh; this was a readiness
+gap rather than inference expiry. Aligned-and-accepted outputs total 21/27.
+
+**Tests:** 658 test methods were run with local HTTP fixtures enabled. All
+stage 3 and integration checks pass. One pre-existing VLM wording-consistency
+test fails four subcases because the VLM and LLM action definitions are not
+verbatim identical; the unchanged LLM system text was checked against the
+frozen baseline. It was not repaired by changing either prompt in this
+representation-only experiment.
+
+**Interpretation:** compacting the representation improved measured latency
+and first-action fit without altering the rules. The remaining S4 error and
+later diagnostic disagreements remain documented. These are separate warm
+runs on the same tuning recordings; they do not establish held-out accuracy.
+
+Artifacts: [stage 3 report](/Users/eddiekim/Documents/Projects/P4P/var/evaluation/llm-refinement-stage-3/REPORT.md),
+[representation guide](/Users/eddiekim/Documents/Projects/P4P/docs/compact-decision-state.md),
+[comparison metrics](/Users/eddiekim/Documents/Projects/P4P/var/evaluation/llm-refinement-stage-3/comparison.json).

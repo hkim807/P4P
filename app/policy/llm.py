@@ -1,4 +1,4 @@
-"""One frozen SocialState -> English instructions -> one Ollama model result."""
+"""Compact shared evidence -> unchanged English instructions -> one model result."""
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -54,7 +54,7 @@ class LLMPrompt:
 
 
 def build_llm_prompt(state: SocialState) -> LLMPrompt:
-    """Revalidate a detached complete payload and freeze it as deterministic JSON."""
+    """Freeze full diagnostics and the compact payload actually sent to the LLM."""
     if not isinstance(state, SocialState):
         raise ValueError("state must be a validated SocialState")
     # SocialState permits later mutation; validating the instance itself can trust

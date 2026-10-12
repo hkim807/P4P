@@ -1,4 +1,4 @@
-"""Deterministic, stateless decisions from one SocialState."""
+"""Unchanged v7 rule conditions evaluated on shared compact evidence."""
 from __future__ import annotations
 
 from typing import Literal
