@@ -14,12 +14,14 @@
       "type": "string"
     },
     "policy_version": {
-      "default": "social-rules-v5",
+      "default": "social-rules-v7",
       "enum": [
         "social-rules-v2",
         "social-rules-v3",
         "social-rules-v4",
-        "social-rules-v5"
+        "social-rules-v5",
+        "social-rules-v6",
+        "social-rules-v7"
       ],
       "title": "Policy Version",
       "type": "string"

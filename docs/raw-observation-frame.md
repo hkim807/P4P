@@ -14,6 +14,7 @@ The JSON body is one raw frame with exactly four top-level keys: `timestamp`,
 | `people[].distance_m` | `Person.dist_mm` | Millimetres / 1000, or null |
 | `people[].gaze_overlap` | `Person.gaze_overlap` | Score in [0, 1], or null |
 | `people[].optional_relative_head_position` | `Person.g_head_position` entry with `sys.name == CAM_HEAD` | Cartesian x/y/z in metres and `coordinate_frame: CAM_HEAD`; otherwise omitted |
+| `people[].optional_relative_nose_position` | Unique `Person.g_nose` entry with `sys.name == CAM_HEAD` | Finite, nonzero Cartesian x/y/z in metres and `coordinate_frame: CAM_HEAD`; otherwise omitted |
 | `robot.linear_velocity` | `LocomotionData.odometry.velocity.linear_x` | Signed forward m/s, or null |
 | `robot.angular_velocity` | `LocomotionData.odometry.velocity.angular_z` | Yaw rad/s, or null |
 | `safety.lidar` | `LocomotionData.distances[Sensor.LIDAR]` | Raw native-unit values, front then back |
@@ -24,6 +25,13 @@ The SDK's Cartesian positions specify their coordinate frames and metres.
 only and retains its label, without inventing a robot-base transformation.
 The separate `Person.head_position` is a Tait-Bryan rotation in radians and is
 not used as a Cartesian position. Other head coordinates are omitted.
+
+Nose position is retained separately from head position. No head-position or
+HEAD_STRAIGHT fallback is used for the nose. Duplicate camera nose entries,
+all-zero vectors and invalid components make the nose measurement unavailable.
+The SocialState estimator uses this field for the configured
+[fixed-head corridor classifier](path-position.md); the adapter itself retains
+raw geometry only. Full SDK replay reconstructs the same nose field.
 
 The SDK public reference describes range ordering but does not state range
 units. The arrays therefore retain the native values. Confirm those units for

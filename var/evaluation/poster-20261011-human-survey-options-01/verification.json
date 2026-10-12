@@ -1,0 +1,22 @@
+{
+  "respondents": 42,
+  "valid_preference_responses": 378,
+  "all_preference_denominators_42": true,
+  "missing_or_unexpected_preferences": 0,
+  "missing_or_nonrating_cells": 15,
+  "preparation_checks": {
+    "42_respondents": true,
+    "S1_CONTINUE_35": true,
+    "S4_YIELD_38": true,
+    "S3_YIELD_18": true,
+    "S3_ENGAGE_16": true,
+    "S3_ENGAGE_rating_above_YIELD": true
+  },
+  "workbook_sha256": "e7ac526de96cc2c0f9658068ad600bcb6fab7684b0829f3417cec3f71c9f6bac",
+  "workbook_matches_preparation_hash": false,
+  "workbook_unchanged": true,
+  "replay_summary_sha256": "5a9312a17f45f7f3b6fd72f184b40b6d83c8446c8c0e45ea5dba9f4dc107c8c0",
+  "policy_actions_not_scored_against_video_end_ratings": true,
+  "identifying_cells_or_free_text_exported": false,
+  "build_script_sha256": "24eba9c9bae39bed316eda65668cce67d6baf516e12044add0b5eab7aff6c8d0"
+}

@@ -23,5 +23,11 @@
   "approachable_max_m": 3.0,
   "zone_hysteresis_m": 0.1,
   "stationary_linear_tolerance_mps": 0.02,
-  "stationary_angular_tolerance_rps": 0.03
+  "stationary_angular_tolerance_rps": 0.03,
+  "path_assume_fixed_head": true,
+  "path_half_width_m": 0.5,
+  "path_hysteresis_m": 0.1,
+  "path_camera_x_m": 0.0,
+  "path_camera_y_m": 0.0,
+  "path_camera_yaw_deg": 0.0
 }

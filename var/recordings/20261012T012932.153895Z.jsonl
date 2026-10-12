@@ -1,0 +1,4 @@
+{"timestamp":75761314169,"people":[],"robot":{"linear_velocity":0.0,"angular_velocity":0.0},"safety":{"lidar":[0.352,0.163],"sonar":[0.0,0.0,0.0]}}
+{"timestamp":75774836263,"people":[],"robot":{"linear_velocity":0.0,"angular_velocity":0.0},"safety":{"lidar":[0.458,0.43],"sonar":[0.0,0.0,0.0]}}
+{"timestamp":75823607984,"people":[],"robot":{"linear_velocity":0.0,"angular_velocity":0.0},"safety":{"lidar":[0.458,0.43],"sonar":[0.0,0.0,0.0]}}
+{"timestamp":75879384700,"people":[],"robot":{"linear_velocity":0.0,"angular_velocity":0.0},"safety":{"lidar":[0.456,0.431],"sonar":[0.0,0.0,0.0]}}

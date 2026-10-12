@@ -1,0 +1,12 @@
+{
+  "all_endpoint_rows_present": true,
+  "all_54_operational_results_present": true,
+  "runner_completion_marker_present": false,
+  "post_measurement_integrity_check": "Runner reported a changed reporting-only workbook helper after all measurements. No policy, reconstruction, acceptance or configuration input changed.",
+  "reporting_only_changes": {
+    "evaluation/poster_survey.py": {
+      "frozen": "2a01a4384a8c618e5989d18638023b8e1f9d5c8d441e72c87e4c7909767a0861",
+      "current": "05a3ecc2559a2b914c4232322f3f18ac8490dccbb425ec14b84deff17e1b969a"
+    }
+  }
+}

@@ -1,0 +1,108 @@
+{
+  "scenario_id": "S7",
+  "policy": "llm",
+  "status": "ACTION_RESOLVED",
+  "action": "CONTINUE",
+  "decision": {
+    "action": "CONTINUE",
+    "reason": "IN_WAY and INCREASING relative distance, with a face detected and APPROACHABLE distance, do not meet the YIELD criteria."
+  },
+  "accepted_by_live_client": false,
+  "acceptance_details": {
+    "current_readiness": true,
+    "latest_observation_age_s": 5.204065,
+    "model_source_age_s": 11.886026,
+    "trial_phase": "OBSERVING",
+    "failure_reason": null
+  },
+  "resolved_elapsed_s": 13.97626045799916,
+  "stop_elapsed_s": 13.97626045799916,
+  "frames_ingested": 89,
+  "ready_frames": 11,
+  "readiness_counts": {
+    "INSUFFICIENT_GAZE_EVIDENCE": 67,
+    "NO_VISIBLE_PERSON": 10,
+    "READY": 11,
+    "DISTANCE_UNKNOWN": 1
+  },
+  "recording_exhausted": true,
+  "last_ingested_source_offset_s": 8.772198,
+  "last_ingested_line": 177,
+  "decision_source_offset_s": 2.090237,
+  "max_dispatch_lag_s": 0.0010643999994499609,
+  "model_failures": [
+    {
+      "decision": null,
+      "error": {
+        "category": "request_expired"
+      },
+      "policy": "llm",
+      "request_id": "23fdc826e744474984f4288763dc75ce",
+      "session_id": "replay-e25f14f5c9126f586b63f9e9",
+      "source_robot_timestamp_us": 2249229264,
+      "source_state_id": "replay-e25f14f5c9126f586b63f9e9:22",
+      "status": "failed",
+      "trial_id": "ccda70faad6a4ce886e1b100ee00c789"
+    }
+  ],
+  "first_model_request": {
+    "decision": null,
+    "error": null,
+    "policy": "llm",
+    "request_id": "23fdc826e744474984f4288763dc75ce",
+    "session_id": "replay-e25f14f5c9126f586b63f9e9",
+    "source_robot_timestamp_us": 2249229264,
+    "source_state_id": "replay-e25f14f5c9126f586b63f9e9:22",
+    "status": "pending",
+    "trial_id": "ccda70faad6a4ce886e1b100ee00c789"
+  },
+  "resolved_output": {
+    "decision": {
+      "action": "CONTINUE",
+      "reason": "IN_WAY and INCREASING relative distance, with a face detected and APPROACHABLE distance, do not meet the YIELD criteria."
+    },
+    "error": null,
+    "policy": "llm",
+    "request_id": "23fdc826e744474984f4288763dc75ce",
+    "session_id": "replay-e25f14f5c9126f586b63f9e9",
+    "source_robot_timestamp_us": 2249229264,
+    "source_state_id": "replay-e25f14f5c9126f586b63f9e9:22",
+    "status": "succeeded",
+    "trial_id": "ccda70faad6a4ce886e1b100ee00c789",
+    "completed_at": "2026-10-11T06:19:11.841705+00:00",
+    "error_stage": null,
+    "ok": true,
+    "ollama_configuration": {
+      "base_url": "http://127.0.0.1:11434",
+      "generation_options": {
+        "num_ctx": 8192,
+        "num_predict": 192,
+        "seed": 42,
+        "temperature": 0.0
+      },
+      "model": "qwen2.5:7b",
+      "num_ctx": 8192,
+      "num_predict": 192,
+      "seed": 42,
+      "temperature": 0.0,
+      "timeout_seconds": 120.0
+    },
+    "prompt_version": "social-state-llm-v12",
+    "raw_content": "{\n  \"action\": \"CONTINUE\",\n  \"reason\": \"IN_WAY and INCREASING relative distance, with a face detected and APPROACHABLE distance, do not meet the YIELD criteria.\"\n}",
+    "request_duration_s": 11.870088216999648,
+    "requested_model": "qwen2.5:7b",
+    "returned_model": "qwen2.5:7b",
+    "delivery_status": "failed",
+    "delivery_error": {
+      "category": "request_expired"
+    }
+  },
+  "last_readiness": {
+    "reason_code": null,
+    "status": "READY"
+  },
+  "source_sha256": "b9f1f06c611c7d01c2c225095d193118ecc029c8202ca5635a963952fe9eb405",
+  "trial_id": "ccda70faad6a4ce886e1b100ee00c789",
+  "clock_mapping": "original first perception receipt + real elapsed replay time",
+  "physical_execution": false
+}

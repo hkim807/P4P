@@ -1,0 +1,106 @@
+{
+  "scenario_id": "S9",
+  "policy": "llm",
+  "status": "ACTION_RESOLVED",
+  "action": "CONTINUE",
+  "decision": {
+    "action": "CONTINUE",
+    "reason": "The person is in the APPROACHABLE distance zone, and the latest distance is 2.286m, which is outside the INTERACTION_RANGE. The gaze state is SUSTAINED, and the latest gaze looking state is true, but the relative distance trend is STABLE, and the latest distance is greater than the yield closing max distance of 3.5m. Therefore, CONTINUE is the appropriate action."
+  },
+  "accepted_by_live_client": false,
+  "acceptance_details": {
+    "current_readiness": true,
+    "latest_observation_age_s": 14.145918,
+    "model_source_age_s": 16.462681,
+    "trial_phase": "OBSERVING",
+    "failure_reason": null
+  },
+  "resolved_elapsed_s": 17.536370585999975,
+  "stop_elapsed_s": 17.536370585999975,
+  "frames_ingested": 35,
+  "ready_frames": 24,
+  "readiness_counts": {
+    "INSUFFICIENT_GAZE_EVIDENCE": 11,
+    "READY": 24
+  },
+  "recording_exhausted": true,
+  "last_ingested_source_offset_s": 3.390455,
+  "last_ingested_line": 70,
+  "decision_source_offset_s": 1.073692,
+  "max_dispatch_lag_s": 0.002489837999746669,
+  "model_failures": [
+    {
+      "decision": null,
+      "error": {
+        "category": "request_expired"
+      },
+      "policy": "llm",
+      "request_id": "e3614b4b321c419a9fca278f410e80b6",
+      "session_id": "replay-077ff210a4441c83a39ff4a6",
+      "source_robot_timestamp_us": 2339147941,
+      "source_state_id": "replay-077ff210a4441c83a39ff4a6:12",
+      "status": "failed",
+      "trial_id": "c1c4252b52da44bfaf17f2146fd18ae4"
+    }
+  ],
+  "first_model_request": {
+    "decision": null,
+    "error": null,
+    "policy": "llm",
+    "request_id": "e3614b4b321c419a9fca278f410e80b6",
+    "session_id": "replay-077ff210a4441c83a39ff4a6",
+    "source_robot_timestamp_us": 2339147941,
+    "source_state_id": "replay-077ff210a4441c83a39ff4a6:12",
+    "status": "pending",
+    "trial_id": "c1c4252b52da44bfaf17f2146fd18ae4"
+  },
+  "resolved_output": {
+    "decision": {
+      "action": "CONTINUE",
+      "reason": "The person is in the APPROACHABLE distance zone, and the latest distance is 2.286m, which is outside the INTERACTION_RANGE. The gaze state is SUSTAINED, and the latest gaze looking state is true, but the relative distance trend is STABLE, and the latest distance is greater than the yield closing max distance of 3.5m. Therefore, CONTINUE is the appropriate action."
+    },
+    "error": null,
+    "policy": "llm",
+    "request_id": "e3614b4b321c419a9fca278f410e80b6",
+    "session_id": "replay-077ff210a4441c83a39ff4a6",
+    "source_robot_timestamp_us": 2339147941,
+    "source_state_id": "replay-077ff210a4441c83a39ff4a6:12",
+    "status": "succeeded",
+    "trial_id": "c1c4252b52da44bfaf17f2146fd18ae4",
+    "completed_at": "2026-10-11T06:19:35.769928+00:00",
+    "error_stage": null,
+    "ok": true,
+    "ollama_configuration": {
+      "base_url": "http://127.0.0.1:11434",
+      "generation_options": {
+        "num_ctx": 8192,
+        "num_predict": 192,
+        "seed": 42,
+        "temperature": 0.0
+      },
+      "model": "qwen2.5:7b",
+      "num_ctx": 8192,
+      "num_predict": 192,
+      "seed": 42,
+      "temperature": 0.0,
+      "timeout_seconds": 120.0
+    },
+    "prompt_version": "social-state-llm-v12",
+    "raw_content": "{\n  \"action\": \"CONTINUE\",\n  \"reason\": \"The person is in the APPROACHABLE distance zone, and the latest distance is 2.286m, which is outside the INTERACTION_RANGE. The gaze state is SUSTAINED, and the latest gaze looking state is true, but the relative distance trend is STABLE, and the latest distance is greater than the yield closing max distance of 3.5m. Therefore, CONTINUE is the appropriate action.\"\n}",
+    "request_duration_s": 16.449582650000593,
+    "requested_model": "qwen2.5:7b",
+    "returned_model": "qwen2.5:7b",
+    "delivery_status": "failed",
+    "delivery_error": {
+      "category": "request_expired"
+    }
+  },
+  "last_readiness": {
+    "reason_code": null,
+    "status": "READY"
+  },
+  "source_sha256": "56793886eec65c069a2861f87ad0f01b67dc8445d8b3dfa756a5a86c0b8c57d8",
+  "trial_id": "c1c4252b52da44bfaf17f2146fd18ae4",
+  "clock_mapping": "original first perception receipt + real elapsed replay time",
+  "physical_execution": false
+}

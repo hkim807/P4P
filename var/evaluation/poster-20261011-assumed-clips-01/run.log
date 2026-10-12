@@ -1,0 +1,90 @@
+Endpoint S1
+Endpoint S2
+Endpoint S3
+Endpoint S4
+Endpoint S5
+Endpoint S6
+Endpoint S7
+Endpoint S8
+Endpoint S9
+Operational 1 S1 rules
+{"action": null, "accepted_by_live_client": null, "stop_elapsed_s": 10.37118506400293}
+Operational 1 S1 llm
+Operational 1 S2 rules
+{"action": "APPROACH", "accepted_by_live_client": true, "stop_elapsed_s": 2.2725393830005487}
+Operational 1 S2 llm
+Operational 1 S3 rules
+{"action": "APPROACH", "accepted_by_live_client": true, "stop_elapsed_s": 2.2993467369997234}
+Operational 1 S3 llm
+Operational 1 S4 rules
+{"action": null, "accepted_by_live_client": null, "stop_elapsed_s": 6.066432862997317}
+Operational 1 S4 llm
+Operational 1 S5 rules
+{"action": null, "accepted_by_live_client": null, "stop_elapsed_s": 6.829857426000672}
+Operational 1 S5 llm
+Operational 1 S6 rules
+{"action": "APPROACH", "accepted_by_live_client": true, "stop_elapsed_s": 2.2702962389994354}
+Operational 1 S6 llm
+Operational 1 S7 rules
+{"action": null, "accepted_by_live_client": null, "stop_elapsed_s": 8.773804396998457}
+Operational 1 S7 llm
+Operational 1 S8 rules
+{"action": "CONTINUE", "accepted_by_live_client": true, "stop_elapsed_s": 7.0799908170010895}
+Operational 1 S8 llm
+Operational 1 S9 rules
+{"action": "APPROACH", "accepted_by_live_client": true, "stop_elapsed_s": 2.2718622199972742}
+Operational 1 S9 llm
+Operational 2 S1 llm
+Operational 2 S1 rules
+{"action": null, "accepted_by_live_client": null, "stop_elapsed_s": 10.371172590999777}
+Operational 2 S2 llm
+Operational 2 S2 rules
+{"action": "APPROACH", "accepted_by_live_client": true, "stop_elapsed_s": 2.2727688800005126}
+Operational 2 S3 llm
+Operational 2 S3 rules
+{"action": "APPROACH", "accepted_by_live_client": true, "stop_elapsed_s": 2.2991346070011787}
+Operational 2 S4 llm
+Operational 2 S4 rules
+{"action": null, "accepted_by_live_client": null, "stop_elapsed_s": 6.066385596001055}
+Operational 2 S5 llm
+Operational 2 S5 rules
+{"action": null, "accepted_by_live_client": null, "stop_elapsed_s": 6.829619134998211}
+Operational 2 S6 llm
+Operational 2 S6 rules
+{"action": "APPROACH", "accepted_by_live_client": true, "stop_elapsed_s": 2.2702383050018398}
+Operational 2 S7 llm
+Operational 2 S7 rules
+{"action": null, "accepted_by_live_client": null, "stop_elapsed_s": 8.774522926996724}
+Operational 2 S8 llm
+Operational 2 S8 rules
+{"action": "CONTINUE", "accepted_by_live_client": true, "stop_elapsed_s": 7.080209823001496}
+Operational 2 S9 llm
+Operational 2 S9 rules
+{"action": "APPROACH", "accepted_by_live_client": true, "stop_elapsed_s": 2.272372194001946}
+Operational 3 S1 rules
+{"action": null, "accepted_by_live_client": null, "stop_elapsed_s": 10.371378986001218}
+Operational 3 S1 llm
+Operational 3 S2 rules
+{"action": "APPROACH", "accepted_by_live_client": true, "stop_elapsed_s": 2.2729119649993663}
+Operational 3 S2 llm
+Operational 3 S3 rules
+{"action": "APPROACH", "accepted_by_live_client": true, "stop_elapsed_s": 2.299568577000173}
+Operational 3 S3 llm
+Operational 3 S4 rules
+{"action": null, "accepted_by_live_client": null, "stop_elapsed_s": 6.066512695997517}
+Operational 3 S4 llm
+Operational 3 S5 rules
+{"action": null, "accepted_by_live_client": null, "stop_elapsed_s": 6.829954875000112}
+Operational 3 S5 llm
+Operational 3 S6 rules
+{"action": "APPROACH", "accepted_by_live_client": true, "stop_elapsed_s": 2.2704504360008286}
+Operational 3 S6 llm
+Operational 3 S7 rules
+{"action": null, "accepted_by_live_client": null, "stop_elapsed_s": 8.774115596002957}
+Operational 3 S7 llm
+Operational 3 S8 rules
+{"action": "CONTINUE", "accepted_by_live_client": true, "stop_elapsed_s": 7.080676748002588}
+Operational 3 S8 llm
+Operational 3 S9 rules
+{"action": "APPROACH", "accepted_by_live_client": true, "stop_elapsed_s": 2.2739216379995923}
+Operational 3 S9 llm

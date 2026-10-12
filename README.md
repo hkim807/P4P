@@ -1,5 +1,10 @@
 # Navel raw sensor HTTP stream
 
+The nine motion-trimmed final recordings now have a dedicated
+[tuning preset and run instructions](docs/final-scenario-tuning.md), with
+[first-action rule and actual LLM results](var/evaluation/final-scenario-tuning/README.md).
+Select this preset explicitly; the earlier study configurations remain separate.
+
 The refined development version is documented in
 [pipeline refinement](docs/pipeline-refinement.md), including the frozen
 configuration, verified human reference, causal evaluation contract and
@@ -433,7 +438,11 @@ Input/configuration failures have no model content or request duration. Inferenc
 failures retain Step 1 diagnostics with `decision: null`; there is no default
 action, retry or rule fallback. The CLI has no persistent output writer.
 
-Prompt version: **`social-state-llm-v10`**. Changing instructions or serialization
+Prompt version: **`social-state-llm-v11`**. The shared SocialState includes a
+[nose-based path position](docs/path-position.md) from the fixed head camera.
+The rules and LLM require `IN_WAY` alongside the existing closing/low-gaze
+conditions to yield; a low-gaze person to the side supports CONTINUE.
+Changing instructions or serialization
 semantics requires a new prompt version. Deterministic prompt construction does
 not guarantee deterministic model output; caller model/settings still matter.
 The system instructions are `SYSTEM_PROMPT` in

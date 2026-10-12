@@ -51,6 +51,17 @@
           ],
           "default": null
         },
+        "optional_relative_nose_position": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/RelativeHeadPosition"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
         "pass_gesture": {
           "default": "UNKNOWN",
           "enum": [

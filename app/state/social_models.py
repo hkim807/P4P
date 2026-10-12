@@ -8,6 +8,8 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
+from app.domain.models import RelativeHeadPosition
+
 
 class StrictModel(BaseModel):
     model_config = ConfigDict(extra="forbid", strict=True, allow_inf_nan=False)
@@ -23,6 +25,10 @@ class TemporalConfig(StrictModel):
     min_gaze_coverage_fraction: float = Field(default=0.6, gt=0, le=1)
     looking_enter: float = Field(default=0.8, ge=0, le=1)
     looking_exit: float = Field(default=0.7, ge=0, le=1)
+    gaze_unavailable_score: float | None = Field(default=None, ge=0, le=1)
+    far_gaze_distance_m: float | None = Field(default=None, gt=0)
+    far_looking_enter: float = Field(default=0.97, ge=0, le=1)
+    far_looking_exit: float = Field(default=0.95, ge=0, le=1)
     sustained_enter: float = Field(default=0.8, ge=0, le=1)
     sustained_exit: float = Field(default=0.65, ge=0, le=1)
     none_enter: float = Field(default=0.2, ge=0, le=1)
@@ -32,7 +38,15 @@ class TemporalConfig(StrictModel):
     recurring_min_looking_s: float = Field(default=1.0, gt=0)
     recurring_min_fraction: float = Field(default=0.45, gt=0, le=1)
     recurring_min_bouts: int = Field(default=2, ge=2)
+    allow_recurring_attention: bool = True
+    no_person_continue_after_s: float | None = Field(default=None, gt=0)
     yield_closing_max_distance_m: float | None = Field(default=3.0, gt=0)
+    path_assume_fixed_head: bool = True
+    path_half_width_m: float = Field(default=0.5, gt=0)
+    path_hysteresis_m: float = Field(default=0.1, ge=0)
+    path_camera_x_m: float = 0.0
+    path_camera_y_m: float = 0.0
+    path_camera_yaw_deg: float = Field(default=0.0, ge=-180, le=180)
     distance_deadband_mps: float = Field(default=0.1, gt=0)
     max_distance_speed_mps: float = Field(default=3.0, gt=0)
     distance_jump_allowance_m: float = Field(default=0.05, ge=0)
@@ -47,6 +61,10 @@ class TemporalConfig(StrictModel):
 
     @model_validator(mode="after")
     def consistent(self):
+        if not self.far_looking_exit < self.far_looking_enter:
+            raise ValueError("far_looking_exit must be below far_looking_enter")
+        if self.path_hysteresis_m >= self.path_half_width_m:
+            raise ValueError("path hysteresis must be smaller than path half width")
         if not self.looking_exit < self.looking_enter:
             raise ValueError("looking_exit must be below looking_enter")
         if not 0 <= self.none_enter < self.none_exit < self.sustained_exit < self.sustained_enter <= 1:
@@ -77,6 +95,7 @@ class TemporalConfig(StrictModel):
 Gaze = Literal["NONE", "INTERMITTENT", "SUSTAINED", "UNKNOWN"]
 Zone = Literal["TOO_CLOSE", "INTERACTION_RANGE", "APPROACHABLE", "FAR", "UNKNOWN"]
 Trend = Literal["DECREASING", "STABLE", "INCREASING", "UNKNOWN"]
+PathPosition = Literal["IN_WAY", "TO_SIDE", "BEHIND", "UNKNOWN"]
 
 
 class TemporalEvidence(StrictModel):
@@ -84,6 +103,8 @@ class TemporalEvidence(StrictModel):
     mean_gaze_overlap: float | None = None
     latest_gaze_looking: bool | None = None
     latest_gaze_overlap: float | None = Field(default=None, ge=0, le=1)
+    looking_enter_threshold: float | None = Field(default=None, ge=0, le=1)
+    looking_exit_threshold: float | None = Field(default=None, ge=0, le=1)
     looking_time_s: float = 0.0
     looking_bouts: int = 0
     gaze_fraction: float | None
@@ -103,6 +124,20 @@ class TemporalEvidence(StrictModel):
     latest_distance_valid: bool
 
 
+class ObservationLabels(StrictModel):
+    """Shared descriptive aliases, never interaction intent or policy advice."""
+
+    version: Literal[1] = 1
+    attention_over_time: Literal["LITTLE_OR_NO_LOOKING_AT_ROBOT", "INTERMITTENT_LOOKING_AT_ROBOT",
+                                 "SUSTAINED_LOOKING_AT_ROBOT", "UNKNOWN"] = "UNKNOWN"
+    current_gaze: Literal["LOOKING_AT_ROBOT", "NOT_LOOKING_AT_ROBOT", "UNKNOWN"] = "UNKNOWN"
+    proximity: Literal["CLOSER_THAN_CONVERSATION_DISTANCE", "WITHIN_CONVERSATION_DISTANCE",
+                       "BEYOND_CONVERSATION_DISTANCE", "BEYOND_CONFIGURED_SOCIAL_RANGE", "UNKNOWN"] = "UNKNOWN"
+    corridor_position: Literal["IN_ROBOT_FORWARD_CORRIDOR", "BESIDE_ROBOT_FORWARD_CORRIDOR",
+                               "BEHIND_ROBOT", "UNKNOWN"] = "UNKNOWN"
+    relative_separation: Literal["GETTING_CLOSER", "STEADY", "GETTING_FARTHER", "UNKNOWN"] = "UNKNOWN"
+
+
 class PersonSocialState(StrictModel):
     uid: int
     track_epoch: int
@@ -118,7 +153,51 @@ class PersonSocialState(StrictModel):
     pass_gesture: Literal["UNKNOWN", "PASS"] = "UNKNOWN"
     face_detected: bool | None = None
     relative_head_position: dict[str, str | float] | None = None
+    relative_nose_position: RelativeHeadPosition | None = None
+    path_position: PathPosition = "UNKNOWN"
+    nose_forward_m: float | None = None
+    nose_lateral_m: float | None = None
     validity_flags: list[str]
+    observation_labels: ObservationLabels = Field(default_factory=ObservationLabels)
+
+    @model_validator(mode="after")
+    def derive_observation_labels(self):
+        # Recompute even when labels were supplied by a saved state. Categories
+        # and validity remain authoritative, so stale aliases cannot override them.
+        labels = ObservationLabels()
+        if self.visibility == "OBSERVED":
+            e = self.evidence
+            if e.gaze_valid:
+                labels.attention_over_time = {
+                    "NONE": "LITTLE_OR_NO_LOOKING_AT_ROBOT",
+                    "INTERMITTENT": "INTERMITTENT_LOOKING_AT_ROBOT",
+                    "SUSTAINED": "SUSTAINED_LOOKING_AT_ROBOT",
+                    "UNKNOWN": "UNKNOWN",
+                }[self.gaze_state]
+            # A valid current sample can exist before enough history accumulates.
+            if e.latest_gaze_looking is not None and e.latest_gaze_overlap is not None:
+                labels.current_gaze = ("LOOKING_AT_ROBOT" if e.latest_gaze_looking
+                                       else "NOT_LOOKING_AT_ROBOT")
+            if e.latest_distance_valid and self.latest_distance_m is not None and self.latest_distance_m >= 0:
+                labels.proximity = {
+                    "TOO_CLOSE": "CLOSER_THAN_CONVERSATION_DISTANCE",
+                    "INTERACTION_RANGE": "WITHIN_CONVERSATION_DISTANCE",
+                    "APPROACHABLE": "BEYOND_CONVERSATION_DISTANCE",
+                    "FAR": "BEYOND_CONFIGURED_SOCIAL_RANGE",
+                    "UNKNOWN": "UNKNOWN",
+                }[self.distance_zone]
+            labels.corridor_position = {
+                "IN_WAY": "IN_ROBOT_FORWARD_CORRIDOR",
+                "TO_SIDE": "BESIDE_ROBOT_FORWARD_CORRIDOR",
+                "BEHIND": "BEHIND_ROBOT", "UNKNOWN": "UNKNOWN",
+            }[self.path_position]
+            if e.distance_trend_valid:
+                labels.relative_separation = {
+                    "DECREASING": "GETTING_CLOSER", "STABLE": "STEADY",
+                    "INCREASING": "GETTING_FARTHER", "UNKNOWN": "UNKNOWN",
+                }[self.relative_distance_trend]
+        self.observation_labels = labels
+        return self
 
 
 class RobotState(StrictModel):
@@ -138,7 +217,7 @@ class CueChange(StrictModel):
 
 class SocialState(StrictModel):
     schema_version: Literal[1] = 1
-    estimator_version: Literal["temporal-social-v1", "temporal-social-v2", "temporal-social-v3"] = "temporal-social-v3"
+    estimator_version: Literal["temporal-social-v1", "temporal-social-v2", "temporal-social-v3", "temporal-social-v4", "temporal-social-v5", "temporal-social-v6"] = "temporal-social-v6"
     observation_readiness: Literal["READY", "NOT_READY"] = "NOT_READY"
     readiness_reason: str = "UNASSESSED"
     state_id: str
@@ -152,6 +231,8 @@ class SocialState(StrictModel):
     people: list[PersonSocialState]
     cue_changes: list[CueChange]
     track_events: list[dict[str, int | str]]
+    no_person_observed_s: float = Field(default=0.0, ge=0)
+    no_person_observed_samples: int = Field(default=0, ge=0)
 
     @model_validator(mode="after")
     def derive_readiness(self):
@@ -164,12 +245,16 @@ class SocialState(StrictModel):
 def observation_hold_reason(state: SocialState) -> str | None:
     """Identical eligibility for rules, structured LLM, production and replay.
 
-    Empty detections never establish that the encounter is socially clear.
+    Configured sustained empty observations permit a nominal CONTINUE.
     Explicit conflict and pass cues need no gaze history. Proximity alone
     does not establish a social action.
     """
     visible = [p for p in state.people if p.visibility == "OBSERVED"]
     if not visible:
+        if (state.config.no_person_continue_after_s is not None
+                and state.no_person_observed_s >= state.config.no_person_continue_after_s
+                and state.no_person_observed_samples >= state.config.min_samples):
+            return None
         return "NO_VISIBLE_PERSON"
     if len(visible) != 1:
         return "MULTIPLE_VISIBLE_PEOPLE"

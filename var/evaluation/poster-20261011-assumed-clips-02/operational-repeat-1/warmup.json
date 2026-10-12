@@ -1,0 +1,11 @@
+{
+  "duration_s": 0.003277290001278743,
+  "response": {
+    "model": "qwen2.5:7b",
+    "created_at": "2026-10-11T07:52:12.375134005Z",
+    "response": "",
+    "done": true,
+    "done_reason": "load"
+  },
+  "measured_encounter": false
+}

@@ -1,0 +1,107 @@
+{
+  "scenario_id": "S4",
+  "policy": "llm",
+  "status": "ACTION_RESOLVED",
+  "action": "CONTINUE",
+  "decision": {
+    "action": "CONTINUE",
+    "reason": "The person is in the APPROACHABLE distance zone, and the relative distance trend is DECREASING. However, the latest gaze looking state is false, and the gaze overlap is above the exit threshold, vetoing the YIELD action. The path_position is IN_WAY, but there is no measured path conflict or pass gesture, so CONTINUE is appropriate."
+  },
+  "accepted_by_live_client": false,
+  "acceptance_details": {
+    "current_readiness": false,
+    "latest_observation_age_s": 10.960833,
+    "model_source_age_s": 15.93976,
+    "trial_phase": "OBSERVING",
+    "failure_reason": null
+  },
+  "resolved_elapsed_s": 17.02558739699998,
+  "stop_elapsed_s": 17.02558739699998,
+  "frames_ingested": 62,
+  "ready_frames": 11,
+  "readiness_counts": {
+    "INSUFFICIENT_GAZE_EVIDENCE": 50,
+    "READY": 11,
+    "NO_VISIBLE_PERSON": 1
+  },
+  "recording_exhausted": true,
+  "last_ingested_source_offset_s": 6.064757,
+  "last_ingested_line": 123,
+  "decision_source_offset_s": 1.08583,
+  "max_dispatch_lag_s": 0.0010282530001859413,
+  "model_failures": [
+    {
+      "decision": null,
+      "error": {
+        "category": "request_expired"
+      },
+      "policy": "llm",
+      "request_id": "b0364fddf058412faaf60878a2f13bf0",
+      "session_id": "replay-6c13d1e775b7489493285686",
+      "source_robot_timestamp_us": 2097183323,
+      "source_state_id": "replay-6c13d1e775b7489493285686:12",
+      "status": "failed",
+      "trial_id": "5004ca9e3c4e41579ee28cdffe8a3b86"
+    }
+  ],
+  "first_model_request": {
+    "decision": null,
+    "error": null,
+    "policy": "llm",
+    "request_id": "b0364fddf058412faaf60878a2f13bf0",
+    "session_id": "replay-6c13d1e775b7489493285686",
+    "source_robot_timestamp_us": 2097183323,
+    "source_state_id": "replay-6c13d1e775b7489493285686:12",
+    "status": "pending",
+    "trial_id": "5004ca9e3c4e41579ee28cdffe8a3b86"
+  },
+  "resolved_output": {
+    "decision": {
+      "action": "CONTINUE",
+      "reason": "The person is in the APPROACHABLE distance zone, and the relative distance trend is DECREASING. However, the latest gaze looking state is false, and the gaze overlap is above the exit threshold, vetoing the YIELD action. The path_position is IN_WAY, but there is no measured path conflict or pass gesture, so CONTINUE is appropriate."
+    },
+    "error": null,
+    "policy": "llm",
+    "request_id": "b0364fddf058412faaf60878a2f13bf0",
+    "session_id": "replay-6c13d1e775b7489493285686",
+    "source_robot_timestamp_us": 2097183323,
+    "source_state_id": "replay-6c13d1e775b7489493285686:12",
+    "status": "succeeded",
+    "trial_id": "5004ca9e3c4e41579ee28cdffe8a3b86",
+    "completed_at": "2026-10-11T06:18:34.673836+00:00",
+    "error_stage": null,
+    "ok": true,
+    "ollama_configuration": {
+      "base_url": "http://127.0.0.1:11434",
+      "generation_options": {
+        "num_ctx": 8192,
+        "num_predict": 192,
+        "seed": 42,
+        "temperature": 0.0
+      },
+      "model": "qwen2.5:7b",
+      "num_ctx": 8192,
+      "num_predict": 192,
+      "seed": 42,
+      "temperature": 0.0,
+      "timeout_seconds": 120.0
+    },
+    "prompt_version": "social-state-llm-v12",
+    "raw_content": "{\n  \"action\": \"CONTINUE\",\n  \"reason\": \"The person is in the APPROACHABLE distance zone, and the relative distance trend is DECREASING. However, the latest gaze looking state is false, and the gaze overlap is above the exit threshold, vetoing the YIELD action. The path_position is IN_WAY, but there is no measured path conflict or pass gesture, so CONTINUE is appropriate.\"\n}",
+    "request_duration_s": 15.921570525999414,
+    "requested_model": "qwen2.5:7b",
+    "returned_model": "qwen2.5:7b",
+    "delivery_status": "failed",
+    "delivery_error": {
+      "category": "request_expired"
+    }
+  },
+  "last_readiness": {
+    "reason_code": "NO_VISIBLE_PERSON",
+    "status": "OBSERVING"
+  },
+  "source_sha256": "37a122fd2fa1aa2e62772c10a9d88152e0dcc1d3ba08f84428c59ae7d8d290d6",
+  "trial_id": "5004ca9e3c4e41579ee28cdffe8a3b86",
+  "clock_mapping": "original first perception receipt + real elapsed replay time",
+  "physical_execution": false
+}

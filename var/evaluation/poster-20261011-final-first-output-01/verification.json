@@ -1,0 +1,11 @@
+{
+  "frozen_inputs_unchanged": true,
+  "complete_unique_scenario_policy_repeat_rows": 54,
+  "paired_first_states_match": true,
+  "paired_first_state_matches": 27,
+  "causal_ingestion_prefixes_verified": true,
+  "csv_to_summary_reconciled": true,
+  "human_scores_not_fabricated": true,
+  "physical_execution": false,
+  "condition": "first_validated_policy_output"
+}

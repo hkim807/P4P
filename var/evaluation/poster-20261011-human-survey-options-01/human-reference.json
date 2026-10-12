@@ -1,0 +1,768 @@
+{
+  "status": "VERIFIED_WORKBOOK_ONLY",
+  "respondents": 42,
+  "scenarios": {
+    "S1": {
+      "respondents": 42,
+      "preferred_counts": {
+        "CONTINUE": 35,
+        "APPROACH": 1,
+        "ENGAGE": 1,
+        "YIELD": 5,
+        "Unable to judge from the video": 0
+      },
+      "valid_preference_n": 42,
+      "action_only_n": 42,
+      "missing_preference_n": 0,
+      "unexpected_preference_n": 0,
+      "modal_actions": [
+        "CONTINUE"
+      ],
+      "highest_mean_actions": [
+        "CONTINUE"
+      ],
+      "ratings": {
+        "CONTINUE": {
+          "n": 42,
+          "missing_or_nonrating": 0,
+          "mean": 4.404761904761905,
+          "median": 5.0,
+          "distribution": {
+            "1": 2,
+            "2": 1,
+            "3": 1,
+            "4": 12,
+            "5": 26
+          }
+        },
+        "APPROACH": {
+          "n": 41,
+          "missing_or_nonrating": 1,
+          "mean": 2.097560975609756,
+          "median": 2,
+          "distribution": {
+            "1": 15,
+            "2": 13,
+            "3": 8,
+            "4": 4,
+            "5": 1
+          }
+        },
+        "ENGAGE": {
+          "n": 40,
+          "missing_or_nonrating": 2,
+          "mean": 2.575,
+          "median": 3.0,
+          "distribution": {
+            "1": 9,
+            "2": 9,
+            "3": 14,
+            "4": 6,
+            "5": 2
+          }
+        },
+        "YIELD": {
+          "n": 41,
+          "missing_or_nonrating": 1,
+          "mean": 2.8536585365853657,
+          "median": 3,
+          "distribution": {
+            "1": 9,
+            "2": 5,
+            "3": 14,
+            "4": 9,
+            "5": 4
+          }
+        }
+      },
+      "question_columns": {
+        "preference": "Scenario 1: Which action would be most appropriate for the robot to take immediately after this video? (If several actions seem equally appropriate, choose the one you would most prefer the robot to take next)",
+        "ratings": {
+          "CONTINUE": "Scenario 1: How appropriate would each behaviour be as the robot's immediate next action at the end of the video? [CONTINUE]",
+          "APPROACH": "Scenario 1: How appropriate would each behaviour be as the robot's immediate next action at the end of the video? [APPROACH]",
+          "ENGAGE": "Scenario 1: How appropriate would each behaviour be as the robot's immediate next action at the end of the video? [ENGAGE]",
+          "YIELD": "Scenario 1: How appropriate would each behaviour be as the robot's immediate next action at the end of the video? [YIELD]"
+        }
+      }
+    },
+    "S2": {
+      "respondents": 42,
+      "preferred_counts": {
+        "CONTINUE": 8,
+        "APPROACH": 19,
+        "ENGAGE": 13,
+        "YIELD": 2,
+        "Unable to judge from the video": 0
+      },
+      "valid_preference_n": 42,
+      "action_only_n": 42,
+      "missing_preference_n": 0,
+      "unexpected_preference_n": 0,
+      "modal_actions": [
+        "APPROACH"
+      ],
+      "highest_mean_actions": [
+        "ENGAGE"
+      ],
+      "ratings": {
+        "CONTINUE": {
+          "n": 42,
+          "missing_or_nonrating": 0,
+          "mean": 2.857142857142857,
+          "median": 3.0,
+          "distribution": {
+            "1": 7,
+            "2": 7,
+            "3": 16,
+            "4": 9,
+            "5": 3
+          }
+        },
+        "APPROACH": {
+          "n": 42,
+          "missing_or_nonrating": 0,
+          "mean": 3.5476190476190474,
+          "median": 4.0,
+          "distribution": {
+            "1": 6,
+            "2": 6,
+            "3": 5,
+            "4": 9,
+            "5": 16
+          }
+        },
+        "ENGAGE": {
+          "n": 41,
+          "missing_or_nonrating": 1,
+          "mean": 3.731707317073171,
+          "median": 4,
+          "distribution": {
+            "1": 2,
+            "2": 2,
+            "3": 10,
+            "4": 18,
+            "5": 9
+          }
+        },
+        "YIELD": {
+          "n": 39,
+          "missing_or_nonrating": 3,
+          "mean": 2.051282051282051,
+          "median": 2,
+          "distribution": {
+            "1": 16,
+            "2": 9,
+            "3": 11,
+            "4": 2,
+            "5": 1
+          }
+        }
+      },
+      "question_columns": {
+        "preference": "Scenario 2: Which action would be most appropriate for the robot to take immediately after this video? (If several actions seem equally appropriate, choose the one you would most prefer the robot to take next)",
+        "ratings": {
+          "CONTINUE": "Scenario 2: How appropriate would each behaviour be as the robot's immediate next action at the end of the video? [CONTINUE]",
+          "APPROACH": "Scenario 2: How appropriate would each behaviour be as the robot's immediate next action at the end of the video? [APPROACH]",
+          "ENGAGE": "Scenario 2: How appropriate would each behaviour be as the robot's immediate next action at the end of the video? [ENGAGE]",
+          "YIELD": "Scenario 2: How appropriate would each behaviour be as the robot's immediate next action at the end of the video? [YIELD]"
+        }
+      }
+    },
+    "S3": {
+      "respondents": 42,
+      "preferred_counts": {
+        "CONTINUE": 1,
+        "APPROACH": 6,
+        "ENGAGE": 16,
+        "YIELD": 18,
+        "Unable to judge from the video": 1
+      },
+      "valid_preference_n": 42,
+      "action_only_n": 41,
+      "missing_preference_n": 0,
+      "unexpected_preference_n": 0,
+      "modal_actions": [
+        "YIELD"
+      ],
+      "highest_mean_actions": [
+        "ENGAGE"
+      ],
+      "ratings": {
+        "CONTINUE": {
+          "n": 42,
+          "missing_or_nonrating": 0,
+          "mean": 1.4761904761904763,
+          "median": 1.0,
+          "distribution": {
+            "1": 33,
+            "2": 4,
+            "3": 1,
+            "4": 2,
+            "5": 2
+          }
+        },
+        "APPROACH": {
+          "n": 42,
+          "missing_or_nonrating": 0,
+          "mean": 3.0238095238095237,
+          "median": 3.0,
+          "distribution": {
+            "1": 4,
+            "2": 9,
+            "3": 15,
+            "4": 10,
+            "5": 4
+          }
+        },
+        "ENGAGE": {
+          "n": 42,
+          "missing_or_nonrating": 0,
+          "mean": 3.8333333333333335,
+          "median": 4.0,
+          "distribution": {
+            "1": 3,
+            "2": 2,
+            "3": 7,
+            "4": 17,
+            "5": 13
+          }
+        },
+        "YIELD": {
+          "n": 42,
+          "missing_or_nonrating": 0,
+          "mean": 3.4523809523809526,
+          "median": 4.0,
+          "distribution": {
+            "1": 5,
+            "2": 6,
+            "3": 9,
+            "4": 9,
+            "5": 13
+          }
+        }
+      },
+      "question_columns": {
+        "preference": "Scenario 3: Which action would be most appropriate for the robot to take immediately after this video? (If several actions seem equally appropriate, choose the one you would most prefer the robot to take next)",
+        "ratings": {
+          "CONTINUE": "Scenario 3: How appropriate would each behaviour be as the robot's immediate next action at the end of the video? [CONTINUE]",
+          "APPROACH": "Scenario 3: How appropriate would each behaviour be as the robot's immediate next action at the end of the video? [APPROACH]",
+          "ENGAGE": "Scenario 3: How appropriate would each behaviour be as the robot's immediate next action at the end of the video? [ENGAGE]",
+          "YIELD": "Scenario 3: How appropriate would each behaviour be as the robot's immediate next action at the end of the video? [YIELD]"
+        }
+      }
+    },
+    "S4": {
+      "respondents": 42,
+      "preferred_counts": {
+        "CONTINUE": 1,
+        "APPROACH": 2,
+        "ENGAGE": 1,
+        "YIELD": 38,
+        "Unable to judge from the video": 0
+      },
+      "valid_preference_n": 42,
+      "action_only_n": 42,
+      "missing_preference_n": 0,
+      "unexpected_preference_n": 0,
+      "modal_actions": [
+        "YIELD"
+      ],
+      "highest_mean_actions": [
+        "YIELD"
+      ],
+      "ratings": {
+        "CONTINUE": {
+          "n": 42,
+          "missing_or_nonrating": 0,
+          "mean": 1.3571428571428572,
+          "median": 1.0,
+          "distribution": {
+            "1": 36,
+            "2": 2,
+            "3": 1,
+            "4": 1,
+            "5": 2
+          }
+        },
+        "APPROACH": {
+          "n": 41,
+          "missing_or_nonrating": 1,
+          "mean": 2.1707317073170733,
+          "median": 2,
+          "distribution": {
+            "1": 16,
+            "2": 9,
+            "3": 11,
+            "4": 3,
+            "5": 2
+          }
+        },
+        "ENGAGE": {
+          "n": 41,
+          "missing_or_nonrating": 1,
+          "mean": 2.4634146341463414,
+          "median": 2,
+          "distribution": {
+            "1": 13,
+            "2": 8,
+            "3": 9,
+            "4": 10,
+            "5": 1
+          }
+        },
+        "YIELD": {
+          "n": 42,
+          "missing_or_nonrating": 0,
+          "mean": 4.357142857142857,
+          "median": 5.0,
+          "distribution": {
+            "1": 2,
+            "2": 1,
+            "3": 1,
+            "4": 14,
+            "5": 24
+          }
+        }
+      },
+      "question_columns": {
+        "preference": "Scenario 4: Which action would be most appropriate for the robot to take immediately after this video? (If several actions seem equally appropriate, choose the one you would most prefer the robot to take next)",
+        "ratings": {
+          "CONTINUE": "Scenario 4: How appropriate would each behaviour be as the robot's immediate next action at the end of the video? [CONTINUE]",
+          "APPROACH": "Scenario 4: How appropriate would each behaviour be as the robot's immediate next action at the end of the video? [APPROACH]",
+          "ENGAGE": "Scenario 4: How appropriate would each behaviour be as the robot's immediate next action at the end of the video? [ENGAGE]",
+          "YIELD": "Scenario 4: How appropriate would each behaviour be as the robot's immediate next action at the end of the video? [YIELD]"
+        }
+      }
+    },
+    "S5": {
+      "respondents": 42,
+      "preferred_counts": {
+        "CONTINUE": 24,
+        "APPROACH": 1,
+        "ENGAGE": 2,
+        "YIELD": 15,
+        "Unable to judge from the video": 0
+      },
+      "valid_preference_n": 42,
+      "action_only_n": 42,
+      "missing_preference_n": 0,
+      "unexpected_preference_n": 0,
+      "modal_actions": [
+        "CONTINUE"
+      ],
+      "highest_mean_actions": [
+        "CONTINUE"
+      ],
+      "ratings": {
+        "CONTINUE": {
+          "n": 42,
+          "missing_or_nonrating": 0,
+          "mean": 3.857142857142857,
+          "median": 4.0,
+          "distribution": {
+            "1": 2,
+            "2": 4,
+            "3": 5,
+            "4": 18,
+            "5": 13
+          }
+        },
+        "APPROACH": {
+          "n": 42,
+          "missing_or_nonrating": 0,
+          "mean": 1.7619047619047619,
+          "median": 1.0,
+          "distribution": {
+            "1": 23,
+            "2": 12,
+            "3": 3,
+            "4": 2,
+            "5": 2
+          }
+        },
+        "ENGAGE": {
+          "n": 42,
+          "missing_or_nonrating": 0,
+          "mean": 1.8333333333333333,
+          "median": 1.0,
+          "distribution": {
+            "1": 22,
+            "2": 11,
+            "3": 5,
+            "4": 2,
+            "5": 2
+          }
+        },
+        "YIELD": {
+          "n": 42,
+          "missing_or_nonrating": 0,
+          "mean": 3,
+          "median": 3.0,
+          "distribution": {
+            "1": 8,
+            "2": 10,
+            "3": 8,
+            "4": 6,
+            "5": 10
+          }
+        }
+      },
+      "question_columns": {
+        "preference": "Scenario 5: Which action would be most appropriate for the robot to take immediately after this video? (If several actions seem equally appropriate, choose the one you would most prefer the robot to take next)",
+        "ratings": {
+          "CONTINUE": "Scenario 5: How appropriate would each behaviour be as the robot's immediate next action at the end of the video? [CONTINUE]",
+          "APPROACH": "Scenario 5: How appropriate would each behaviour be as the robot's immediate next action at the end of the video? [APPROACH]",
+          "ENGAGE": "Scenario 5: How appropriate would each behaviour be as the robot's immediate next action at the end of the video? [ENGAGE]",
+          "YIELD": "Scenario 5: How appropriate would each behaviour be as the robot's immediate next action at the end of the video? [YIELD]"
+        }
+      }
+    },
+    "S6": {
+      "respondents": 42,
+      "preferred_counts": {
+        "CONTINUE": 31,
+        "APPROACH": 1,
+        "ENGAGE": 9,
+        "YIELD": 0,
+        "Unable to judge from the video": 1
+      },
+      "valid_preference_n": 42,
+      "action_only_n": 41,
+      "missing_preference_n": 0,
+      "unexpected_preference_n": 0,
+      "modal_actions": [
+        "CONTINUE"
+      ],
+      "highest_mean_actions": [
+        "CONTINUE"
+      ],
+      "ratings": {
+        "CONTINUE": {
+          "n": 42,
+          "missing_or_nonrating": 0,
+          "mean": 4.119047619047619,
+          "median": 4.0,
+          "distribution": {
+            "1": 2,
+            "2": 1,
+            "3": 5,
+            "4": 16,
+            "5": 18
+          }
+        },
+        "APPROACH": {
+          "n": 42,
+          "missing_or_nonrating": 0,
+          "mean": 2.119047619047619,
+          "median": 2.0,
+          "distribution": {
+            "1": 16,
+            "2": 12,
+            "3": 8,
+            "4": 5,
+            "5": 1
+          }
+        },
+        "ENGAGE": {
+          "n": 42,
+          "missing_or_nonrating": 0,
+          "mean": 2.7857142857142856,
+          "median": 3.0,
+          "distribution": {
+            "1": 11,
+            "2": 5,
+            "3": 13,
+            "4": 8,
+            "5": 5
+          }
+        },
+        "YIELD": {
+          "n": 41,
+          "missing_or_nonrating": 1,
+          "mean": 2.292682926829268,
+          "median": 2,
+          "distribution": {
+            "1": 11,
+            "2": 14,
+            "3": 9,
+            "4": 7,
+            "5": 0
+          }
+        }
+      },
+      "question_columns": {
+        "preference": "Scenario 6: Which action would be most appropriate for the robot to take immediately after this video? (If several actions seem equally appropriate, choose the one you would most prefer the robot to take next)",
+        "ratings": {
+          "CONTINUE": "Scenario 6: How appropriate would each behaviour be as the robot's immediate next action at the end of the video? [CONTINUE]",
+          "APPROACH": "Scenario 6: How appropriate would each behaviour be as the robot's immediate next action at the end of the video? [APPROACH]",
+          "ENGAGE": "Scenario 6: How appropriate would each behaviour be as the robot's immediate next action at the end of the video? [ENGAGE]",
+          "YIELD": "Scenario 6: How appropriate would each behaviour be as the robot's immediate next action at the end of the video? [YIELD]"
+        }
+      }
+    },
+    "S7": {
+      "respondents": 42,
+      "preferred_counts": {
+        "CONTINUE": 6,
+        "APPROACH": 21,
+        "ENGAGE": 15,
+        "YIELD": 0,
+        "Unable to judge from the video": 0
+      },
+      "valid_preference_n": 42,
+      "action_only_n": 42,
+      "missing_preference_n": 0,
+      "unexpected_preference_n": 0,
+      "modal_actions": [
+        "APPROACH"
+      ],
+      "highest_mean_actions": [
+        "APPROACH"
+      ],
+      "ratings": {
+        "CONTINUE": {
+          "n": 42,
+          "missing_or_nonrating": 0,
+          "mean": 2.5952380952380953,
+          "median": 3.0,
+          "distribution": {
+            "1": 10,
+            "2": 10,
+            "3": 13,
+            "4": 5,
+            "5": 4
+          }
+        },
+        "APPROACH": {
+          "n": 42,
+          "missing_or_nonrating": 0,
+          "mean": 3.642857142857143,
+          "median": 4.0,
+          "distribution": {
+            "1": 6,
+            "2": 3,
+            "3": 5,
+            "4": 14,
+            "5": 14
+          }
+        },
+        "ENGAGE": {
+          "n": 41,
+          "missing_or_nonrating": 1,
+          "mean": 3.6097560975609757,
+          "median": 4,
+          "distribution": {
+            "1": 3,
+            "2": 0,
+            "3": 14,
+            "4": 17,
+            "5": 7
+          }
+        },
+        "YIELD": {
+          "n": 41,
+          "missing_or_nonrating": 1,
+          "mean": 1.7317073170731707,
+          "median": 2,
+          "distribution": {
+            "1": 19,
+            "2": 14,
+            "3": 8,
+            "4": 0,
+            "5": 0
+          }
+        }
+      },
+      "question_columns": {
+        "preference": "Scenario 7: Which action would be most appropriate for the robot to take immediately after this video? (If several actions seem equally appropriate, choose the one you would most prefer the robot to take next)",
+        "ratings": {
+          "CONTINUE": "Scenario 7: How appropriate would each behaviour be as the robot's immediate next action at the end of the video? [CONTINUE]",
+          "APPROACH": "Scenario 7: How appropriate would each behaviour be as the robot's immediate next action at the end of the video? [APPROACH]",
+          "ENGAGE": "Scenario 7: How appropriate would each behaviour be as the robot's immediate next action at the end of the video? [ENGAGE]",
+          "YIELD": "Scenario 7: How appropriate would each behaviour be as the robot's immediate next action at the end of the video? [YIELD]"
+        }
+      }
+    },
+    "S8": {
+      "respondents": 42,
+      "preferred_counts": {
+        "CONTINUE": 4,
+        "APPROACH": 8,
+        "ENGAGE": 26,
+        "YIELD": 4,
+        "Unable to judge from the video": 0
+      },
+      "valid_preference_n": 42,
+      "action_only_n": 42,
+      "missing_preference_n": 0,
+      "unexpected_preference_n": 0,
+      "modal_actions": [
+        "ENGAGE"
+      ],
+      "highest_mean_actions": [
+        "ENGAGE"
+      ],
+      "ratings": {
+        "CONTINUE": {
+          "n": 42,
+          "missing_or_nonrating": 0,
+          "mean": 2.5238095238095237,
+          "median": 2.0,
+          "distribution": {
+            "1": 12,
+            "2": 10,
+            "3": 8,
+            "4": 10,
+            "5": 2
+          }
+        },
+        "APPROACH": {
+          "n": 41,
+          "missing_or_nonrating": 1,
+          "mean": 3.292682926829268,
+          "median": 4,
+          "distribution": {
+            "1": 5,
+            "2": 6,
+            "3": 7,
+            "4": 18,
+            "5": 5
+          }
+        },
+        "ENGAGE": {
+          "n": 42,
+          "missing_or_nonrating": 0,
+          "mean": 4.0476190476190474,
+          "median": 4.0,
+          "distribution": {
+            "1": 2,
+            "2": 2,
+            "3": 5,
+            "4": 16,
+            "5": 17
+          }
+        },
+        "YIELD": {
+          "n": 42,
+          "missing_or_nonrating": 0,
+          "mean": 2.0952380952380953,
+          "median": 2.0,
+          "distribution": {
+            "1": 18,
+            "2": 11,
+            "3": 7,
+            "4": 3,
+            "5": 3
+          }
+        }
+      },
+      "question_columns": {
+        "preference": "Scenario 8: Which action would be most appropriate for the robot to take immediately after this video? (If several actions seem equally appropriate, choose the one you would most prefer the robot to take next)",
+        "ratings": {
+          "CONTINUE": "Scenario 8: How appropriate would each behaviour be as the robot's immediate next action at the end of the video? [CONTINUE]",
+          "APPROACH": "Scenario 8: How appropriate would each behaviour be as the robot's immediate next action at the end of the video? [APPROACH]",
+          "ENGAGE": "Scenario 8: How appropriate would each behaviour be as the robot's immediate next action at the end of the video? [ENGAGE]",
+          "YIELD": "Scenario 8: How appropriate would each behaviour be as the robot's immediate next action at the end of the video? [YIELD]"
+        }
+      }
+    },
+    "S9": {
+      "respondents": 42,
+      "preferred_counts": {
+        "CONTINUE": 30,
+        "APPROACH": 4,
+        "ENGAGE": 7,
+        "YIELD": 1,
+        "Unable to judge from the video": 0
+      },
+      "valid_preference_n": 42,
+      "action_only_n": 42,
+      "missing_preference_n": 0,
+      "unexpected_preference_n": 0,
+      "modal_actions": [
+        "CONTINUE"
+      ],
+      "highest_mean_actions": [
+        "CONTINUE"
+      ],
+      "ratings": {
+        "CONTINUE": {
+          "n": 42,
+          "missing_or_nonrating": 0,
+          "mean": 4.023809523809524,
+          "median": 5.0,
+          "distribution": {
+            "1": 4,
+            "2": 4,
+            "3": 1,
+            "4": 11,
+            "5": 22
+          }
+        },
+        "APPROACH": {
+          "n": 41,
+          "missing_or_nonrating": 1,
+          "mean": 2.2195121951219514,
+          "median": 2,
+          "distribution": {
+            "1": 14,
+            "2": 11,
+            "3": 9,
+            "4": 7,
+            "5": 0
+          }
+        },
+        "ENGAGE": {
+          "n": 42,
+          "missing_or_nonrating": 0,
+          "mean": 2.9285714285714284,
+          "median": 3.0,
+          "distribution": {
+            "1": 9,
+            "2": 5,
+            "3": 13,
+            "4": 10,
+            "5": 5
+          }
+        },
+        "YIELD": {
+          "n": 42,
+          "missing_or_nonrating": 0,
+          "mean": 1.8333333333333333,
+          "median": 2.0,
+          "distribution": {
+            "1": 19,
+            "2": 15,
+            "3": 4,
+            "4": 4,
+            "5": 0
+          }
+        }
+      },
+      "question_columns": {
+        "preference": "Scenario 9: Which action would be most appropriate for the robot to take immediately after this video? (If several actions seem equally appropriate, choose the one you would most prefer the robot to take next)",
+        "ratings": {
+          "CONTINUE": "Scenario 9: How appropriate would each behaviour be as the robot's immediate next action at the end of the video? [CONTINUE]",
+          "APPROACH": "Scenario 9: How appropriate would each behaviour be as the robot's immediate next action at the end of the video? [APPROACH]",
+          "ENGAGE": "Scenario 9: How appropriate would each behaviour be as the robot's immediate next action at the end of the video? [ENGAGE]",
+          "YIELD": "Scenario 9: How appropriate would each behaviour be as the robot's immediate next action at the end of the video? [YIELD]"
+        }
+      }
+    }
+  },
+  "protocol_verification": "NOT_PERFORMED",
+  "denominator": "valid action preferences plus unable-to-judge; missing/unexpected excluded",
+  "workbook_sha256": "e7ac526de96cc2c0f9658068ad600bcb6fab7684b0829f3417cec3f71c9f6bac",
+  "matches_preparation_hash": false,
+  "sheet": "Form responses 1",
+  "historical_reference_respondents": 37,
+  "respondent_discrepancy_vs_historical": 5,
+  "preparation_checks": {
+    "42_respondents": true,
+    "S1_CONTINUE_35": true,
+    "S4_YIELD_38": true,
+    "S3_YIELD_18": true,
+    "S3_ENGAGE_16": true,
+    "S3_ENGAGE_rating_above_YIELD": true
+  }
+}

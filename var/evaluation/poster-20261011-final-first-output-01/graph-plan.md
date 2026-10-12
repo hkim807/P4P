@@ -1,0 +1,3 @@
+# First-output graphs
+
+Use graph_data/first_output_coverage.csv for output and accepted counts, denominator nine per policy/repetition. Use first_actions.csv for per-scenario action/acceptance cells and separate timing dots for encounter elapsed seconds and model-request seconds. Keep no-output cells and blank missing timings. Use evidence_readiness.csv with audit_window=whole_recording for ready/total frame bars; first_eligible_prefix is a separate causal-prefix panel. No endpoint graph or human-alignment scores belong in this first-output condition. Repetitions are not independent scenarios.

@@ -34,6 +34,17 @@ class GazeMemory:
     states: dict[int, bool | None] = field(default_factory=dict)
 
 
+def gaze_thresholds(distance: float | None, config: TemporalConfig) -> tuple[float, float]:
+    if config.far_gaze_distance_m is not None and distance is not None and distance > config.far_gaze_distance_m:
+        return config.far_looking_enter, config.far_looking_exit
+    return config.looking_enter, config.looking_exit
+
+
+def usable_gaze(sample: dict, config: TemporalConfig) -> float | None:
+    gaze = sample["gaze_overlap"]
+    return None if gaze == config.gaze_unavailable_score else gaze
+
+
 def extract_features(track: dict, now: int, config: TemporalConfig,
                      memory: GazeMemory) -> tuple[TemporalEvidence, list[str]]:
     samples = [s for s in track["samples"] if s["timestamp_us"] >= now - round(config.window_s * 1e6)]
@@ -47,12 +58,13 @@ def extract_features(track: dict, now: int, config: TemporalConfig,
             continue
         if memory.last_sample is None or not adjacent(memory.last_sample, sample, config):
             memory.looking = None
-        gaze = sample["gaze_overlap"]
+        gaze = usable_gaze(sample, config)
+        enter, exit = gaze_thresholds(sample["distance_m"], config)
         if gaze is None:
             memory.looking = None
-        elif gaze >= config.looking_enter:
+        elif gaze >= enter:
             memory.looking = True
-        elif gaze <= config.looking_exit:
+        elif gaze <= exit:
             memory.looking = False
         memory.states[sample["timestamp_us"]] = memory.looking
         memory.last_sample = sample
@@ -128,13 +140,15 @@ def extract_features(track: dict, now: int, config: TemporalConfig,
         flags.append("DISTANCE_FIT_UNRELIABLE")
     if jumps:
         flags.append("DISTANCE_SEGMENT_BROKEN_BY_JUMP")
+    gazes = [usable_gaze(s, config) for s in samples]
+    gazes = [g for g in gazes if g is not None]
+    enter, exit = gaze_thresholds(samples[-1]["distance_m"] if samples else None, config)
     return TemporalEvidence(
         window_span_s=span, gaze_fraction=fraction, gaze_valid_coverage_s=coverage,
-        mean_gaze_overlap=(sum(s["gaze_overlap"] for s in samples if s["gaze_overlap"] is not None) /
-                           sum(s["gaze_overlap"] is not None for s in samples)
-                           if any(s["gaze_overlap"] is not None for s in samples) else None),
+        mean_gaze_overlap=sum(gazes)/len(gazes) if gazes else None,
         latest_gaze_looking=memory.states.get(samples[-1]["timestamp_us"]) if samples and observed else None,
-        latest_gaze_overlap=samples[-1]["gaze_overlap"] if samples and observed else None,
+        latest_gaze_overlap=usable_gaze(samples[-1], config) if samples and observed else None,
+        looking_enter_threshold=enter, looking_exit_threshold=exit,
         looking_time_s=looking_time, looking_bouts=looking_bouts,
         gaze_coverage_fraction=coverage_fraction, gaze_valid_samples=valid_gaze_samples,
         sustained_gaze_s=sustained if observed else 0.0, distance_slope_mps=slope,

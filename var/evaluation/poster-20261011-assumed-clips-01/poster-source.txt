@@ -1,0 +1,68 @@
+Project 59
+Interactive Social Guide Robot
+Decision making using
+ 
+a rule-based
+ and 
+an LLM-integrated navigation pipeline
+Background
+A guide robot must 
+recognise
+ interest in interaction
+ while roaming the laboratory. 
+Changing gaze and distance, and missed detections, make this decision difficult.
+Objective
+Develop a temporal social-state pipeline for Navel to support a comparison and eva
+luation
+ of rule-based and LLM decisions in navigation scenarios
+How can gaze and distance observations over time be structured into a shared social-state representation for rule-based and LLM decision-making?
+Conclusion
+ and future work
+By 
+Eddie Kim and Jeruh Kim
+Contact: 
+hkim807@aucklanduni.ac.nz
+ 
+jkim828@aucklanduni.ac.nz
+ 
+Supervisor: Ho Seok Ahn
+RQ1
+How well can an LLM’s decisions align with human preferences and appropriateness ratings, compared with those of a rule-based policy using the same representation?
+RQ2
+Navel 
+S
+ensors
+Track 
+H
+istory
+Shared 
+Social 
+S
+tate
+A structured summary of the social context 
+and available 
+evidence
+Decision Policies
+Rule-based and LLM policies select an action from the same social state
+Person detections, social cues and robot movement data
+Person histories, changes in attention and distance, and observation quality
+APPROACH
+Interested person
+farther away
+Move closer
+ENGAGE
+Interested person
+already nearby
+Stop and greet
+Hello!
+YIELD
+Person needs
+room to pass
+Give room to pass
+CONTINUE
+No sustained
+interest in interaction
+Stay on the route
+Four possible actions
+Pipeline
+Results

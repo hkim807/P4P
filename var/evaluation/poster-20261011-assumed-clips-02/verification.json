@@ -1,0 +1,30 @@
+{
+  "frozen_inputs_unchanged": false,
+  "frozen_execution_inputs_unchanged": true,
+  "reporting_only_changes": {
+    "evaluation/poster_survey.py": {
+      "frozen": "2a01a4384a8c618e5989d18638023b8e1f9d5c8d441e72c87e4c7909767a0861",
+      "current": "05a3ecc2559a2b914c4232322f3f18ac8490dccbb425ec14b84deff17e1b969a"
+    }
+  },
+  "source_causal_replay_validated": true,
+  "endpoint_rows": 54,
+  "expected_endpoint_rows": 54,
+  "operational_rows": 54,
+  "expected_operational_rows": 54,
+  "all_endpoint_hashes_paired": true,
+  "operational_first_states": {
+    "matched": 15,
+    "mismatched": 0,
+    "unavailable": 12
+  },
+  "proxy_human_scores_absent": true,
+  "operational_human_scores_absent": true,
+  "workbook_checks": "NOT_RUN_SOURCE_MISSING",
+  "source_workbook_hash": null,
+  "endpoint_causality_and_freshness": true,
+  "endpoint_inputs_no_human_metadata": true,
+  "csv_to_summary_reconciled": true,
+  "model_digest_unchanged_after_run": true,
+  "targeted_tests_passed": 13
+}

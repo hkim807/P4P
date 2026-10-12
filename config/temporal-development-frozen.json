@@ -27,5 +27,11 @@
   "recurring_min_looking_s": 1.0,
   "recurring_min_fraction": 0.45,
   "recurring_min_bouts": 2,
-  "yield_closing_max_distance_m": 3.0
+  "yield_closing_max_distance_m": 3.0,
+  "path_assume_fixed_head": true,
+  "path_half_width_m": 0.5,
+  "path_hysteresis_m": 0.1,
+  "path_camera_x_m": 0.0,
+  "path_camera_y_m": 0.0,
+  "path_camera_yaw_deg": 0.0
 }

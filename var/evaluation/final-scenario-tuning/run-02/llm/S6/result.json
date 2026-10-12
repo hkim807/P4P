@@ -1,0 +1,110 @@
+{
+  "scenario_id": "S6",
+  "policy": "llm",
+  "status": "ACTION_RESOLVED",
+  "action": "CONTINUE",
+  "decision": {
+    "action": "CONTINUE",
+    "reason": "The person is observed in the APPROACHABLE distance zone, but the latest distance is 3.634m, which exceeds the config.yield_closing_max_distance_m of 3.5m. The gaze_state is NONE and latest_gaze_looking is false, so there is no justification for YIELD. The relative_distance_trend is UNKNOWN, and the path_position is TO_SIDE, which does not require yielding."
+  },
+  "accepted_by_live_client": false,
+  "acceptance_details": {
+    "current_readiness": false,
+    "latest_observation_age_s": 12.789295,
+    "model_source_age_s": 16.296209,
+    "trial_phase": "OBSERVING",
+    "failure_reason": null
+  },
+  "resolved_elapsed_s": 17.362858807999146,
+  "stop_elapsed_s": 17.362858807999146,
+  "frames_ingested": 47,
+  "ready_frames": 31,
+  "readiness_counts": {
+    "INSUFFICIENT_GAZE_EVIDENCE": 13,
+    "DISTANCE_UNKNOWN": 3,
+    "READY": 31
+  },
+  "recording_exhausted": true,
+  "last_ingested_source_offset_s": 4.573567,
+  "last_ingested_line": 94,
+  "decision_source_offset_s": 1.066653,
+  "motion_start_monotonic_us": 2198112528,
+  "perception_origin_monotonic_us": 2198154257,
+  "decision_source_since_motion_s": 1.108382,
+  "max_dispatch_lag_s": 0.006332884999210364,
+  "model_failures": [
+    {
+      "decision": null,
+      "error": {
+        "category": "request_expired"
+      },
+      "policy": "llm",
+      "request_id": "b895d1847ace472dba0921a0bf380644",
+      "session_id": "replay-c868e15ffc810edd0c196acc",
+      "source_robot_timestamp_us": 2199220910,
+      "source_state_id": "replay-c868e15ffc810edd0c196acc:12",
+      "status": "failed",
+      "trial_id": "5447fc9c3b164dd9acdab6e6ac15f427"
+    }
+  ],
+  "first_model_request": {
+    "decision": null,
+    "error": null,
+    "policy": "llm",
+    "request_id": "b895d1847ace472dba0921a0bf380644",
+    "session_id": "replay-c868e15ffc810edd0c196acc",
+    "source_robot_timestamp_us": 2199220910,
+    "source_state_id": "replay-c868e15ffc810edd0c196acc:12",
+    "status": "pending",
+    "trial_id": "5447fc9c3b164dd9acdab6e6ac15f427"
+  },
+  "resolved_output": {
+    "decision": {
+      "action": "CONTINUE",
+      "reason": "The person is observed in the APPROACHABLE distance zone, but the latest distance is 3.634m, which exceeds the config.yield_closing_max_distance_m of 3.5m. The gaze_state is NONE and latest_gaze_looking is false, so there is no justification for YIELD. The relative_distance_trend is UNKNOWN, and the path_position is TO_SIDE, which does not require yielding."
+    },
+    "error": null,
+    "policy": "llm",
+    "request_id": "b895d1847ace472dba0921a0bf380644",
+    "session_id": "replay-c868e15ffc810edd0c196acc",
+    "source_robot_timestamp_us": 2199220910,
+    "source_state_id": "replay-c868e15ffc810edd0c196acc:12",
+    "status": "succeeded",
+    "trial_id": "5447fc9c3b164dd9acdab6e6ac15f427",
+    "completed_at": "2026-10-11T06:25:09.784274+00:00",
+    "error_stage": null,
+    "ok": true,
+    "ollama_configuration": {
+      "base_url": "http://127.0.0.1:11434",
+      "generation_options": {
+        "num_ctx": 8192,
+        "num_predict": 192,
+        "seed": 42,
+        "temperature": 0.0
+      },
+      "model": "qwen2.5:7b",
+      "num_ctx": 8192,
+      "num_predict": 192,
+      "seed": 42,
+      "temperature": 0.0,
+      "timeout_seconds": 120.0
+    },
+    "prompt_version": "social-state-llm-v12",
+    "raw_content": "{\n  \"action\": \"CONTINUE\",\n  \"reason\": \"The person is observed in the APPROACHABLE distance zone, but the latest distance is 3.634m, which exceeds the config.yield_closing_max_distance_m of 3.5m. The gaze_state is NONE and latest_gaze_looking is false, so there is no justification for YIELD. The relative_distance_trend is UNKNOWN, and the path_position is TO_SIDE, which does not require yielding.\"\n}",
+    "request_duration_s": 16.286189567999827,
+    "requested_model": "qwen2.5:7b",
+    "returned_model": "qwen2.5:7b",
+    "delivery_status": "failed",
+    "delivery_error": {
+      "category": "request_expired"
+    }
+  },
+  "last_readiness": {
+    "reason_code": "INSUFFICIENT_GAZE_EVIDENCE",
+    "status": "OBSERVING"
+  },
+  "source_sha256": "81d07a1936abdf41ae7a6d740ec2288ccedb2806cc7c40dfb2d66941783b43da",
+  "trial_id": "5447fc9c3b164dd9acdab6e6ac15f427",
+  "clock_mapping": "original first perception receipt + real elapsed replay time",
+  "physical_execution": false
+}

@@ -1,0 +1,110 @@
+{
+  "scenario_id": "S4",
+  "policy": "llm",
+  "status": "ACTION_RESOLVED",
+  "action": "APPROACH",
+  "decision": {
+    "action": "APPROACH",
+    "reason": "Person getting closer beyond conversation distance."
+  },
+  "accepted_by_live_client": false,
+  "acceptance_details": {
+    "current_readiness": false,
+    "latest_observation_age_s": 7.317845,
+    "model_source_age_s": 12.296772,
+    "trial_phase": "OBSERVING",
+    "failure_reason": null
+  },
+  "resolved_elapsed_s": 13.38259922299767,
+  "stop_elapsed_s": 13.38259922299767,
+  "frames_ingested": 62,
+  "ready_frames": 11,
+  "readiness_counts": {
+    "INSUFFICIENT_GAZE_EVIDENCE": 50,
+    "READY": 11,
+    "NO_VISIBLE_PERSON": 1
+  },
+  "recording_exhausted": true,
+  "last_ingested_source_offset_s": 6.064757,
+  "last_ingested_line": 123,
+  "decision_source_offset_s": 1.08583,
+  "motion_start_monotonic_us": 2096080866,
+  "perception_origin_monotonic_us": 2096097493,
+  "decision_source_since_motion_s": 1.102457,
+  "max_dispatch_lag_s": 0.0035436569996818434,
+  "model_failures": [
+    {
+      "decision": null,
+      "error": {
+        "category": "request_expired"
+      },
+      "policy": "llm",
+      "request_id": "4a73790e17794d469ff7637adcfb9dcc",
+      "session_id": "replay-6c13d1e775b7489493285686",
+      "source_robot_timestamp_us": 2097183323,
+      "source_state_id": "replay-6c13d1e775b7489493285686:12",
+      "status": "failed",
+      "trial_id": "09ae903a3e6c4089bf92eea6194f72c0"
+    }
+  ],
+  "first_model_request": {
+    "decision": null,
+    "error": null,
+    "policy": "llm",
+    "request_id": "4a73790e17794d469ff7637adcfb9dcc",
+    "session_id": "replay-6c13d1e775b7489493285686",
+    "source_robot_timestamp_us": 2097183323,
+    "source_state_id": "replay-6c13d1e775b7489493285686:12",
+    "status": "pending",
+    "trial_id": "09ae903a3e6c4089bf92eea6194f72c0"
+  },
+  "resolved_output": {
+    "decision": {
+      "action": "APPROACH",
+      "reason": "Person getting closer beyond conversation distance."
+    },
+    "error": null,
+    "policy": "llm",
+    "request_id": "4a73790e17794d469ff7637adcfb9dcc",
+    "session_id": "replay-6c13d1e775b7489493285686",
+    "source_robot_timestamp_us": 2097183323,
+    "source_state_id": "replay-6c13d1e775b7489493285686:12",
+    "status": "succeeded",
+    "trial_id": "09ae903a3e6c4089bf92eea6194f72c0",
+    "completed_at": "2026-10-11T07:19:25.323529+00:00",
+    "error_stage": null,
+    "ok": true,
+    "ollama_configuration": {
+      "base_url": "http://127.0.0.1:11434",
+      "generation_options": {
+        "num_ctx": 8192,
+        "num_predict": 192,
+        "seed": 42,
+        "temperature": 0.0
+      },
+      "model": "qwen2.5:7b",
+      "num_ctx": 8192,
+      "num_predict": 192,
+      "seed": 42,
+      "temperature": 0.0,
+      "timeout_seconds": 120.0
+    },
+    "prompt_version": "social-state-llm-v14",
+    "raw_content": "{\"action\":\"APPROACH\",\"reason\":\"Person getting closer beyond conversation distance.\"}",
+    "request_duration_s": 12.274562679001974,
+    "requested_model": "qwen2.5:7b",
+    "returned_model": "qwen2.5:7b",
+    "delivery_status": "failed",
+    "delivery_error": {
+      "category": "request_expired"
+    }
+  },
+  "last_readiness": {
+    "reason_code": "NO_VISIBLE_PERSON",
+    "status": "OBSERVING"
+  },
+  "source_sha256": "37a122fd2fa1aa2e62772c10a9d88152e0dcc1d3ba08f84428c59ae7d8d290d6",
+  "trial_id": "09ae903a3e6c4089bf92eea6194f72c0",
+  "clock_mapping": "original first perception receipt + real elapsed replay time",
+  "physical_execution": false
+}

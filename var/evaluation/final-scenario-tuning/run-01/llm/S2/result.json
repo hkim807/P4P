@@ -1,0 +1,106 @@
+{
+  "scenario_id": "S2",
+  "policy": "llm",
+  "status": "ACTION_RESOLVED",
+  "action": "CONTINUE",
+  "decision": {
+    "action": "CONTINUE",
+    "reason": "The person is in the APPROACHABLE distance zone, and the latest distance is 2.315m, which is outside the interaction range. The gaze state is SUSTAINED, and the latest gaze looking state is true, but the relative distance trend is DECREASING, not meeting the criteria for YIELD. Therefore, the robot should continue along the existing route."
+  },
+  "accepted_by_live_client": false,
+  "acceptance_details": {
+    "current_readiness": true,
+    "latest_observation_age_s": 12.853552,
+    "model_source_age_s": 16.456016,
+    "trial_phase": "OBSERVING",
+    "failure_reason": null
+  },
+  "resolved_elapsed_s": 17.527978076999716,
+  "stop_elapsed_s": 17.527978076999716,
+  "frames_ingested": 48,
+  "ready_frames": 37,
+  "readiness_counts": {
+    "INSUFFICIENT_GAZE_EVIDENCE": 11,
+    "READY": 37
+  },
+  "recording_exhausted": true,
+  "last_ingested_source_offset_s": 4.674429,
+  "last_ingested_line": 96,
+  "decision_source_offset_s": 1.071965,
+  "max_dispatch_lag_s": 0.0009730870006023906,
+  "model_failures": [
+    {
+      "decision": null,
+      "error": {
+        "category": "request_expired"
+      },
+      "policy": "llm",
+      "request_id": "14b2717aff1949c4aa7c66f3fc7284dd",
+      "session_id": "replay-bd5e83b6a4070146c505ec1e",
+      "source_robot_timestamp_us": 2011010671,
+      "source_state_id": "replay-bd5e83b6a4070146c505ec1e:12",
+      "status": "failed",
+      "trial_id": "e740a2669d2b4afa86075caf7c076363"
+    }
+  ],
+  "first_model_request": {
+    "decision": null,
+    "error": null,
+    "policy": "llm",
+    "request_id": "14b2717aff1949c4aa7c66f3fc7284dd",
+    "session_id": "replay-bd5e83b6a4070146c505ec1e",
+    "source_robot_timestamp_us": 2011010671,
+    "source_state_id": "replay-bd5e83b6a4070146c505ec1e:12",
+    "status": "pending",
+    "trial_id": "e740a2669d2b4afa86075caf7c076363"
+  },
+  "resolved_output": {
+    "decision": {
+      "action": "CONTINUE",
+      "reason": "The person is in the APPROACHABLE distance zone, and the latest distance is 2.315m, which is outside the interaction range. The gaze state is SUSTAINED, and the latest gaze looking state is true, but the relative distance trend is DECREASING, not meeting the criteria for YIELD. Therefore, the robot should continue along the existing route."
+    },
+    "error": null,
+    "policy": "llm",
+    "request_id": "14b2717aff1949c4aa7c66f3fc7284dd",
+    "session_id": "replay-bd5e83b6a4070146c505ec1e",
+    "source_robot_timestamp_us": 2011010671,
+    "source_state_id": "replay-bd5e83b6a4070146c505ec1e:12",
+    "status": "succeeded",
+    "trial_id": "e740a2669d2b4afa86075caf7c076363",
+    "completed_at": "2026-10-11T06:18:03.857209+00:00",
+    "error_stage": null,
+    "ok": true,
+    "ollama_configuration": {
+      "base_url": "http://127.0.0.1:11434",
+      "generation_options": {
+        "num_ctx": 8192,
+        "num_predict": 192,
+        "seed": 42,
+        "temperature": 0.0
+      },
+      "model": "qwen2.5:7b",
+      "num_ctx": 8192,
+      "num_predict": 192,
+      "seed": 42,
+      "temperature": 0.0,
+      "timeout_seconds": 120.0
+    },
+    "prompt_version": "social-state-llm-v12",
+    "raw_content": "{\n  \"action\": \"CONTINUE\",\n  \"reason\": \"The person is in the APPROACHABLE distance zone, and the latest distance is 2.315m, which is outside the interaction range. The gaze state is SUSTAINED, and the latest gaze looking state is true, but the relative distance trend is DECREASING, not meeting the criteria for YIELD. Therefore, the robot should continue along the existing route.\"\n}",
+    "request_duration_s": 16.438061618000575,
+    "requested_model": "qwen2.5:7b",
+    "returned_model": "qwen2.5:7b",
+    "delivery_status": "failed",
+    "delivery_error": {
+      "category": "request_expired"
+    }
+  },
+  "last_readiness": {
+    "reason_code": null,
+    "status": "READY"
+  },
+  "source_sha256": "08a9f4e035e8ff1b5ca4ad5f807dd5b9a4e94bc55c916da9412365813df506bb",
+  "trial_id": "e740a2669d2b4afa86075caf7c076363",
+  "clock_mapping": "original first perception receipt + real elapsed replay time",
+  "physical_execution": false
+}

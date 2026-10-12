@@ -73,7 +73,8 @@ history when replay pacing changes. That is a software reproducibility requireme
 
 **Identity policy.** Every acquisition gets a monotonically increasing,
 session-local `track_epoch`. A track is identified by `(session_id, uid, epoch)`.
-A different UID always starts a separate history. UID 0 is retained, with
+A different UID starts a separate history by default. The opt-in nose continuity
+gate described below can retain one epoch across adjacent SDK UID changes. UID 0 is retained, with
 `UID_ZERO_UNVERIFIED` in `identity_quality_flags`; the current contract accepts
 zero but its SDK identity meaning has not been established. Numeric UID order
 is used only to make output and capacity tie-breaking deterministic, never as a
@@ -82,7 +83,23 @@ social cue. Reusing a UID in another file does not connect the sessions.
 **Verified.** Tests cover alternating IDs, UID 0, same UID across session resets,
 duplicate/backward timestamps, and invalid/mutated model input without advancing
 state. Each retained sample in the seven-recording audit is checked against the
-original source sample for that exact UID and timestamp. No cross-UID copies occur.
+original source sample for that exact UID and timestamp. That audit uses the
+default configuration, with cross-UID association disabled.
+
+### Optional nose continuity (`uid-tracking-v3`)
+
+`nose_reassociation_max_distance_m` defaults to null. When enabled, a changed
+SDK UID can retain the previous epoch and evidence only if there is exactly one
+retained track and one current detection, the previous track was observed in the
+immediately preceding frame, and both nonzero nose points use CAM_HEAD. The
+3-D displacement must be within the configured gate and the elapsed time within
+`nose_reassociation_max_gap_s`. Missing frames, multiple people, missing geometry,
+and excessive displacement or time prevent association. A `REASSOCIATED` event
+records `previous_uid`; `NOSE_REASSOCIATED_UNVERIFIED` persists on the history.
+This is geometric continuity under a fixed head, not verified personal identity.
+Two people replacing one another at the same position can still be confused.
+The [final-scenario preset](final-scenario-tuning.md) uses 0.45 m and 0.25 s to
+retain evidence through SDK UID churn in the passing recordings.
 
 ## Stage 2: represent visibility and lifecycle explicitly
 

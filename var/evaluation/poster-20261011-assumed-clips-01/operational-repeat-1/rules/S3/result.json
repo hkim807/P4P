@@ -1,0 +1,53 @@
+{
+  "scenario_id": "S3",
+  "policy": "rules",
+  "status": "ACTION_RESOLVED",
+  "action": "APPROACH",
+  "decision": {
+    "action": "APPROACH",
+    "reason": "The person is looking steadily at the robot and is within approach distance."
+  },
+  "accepted_by_live_client": true,
+  "acceptance_details": {
+    "current_readiness": true,
+    "latest_observation_age_s": 0.001781,
+    "model_source_age_s": 0.001781,
+    "trial_phase": "DECIDED",
+    "failure_reason": null
+  },
+  "resolved_elapsed_s": 2.2993467369997234,
+  "stop_elapsed_s": 2.2993467369997234,
+  "frames_ingested": 24,
+  "ready_frames": 1,
+  "readiness_counts": {
+    "INSUFFICIENT_GAZE_EVIDENCE": 21,
+    "GAZE_CATEGORY_NOT_READY": 2,
+    "READY": 1
+  },
+  "recording_exhausted": false,
+  "last_ingested_source_offset_s": 2.297567,
+  "last_ingested_line": 48,
+  "decision_source_offset_s": 2.297567,
+  "motion_start_monotonic_us": 2046106026,
+  "perception_origin_monotonic_us": 2046192337,
+  "decision_source_since_motion_s": 2.383878,
+  "max_dispatch_lag_s": 0.00032953899790300056,
+  "model_failures": [],
+  "first_model_request": null,
+  "resolved_output": {
+    "decision": {
+      "action": "APPROACH",
+      "reason": "The person is looking steadily at the robot and is within approach distance."
+    },
+    "source_robot_timestamp_us": 2048489904,
+    "source_state_id": "replay-7a43024a2619ec806420c762:24"
+  },
+  "last_readiness": {
+    "reason_code": null,
+    "status": "READY"
+  },
+  "source_sha256": "4281527e087f3bf89ac1e9c19a274ed1ca0892e5b509a2ec7dc6a2954ecaafb9",
+  "trial_id": "89ba7222775340f988799b4cc20cb8d3",
+  "clock_mapping": "original first perception receipt + real elapsed replay time",
+  "physical_execution": false
+}

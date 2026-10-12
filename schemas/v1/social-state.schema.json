@@ -34,6 +34,75 @@
       "title": "CueChange",
       "type": "object"
     },
+    "ObservationLabels": {
+      "additionalProperties": false,
+      "description": "Shared descriptive aliases, never interaction intent or policy advice.",
+      "properties": {
+        "version": {
+          "const": 1,
+          "default": 1,
+          "title": "Version",
+          "type": "integer"
+        },
+        "attention_over_time": {
+          "default": "UNKNOWN",
+          "enum": [
+            "LITTLE_OR_NO_LOOKING_AT_ROBOT",
+            "INTERMITTENT_LOOKING_AT_ROBOT",
+            "SUSTAINED_LOOKING_AT_ROBOT",
+            "UNKNOWN"
+          ],
+          "title": "Attention Over Time",
+          "type": "string"
+        },
+        "current_gaze": {
+          "default": "UNKNOWN",
+          "enum": [
+            "LOOKING_AT_ROBOT",
+            "NOT_LOOKING_AT_ROBOT",
+            "UNKNOWN"
+          ],
+          "title": "Current Gaze",
+          "type": "string"
+        },
+        "proximity": {
+          "default": "UNKNOWN",
+          "enum": [
+            "CLOSER_THAN_CONVERSATION_DISTANCE",
+            "WITHIN_CONVERSATION_DISTANCE",
+            "BEYOND_CONVERSATION_DISTANCE",
+            "BEYOND_CONFIGURED_SOCIAL_RANGE",
+            "UNKNOWN"
+          ],
+          "title": "Proximity",
+          "type": "string"
+        },
+        "corridor_position": {
+          "default": "UNKNOWN",
+          "enum": [
+            "IN_ROBOT_FORWARD_CORRIDOR",
+            "BESIDE_ROBOT_FORWARD_CORRIDOR",
+            "BEHIND_ROBOT",
+            "UNKNOWN"
+          ],
+          "title": "Corridor Position",
+          "type": "string"
+        },
+        "relative_separation": {
+          "default": "UNKNOWN",
+          "enum": [
+            "GETTING_CLOSER",
+            "STEADY",
+            "GETTING_FARTHER",
+            "UNKNOWN"
+          ],
+          "title": "Relative Separation",
+          "type": "string"
+        }
+      },
+      "title": "ObservationLabels",
+      "type": "object"
+    },
     "PersonSocialState": {
       "additionalProperties": false,
       "properties": {
@@ -159,12 +228,61 @@
           "default": null,
           "title": "Relative Head Position"
         },
+        "relative_nose_position": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/RelativeHeadPosition"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "path_position": {
+          "default": "UNKNOWN",
+          "enum": [
+            "IN_WAY",
+            "TO_SIDE",
+            "BEHIND",
+            "UNKNOWN"
+          ],
+          "title": "Path Position",
+          "type": "string"
+        },
+        "nose_forward_m": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Nose Forward M"
+        },
+        "nose_lateral_m": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Nose Lateral M"
+        },
         "validity_flags": {
           "items": {
             "type": "string"
           },
           "title": "Validity Flags",
           "type": "array"
+        },
+        "observation_labels": {
+          "$ref": "#/$defs/ObservationLabels"
         }
       },
       "required": [
@@ -181,6 +299,37 @@
         "validity_flags"
       ],
       "title": "PersonSocialState",
+      "type": "object"
+    },
+    "RelativeHeadPosition": {
+      "additionalProperties": false,
+      "description": "Cartesian position in the head camera frame, in metres.",
+      "properties": {
+        "coordinate_frame": {
+          "const": "CAM_HEAD",
+          "title": "Coordinate Frame",
+          "type": "string"
+        },
+        "x": {
+          "title": "X",
+          "type": "number"
+        },
+        "y": {
+          "title": "Y",
+          "type": "number"
+        },
+        "z": {
+          "title": "Z",
+          "type": "number"
+        }
+      },
+      "required": [
+        "coordinate_frame",
+        "x",
+        "y",
+        "z"
+      ],
+      "title": "RelativeHeadPosition",
       "type": "object"
     },
     "RobotState": {
@@ -288,6 +437,47 @@
           "title": "Looking Exit",
           "type": "number"
         },
+        "gaze_unavailable_score": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Gaze Unavailable Score"
+        },
+        "far_gaze_distance_m": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Far Gaze Distance M"
+        },
+        "far_looking_enter": {
+          "default": 0.97,
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Far Looking Enter",
+          "type": "number"
+        },
+        "far_looking_exit": {
+          "default": 0.95,
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Far Looking Exit",
+          "type": "number"
+        },
         "sustained_enter": {
           "default": 0.8,
           "maximum": 1,
@@ -347,6 +537,24 @@
           "title": "Recurring Min Bouts",
           "type": "integer"
         },
+        "allow_recurring_attention": {
+          "default": true,
+          "title": "Allow Recurring Attention",
+          "type": "boolean"
+        },
+        "no_person_continue_after_s": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "No Person Continue After S"
+        },
         "yield_closing_max_distance_m": {
           "anyOf": [
             {
@@ -359,6 +567,40 @@
           ],
           "default": 3.0,
           "title": "Yield Closing Max Distance M"
+        },
+        "path_assume_fixed_head": {
+          "default": true,
+          "title": "Path Assume Fixed Head",
+          "type": "boolean"
+        },
+        "path_half_width_m": {
+          "default": 0.5,
+          "exclusiveMinimum": 0,
+          "title": "Path Half Width M",
+          "type": "number"
+        },
+        "path_hysteresis_m": {
+          "default": 0.1,
+          "minimum": 0,
+          "title": "Path Hysteresis M",
+          "type": "number"
+        },
+        "path_camera_x_m": {
+          "default": 0.0,
+          "title": "Path Camera X M",
+          "type": "number"
+        },
+        "path_camera_y_m": {
+          "default": 0.0,
+          "title": "Path Camera Y M",
+          "type": "number"
+        },
+        "path_camera_yaw_deg": {
+          "default": 0.0,
+          "maximum": 180,
+          "minimum": -180,
+          "title": "Path Camera Yaw Deg",
+          "type": "number"
         },
         "distance_deadband_mps": {
           "default": 0.1,
@@ -475,6 +717,34 @@
           ],
           "default": null,
           "title": "Latest Gaze Overlap"
+        },
+        "looking_enter_threshold": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Looking Enter Threshold"
+        },
+        "looking_exit_threshold": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Looking Exit Threshold"
         },
         "looking_time_s": {
           "default": 0.0,
@@ -606,11 +876,14 @@
       "type": "integer"
     },
     "estimator_version": {
-      "default": "temporal-social-v3",
+      "default": "temporal-social-v6",
       "enum": [
         "temporal-social-v1",
         "temporal-social-v2",
-        "temporal-social-v3"
+        "temporal-social-v3",
+        "temporal-social-v4",
+        "temporal-social-v5",
+        "temporal-social-v6"
       ],
       "title": "Estimator Version",
       "type": "string"
@@ -691,6 +964,18 @@
       },
       "title": "Track Events",
       "type": "array"
+    },
+    "no_person_observed_s": {
+      "default": 0.0,
+      "minimum": 0,
+      "title": "No Person Observed S",
+      "type": "number"
+    },
+    "no_person_observed_samples": {
+      "default": 0,
+      "minimum": 0,
+      "title": "No Person Observed Samples",
+      "type": "integer"
     }
   },
   "required": [

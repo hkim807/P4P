@@ -242,7 +242,19 @@
           "gaze_unknown": 0
         }
       ],
-      "trimmed_path": null
+      "trimmed_path": "var/evaluation/final-scenarios-audit/trimmed/final_scenario_1-sdk.jsonl",
+      "trimmed_sha256": "0bfc5da545ab0634876c584913affcd5d697af9d4ad912aca0e8a72c9fc8e21a",
+      "trim_sequence_mapping": {
+        "locomotion": {
+          "first_original_sequence": 67,
+          "first_source_line": 134
+        },
+        "perception": {
+          "first_original_sequence": 68,
+          "first_source_line": 136
+        }
+      },
+      "replay_validated_perception_states": 105
     },
     {
       "scenario": 2,
@@ -527,7 +539,19 @@
           "gaze_unknown": 0
         }
       ],
-      "trimmed_path": null
+      "trimmed_path": "var/evaluation/final-scenarios-audit/trimmed/final_scenario_3-sdk.jsonl",
+      "trimmed_sha256": "4281527e087f3bf89ac1e9c19a274ed1ca0892e5b509a2ec7dc6a2954ecaafb9",
+      "trim_sequence_mapping": {
+        "locomotion": {
+          "first_original_sequence": 30,
+          "first_source_line": 60
+        },
+        "perception": {
+          "first_original_sequence": 31,
+          "first_source_line": 61
+        }
+      },
+      "replay_validated_perception_states": 47
     },
     {
       "scenario": 4,
@@ -691,7 +715,19 @@
           "gaze_unknown": 0
         }
       ],
-      "trimmed_path": null
+      "trimmed_path": "var/evaluation/final-scenarios-audit/trimmed/final_scenario_4-sdk.jsonl",
+      "trimmed_sha256": "37a122fd2fa1aa2e62772c10a9d88152e0dcc1d3ba08f84428c59ae7d8d290d6",
+      "trim_sequence_mapping": {
+        "locomotion": {
+          "first_original_sequence": 58,
+          "first_source_line": 115
+        },
+        "perception": {
+          "first_original_sequence": 58,
+          "first_source_line": 116
+        }
+      },
+      "replay_validated_perception_states": 62
     },
     {
       "scenario": 5,
@@ -851,7 +887,19 @@
           "gaze_unknown": 0
         }
       ],
-      "trimmed_path": null
+      "trimmed_path": "var/evaluation/final-scenarios-audit/trimmed/final_scenario_5-sdk.jsonl",
+      "trimmed_sha256": "8598b85db20dc43044da5392b69a14b55ff7a3ea080ec53663765670287fba4c",
+      "trim_sequence_mapping": {
+        "locomotion": {
+          "first_original_sequence": 38,
+          "first_source_line": 76
+        },
+        "perception": {
+          "first_original_sequence": 39,
+          "first_source_line": 77
+        }
+      },
+      "replay_validated_perception_states": 69
     },
     {
       "scenario": 6,
@@ -988,7 +1036,19 @@
           "gaze_unknown": 4
         }
       ],
-      "trimmed_path": null
+      "trimmed_path": "var/evaluation/final-scenarios-audit/trimmed/final_scenario_6-sdk.jsonl",
+      "trimmed_sha256": "81d07a1936abdf41ae7a6d740ec2288ccedb2806cc7c40dfb2d66941783b43da",
+      "trim_sequence_mapping": {
+        "locomotion": {
+          "first_original_sequence": 240,
+          "first_source_line": 480
+        },
+        "perception": {
+          "first_original_sequence": 241,
+          "first_source_line": 481
+        }
+      },
+      "replay_validated_perception_states": 47
     },
     {
       "scenario": 7,
@@ -1193,7 +1253,19 @@
           "gaze_unknown": 3
         }
       ],
-      "trimmed_path": null
+      "trimmed_path": "var/evaluation/final-scenarios-audit/trimmed/final_scenario_7-sdk.jsonl",
+      "trimmed_sha256": "b9f1f06c611c7d01c2c225095d193118ecc029c8202ca5635a963952fe9eb405",
+      "trim_sequence_mapping": {
+        "locomotion": {
+          "first_original_sequence": 55,
+          "first_source_line": 109
+        },
+        "perception": {
+          "first_original_sequence": 55,
+          "first_source_line": 110
+        }
+      },
+      "replay_validated_perception_states": 89
     },
     {
       "scenario": 8,
@@ -1366,7 +1438,19 @@
           "gaze_unknown": 0
         }
       ],
-      "trimmed_path": null
+      "trimmed_path": "var/evaluation/final-scenarios-audit/trimmed/final_scenario_8-sdk.jsonl",
+      "trimmed_sha256": "240fff11df215f5bb491c93db59827a6b4dc507f7981e870a2abc77cd2b6d12f",
+      "trim_sequence_mapping": {
+        "locomotion": {
+          "first_original_sequence": 31,
+          "first_source_line": 61
+        },
+        "perception": {
+          "first_original_sequence": 31,
+          "first_source_line": 63
+        }
+      },
+      "replay_validated_perception_states": 72
     },
     {
       "scenario": 9,
@@ -1490,7 +1574,19 @@
           "gaze_unknown": 0
         }
       ],
-      "trimmed_path": null
+      "trimmed_path": "var/evaluation/final-scenarios-audit/trimmed/final_scenario_9-sdk.jsonl",
+      "trimmed_sha256": "56793886eec65c069a2861f87ad0f01b67dc8445d8b3dfa756a5a86c0b8c57d8",
+      "trim_sequence_mapping": {
+        "locomotion": {
+          "first_original_sequence": 203,
+          "first_source_line": 405
+        },
+        "perception": {
+          "first_original_sequence": 203,
+          "first_source_line": 406
+        }
+      },
+      "replay_validated_perception_states": 35
     }
   ]
 }

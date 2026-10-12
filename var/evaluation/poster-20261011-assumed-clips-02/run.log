@@ -1,0 +1,131 @@
+Endpoint S1
+Endpoint S2
+Endpoint S3
+Endpoint S4
+Endpoint S5
+Endpoint S6
+Endpoint S7
+Endpoint S8
+Endpoint S9
+Operational 1 S1 rules
+{"action": null, "accepted_by_live_client": null, "stop_elapsed_s": 10.371325678002904}
+Operational 1 S1 llm
+{"action": null, "accepted_by_live_client": null, "stop_elapsed_s": 10.371385569000267}
+Operational 1 S2 rules
+{"action": "APPROACH", "accepted_by_live_client": true, "stop_elapsed_s": 2.2727768320000905}
+Operational 1 S2 llm
+{"action": "CONTINUE", "accepted_by_live_client": false, "stop_elapsed_s": 10.833037025000522}
+Operational 1 S3 rules
+{"action": "APPROACH", "accepted_by_live_client": true, "stop_elapsed_s": 2.29921896200176}
+Operational 1 S3 llm
+{"action": "APPROACH", "accepted_by_live_client": false, "stop_elapsed_s": 11.29464559400003}
+Operational 1 S4 rules
+{"action": null, "accepted_by_live_client": null, "stop_elapsed_s": 6.066370058000757}
+Operational 1 S4 llm
+{"action": null, "accepted_by_live_client": null, "stop_elapsed_s": 6.066865354001493}
+Operational 1 S5 rules
+{"action": null, "accepted_by_live_client": null, "stop_elapsed_s": 6.829699693000293}
+Operational 1 S5 llm
+{"action": null, "accepted_by_live_client": null, "stop_elapsed_s": 6.829882247999194}
+Operational 1 S6 rules
+{"action": "APPROACH", "accepted_by_live_client": true, "stop_elapsed_s": 2.270464051998715}
+Operational 1 S6 llm
+{"action": "CONTINUE", "accepted_by_live_client": false, "stop_elapsed_s": 10.646643857002346}
+Operational 1 S7 rules
+{"action": null, "accepted_by_live_client": null, "stop_elapsed_s": 8.773804276999726}
+Operational 1 S7 llm
+{"action": null, "accepted_by_live_client": null, "stop_elapsed_s": 8.774319503001607}
+Operational 1 S8 rules
+{"action": "CONTINUE", "accepted_by_live_client": true, "stop_elapsed_s": 7.080023627000628}
+Operational 1 S8 llm
+{"action": "CONTINUE", "accepted_by_live_client": false, "stop_elapsed_s": 15.789499055998022}
+Operational 1 S9 rules
+{"action": "APPROACH", "accepted_by_live_client": true, "stop_elapsed_s": 2.271776900997793}
+Operational 1 S9 llm
+{"action": "CONTINUE", "accepted_by_live_client": false, "stop_elapsed_s": 10.831123112002388}
+Operational 2 S1 llm
+{"action": null, "accepted_by_live_client": null, "stop_elapsed_s": 10.372308427002281}
+Operational 2 S1 rules
+{"action": null, "accepted_by_live_client": null, "stop_elapsed_s": 10.371312867002416}
+Operational 2 S2 llm
+{"action": "CONTINUE", "accepted_by_live_client": false, "stop_elapsed_s": 10.594989714998519}
+Operational 2 S2 rules
+{"action": "APPROACH", "accepted_by_live_client": true, "stop_elapsed_s": 2.272595138001634}
+Operational 2 S3 llm
+{"action": "APPROACH", "accepted_by_live_client": false, "stop_elapsed_s": 11.582965803998377}
+Operational 2 S3 rules
+{"action": "APPROACH", "accepted_by_live_client": true, "stop_elapsed_s": 2.299189932000445}
+Operational 2 S4 llm
+{"action": null, "accepted_by_live_client": null, "stop_elapsed_s": 6.066679178999038}
+Operational 2 S4 rules
+{"action": null, "accepted_by_live_client": null, "stop_elapsed_s": 6.06670404200122}
+Operational 2 S5 llm
+{"action": null, "accepted_by_live_client": null, "stop_elapsed_s": 6.829795361998549}
+Operational 2 S5 rules
+{"action": null, "accepted_by_live_client": null, "stop_elapsed_s": 6.829676682002173}
+Operational 2 S6 llm
+{"action": "CONTINUE", "accepted_by_live_client": false, "stop_elapsed_s": 10.89265863000037}
+Operational 2 S6 rules
+{"action": "APPROACH", "accepted_by_live_client": true, "stop_elapsed_s": 2.270253018999938}
+Operational 2 S7 llm
+{"action": null, "accepted_by_live_client": null, "stop_elapsed_s": 8.774718427997868}
+Operational 2 S7 rules
+{"action": null, "accepted_by_live_client": null, "stop_elapsed_s": 8.773909863997687}
+Operational 2 S8 llm
+{"action": "CONTINUE", "accepted_by_live_client": false, "stop_elapsed_s": 15.924262275002548}
+Operational 2 S8 rules
+{"action": "CONTINUE", "accepted_by_live_client": true, "stop_elapsed_s": 7.08011347700085}
+Operational 2 S9 llm
+{"action": "CONTINUE", "accepted_by_live_client": false, "stop_elapsed_s": 10.983450031999382}
+Operational 2 S9 rules
+{"action": "APPROACH", "accepted_by_live_client": true, "stop_elapsed_s": 2.2728981969994493}
+Operational 3 S1 rules
+{"action": null, "accepted_by_live_client": null, "stop_elapsed_s": 10.371463901003153}
+Operational 3 S1 llm
+{"action": null, "accepted_by_live_client": null, "stop_elapsed_s": 10.371377853000013}
+Operational 3 S2 rules
+{"action": "APPROACH", "accepted_by_live_client": true, "stop_elapsed_s": 2.2726260279996495}
+Operational 3 S2 llm
+{"action": "CONTINUE", "accepted_by_live_client": false, "stop_elapsed_s": 11.80891825800063}
+Operational 3 S3 rules
+{"action": "APPROACH", "accepted_by_live_client": true, "stop_elapsed_s": 2.2992653170003905}
+Operational 3 S3 llm
+{"action": "APPROACH", "accepted_by_live_client": false, "stop_elapsed_s": 11.657852545002243}
+Operational 3 S4 rules
+{"action": null, "accepted_by_live_client": null, "stop_elapsed_s": 6.0667282459980925}
+Operational 3 S4 llm
+{"action": null, "accepted_by_live_client": null, "stop_elapsed_s": 6.066570260001754}
+Operational 3 S5 rules
+{"action": null, "accepted_by_live_client": null, "stop_elapsed_s": 6.829732467002032}
+Operational 3 S5 llm
+{"action": null, "accepted_by_live_client": null, "stop_elapsed_s": 6.82984811300048}
+Operational 3 S6 rules
+{"action": "APPROACH", "accepted_by_live_client": true, "stop_elapsed_s": 2.2703897219980718}
+Operational 3 S6 llm
+{"action": "CONTINUE", "accepted_by_live_client": false, "stop_elapsed_s": 10.982998678002332}
+Operational 3 S7 rules
+{"action": null, "accepted_by_live_client": null, "stop_elapsed_s": 8.77380832199924}
+Operational 3 S7 llm
+{"action": null, "accepted_by_live_client": null, "stop_elapsed_s": 8.774329022999154}
+Operational 3 S8 rules
+{"action": "CONTINUE", "accepted_by_live_client": true, "stop_elapsed_s": 7.080259936003131}
+Operational 3 S8 llm
+{"action": "CONTINUE", "accepted_by_live_client": false, "stop_elapsed_s": 15.753612029002397}
+Operational 3 S9 rules
+{"action": "APPROACH", "accepted_by_live_client": true, "stop_elapsed_s": 2.2721401039998455}
+Operational 3 S9 llm
+{"action": "CONTINUE", "accepted_by_live_client": false, "stop_elapsed_s": 10.79374302299766}
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "/usr/lib/python3.10/runpy.py", line 86, in _run_code
+    exec(code, run_globals)
+  File "/home/anyone/Documents/P4P/evaluation/poster_run.py", line 253, in <module>
+    if __name__=='__main__': main()
+  File "/home/anyone/Documents/P4P/evaluation/poster_run.py", line 251, in main
+    if args.run: run(args.output)
+  File "/home/anyone/Documents/P4P/evaluation/poster_run.py", line 240, in run
+    check_frozen(root)
+  File "/home/anyone/Documents/P4P/evaluation/poster_run.py", line 49, in check_frozen
+    raise ValueError('Frozen input changed: ' + path)
+ValueError: Frozen input changed: evaluation/poster_survey.py

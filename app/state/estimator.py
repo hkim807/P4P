@@ -1,16 +1,17 @@
 """Temporal evidence -> categorical SocialState, with stateful hysteresis."""
 from __future__ import annotations
 
-from bisect import bisect_right
+from bisect import bisect_left, bisect_right
 from dataclasses import dataclass, field
 
 from app.recording import TimestampOrderError
 from app.state.features import GazeMemory, adjacent, extract_features, moving, stationary
+from app.state.path_position import classify_path_position
 from app.state.social_models import (CueChange, PersonSocialState, RobotState,
                                     SocialState, TemporalConfig)
 
 ZONES = ("TOO_CLOSE", "INTERACTION_RANGE", "APPROACHABLE", "FAR")
-CUES = ("gaze_state", "distance_zone", "relative_distance_trend")
+CUES = ("gaze_state", "distance_zone", "relative_distance_trend", "path_position")
 
 
 @dataclass
@@ -21,6 +22,8 @@ class PersonMemory:
     candidate_since: int = 0
     zone: str = "UNKNOWN"
     previous: dict = field(default_factory=dict)
+    path_position: str = "UNKNOWN"
+    path_timestamp_us: int | None = None
 
 
 class SocialStateEstimator:
@@ -30,6 +33,8 @@ class SocialStateEstimator:
         self._last_timestamp = None
         self._last_sequence = 0
         self._people: dict[tuple[int, int], PersonMemory] = {}
+        self._empty_since = None
+        self._empty_samples = 0
 
     def _gaze_category(self, evidence, memory, now):
         c = self.config
@@ -38,7 +43,8 @@ class SocialStateEstimator:
             memory.candidate_since = now
             return "UNKNOWN"
         fraction = evidence.gaze_fraction
-        if (fraction >= (c.sustained_exit if memory.category == "SUSTAINED" else c.sustained_enter)
+        if (evidence.latest_gaze_looking is True
+                and fraction >= (c.sustained_exit if memory.category == "SUSTAINED" else c.sustained_enter)
                 and evidence.sustained_gaze_s + 1e-9 >= c.min_sustained_run_s):
             candidate = "SUSTAINED"
         elif fraction <= (c.none_exit if memory.category == "NONE" else c.none_enter):
@@ -57,6 +63,9 @@ class SocialStateEstimator:
             return memory.zone
         c = self.config
         bounds = (c.too_close_m, c.interaction_max_m, c.approachable_max_m)
+        if c.zone_hysteresis_m == 0:
+            memory.zone = ZONES[bisect_left(bounds, distance)]
+            return memory.zone
         if memory.zone == "UNKNOWN":
             index = bisect_right(bounds, distance)
         else:
@@ -75,6 +84,24 @@ class SocialStateEstimator:
         if session != self._session:
             self._people.clear()
             self._session = session
+            self._empty_since = None
+            self._empty_samples = 0
+        observed = any(t["visibility"] == "OBSERVED" for t in snapshot["tracks"])
+        if observed:
+            self._empty_since = None
+            self._empty_samples = 0
+        else:
+            if (self._empty_since is None or self._last_timestamp is None
+                    or now - self._last_timestamp > round(self.config.max_gap_s * 1e6)):
+                self._empty_since, self._empty_samples = now, 0
+            self._empty_samples += 1
+        # A guarded nose reassociation retains the epoch but changes SDK UID.
+        for event in snapshot["events"]:
+            if event["type"] == "REASSOCIATED":
+                old_key = (event["previous_uid"], event["track_epoch"])
+                new_key = (event["uid"], event["track_epoch"])
+                if old_key in self._people:
+                    self._people[new_key] = self._people.pop(old_key)
         current_keys = {(t["uid"], t["track_epoch"]) for t in snapshot["tracks"]}
         self._people = {k: v for k, v in self._people.items() if k in current_keys}
         people, changes = [], []
@@ -99,6 +126,12 @@ class SocialStateEstimator:
                 slope = evidence.distance_slope_mps
                 trend = ("DECREASING" if slope < -self.config.distance_deadband_mps
                          else "INCREASING" if slope > self.config.distance_deadband_mps else "STABLE")
+            nose = (latest.get("optional_relative_nose_position")
+                    if latest and track["visibility"] == "OBSERVED" else None)
+            if memory.path_timestamp_us is not None and now - memory.path_timestamp_us > round(self.config.max_gap_s * 1e6):
+                memory.path_position = "UNKNOWN"
+            path_position, forward, lateral = classify_path_position(nose, self.config, memory.path_position)
+            memory.path_position, memory.path_timestamp_us = path_position, now
             person = PersonSocialState(
                 uid=key[0], track_epoch=key[1], visibility=track["visibility"],
                 track_age_s=track["track_age_s"], time_since_seen_s=track["time_since_seen_s"],
@@ -106,6 +139,8 @@ class SocialStateEstimator:
                 relative_distance_trend=trend,
                 evidence=evidence, validity_flags=flags,
                 relative_head_position=latest.get("optional_relative_head_position") if latest else None,
+                relative_nose_position=nose, path_position=path_position,
+                nose_forward_m=forward, nose_lateral_m=lateral,
                 path_relation=latest.get("path_relation", "UNKNOWN") if latest and track["visibility"] == "OBSERVED" else "UNKNOWN",
                 pass_gesture=latest.get("pass_gesture", "UNKNOWN") if latest and track["visibility"] == "OBSERVED" else "UNKNOWN",
                 face_detected=latest.get("face_detected") if latest and track["visibility"] == "OBSERVED" else None)
@@ -127,6 +162,8 @@ class SocialStateEstimator:
             robot=RobotState(**robot,
                 motion_state="MOVING" if robot_moving else "STATIONARY" if stationary(robot, self.config) else "UNKNOWN",
                 measurement_validity=validity), people=people, cue_changes=changes,
-            track_events=snapshot["events"])
+            track_events=snapshot["events"],
+            no_person_observed_s=(now-self._empty_since)/1e6 if self._empty_since is not None else 0.0,
+            no_person_observed_samples=self._empty_samples)
         self._last_timestamp, self._last_sequence = now, sequence
         return state

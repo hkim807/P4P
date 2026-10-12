@@ -1,0 +1,52 @@
+{
+  "scenario_id": "S5",
+  "policy": "rules",
+  "status": "ACTION_RESOLVED",
+  "action": "CONTINUE",
+  "decision": {
+    "action": "CONTINUE",
+    "reason": "No person has been detected throughout the configured observation interval; continue along the route without initiating interaction."
+  },
+  "accepted_by_live_client": true,
+  "acceptance_details": {
+    "current_readiness": true,
+    "latest_observation_age_s": 0.00119,
+    "model_source_age_s": 0.00119,
+    "trial_phase": "DECIDED",
+    "failure_reason": null
+  },
+  "resolved_elapsed_s": 1.123883159001707,
+  "stop_elapsed_s": 1.123883159001707,
+  "frames_ingested": 12,
+  "ready_frames": 1,
+  "readiness_counts": {
+    "NO_VISIBLE_PERSON": 11,
+    "READY": 1
+  },
+  "recording_exhausted": false,
+  "last_ingested_source_offset_s": 1.122694,
+  "last_ingested_line": 24,
+  "decision_source_offset_s": 1.122694,
+  "motion_start_monotonic_us": 2138305845,
+  "perception_origin_monotonic_us": 2138350000,
+  "decision_source_since_motion_s": 1.166849,
+  "max_dispatch_lag_s": 0.0002368910027144011,
+  "model_failures": [],
+  "first_model_request": null,
+  "resolved_output": {
+    "decision": {
+      "action": "CONTINUE",
+      "reason": "No person has been detected throughout the configured observation interval; continue along the route without initiating interaction."
+    },
+    "source_robot_timestamp_us": 2139472694,
+    "source_state_id": "replay-f9e815a071393de98a4bc3d1:12"
+  },
+  "last_readiness": {
+    "reason_code": null,
+    "status": "READY"
+  },
+  "source_sha256": "8598b85db20dc43044da5392b69a14b55ff7a3ea080ec53663765670287fba4c",
+  "trial_id": "ab351ec37f47480c906623aead4b9a46",
+  "clock_mapping": "original first perception receipt + real elapsed replay time",
+  "physical_execution": false
+}

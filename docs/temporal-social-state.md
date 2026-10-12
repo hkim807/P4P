@@ -6,10 +6,10 @@ unchanged. Derived JSONL contains estimates, configuration, validity reasons,
 track lifecycle events, and cue changes. No interaction decisions, target
 selection, robot movement, or identity saving are performed.
 
-The implementation runs on the existing UID/epoch histories. A changed UID is
-still a separate person history; saving identities on Navel remains a robot-side
-prerequisite for improving continuity. This layer cannot reconstruct identity
-associations that the recorded input does not contain.
+The implementation runs on UID/epoch histories. By default, a changed UID starts
+a separate history. The optional [nose continuity gate](person-tracking.md#optional-nose-continuity-uid-tracking-v3)
+retains temporal memory across a guarded adjacent SDK UID change and marks that
+association as unverified. This does not establish personal identity.
 
 ## Components and outputs
 
@@ -36,6 +36,26 @@ Per observed or temporarily missing track, output includes:
   residual, segment span, detected jumps,
   and current `latest_gaze_overlap` (null when unavailable or missing).
 - `validity_flags`: why evidence is missing, insufficient, or unreliable.
+- `observation_labels` (version 1, added in estimator v6): shared readable
+  descriptions of the same observations, available to both rules and the LLM.
+  Original categories, measurements and configuration remain present.
+
+| Label | Examples | Interpretation |
+| --- | --- | --- |
+| `attention_over_time` | `LITTLE_OR_NO_LOOKING_AT_ROBOT`, `INTERMITTENT_LOOKING_AT_ROBOT`, `SUSTAINED_LOOKING_AT_ROBOT` | Valid temporal gaze category; low attention is distinct from unavailable evidence. |
+| `current_gaze` | `LOOKING_AT_ROBOT`, `NOT_LOOKING_AT_ROBOT` | Latest valid classified sample, which can differ from the history or precede sufficient temporal coverage. |
+| `proximity` | `WITHIN_CONVERSATION_DISTANCE`, `BEYOND_CONVERSATION_DISTANCE` | Existing distance zone under the effective configuration and hysteresis; says nothing about whether approach is appropriate. |
+| `corridor_position` | `IN_ROBOT_FORWARD_CORRIDOR`, `BESIDE_ROBOT_FORWARD_CORRIDOR`, `BEHIND_ROBOT` | Existing nose-based corridor category; not a collision prediction or clearance check. |
+| `relative_separation` | `GETTING_CLOSER`, `STEADY`, `GETTING_FARTHER` | Valid robot-relative distance trend; does not identify which participant moved. |
+
+All labels support `UNKNOWN`. Missing tracks have only unknown current labels;
+invalid temporal gaze, distance or trend evidence cannot produce a known label
+for that cue. Labels are recomputed when validating a person, including when
+loading an older recording or freezing an LLM input. Supplied aliases cannot
+override the source categories. They contain no desired action, inferred request,
+or claim that a person wants an interaction. Rules continue to use the original
+fields. These aliases add input tokens; they target interpretability, not an
+inference-speed improvement.
 
 At scene level, `cue_changes` identifies category transitions by UID/epoch and
 field; `track_events` retains acquisition/missing/reacquisition/loss information.
@@ -162,8 +182,8 @@ remain limitations.
 ### 5. Identity, live integration, and failure behavior
 
 Feature/classification memory is keyed by UID and track epoch within a session,
-pruned when tracks expire, and reset for a different session. It cannot transfer
-attention evidence to a newly assigned SDK UID. Even a saved identity can have
+pruned when tracks expire, and reset for a different session. Only a guarded
+`REASSOCIATED` tracker event transfers memory to a newly assigned SDK UID. Even a saved identity can have
 a new observation epoch after a long absence. Hardware persistence/recognition
 must be evaluated separately before claiming continuous physical-person tracking.
 
@@ -270,3 +290,12 @@ Run verification:
 ```bash
 .venv/bin/python -m unittest discover -s tests -v
 ```
+
+## Position relative to the route
+
+The `temporal-social-v4` estimator also derives `path_position` from the current
+CAM_HEAD nose coordinate, with configurable corridor width, hysteresis and
+camera offsets under a fixed-head assumption. It exposes the source nose point
+and transformed forward/lateral metres, and clears them when the person is
+missing. See [nose-based path position](path-position.md) for configuration and
+how IN_WAY gates the closing/low-gaze YIELD decision.

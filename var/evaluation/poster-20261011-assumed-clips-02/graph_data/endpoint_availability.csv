@@ -1,0 +1,10 @@
+scenario_id,mapping_status,readiness,rule_action,llm_action_distribution,llm_valid_repeats,llm_failed_repeats,llm_not_run_repeats,llm_ineligible_repeats,state_hash_match,human_score_status,paired_preference_difference,paired_appropriateness_difference,rules_preference_support,llm_mean_preference_support,rules_appropriateness,llm_mean_appropriateness
+S1,ASSUMED_BY_USER,NOT_READY,,{},0,0,0,5,True,WORKBOOK_MISSING,,,,,,
+S2,ASSUMED_BY_USER,READY,APPROACH,"{""CONTINUE"": 5}",5,0,0,0,True,WORKBOOK_MISSING,,,,,,
+S3,ASSUMED_BY_USER,READY,ENGAGE,"{""ENGAGE"": 5}",5,0,0,0,True,WORKBOOK_MISSING,,,,,,
+S4,ASSUMED_BY_USER,NOT_READY,,{},0,0,0,5,True,WORKBOOK_MISSING,,,,,,
+S5,ASSUMED_BY_USER,NOT_READY,,{},0,0,0,5,True,WORKBOOK_MISSING,,,,,,
+S6,ASSUMED_BY_USER,NOT_READY,,{},0,0,0,5,True,WORKBOOK_MISSING,,,,,,
+S7,ASSUMED_BY_USER,NOT_READY,,{},0,0,0,5,True,WORKBOOK_MISSING,,,,,,
+S8,ASSUMED_BY_USER,READY,CONTINUE,"{""CONTINUE"": 5}",5,0,0,0,True,WORKBOOK_MISSING,,,,,,
+S9,ASSUMED_BY_USER,READY,CONTINUE,"{""APPROACH"": 5}",5,0,0,0,True,WORKBOOK_MISSING,,,,,,

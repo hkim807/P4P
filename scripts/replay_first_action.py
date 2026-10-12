@@ -59,6 +59,9 @@ def replay(scene, policy, output, settings, *, iterator=None, now=time.monotonic
     items = iter(iterator if iterator is not None else iter_replay_states(
         scene['recording'], 'sdk', track_config=tracking, temporal_config=temporal))
     current = next(items)
+    if (scene.get('source_sha256') is not None
+            and current.source['file_sha256'] != scene['source_sha256']):
+        raise ValueError(f"Recording hash differs from evaluation contract: {scene['scenario_id']}")
     origin = current.source['reconstructed_raw_observation']['timestamp']
     model = LiveModelConfig(mode='disabled')
     if policy == 'llm':
@@ -170,7 +173,9 @@ def replay(scene, policy, output, settings, *, iterator=None, now=time.monotonic
                 body = {'observation': raw, 'model_source': {
                     'version': 1, 'clock': 'robot-host-monotonic-us',
                     'capture': current.source['source_record']}, 'trial': identity}
+            request_started = time.perf_counter()
             response = client.post('/api/v1/observations', json=body)
+            receiver_request_duration_s = time.perf_counter() - request_started
             if response.status_code != 200 or response.json.get('processing_status') != 'complete':
                 raise RuntimeError(response.json)
             last_response, last_source = response.json, current.source
@@ -179,7 +184,8 @@ def replay(scene, policy, output, settings, *, iterator=None, now=time.monotonic
             ready_frames += readiness['status'] == 'READY'
             holds[readiness['reason_code'] or 'READY'] += 1
             event('observation', line_number=last_source['line_number'],
-                  source_timestamp_us=raw['timestamp'], response=last_response)
+                  source_timestamp_us=raw['timestamp'], response=last_response,
+                  receiver_request_duration_s=receiver_request_duration_s)
             if policy == 'rules':
                 accepted = trial.accept_rule_response(last_response, raw)
                 if last_response['final_decision'] is not None:
@@ -215,6 +221,11 @@ def replay(scene, policy, output, settings, *, iterator=None, now=time.monotonic
             'last_ingested_source_offset_s': (last_source['reconstructed_raw_observation']['timestamp'] - origin) / 1e6,
             'last_ingested_line': last_source['line_number'],
             'decision_source_offset_s': (resolved['source_robot_timestamp_us'] - origin) / 1e6 if resolved else None,
+            'motion_start_monotonic_us': scene.get('motion_start_monotonic_us'),
+            'perception_origin_monotonic_us': origin,
+            'decision_source_since_motion_s': ((resolved['source_robot_timestamp_us'] -
+                scene['motion_start_monotonic_us']) / 1e6
+                if resolved and scene.get('motion_start_monotonic_us') is not None else None),
             'max_dispatch_lag_s': timing_lag, 'model_failures': failures,
             'first_model_request': first_request, 'resolved_output': resolved,
             'last_readiness': last_response['policy_readiness'],
@@ -236,17 +247,27 @@ def replay(scene, policy, output, settings, *, iterator=None, now=time.monotonic
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--settings', type=Path, default=Path('config/policy-comparison.json'))
     parser.add_argument('--policies', nargs='+', choices=['rules', 'llm'], default=['rules', 'llm'])
     parser.add_argument('--scenarios', nargs='+')
     parser.add_argument('--base-url', default='http://127.0.0.1:11434')
     parser.add_argument('--warm-model', action='store_true', help='Load model weights before encounter clocks start')
     args = parser.parse_args(argv)
     args.output.mkdir(parents=True, exist_ok=False)
-    settings = json.loads(Path('config/policy-comparison.json').read_text())
+    settings = json.loads(args.settings.read_text())
     settings['base_url'] = args.base_url
+    # Freeze the actual working tree inputs: a commit hash alone omits local tuning.
+    source_paths = sorted({str(args.settings), settings['temporal_config'], settings['track_config'],
+        settings['evaluation_contract'], 'config/target-lock.json', 'config/commands.json',
+        str(Path(__file__).relative_to(Path.cwd()))} |
+        {str(path) for root in ('app', 'robot/navel_client') for path in Path(root).rglob('*.py')})
     manifest = {'created_utc': datetime.now(timezone.utc).isoformat(),
         'git_head': subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(),
         'runner_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+        'working_tree_sha256': {path: hashlib.sha256(Path(path).read_bytes()).hexdigest()
+                               for path in source_paths},
+        'temporal_config': TemporalConfig.from_file(settings['temporal_config']).model_dump(mode='json'),
+        'tracking_config': json.loads(Path(settings['track_config']).read_text()),
         'settings': settings, 'rate': 1.0, 'stop': 'first validated policy output (including expired delivery), or source exhausted with no pending/active inference',
         'receiver': 'production Flask endpoints using in-process HTTP test client',
         'client': 'production SingleTrial, 30s timeout, 1s latest observation age, 10s model source age',

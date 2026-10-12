@@ -1,0 +1,206 @@
+{
+  "config": {
+    "window_s": 3.0,
+    "max_gap_s": 0.25,
+    "min_span_s": 2.0,
+    "min_samples": 5,
+    "min_gaze_coverage_s": 0.6,
+    "min_gaze_coverage_fraction": 0.6,
+    "looking_enter": 0.93,
+    "looking_exit": 0.9,
+    "sustained_enter": 0.8,
+    "sustained_exit": 0.65,
+    "none_enter": 0.2,
+    "none_exit": 0.35,
+    "category_dwell_s": 0.1,
+    "min_sustained_run_s": 0.4,
+    "recurring_min_looking_s": 1.0,
+    "recurring_min_fraction": 0.45,
+    "recurring_min_bouts": 2,
+    "yield_closing_max_distance_m": 3.0,
+    "path_assume_fixed_head": true,
+    "path_half_width_m": 0.5,
+    "path_hysteresis_m": 0.1,
+    "path_camera_x_m": 0.0,
+    "path_camera_y_m": 0.0,
+    "path_camera_yaw_deg": 0.0,
+    "distance_deadband_mps": 0.1,
+    "max_distance_speed_mps": 3.0,
+    "distance_jump_allowance_m": 0.05,
+    "max_fit_residual_m": 0.1,
+    "max_fit_samples": 32,
+    "too_close_m": 0.6,
+    "interaction_max_m": 1.5,
+    "approachable_max_m": 6.0,
+    "zone_hysteresis_m": 0.1,
+    "stationary_linear_tolerance_mps": 0.02,
+    "stationary_angular_tolerance_rps": 0.03
+  },
+  "note": "Observed tracked people only; missing retained tracks excluded. Rule decisions require all existing gaze/distance/readiness conditions as well as corridor position. These are per-frame proposals, not latched physical actions.",
+  "scenarios": [
+    {
+      "scenario": 1,
+      "positions": {
+        "TO_SIDE": 67
+      },
+      "ready_positions": {},
+      "decisions": {
+        "NOT_READY": 105
+      },
+      "lateral_abs_range_m": [
+        0.548769775390625,
+        3.827491455078125
+      ],
+      "source_path": "var/evaluation/final-scenarios-audit/trimmed/final_scenario_1-sdk.jsonl",
+      "source_sha256": "0bfc5da545ab0634876c584913affcd5d697af9d4ad912aca0e8a72c9fc8e21a"
+    },
+    {
+      "scenario": 2,
+      "positions": {
+        "TO_SIDE": 48
+      },
+      "ready_positions": {
+        "TO_SIDE": 25
+      },
+      "decisions": {
+        "NOT_READY": 23,
+        "APPROACH": 25
+      },
+      "lateral_abs_range_m": [
+        0.8248497314453125,
+        0.9284453735351562
+      ],
+      "source_path": "var/evaluation/final-scenarios-audit/trimmed/final_scenario_2-sdk.jsonl",
+      "source_sha256": "08a9f4e035e8ff1b5ca4ad5f807dd5b9a4e94bc55c916da9412365813df506bb"
+    },
+    {
+      "scenario": 3,
+      "positions": {
+        "IN_WAY": 47
+      },
+      "ready_positions": {
+        "IN_WAY": 24
+      },
+      "decisions": {
+        "NOT_READY": 23,
+        "APPROACH": 16,
+        "ENGAGE": 8
+      },
+      "lateral_abs_range_m": [
+        0.0450527229309082,
+        0.06554470825195312
+      ],
+      "source_path": "var/evaluation/final-scenarios-audit/trimmed/final_scenario_3-sdk.jsonl",
+      "source_sha256": "4281527e087f3bf89ac1e9c19a274ed1ca0892e5b509a2ec7dc6a2954ecaafb9"
+    },
+    {
+      "scenario": 4,
+      "positions": {
+        "IN_WAY": 61
+      },
+      "ready_positions": {
+        "IN_WAY": 9
+      },
+      "decisions": {
+        "NOT_READY": 53,
+        "CONTINUE": 9
+      },
+      "lateral_abs_range_m": [
+        0.12695520782470704,
+        0.456650146484375
+      ],
+      "source_path": "var/evaluation/final-scenarios-audit/trimmed/final_scenario_4-sdk.jsonl",
+      "source_sha256": "37a122fd2fa1aa2e62772c10a9d88152e0dcc1d3ba08f84428c59ae7d8d290d6"
+    },
+    {
+      "scenario": 5,
+      "positions": {},
+      "ready_positions": {},
+      "decisions": {
+        "NOT_READY": 69
+      },
+      "lateral_abs_range_m": null,
+      "source_path": "var/evaluation/final-scenarios-audit/trimmed/final_scenario_5-sdk.jsonl",
+      "source_sha256": "8598b85db20dc43044da5392b69a14b55ff7a3ea080ec53663765670287fba4c"
+    },
+    {
+      "scenario": 6,
+      "positions": {
+        "IN_WAY": 30,
+        "TO_SIDE": 17
+      },
+      "ready_positions": {
+        "TO_SIDE": 7
+      },
+      "decisions": {
+        "NOT_READY": 40,
+        "APPROACH": 7
+      },
+      "lateral_abs_range_m": [
+        0.4152428894042969,
+        0.6499492797851563
+      ],
+      "source_path": "var/evaluation/final-scenarios-audit/trimmed/final_scenario_6-sdk.jsonl",
+      "source_sha256": "81d07a1936abdf41ae7a6d740ec2288ccedb2806cc7c40dfb2d66941783b43da"
+    },
+    {
+      "scenario": 7,
+      "positions": {
+        "TO_SIDE": 79
+      },
+      "ready_positions": {},
+      "decisions": {
+        "NOT_READY": 89
+      },
+      "lateral_abs_range_m": [
+        0.6207315063476563,
+        1.0000075073242187
+      ],
+      "source_path": "var/evaluation/final-scenarios-audit/trimmed/final_scenario_7-sdk.jsonl",
+      "source_sha256": "b9f1f06c611c7d01c2c225095d193118ecc029c8202ca5635a963952fe9eb405"
+    },
+    {
+      "scenario": 8,
+      "positions": {
+        "TO_SIDE": 18,
+        "IN_WAY": 27
+      },
+      "ready_positions": {
+        "IN_WAY": 1
+      },
+      "decisions": {
+        "NOT_READY": 71,
+        "CONTINUE": 1
+      },
+      "lateral_abs_range_m": [
+        0.3802210388183594,
+        0.5611853637695312
+      ],
+      "source_path": "var/evaluation/final-scenarios-audit/trimmed/final_scenario_8-sdk.jsonl",
+      "source_sha256": "240fff11df215f5bb491c93db59827a6b4dc507f7981e870a2abc77cd2b6d12f"
+    },
+    {
+      "scenario": 9,
+      "positions": {
+        "TO_SIDE": 35
+      },
+      "ready_positions": {
+        "TO_SIDE": 9
+      },
+      "decisions": {
+        "NOT_READY": 26,
+        "APPROACH": 6,
+        "CONTINUE": 3
+      },
+      "lateral_abs_range_m": [
+        0.7944923095703125,
+        0.9110969848632813
+      ],
+      "source_path": "var/evaluation/final-scenarios-audit/trimmed/final_scenario_9-sdk.jsonl",
+      "source_sha256": "56793886eec65c069a2861f87ad0f01b67dc8445d8b3dfa756a5a86c0b8c57d8"
+    }
+  ],
+  "policy_version": "social-rules-v6",
+  "estimator_version": "temporal-social-v4",
+  "config_version": "temporal-v1-14de461c204e"
+}
