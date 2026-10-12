@@ -1,0 +1,220 @@
+[
+  {
+    "scenario": "S1",
+    "preset": "default",
+    "frames": 105,
+    "ready": 5,
+    "holds": {
+      "INSUFFICIENT_GAZE_EVIDENCE": 52,
+      "DISTANCE_UNKNOWN": 1,
+      "GAZE_CATEGORY_NOT_READY": 9,
+      "OBSERVATIONS_AVAILABLE": 5,
+      "NO_VISIBLE_PERSON": 38
+    },
+    "first_ready_s": 4.178834
+  },
+  {
+    "scenario": "S2",
+    "preset": "default",
+    "frames": 48,
+    "ready": 34,
+    "holds": {
+      "INSUFFICIENT_GAZE_EVIDENCE": 11,
+      "GAZE_CATEGORY_NOT_READY": 3,
+      "OBSERVATIONS_AVAILABLE": 34
+    },
+    "first_ready_s": 1.405234
+  },
+  {
+    "scenario": "S3",
+    "preset": "default",
+    "frames": 47,
+    "ready": 33,
+    "holds": {
+      "INSUFFICIENT_GAZE_EVIDENCE": 11,
+      "GAZE_CATEGORY_NOT_READY": 3,
+      "OBSERVATIONS_AVAILABLE": 33
+    },
+    "first_ready_s": 1.515929
+  },
+  {
+    "scenario": "S4",
+    "preset": "default",
+    "frames": 62,
+    "ready": 8,
+    "holds": {
+      "INSUFFICIENT_GAZE_EVIDENCE": 44,
+      "GAZE_CATEGORY_NOT_READY": 9,
+      "OBSERVATIONS_AVAILABLE": 8,
+      "NO_VISIBLE_PERSON": 1
+    },
+    "first_ready_s": 4.109925
+  },
+  {
+    "scenario": "S5",
+    "preset": "default",
+    "frames": 69,
+    "ready": 0,
+    "holds": {
+      "NO_VISIBLE_PERSON": 69
+    },
+    "first_ready_s": null
+  },
+  {
+    "scenario": "S6",
+    "preset": "default",
+    "frames": 47,
+    "ready": 15,
+    "holds": {
+      "INSUFFICIENT_GAZE_EVIDENCE": 25,
+      "DISTANCE_UNKNOWN": 3,
+      "GAZE_CATEGORY_NOT_READY": 4,
+      "OBSERVATIONS_AVAILABLE": 15
+    },
+    "first_ready_s": 1.535154
+  },
+  {
+    "scenario": "S7",
+    "preset": "default",
+    "frames": 89,
+    "ready": 1,
+    "holds": {
+      "INSUFFICIENT_GAZE_EVIDENCE": 68,
+      "NO_VISIBLE_PERSON": 10,
+      "GAZE_CATEGORY_NOT_READY": 10,
+      "OBSERVATIONS_AVAILABLE": 1
+    },
+    "first_ready_s": 8.815404
+  },
+  {
+    "scenario": "S8",
+    "preset": "default",
+    "frames": 72,
+    "ready": 14,
+    "holds": {
+      "NO_VISIBLE_PERSON": 27,
+      "INSUFFICIENT_GAZE_EVIDENCE": 23,
+      "GAZE_CATEGORY_NOT_READY": 8,
+      "OBSERVATIONS_AVAILABLE": 14
+    },
+    "first_ready_s": 4.344153
+  },
+  {
+    "scenario": "S9",
+    "preset": "default",
+    "frames": 35,
+    "ready": 16,
+    "holds": {
+      "INSUFFICIENT_GAZE_EVIDENCE": 12,
+      "GAZE_CATEGORY_NOT_READY": 7,
+      "OBSERVATIONS_AVAILABLE": 16
+    },
+    "first_ready_s": 1.56798
+  },
+  {
+    "scenario": "S1",
+    "preset": "final",
+    "frames": 105,
+    "ready": 82,
+    "holds": {
+      "INSUFFICIENT_GAZE_EVIDENCE": 12,
+      "OBSERVATIONS_AVAILABLE": 82,
+      "DISTANCE_UNKNOWN": 1,
+      "NO_VISIBLE_PERSON": 10
+    },
+    "first_ready_s": 1.178444
+  },
+  {
+    "scenario": "S2",
+    "preset": "final",
+    "frames": 48,
+    "ready": 37,
+    "holds": {
+      "INSUFFICIENT_GAZE_EVIDENCE": 11,
+      "OBSERVATIONS_AVAILABLE": 37
+    },
+    "first_ready_s": 1.10407
+  },
+  {
+    "scenario": "S3",
+    "preset": "final",
+    "frames": 47,
+    "ready": 36,
+    "holds": {
+      "INSUFFICIENT_GAZE_EVIDENCE": 11,
+      "OBSERVATIONS_AVAILABLE": 36
+    },
+    "first_ready_s": 1.213042
+  },
+  {
+    "scenario": "S4",
+    "preset": "final",
+    "frames": 62,
+    "ready": 50,
+    "holds": {
+      "INSUFFICIENT_GAZE_EVIDENCE": 11,
+      "OBSERVATIONS_AVAILABLE": 50,
+      "NO_VISIBLE_PERSON": 1
+    },
+    "first_ready_s": 1.102457
+  },
+  {
+    "scenario": "S5",
+    "preset": "final",
+    "frames": 69,
+    "ready": 58,
+    "holds": {
+      "NO_VISIBLE_PERSON": 11,
+      "OBSERVATIONS_AVAILABLE": 58
+    },
+    "first_ready_s": 1.166849
+  },
+  {
+    "scenario": "S6",
+    "preset": "final",
+    "frames": 47,
+    "ready": 35,
+    "holds": {
+      "INSUFFICIENT_GAZE_EVIDENCE": 9,
+      "DISTANCE_UNKNOWN": 3,
+      "OBSERVATIONS_AVAILABLE": 35
+    },
+    "first_ready_s": 1.108382
+  },
+  {
+    "scenario": "S7",
+    "preset": "final",
+    "frames": 89,
+    "ready": 30,
+    "holds": {
+      "INSUFFICIENT_GAZE_EVIDENCE": 48,
+      "NO_VISIBLE_PERSON": 10,
+      "OBSERVATIONS_AVAILABLE": 30,
+      "DISTANCE_UNKNOWN": 1
+    },
+    "first_ready_s": 1.707624
+  },
+  {
+    "scenario": "S8",
+    "preset": "final",
+    "frames": 72,
+    "ready": 50,
+    "holds": {
+      "NO_VISIBLE_PERSON": 11,
+      "OBSERVATIONS_AVAILABLE": 50,
+      "INSUFFICIENT_GAZE_EVIDENCE": 11
+    },
+    "first_ready_s": 1.173908
+  },
+  {
+    "scenario": "S9",
+    "preset": "final",
+    "frames": 35,
+    "ready": 24,
+    "holds": {
+      "INSUFFICIENT_GAZE_EVIDENCE": 11,
+      "OBSERVATIONS_AVAILABLE": 24
+    },
+    "first_ready_s": 1.140807
+  }
+]
