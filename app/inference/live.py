@@ -62,6 +62,7 @@ class _Job:
     ingest_sequence: int
     timestamp_us: int
     state_json: str
+    decision_state_json: str
     source_json: str
     matching_json: str | None
     frame: LiveFrame | None
@@ -161,7 +162,8 @@ class LiveModelRunner:
                 matching, frame = association.to_dict(), association.frame
             matching_json = json.dumps(matching, ensure_ascii=False, sort_keys=True, allow_nan=False)
         return _Job(snapshot.state_id, snapshot.session_id, snapshot.ingest_sequence,
-                    snapshot.robot_timestamp_us, prompt.social_state_json, source_json, matching_json, frame)
+                    snapshot.robot_timestamp_us, prompt.social_state_json,
+                    prompt.decision_state_json, source_json, matching_json, frame)
 
     def submit(self, social_state: SocialState | dict[str, Any], source_metadata: dict[str, Any]) -> dict[str, Any]:
         """Freeze and schedule promptly; model/audit errors never escape to ingestion."""
@@ -340,6 +342,8 @@ class LiveModelRunner:
                 "session_id": job.session_id, "ingest_sequence": job.ingest_sequence,
                 "source_robot_timestamp_us": job.timestamp_us, "social_state": json.loads(job.state_json),
                 "social_state_json": job.state_json, "source": json.loads(job.source_json),
+                "decision_state": json.loads(job.decision_state_json),
+                "decision_state_json": job.decision_state_json,
                 "scheduling": {"sample_interval_us": round(self.config.sample_interval_s * 1_000_000),
                                "queue_capacity": self.config.queue_capacity,
                                "overload_policy": "drop_newest; selected sample interval is consumed"},

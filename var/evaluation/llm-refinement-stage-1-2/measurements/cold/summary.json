@@ -1,0 +1,37 @@
+{
+  "scenario_id": "S1",
+  "llm": {
+    "source_state_id": "replay-c185d8773106dd7263c9682d:12",
+    "session_id": "replay-c185d8773106dd7263c9682d",
+    "source_robot_timestamp_us": 1897966824,
+    "prompt_version": "social-state-llm-v14",
+    "ok": true,
+    "decision": {
+      "action": "APPROACH",
+      "reason": "Person getting closer and within approachable distance."
+    },
+    "error": null,
+    "requested_model": "qwen2.5:7b",
+    "returned_model": "qwen2.5:7b",
+    "raw_content": "{\"action\":\"APPROACH\",\"reason\":\"Person getting closer and within approachable distance.\"}",
+    "request_duration_s": 14.413244791794568,
+    "status": "DECIDED",
+    "action": "APPROACH"
+  },
+  "timing": {
+    "total_duration_s": 14.408847625,
+    "load_duration_s": 3.174186042,
+    "prompt_eval_duration_s": 9.991455,
+    "eval_duration_s": 1.22429,
+    "prompt_tokens": 1807,
+    "cached_prompt_tokens": 0,
+    "output_tokens": 20,
+    "request_bytes": 7212,
+    "request_preparation_s": 0.0008618747815489769,
+    "response_validation_s": 0.0036905421875417233,
+    "transport_duration_s": 14.413216250017285,
+    "transport_minus_native_total_s": 0.00436862501728541,
+    "native_unattributed_s": 0.01891658299999932
+  },
+  "primary_score": false
+}

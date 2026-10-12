@@ -1,0 +1,93 @@
+{
+  "scenario_id": "S5",
+  "policy": "llm",
+  "status": "ACTION_RESOLVED",
+  "action": "CONTINUE",
+  "decision": {
+    "action": "CONTINUE",
+    "reason": "No people observed."
+  },
+  "accepted_by_live_client": true,
+  "acceptance_details": {
+    "current_readiness": true,
+    "latest_observation_age_s": 0.026398,
+    "model_source_age_s": 2.235272,
+    "trial_phase": "DECIDED",
+    "failure_reason": null
+  },
+  "resolved_elapsed_s": 3.357964875176549,
+  "stop_elapsed_s": 3.357964875176549,
+  "frames_ingested": 34,
+  "ready_frames": 23,
+  "readiness_counts": {
+    "NO_VISIBLE_PERSON": 11,
+    "READY": 23
+  },
+  "recording_exhausted": false,
+  "last_ingested_source_offset_s": 3.331568,
+  "last_ingested_line": 69,
+  "decision_source_offset_s": 1.122694,
+  "motion_start_monotonic_us": 2138305845,
+  "perception_origin_monotonic_us": 2138350000,
+  "decision_source_since_motion_s": 1.166849,
+  "max_dispatch_lag_s": 0.045563749969005585,
+  "model_failures": [],
+  "first_model_request": {
+    "decision": null,
+    "error": null,
+    "policy": "llm",
+    "request_id": "8042484d20734be798bfaae1fb59b5d1",
+    "session_id": "replay-f9e815a071393de98a4bc3d1",
+    "source_robot_timestamp_us": 2139472694,
+    "source_state_id": "replay-f9e815a071393de98a4bc3d1:12",
+    "status": "pending",
+    "trial_id": "d4643208634c496399a2102fb0d4c01b"
+  },
+  "resolved_output": {
+    "decision": {
+      "action": "CONTINUE",
+      "reason": "No people observed."
+    },
+    "error": null,
+    "policy": "llm",
+    "request_id": "8042484d20734be798bfaae1fb59b5d1",
+    "session_id": "replay-f9e815a071393de98a4bc3d1",
+    "source_robot_timestamp_us": 2139472694,
+    "source_state_id": "replay-f9e815a071393de98a4bc3d1:12",
+    "status": "succeeded",
+    "trial_id": "d4643208634c496399a2102fb0d4c01b",
+    "completed_at": "2026-10-12T04:56:26.170466+00:00",
+    "error_stage": null,
+    "ok": true,
+    "ollama_configuration": {
+      "base_url": "http://127.0.0.1:11434",
+      "generation_options": {
+        "num_ctx": 8192,
+        "num_predict": 192,
+        "seed": 42,
+        "temperature": 0.0
+      },
+      "model": "qwen2.5:7b",
+      "num_ctx": 8192,
+      "num_predict": 192,
+      "seed": 42,
+      "temperature": 0.0,
+      "timeout_seconds": 120.0
+    },
+    "prompt_version": "social-state-llm-v14",
+    "raw_content": "{\"action\":\"CONTINUE\",\"reason\":\"No people observed.\"}",
+    "request_duration_s": 2.1923301252536476,
+    "requested_model": "qwen2.5:7b",
+    "returned_model": "qwen2.5:7b",
+    "delivery_status": "succeeded",
+    "delivery_error": null
+  },
+  "last_readiness": {
+    "reason_code": null,
+    "status": "READY"
+  },
+  "source_sha256": "8598b85db20dc43044da5392b69a14b55ff7a3ea080ec53663765670287fba4c",
+  "trial_id": "d4643208634c496399a2102fb0d4c01b",
+  "clock_mapping": "original first perception receipt + real elapsed replay time",
+  "physical_execution": false
+}

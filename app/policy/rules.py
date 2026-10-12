@@ -6,7 +6,8 @@ from typing import Literal
 from pydantic import Field
 
 from app.domain.model_decision import FinalDecision
-from app.state.social_models import SocialState, StrictModel, observation_hold_reason
+from app.state.social_models import SocialState, StrictModel
+from app.state.decision_models import DecisionInput, decision_hold_reason, prepare_decision_input
 
 
 POLICY_VERSION = "social-rules-v7"
@@ -62,34 +63,36 @@ def normalise_rule_decision(proposal: PolicyDecision | dict) -> FinalDecision:
     )
 
 
-def rule_readiness(state: SocialState | dict, *, stale: bool = False,
+def rule_readiness(state: SocialState | dict | DecisionInput, *, stale: bool = False,
                    processing_failed: bool = False) -> str | None:
     """Return an observation hold reason, or None when classification is eligible."""
-    state = SocialState.model_validate(state)
+    inputs = prepare_decision_input(state)
     if processing_failed:
         return "PROCESSING_FAILED"
     if stale:
         return "STATE_STALE"
-    return observation_hold_reason(state)
+    return decision_hold_reason(inputs.state)
 
 
-def decide(state: SocialState | dict, *, stale: bool = False,
+def decide(state: SocialState | dict | DecisionInput, *, stale: bool = False,
            processing_failed: bool = False) -> PolicyDecision:
     """Classify eligible observations only; waiting is never a policy action."""
-    state = SocialState.model_validate(state)
-    reason = rule_readiness(state, stale=stale, processing_failed=processing_failed)
+    inputs = prepare_decision_input(state)
+    state, context = inputs.state, inputs.context
+    reason = rule_readiness(inputs, stale=stale, processing_failed=processing_failed)
     if reason is not None:
         raise ValueError(f"rule observations not ready: {reason}")
-    person = next((p for p in state.people if p.visibility == "OBSERVED"), None)
+    person = next(iter(state.people), None)
+    identity = next(iter(context.people), None)
 
     def result(decision: DecisionName, reason: str) -> PolicyDecision:
         targeted = decision in ("APPROACH", "ENGAGE")
         return PolicyDecision(
-            decision_id=f"{state.state_id}:{POLICY_VERSION}",
-            source_state_id=state.state_id, session_id=state.session_id,
+            decision_id=f"{context.state_id}:{POLICY_VERSION}",
+            source_state_id=context.state_id, session_id=context.session_id,
             decision=decision, reason_code=reason,
-            target_uid=person.uid if targeted else None,
-            target_track_epoch=person.track_epoch if targeted else None,
+            target_uid=identity.uid if targeted else None,
+            target_track_epoch=identity.track_epoch if targeted else None,
         )
 
     if person is None:
@@ -98,7 +101,7 @@ def decide(state: SocialState | dict, *, stale: bool = False,
         return result("YIELD", "HUMAN_PATH_CONFLICT")
     if person.pass_gesture == "PASS":
         return result("CONTINUE", "PASS_GESTURE")
-    c, e = state.config, person.evidence
+    c, e = inputs.parameters, person.evidence
     looking_exit = e.looking_exit_threshold if e.looking_exit_threshold is not None else c.looking_exit
     if (person.face_detected is True and e.distance_trend_valid
             and person.relative_distance_trend == "DECREASING"

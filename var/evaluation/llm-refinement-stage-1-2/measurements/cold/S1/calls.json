@@ -1,0 +1,32 @@
+[
+  {
+    "source_state_id": "replay-c185d8773106dd7263c9682d:12",
+    "source_robot_timestamp_us": 1897966824,
+    "state_sha256": "1d449d0cf8cb8ce598465ff3fe3f68be6a2c344c2c121836b6fa6a8315797be0",
+    "request_sha256": "f7ebad9d292f051a1df85c314365375da69b42460411e3ca60556c030d2a3856",
+    "request_bytes": 7212,
+    "input_characters": 6292,
+    "chat_start_elapsed_s": null,
+    "chat_end_elapsed_s": null,
+    "client_call_duration_s": 14.417768666986376,
+    "request_preparation_s": 0.0008618747815489769,
+    "transport_duration_s": 14.413216250017285,
+    "response_validation_s": 0.0036905421875417233,
+    "ollama_metrics": {
+      "total_duration": 14408847625,
+      "load_duration": 3174186042,
+      "prompt_eval_count": 1807,
+      "prompt_eval_cached_count": 0,
+      "prompt_eval_duration": 9991455000,
+      "eval_count": 20,
+      "eval_duration": 1224290000
+    },
+    "request_duration_s": 14.413244791794568,
+    "ok": true,
+    "decision": {
+      "action": "APPROACH",
+      "reason": "Person getting closer and within approachable distance."
+    },
+    "error": null
+  }
+]

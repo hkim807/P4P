@@ -1,0 +1,52 @@
+{
+  "scenario_id": "S3",
+  "first_source_state_id": "replay-7a43024a2619ec806420c762:12",
+  "first_state_sha256": "7406552656ae43d27f69e2ffbbff58b18ef99cd14f7b59b8f16c647bf391795d",
+  "expected_actions": [
+    "ENGAGE",
+    "APPROACH"
+  ],
+  "first_decision": {
+    "action": "ENGAGE",
+    "reason": "Sustained looking at robot within conversation distance."
+  },
+  "first_output_valid": true,
+  "action_aligned": true,
+  "first_eligible_since_motion_s": 1.213042,
+  "output_since_motion_s": 6.741921874760896,
+  "first_request_observed_elapsed_s": 1.1293348749168217,
+  "first_client_finished_elapsed_s": 6.638340333011001,
+  "first_eligible_to_validated_client_output_s": 5.511609333011002,
+  "accepted_by_live_client": false,
+  "acceptance_details": {
+    "current_readiness": true,
+    "latest_observation_age_s": 2.04318,
+    "model_source_age_s": 5.528882,
+    "trial_phase": "OBSERVING",
+    "failure_reason": null
+  },
+  "delivery_status": "succeeded",
+  "delivery_error": null,
+  "total_calls": 1,
+  "runner_status": "ACTION_RESOLVED",
+  "timing": {
+    "total_duration_s": 5.491080584,
+    "load_duration_s": 0.001014417,
+    "prompt_eval_duration_s": 4.300514,
+    "eval_duration_s": 1.176305,
+    "prompt_tokens": 1766,
+    "cached_prompt_tokens": 939,
+    "output_tokens": 20,
+    "request_bytes": 7033,
+    "request_preparation_s": 0.000444208737462759,
+    "response_validation_s": 0.00033512525260448456,
+    "transport_duration_s": 5.492683665826917,
+    "transport_minus_native_total_s": 0.001603081826917041,
+    "native_unattributed_s": 0.013247167000000282,
+    "eligible_to_observed_output_s": 5.5288798747608965,
+    "eligible_to_client_call_s": 0.018146333194017483,
+    "client_finished_to_observed_output_s": 0.01727054174989462
+  },
+  "first_error": null,
+  "repetition": 1
+}

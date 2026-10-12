@@ -134,6 +134,8 @@ def main(argv: list[str] | None = None) -> int:
                         "ollama_configuration": model_settings,
                         "social_state": json.loads(prompt.social_state_json),
                         "social_state_json": prompt.social_state_json,
+                        "decision_state": json.loads(prompt.decision_state_json),
+                        "decision_state_json": prompt.decision_state_json,
                         "completed_at": datetime.now(timezone.utc).isoformat(),
                         "completion_clock": "replay-host UTC wall clock; independent of source clocks",
                         **diagnostics,

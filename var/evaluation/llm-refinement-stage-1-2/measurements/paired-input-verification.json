@@ -1,0 +1,272 @@
+[
+  {
+    "repetition": 1,
+    "scenario_id": "S1",
+    "input_state_sha256": "1d449d0cf8cb8ce598465ff3fe3f68be6a2c344c2c121836b6fa6a8315797be0",
+    "rule_decision": {
+      "action": "CONTINUE",
+      "reason": "Gaze evidence is classified as no attention; continue along the fixed route."
+    },
+    "receiver_ready_frame_processing_s": 0.017297000158578157
+  },
+  {
+    "repetition": 1,
+    "scenario_id": "S2",
+    "input_state_sha256": "c9bef2b0c72b5223c40b841e0083629c8f62ecd3ac38088c8eef10c6696096cf",
+    "rule_decision": {
+      "action": "APPROACH",
+      "reason": "The person is looking steadily at the robot and is within approach distance."
+    },
+    "receiver_ready_frame_processing_s": 0.0021037920378148556
+  },
+  {
+    "repetition": 1,
+    "scenario_id": "S3",
+    "input_state_sha256": "7406552656ae43d27f69e2ffbbff58b18ef99cd14f7b59b8f16c647bf391795d",
+    "rule_decision": {
+      "action": "ENGAGE",
+      "reason": "The person is looking steadily at the robot and is within conversation distance."
+    },
+    "receiver_ready_frame_processing_s": 0.0018002917058765888
+  },
+  {
+    "repetition": 1,
+    "scenario_id": "S4",
+    "input_state_sha256": "928b54be0b24a4e57a90d26fb409e9ba5ae37a1a1bbe70759d174a15169648ad",
+    "rule_decision": {
+      "action": "YIELD",
+      "reason": "The current nose position lies within the configured forward corridor, separation is decreasing within yield range, and face and low-gaze evidence are valid; give the person room to pass."
+    },
+    "receiver_ready_frame_processing_s": 0.0030352501198649406
+  },
+  {
+    "repetition": 1,
+    "scenario_id": "S5",
+    "input_state_sha256": "4f2a42a4c0dd32b4b42f50783c47e9c5242dcf0908d0e79ce2d353b563638c46",
+    "rule_decision": {
+      "action": "CONTINUE",
+      "reason": "No person has been detected throughout the configured observation interval; continue along the route without initiating interaction."
+    },
+    "receiver_ready_frame_processing_s": 0.010692042298614979
+  },
+  {
+    "repetition": 1,
+    "scenario_id": "S6",
+    "input_state_sha256": "1083558d0ff3155e47bf644fb4acd7c6ab77fe47ae4b34b245b7eddb16430c71",
+    "rule_decision": {
+      "action": "CONTINUE",
+      "reason": "Gaze evidence is classified as no attention; continue along the fixed route."
+    },
+    "receiver_ready_frame_processing_s": 0.003662874922156334
+  },
+  {
+    "repetition": 1,
+    "scenario_id": "S7",
+    "input_state_sha256": "a5123906f9cad0d7ba230d3b800001eb510eac9399bad24145f5bfaf51dc8265",
+    "rule_decision": {
+      "action": "CONTINUE",
+      "reason": "Usable gaze evidence does not show sustained attention; continue along the fixed route."
+    },
+    "receiver_ready_frame_processing_s": 0.008706040680408478
+  },
+  {
+    "repetition": 1,
+    "scenario_id": "S8",
+    "input_state_sha256": "0f4e00cdf7ebcbfdd0c5dd639cc3d193a655068dfd7ac5bbdcbb00ec9b4a765a",
+    "rule_decision": {
+      "action": "CONTINUE",
+      "reason": "No person has been detected throughout the configured observation interval; continue along the route without initiating interaction."
+    },
+    "receiver_ready_frame_processing_s": 0.0035961251705884933
+  },
+  {
+    "repetition": 1,
+    "scenario_id": "S9",
+    "input_state_sha256": "6d10d5c33e76a78513109e06a90ef07b1a6791edd3dcaf1706e549c7d82c3976",
+    "rule_decision": {
+      "action": "APPROACH",
+      "reason": "The person is looking steadily at the robot and is within approach distance."
+    },
+    "receiver_ready_frame_processing_s": 0.002941042184829712
+  },
+  {
+    "repetition": 2,
+    "scenario_id": "S1",
+    "input_state_sha256": "1d449d0cf8cb8ce598465ff3fe3f68be6a2c344c2c121836b6fa6a8315797be0",
+    "rule_decision": {
+      "action": "CONTINUE",
+      "reason": "Gaze evidence is classified as no attention; continue along the fixed route."
+    },
+    "receiver_ready_frame_processing_s": 0.0030673746950924397
+  },
+  {
+    "repetition": 2,
+    "scenario_id": "S2",
+    "input_state_sha256": "c9bef2b0c72b5223c40b841e0083629c8f62ecd3ac38088c8eef10c6696096cf",
+    "rule_decision": {
+      "action": "APPROACH",
+      "reason": "The person is looking steadily at the robot and is within approach distance."
+    },
+    "receiver_ready_frame_processing_s": 0.0022556250914931297
+  },
+  {
+    "repetition": 2,
+    "scenario_id": "S3",
+    "input_state_sha256": "7406552656ae43d27f69e2ffbbff58b18ef99cd14f7b59b8f16c647bf391795d",
+    "rule_decision": {
+      "action": "ENGAGE",
+      "reason": "The person is looking steadily at the robot and is within conversation distance."
+    },
+    "receiver_ready_frame_processing_s": 0.0031867502257227898
+  },
+  {
+    "repetition": 2,
+    "scenario_id": "S4",
+    "input_state_sha256": "928b54be0b24a4e57a90d26fb409e9ba5ae37a1a1bbe70759d174a15169648ad",
+    "rule_decision": {
+      "action": "YIELD",
+      "reason": "The current nose position lies within the configured forward corridor, separation is decreasing within yield range, and face and low-gaze evidence are valid; give the person room to pass."
+    },
+    "receiver_ready_frame_processing_s": 0.00479662511497736
+  },
+  {
+    "repetition": 2,
+    "scenario_id": "S5",
+    "input_state_sha256": "4f2a42a4c0dd32b4b42f50783c47e9c5242dcf0908d0e79ce2d353b563638c46",
+    "rule_decision": {
+      "action": "CONTINUE",
+      "reason": "No person has been detected throughout the configured observation interval; continue along the route without initiating interaction."
+    },
+    "receiver_ready_frame_processing_s": 0.0020237090066075325
+  },
+  {
+    "repetition": 2,
+    "scenario_id": "S6",
+    "input_state_sha256": "1083558d0ff3155e47bf644fb4acd7c6ab77fe47ae4b34b245b7eddb16430c71",
+    "rule_decision": {
+      "action": "CONTINUE",
+      "reason": "Gaze evidence is classified as no attention; continue along the fixed route."
+    },
+    "receiver_ready_frame_processing_s": 0.0023873751051723957
+  },
+  {
+    "repetition": 2,
+    "scenario_id": "S7",
+    "input_state_sha256": "a5123906f9cad0d7ba230d3b800001eb510eac9399bad24145f5bfaf51dc8265",
+    "rule_decision": {
+      "action": "CONTINUE",
+      "reason": "Usable gaze evidence does not show sustained attention; continue along the fixed route."
+    },
+    "receiver_ready_frame_processing_s": 0.0051239170134067535
+  },
+  {
+    "repetition": 2,
+    "scenario_id": "S8",
+    "input_state_sha256": "0f4e00cdf7ebcbfdd0c5dd639cc3d193a655068dfd7ac5bbdcbb00ec9b4a765a",
+    "rule_decision": {
+      "action": "CONTINUE",
+      "reason": "No person has been detected throughout the configured observation interval; continue along the route without initiating interaction."
+    },
+    "receiver_ready_frame_processing_s": 0.002979249693453312
+  },
+  {
+    "repetition": 2,
+    "scenario_id": "S9",
+    "input_state_sha256": "6d10d5c33e76a78513109e06a90ef07b1a6791edd3dcaf1706e549c7d82c3976",
+    "rule_decision": {
+      "action": "APPROACH",
+      "reason": "The person is looking steadily at the robot and is within approach distance."
+    },
+    "receiver_ready_frame_processing_s": 0.0024642497301101685
+  },
+  {
+    "repetition": 3,
+    "scenario_id": "S1",
+    "input_state_sha256": "1d449d0cf8cb8ce598465ff3fe3f68be6a2c344c2c121836b6fa6a8315797be0",
+    "rule_decision": {
+      "action": "CONTINUE",
+      "reason": "Gaze evidence is classified as no attention; continue along the fixed route."
+    },
+    "receiver_ready_frame_processing_s": 0.0027893749065697193
+  },
+  {
+    "repetition": 3,
+    "scenario_id": "S2",
+    "input_state_sha256": "c9bef2b0c72b5223c40b841e0083629c8f62ecd3ac38088c8eef10c6696096cf",
+    "rule_decision": {
+      "action": "APPROACH",
+      "reason": "The person is looking steadily at the robot and is within approach distance."
+    },
+    "receiver_ready_frame_processing_s": 0.003624791745096445
+  },
+  {
+    "repetition": 3,
+    "scenario_id": "S3",
+    "input_state_sha256": "7406552656ae43d27f69e2ffbbff58b18ef99cd14f7b59b8f16c647bf391795d",
+    "rule_decision": {
+      "action": "ENGAGE",
+      "reason": "The person is looking steadily at the robot and is within conversation distance."
+    },
+    "receiver_ready_frame_processing_s": 0.0037918747402727604
+  },
+  {
+    "repetition": 3,
+    "scenario_id": "S4",
+    "input_state_sha256": "928b54be0b24a4e57a90d26fb409e9ba5ae37a1a1bbe70759d174a15169648ad",
+    "rule_decision": {
+      "action": "YIELD",
+      "reason": "The current nose position lies within the configured forward corridor, separation is decreasing within yield range, and face and low-gaze evidence are valid; give the person room to pass."
+    },
+    "receiver_ready_frame_processing_s": 0.0057663749903440475
+  },
+  {
+    "repetition": 3,
+    "scenario_id": "S5",
+    "input_state_sha256": "4f2a42a4c0dd32b4b42f50783c47e9c5242dcf0908d0e79ce2d353b563638c46",
+    "rule_decision": {
+      "action": "CONTINUE",
+      "reason": "No person has been detected throughout the configured observation interval; continue along the route without initiating interaction."
+    },
+    "receiver_ready_frame_processing_s": 0.0020675421692430973
+  },
+  {
+    "repetition": 3,
+    "scenario_id": "S6",
+    "input_state_sha256": "1083558d0ff3155e47bf644fb4acd7c6ab77fe47ae4b34b245b7eddb16430c71",
+    "rule_decision": {
+      "action": "CONTINUE",
+      "reason": "Gaze evidence is classified as no attention; continue along the fixed route."
+    },
+    "receiver_ready_frame_processing_s": 0.0019503748044371605
+  },
+  {
+    "repetition": 3,
+    "scenario_id": "S7",
+    "input_state_sha256": "a5123906f9cad0d7ba230d3b800001eb510eac9399bad24145f5bfaf51dc8265",
+    "rule_decision": {
+      "action": "CONTINUE",
+      "reason": "Usable gaze evidence does not show sustained attention; continue along the fixed route."
+    },
+    "receiver_ready_frame_processing_s": 0.007159791886806488
+  },
+  {
+    "repetition": 3,
+    "scenario_id": "S8",
+    "input_state_sha256": "0f4e00cdf7ebcbfdd0c5dd639cc3d193a655068dfd7ac5bbdcbb00ec9b4a765a",
+    "rule_decision": {
+      "action": "CONTINUE",
+      "reason": "No person has been detected throughout the configured observation interval; continue along the route without initiating interaction."
+    },
+    "receiver_ready_frame_processing_s": 0.002536499872803688
+  },
+  {
+    "repetition": 3,
+    "scenario_id": "S9",
+    "input_state_sha256": "6d10d5c33e76a78513109e06a90ef07b1a6791edd3dcaf1706e549c7d82c3976",
+    "rule_decision": {
+      "action": "APPROACH",
+      "reason": "The person is looking steadily at the robot and is within approach distance."
+    },
+    "receiver_ready_frame_processing_s": 0.003574542235583067
+  }
+]

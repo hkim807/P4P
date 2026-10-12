@@ -7,9 +7,10 @@ from typing import Any
 
 from app.inference.ollama import OllamaClient, OllamaMessage, OllamaResult
 from app.state.social_models import SocialState
+from app.state.decision_models import decision_hold_reason, prepare_decision_input
 
 
-PROMPT_VERSION = "social-state-llm-v14"
+PROMPT_VERSION = "social-state-llm-v14-compact-v1"
 SYSTEM_PROMPT = """You select social-navigation actions for a robot roaming a fixed route in a museum or laboratory. Use your own judgment to choose the most appropriate next action from the supplied SocialState. Balance human safety and comfort, willingness to interact, and progress along the route. A separate controller executes the selected action.
 
 Available actions:
@@ -43,12 +44,13 @@ class LLMPrompt:
     prompt_version: str
     social_state_json: str
     instructions: str
+    decision_state_json: str
 
     @property
     def messages(self) -> tuple[OllamaMessage, OllamaMessage]:
         # Strings are immutable; no caller model/list references survive here.
         return (OllamaMessage(role="system", content=self.instructions),
-                OllamaMessage(role="user", content=SOCIAL_STATE_PREFIX + self.social_state_json))
+                OllamaMessage(role="user", content=SOCIAL_STATE_PREFIX + self.decision_state_json))
 
 
 def build_llm_prompt(state: SocialState) -> LLMPrompt:
@@ -60,8 +62,9 @@ def build_llm_prompt(state: SocialState) -> LLMPrompt:
     snapshot = SocialState.model_validate(state.model_dump(mode="python", warnings=False))
     serialized = json.dumps(snapshot.model_dump(mode="json"), sort_keys=True,
                             separators=(",", ":"), ensure_ascii=False, allow_nan=False)
+    decision_state = prepare_decision_input(snapshot).state
     return LLMPrompt(snapshot.state_id, snapshot.session_id, snapshot.robot_timestamp_us,
-                     PROMPT_VERSION, serialized, SYSTEM_PROMPT)
+                     PROMPT_VERSION, serialized, SYSTEM_PROMPT, decision_state.canonical_json())
 
 
 @dataclass(frozen=True)
@@ -102,9 +105,8 @@ def decide_llm(state: SocialState, client: OllamaClient) -> LLMPolicyResult:
 
 def classify_llm(state: SocialState, client: OllamaClient) -> dict[str, Any]:
     """Shared production eligibility; low-level decide_llm remains a probe API."""
-    from app.state.social_models import observation_hold_reason
     state = SocialState.model_validate(state.model_dump(mode="python"))
-    reason = observation_hold_reason(state)
+    reason = decision_hold_reason(prepare_decision_input(state).state)
     if reason:
         return {"status": "NOT_READY", "action": None, "reason": reason,
                 "ok": False, "error": None, "request_duration_s": None}

@@ -1,0 +1,313 @@
+{
+  "input_path": "/Users/eddiekim/Documents/Projects/P4P/var/evaluation/final-scenarios-audit/trimmed/final_scenario_7-sdk.jsonl",
+  "input_format": "sdk",
+  "reconstructed": true,
+  "file_sha256": "b9f1f06c611c7d01c2c225095d193118ecc029c8202ca5635a963952fe9eb405",
+  "line_number": 35,
+  "record_number": 35,
+  "original_capture_session": "4bdb1eb5d1524b8f8b81207eab43435e",
+  "source_session_id": "4bdb1eb5d1524b8f8b81207eab43435e",
+  "processing_session_id": "replay-e25f14f5c9126f586b63f9e9",
+  "source_record": {
+    "capture_version": 1,
+    "session_id": "4bdb1eb5d1524b8f8b81207eab43435e",
+    "stream": "perception",
+    "sequence": 18,
+    "received_monotonic_us": 2248803445,
+    "received_unix_us": 1791695206104301,
+    "packet": {
+      "time": 1791695205997940,
+      "persons": [
+        {
+          "id_score": 1.0,
+          "uid": 1519355737,
+          "face": {
+            "x1": 155,
+            "y1": 329,
+            "x2": 177,
+            "y2": 358
+          },
+          "landmarks": {
+            "eye_left": {
+              "x": 168,
+              "y": 340
+            },
+            "eye_right": {
+              "x": 176,
+              "y": 342
+            },
+            "nose": {
+              "x": 174,
+              "y": 347
+            },
+            "mouth_left": {
+              "x": 167,
+              "y": 351
+            },
+            "mouth_right": {
+              "x": 173,
+              "y": 353
+            }
+          },
+          "head_position": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "gaze": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+          },
+          "facial_expression": {
+            "neutral": 0.3043258786201477,
+            "happy": 0.13547123968601227,
+            "sad": 0.39103981852531433,
+            "surprise": 0.09744686633348465,
+            "anger": 0.07171622663736343
+          },
+          "dist_mm": 2404.617919921875,
+          "gaze_overlap": 0.5,
+          "g_eye_left": [
+            {
+              "sys": "CAM_HEAD",
+              "x": 2.15171728515625,
+              "y": 0.925056396484375,
+              "z": -0.6358611450195313
+            },
+            {
+              "sys": "HEAD_STRAIGHT",
+              "x": 2.191788818359375,
+              "y": 0.9234554443359375,
+              "z": -0.1088831787109375
+            },
+            {
+              "sys": "HEAD_REAL",
+              "x": 2.192160400390625,
+              "y": 0.924056396484375,
+              "z": -0.09547393798828124
+            },
+            {
+              "sys": "EYE_LEFT",
+              "x": 2.294459228515625,
+              "y": 0.3624967956542969,
+              "z": -0.10287393951416016
+            },
+            {
+              "sys": "EYE_RIGHT",
+              "x": 1.85362255859375,
+              "y": 1.4322689208984376,
+              "z": -0.10287393951416016
+            }
+          ],
+          "g_eye_right": [
+            {
+              "sys": "CAM_HEAD",
+              "x": 2.16455126953125,
+              "y": 0.8830923461914062,
+              "z": -0.6476641845703125
+            },
+            {
+              "sys": "HEAD_STRAIGHT",
+              "x": 2.207269287109375,
+              "y": 0.8814722900390625,
+              "z": -0.11680599975585937
+            },
+            {
+              "sys": "HEAD_REAL",
+              "x": 2.207690185546875,
+              "y": 0.8820923461914062,
+              "z": -0.1034017333984375
+            },
+            {
+              "sys": "EYE_LEFT",
+              "x": 2.299531005859375,
+              "y": 0.3180396728515625,
+              "z": -0.1108017349243164
+            },
+            {
+              "sys": "EYE_RIGHT",
+              "x": 1.8787138671875,
+              "y": 1.3952205810546876,
+              "z": -0.1108017349243164
+            }
+          ],
+          "g_nose": [
+            {
+              "sys": "CAM_HEAD",
+              "x": 2.153916259765625,
+              "y": 0.8936734619140625,
+              "z": -0.6769506225585937
+            },
+            {
+              "sys": "HEAD_STRAIGHT",
+              "x": 2.20471875,
+              "y": 0.8919899291992187,
+              "z": -0.14788064575195312
+            },
+            {
+              "sys": "HEAD_REAL",
+              "x": 2.205301025390625,
+              "y": 0.8926734619140625,
+              "z": -0.1344676513671875
+            },
+            {
+              "sys": "EYE_LEFT",
+              "x": 2.29973486328125,
+              "y": 0.32888525390625,
+              "z": -0.14186764526367188
+            },
+            {
+              "sys": "EYE_RIGHT",
+              "x": 1.873869873046875,
+              "y": 1.4049263916015624,
+              "z": -0.14186764526367188
+            }
+          ],
+          "g_head_position": null,
+          "g_gaze": null
+        }
+      ],
+      "sst_time_latest": 1791695206095227,
+      "sst_tracks_latest": [
+        {
+          "id": 1,
+          "activity": 0.0,
+          "loc": {
+            "sys": "HEAD_STRAIGHT",
+            "x": 1.873351318359375,
+            "y": -0.001387736439704895,
+            "z": 0.4845153503417969
+          },
+          "is_dynamic": false
+        },
+        {
+          "id": 0,
+          "activity": 0.0,
+          "loc": {
+            "sys": "HEAD_STRAIGHT",
+            "x": -0.05100349044799805,
+            "y": -0.0009721554517745972,
+            "z": -0.0603317756652832
+          },
+          "is_dynamic": false
+        },
+        {
+          "id": 0,
+          "activity": 0.0,
+          "loc": {
+            "sys": "HEAD_STRAIGHT",
+            "x": -0.05100349044799805,
+            "y": -0.0009721554517745972,
+            "z": -0.0603317756652832
+          },
+          "is_dynamic": false
+        },
+        {
+          "id": 0,
+          "activity": 0.0,
+          "loc": {
+            "sys": "HEAD_STRAIGHT",
+            "x": -0.05100349044799805,
+            "y": -0.0009721554517745972,
+            "z": -0.0603317756652832
+          },
+          "is_dynamic": false
+        }
+      ]
+    }
+  },
+  "timestamps": {
+    "estimation_timestamp_us": 2248803445,
+    "estimation_clock": "robot-host monotonic microseconds",
+    "estimation_origin": "SDK perception received_monotonic_us, used as reconstructed collection time",
+    "received_monotonic_us": 2248803445,
+    "received_unix_us": 1791695206104301,
+    "received_unix_clock": "capture-host Unix UTC microseconds at receipt; not used for estimation",
+    "sdk_perception_timestamp": 1791695205997940,
+    "sdk_perception_clock": "SDK PerceptionData.time; units and clock mapping unverified; not used for estimation"
+  },
+  "locomotion": {
+    "status": "used",
+    "age_s": 0.084386,
+    "line_number": 34,
+    "record_number": 34,
+    "source_record": {
+      "capture_version": 1,
+      "session_id": "4bdb1eb5d1524b8f8b81207eab43435e",
+      "stream": "locomotion",
+      "sequence": 17,
+      "received_monotonic_us": 2248719059,
+      "received_unix_us": 1791695206019914,
+      "packet": {
+        "odometry": {
+          "time": 1791695205985111,
+          "position": {
+            "x": 15.622470999999999,
+            "y": 3.613006,
+            "z": 0.0
+          },
+          "orientation": {
+            "x": 0.1326592854890178,
+            "y": 0.9911616992063118,
+            "z": 0.0,
+            "w": 0.0
+          },
+          "velocity": {
+            "linear_x": 0.093,
+            "linear_y": 0.0,
+            "linear_z": 0.0,
+            "angular_x": 0.0,
+            "angular_y": 0.0,
+            "angular_z": 0.0
+          }
+        },
+        "distances": {
+          "SONAR": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "LIDAR": [
+            0.456,
+            0.438
+          ]
+        }
+      }
+    },
+    "sdk_odometry_timestamp": 1791695205985111,
+    "sdk_odometry_clock": "SDK Odometry.time; units and clock mapping unverified"
+  },
+  "reconstructed_raw_observation": {
+    "timestamp": 2248803445,
+    "people": [
+      {
+        "uid": 1519355737,
+        "distance_m": 2.404617919921875,
+        "gaze_overlap": 0.5,
+        "face_detected": true,
+        "optional_relative_nose_position": {
+          "coordinate_frame": "CAM_HEAD",
+          "x": 2.153916259765625,
+          "y": 0.8936734619140625,
+          "z": -0.6769506225585937
+        }
+      }
+    ],
+    "robot": {
+      "linear_velocity": 0.093,
+      "angular_velocity": 0.0
+    },
+    "safety": {
+      "lidar": [
+        0.456,
+        0.438
+      ],
+      "sonar": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    }
+  }
+}

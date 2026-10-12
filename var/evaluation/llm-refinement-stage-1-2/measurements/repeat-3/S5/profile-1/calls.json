@@ -1,0 +1,32 @@
+[
+  {
+    "source_state_id": "replay-f9e815a071393de98a4bc3d1:12",
+    "source_robot_timestamp_us": 2139472694,
+    "state_sha256": "4f2a42a4c0dd32b4b42f50783c47e9c5242dcf0908d0e79ce2d353b563638c46",
+    "request_sha256": "0dc5332f4833e4d7d6b4bd95d1adc22852e94007d334dabdc9a2c6cc356ee4ab",
+    "request_bytes": 5131,
+    "input_characters": 4393,
+    "chat_start_elapsed_s": 1.1551065002568066,
+    "chat_end_elapsed_s": 3.3481905004009604,
+    "client_call_duration_s": 2.193084000144154,
+    "request_preparation_s": 0.000642749946564436,
+    "transport_duration_s": 2.192327208817005,
+    "response_validation_s": 0.00011404138058423996,
+    "ollama_metrics": {
+      "total_duration": 2190229042,
+      "load_duration": 1861459,
+      "prompt_eval_count": 1094,
+      "prompt_eval_cached_count": 915,
+      "prompt_eval_duration": 1211018000,
+      "eval_count": 14,
+      "eval_duration": 954856000
+    },
+    "request_duration_s": 2.1923301252536476,
+    "ok": true,
+    "decision": {
+      "action": "CONTINUE",
+      "reason": "No people observed."
+    },
+    "error": null
+  }
+]

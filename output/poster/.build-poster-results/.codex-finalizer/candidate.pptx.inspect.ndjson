@@ -1,0 +1,158 @@
+{"kind":"deck","id":"pr/7cpsm4","name":"Deck"}
+{"kind":"layout","layoutId":"/ppt/slideMasters/slideMaster1.xml","name":"Master","type":"master"}
+{"kind":"layout","layoutId":"/ppt/slideLayouts/slideLayout1.xml","name":"Title Slide","type":"title"}
+{"kind":"slide","id":"sl/y90nupkv","slide":1,"title":"Project 59","textShapes":54}
+{"kind":"textbox","id":"sh/8ra1oze9","slide":1,"name":"project","text":"Project 59","textPreview":"Project 59","textChars":10,"textLines":1,"bbox":[100,77.28,700,90]}
+{"kind":"textbox","id":"sh/547294r6","slide":1,"name":"title","text":"Interactive Social Guide Robot","textPreview":"Interactive Social Guide Robot","textChars":30,"textLines":1,"bbox":[100,123.71,1645,280]}
+{"kind":"textbox","id":"sh/k3yl0zql","slide":1,"name":"subtitle","text":"Decision making using a rule-based and an LLM-integrated navigation pipeline","textPreview":"Decision making using a rule-based and an LLM-integrated navigation pipeline","textChars":76,"textLines":1,"bbox":[102.64,275.78,1806.69,108]}
+{"kind":"shape","id":"sh/65g3298r","slide":1,"name":"background-shadow","bbox":[112.33,450.45,992.52,325]}
+{"kind":"shape","id":"sh/ts7md4r2","slide":1,"name":"background-panel","bbox":[97.33,434.45,992.52,325]}
+{"kind":"shape","id":"sh/sryl4zqx","slide":1,"name":"background-tab","bbox":[97.33,379.45,422.99,105]}
+{"kind":"textbox","id":"sh/fu94fe98","slide":1,"name":"background-heading","text":"Background","textPreview":"Background","textChars":10,"textLines":1,"bbox":[112.33,383.45,575,90]}
+{"kind":"textbox","id":"sh/utg3698n","slide":1,"name":"background-body","text":"A guide robot must recognise interest in interaction while roaming the laboratory. Changing gaze and distance, and missed detections, make this decision difficult.","textPreview":"A guide robot must recognise interest in interaction while roaming the laboratory. Changing gaze and distance, and missed detections, mak...","textChars":163,"textLines":1,"bbox":[130.01,505.96,922.52,250]}
+{"kind":"shape","id":"sh/wn6dc7eh","slide":1,"name":"objective-shadow","bbox":[1164.85,450.45,992.52,325]}
+{"kind":"shape","id":"sh/hofulsf2","slide":1,"name":"objective-panel","bbox":[1149.85,434.45,992.52,325]}
+{"kind":"shape","id":"sh/ul4vaxgb","slide":1,"name":"objective-tab","bbox":[1149.85,379.45,347.75,105]}
+{"kind":"textbox","id":"sh/vmdcj2xw","slide":1,"name":"objective-heading","text":"Objective","textPreview":"Objective","textChars":9,"textLines":1,"bbox":[1164.85,386.15,575,90]}
+{"kind":"textbox","id":"sh/4r6dg7et","slide":1,"name":"objective-body","text":"Develop a temporal social-state pipeline for Navel to support a comparison and evaluation of rule-based and LLM decisions in navigation scenarios","textPreview":"Develop a temporal social-state pipeline for Navel to support a comparison and evaluation of rule-based and LLM decisions in navigation s...","textChars":145,"textLines":1,"bbox":[1173.29,500.86,922.52,250]}
+{"kind":"shape","id":"sh/5sfepcfe","slide":1,"name":"research-question-shadow","bbox":[111.27,824.45,2045.04,165.25]}
+{"kind":"shape","id":"sh/ipovexwn","slide":1,"name":"research-question-band","bbox":[96.27,809.45,2045.04,165.25]}
+{"kind":"textbox","id":"sh/sfqdkrep","slide":1,"name":"research-question","text":"How can gaze and distance observations over time be structured into a shared social-state representation for rule-based and LLM decision-making?","textPreview":"How can gaze and distance observations over time be structured into a shared social-state representation for rule-based and LLM decision-...","textChars":144,"textLines":1,"bbox":[240.94,832.2,901.56,112]}
+{"kind":"shape","id":"sh/54r2poju","slide":1,"name":"results-shadow","bbox":[115,1841.64,2045.04,753.06]}
+{"kind":"shape","id":"sh/y5wjip0z","slide":1,"name":"results-panel","bbox":[100,1825.26,2045.04,750.98]}
+{"kind":"shape","id":"sh/dc7md8fe","slide":1,"name":"conclusion-shadow","bbox":[115,2690.72,2045.04,322.23]}
+{"kind":"shape","id":"sh/cby5k3yt","slide":1,"name":"conclusion-panel","bbox":[100,2674.72,2045.04,322.23]}
+{"kind":"shape","id":"sh/ra54bix8","slide":1,"name":"conclusion-tab","bbox":[100,2619.72,825.71,105]}
+{"kind":"textbox","id":"sh/q9wnidgn","slide":1,"name":"conclusion-heading","text":"Conclusion and future work","textPreview":"Conclusion and future work","textChars":26,"textLines":1,"bbox":[116.74,2627.66,1071,90]}
+{"kind":"textbox","id":"sh/3m547yxw","slide":1,"name":"students","text":"By Eddie Kim and Jeruh Kim","textPreview":"By Eddie Kim and Jeruh Kim","textChars":26,"textLines":1,"bbox":[102.64,3013.95,850,55]}
+{"kind":"textbox","id":"sh/9kr6lsfm","slide":1,"name":"contact","text":"Contact: hkim807@aucklanduni.ac.nz jkim828@aucklanduni.ac.nz \nSupervisor: Ho Seok Ahn","textPreview":"Contact: hkim807@aucklanduni.ac.nz jkim828@aucklanduni.ac.nz  | Supervisor: Ho Seok Ahn","textChars":85,"textLines":2,"bbox":[100.49,3058.01,870,76.82]}
+{"kind":"shape","id":"sh/7qp4be9c","slide":1,"name":"background-tab","bbox":[120.43,852.09,101.86,79.32]}
+{"kind":"textbox","id":"sh/wzy1szid","slide":1,"name":"background-heading","text":"RQ1","textPreview":"RQ1","textChars":3,"textLines":1,"bbox":[127.93,859.27,113.25,90]}
+{"kind":"textbox","id":"sh/h072l4jy","slide":1,"name":"research-question","text":"How well can an LLM’s decisions align with human preferences and appropriateness ratings, compared with those of a rule-based policy using the same representation?","textPreview":"How well can an LLM’s decisions align with human preferences and appropriateness ratings, compared with those of a rule-based policy usin...","textChars":163,"textLines":1,"bbox":[1270.51,829.02,901.56,112]}
+{"kind":"shape","id":"sh/yt8fyl87","slide":1,"name":"background-tab","bbox":[1149.76,849.24,101.86,79.32]}
+{"kind":"textbox","id":"sh/4ne5g3yh","slide":1,"name":"background-heading","text":"RQ2","textPreview":"RQ2","textChars":3,"textLines":1,"bbox":[1157.26,856.42,113.25,90]}
+{"kind":"shape","id":"sh/c7at4nql","slide":1,"name":"research-question-shadow","bbox":[1701.3,1129.57,462.51,188.5]}
+{"kind":"shape","id":"sh/raxszy9g","slide":1,"name":"research-question-shadow","bbox":[1172.16,1130.17,462.51,188.5]}
+{"kind":"shape","id":"sh/q9obqtsv","slide":1,"name":"research-question-shadow","bbox":[644.94,1130.78,462.51,188.5]}
+{"kind":"shape","id":"sh/u5cfy1sj","slide":1,"name":"research-question-shadow","bbox":[117.71,1131.4,462.51,188.5]}
+{"kind":"shape","id":"sh/v65w76t4","slide":1,"name":"pipeline-0","bbox":[104.71,1121.4,462.51,185.36]}
+{"kind":"textbox","id":"sh/g7ex0bap","slide":1,"name":"pipeline-title-0","text":"Navel Sensors","textPreview":"Navel Sensors","textChars":13,"textLines":1,"bbox":[130.48,1129.61,418.51,57.29]}
+{"kind":"shape","id":"sh/h8ne9gba","slide":1,"name":"pipeline-1","bbox":[632.22,1121.4,462.51,185.36]}
+{"kind":"textbox","id":"sh/m1cvuhcn","slide":1,"name":"pipeline-title-1","text":"Track History","textPreview":"Track History","textChars":13,"textLines":1,"bbox":[654.12,1131.49,418.51,57.29]}
+{"kind":"shape","id":"sh/72lw3mt8","slide":1,"name":"pipeline-2","bbox":[1159.73,1121.4,462.51,185.36]}
+{"kind":"textbox","id":"sh/83uxwrut","slide":1,"name":"pipeline-title-2","text":"Shared Social State","textPreview":"Shared Social State","textChars":19,"textLines":1,"bbox":[1181.63,1131.49,418.51,57.29]}
+{"kind":"textbox","id":"sh/t43e5wby","slide":1,"name":"pipeline-body-2","text":"A structured summary of the social context and available evidence","textPreview":"A structured summary of the social context and available evidence","textChars":65,"textLines":1,"bbox":[1179.22,1189.06,422.51,101.1]}
+{"kind":"shape","id":"sh/ydsvqhcb","slide":1,"name":"pipeline-3","bbox":[1687.24,1121.4,462.51,185.36]}
+{"kind":"textbox","id":"sh/zy1wzmtw","slide":1,"name":"pipeline-title-3","text":"Decision Policies","textPreview":"Decision Policies","textChars":17,"textLines":1,"bbox":[1701.23,1131.49,418.51,57.29]}
+{"kind":"textbox","id":"sh/14bqlozq","slide":1,"name":"pipeline-body-3","text":"Rule-based and LLM policies select an action from the same social state","textPreview":"Rule-based and LLM policies select an action from the same social state","textChars":71,"textLines":1,"bbox":[1706.73,1192.56,422.51,101.1]}
+{"kind":"shape","id":"sh/0329sjy5","slide":1,"name":"Straight Arrow Connector 370","bbox":[567.22,1214.08,65,0]}
+{"kind":"shape","id":"sh/z298jehk","slide":1,"name":"Straight Arrow Connector 371","bbox":[1094.73,1214.08,65,0]}
+{"kind":"shape","id":"sh/e107q9gz","slide":1,"name":"Straight Arrow Connector 372","bbox":[1622.24,1214.08,65,0]}
+{"kind":"textbox","id":"sh/d0rqh4zu","slide":1,"name":"pipeline-body-0","text":"Person detections, social cues and robot movement data","textPreview":"Person detections, social cues and robot movement data","textChars":54,"textLines":1,"bbox":[130.48,1201.9,416.64,96.57]}
+{"kind":"textbox","id":"sh/czipozi9","slide":1,"name":"pipeline-body-0","text":"Person histories, changes in attention and distance, and observation quality","textPreview":"Person histories, changes in attention and distance, and observation quality","textChars":76,"textLines":1,"bbox":[675.24,1191.23,376.78,96.57]}
+{"kind":"shape","id":"sh/qd07mp03","slide":1,"name":"act0-shadow","bbox":[115.14,1425.51,462.51,311.54]}
+{"kind":"shape","id":"sh/pcrqd4zi","slide":1,"name":"act0-card","bbox":[103.14,1412.51,462.51,311.54]}
+{"kind":"textbox","id":"sh/4bipkzix","slide":1,"name":"act0-title","text":"APPROACH","textPreview":"APPROACH","textChars":8,"textLines":1,"bbox":[123.14,1422.51,422.51,58]}
+{"kind":"textbox","id":"sh/gzqlgb69","slide":1,"name":"act0-scenario","text":"Interested person\nfarther away","textPreview":"Interested person | farther away","textChars":30,"textLines":2,"bbox":[125.14,1482.51,418.51,70]}
+{"kind":"textbox","id":"sh/h0jm9g7e","slide":1,"name":"act0-response","text":"Move closer","textPreview":"Move closer","textChars":11,"textLines":1,"bbox":[119.14,1676.51,430.51,42]}
+{"kind":"shape","id":"sh/ud83e1o3","slide":1,"name":"act0-robot-body","bbox":[168.14,1600.51,50,47]}
+{"kind":"shape","id":"sh/vyh476po","slide":1,"name":"act0-robot-head","bbox":[163.14,1572.51,60,37]}
+{"kind":"shape","id":"sh/43a5kb65","slide":1,"name":"act0-robot-eye1","bbox":[175.14,1584.51,11,11]}
+{"kind":"shape","id":"sh/54jmdg7q","slide":1,"name":"act0-robot-eye2","bbox":[200.14,1584.51,11,11]}
+{"kind":"shape","id":"sh/i1sniloz","slide":1,"name":"act0-robot-wheel1","bbox":[170.14,1642.51,13,13]}
+{"kind":"shape","id":"sh/3214b6pk","slide":1,"name":"act0-robot-wheel2","bbox":[203.14,1642.51,13,13]}
+{"kind":"shape","id":"sh/s7u5ov61","slide":1,"name":"act0-person-head","bbox":[446.14,1569.51,26,26]}
+{"kind":"shape","id":"sh/d83mh07m","slide":1,"name":"act0-person-body","bbox":[459.14,1602.51,1,34]}
+{"kind":"shape","id":"sh/nepg3ed0","slide":1,"name":"act0-person-arms","bbox":[438.14,1606.51,42,15]}
+{"kind":"shape","id":"sh/mdgfutcv","slide":1,"name":"act0-person-legs","bbox":[440.14,1634.51,38,28]}
+{"kind":"shape","id":"sh/907y5ov6","slide":1,"name":"act0-attention","bbox":[228.14,1588.51,208,1]}
+{"kind":"shape","id":"sh/8zyxwjul","slide":1,"name":"act0-attention-tip","bbox":[227.14,1583.51,12,10]}
+{"kind":"shape","id":"sh/za5gzed4","slide":1,"name":"act0-motion","bbox":[242.14,1623.51,156,21]}
+{"kind":"shape","id":"sh/lcny1ova","slide":1,"name":"act1-shadow","bbox":[642.66,1425.51,462.51,311.54]}
+{"kind":"shape","id":"sh/0bexsjup","slide":1,"name":"act1-card","bbox":[630.66,1412.51,462.51,311.54]}
+{"kind":"textbox","id":"sh/j69gbyd8","slide":1,"name":"act1-title","text":"ENGAGE","textPreview":"ENGAGE","textChars":6,"textLines":1,"bbox":[650.66,1422.51,422.51,58]}
+{"kind":"textbox","id":"sh/i50z2dcn","slide":1,"name":"act1-scenario","text":"Interested person\nalready nearby","textPreview":"Interested person | already nearby","textChars":32,"textLines":2,"bbox":[652.66,1482.51,418.51,70]}
+{"kind":"textbox","id":"sh/7exg761s","slide":1,"name":"act1-response","text":"Stop and greet","textPreview":"Stop and greet","textChars":14,"textLines":1,"bbox":[646.66,1676.51,430.51,42]}
+{"kind":"shape","id":"sh/mdofy1k7","slide":1,"name":"act1-robot-body","bbox":[778.66,1606.51,50,47]}
+{"kind":"shape","id":"sh/9gzy9gjy","slide":1,"name":"act1-robot-head","bbox":[773.66,1578.51,60,37]}
+{"kind":"shape","id":"sh/8f6x0b2d","slide":1,"name":"act1-robot-eye1","bbox":[785.66,1590.51,11,11]}
+{"kind":"shape","id":"sh/zqxg361w","slide":1,"name":"act1-robot-eye2","bbox":[810.66,1590.51,11,11]}
+{"kind":"shape","id":"sh/ypofa1kb","slide":1,"name":"act1-robot-wheel1","bbox":[780.66,1648.51,13,13]}
+{"kind":"shape","id":"sh/lcfy5gjm","slide":1,"name":"act1-robot-wheel2","bbox":[813.66,1648.51,13,13]}
+{"kind":"shape","id":"sh/kb6xwb21","slide":1,"name":"act1-person-head","bbox":[913.66,1569.51,26,26]}
+{"kind":"shape","id":"sh/3mhgfq10","slide":1,"name":"act1-person-body","bbox":[926.66,1602.51,1,34]}
+{"kind":"shape","id":"sh/il8z6lkf","slide":1,"name":"act1-person-arms","bbox":[905.66,1606.51,42,15]}
+{"kind":"shape","id":"sh/0r2d0nix","slide":1,"name":"act1-person-legs","bbox":[907.66,1634.51,38,28]}
+{"kind":"shape","id":"sh/1sbu9szi","slide":1,"name":"act1-attention","bbox":[837.66,1589.51,65,1]}
+{"kind":"shape","id":"sh/ep0vyx0r","slide":1,"name":"act1-attention-tip","bbox":[836.66,1584.51,12,10]}
+{"kind":"shape","id":"sh/fqtc7ihc","slide":1,"name":"act1-speech","bbox":[672.66,1557.51,118,44]}
+{"kind":"textbox","id":"sh/ov2d47it","slide":1,"name":"act1-speech-text","text":"Hello!","textPreview":"Hello!","textChars":6,"textLines":1,"bbox":[679.66,1560.51,102,34]}
+{"kind":"shape","id":"sh/2tkv2x03","slide":1,"name":"act2-shadow","bbox":[1170.17,1425.51,462.51,311.54]}
+{"kind":"shape","id":"sh/nutcb2ho","slide":1,"name":"act2-card","bbox":[1158.17,1412.51,462.51,311.54]}
+{"kind":"textbox","id":"sh/cjmd87i5","slide":1,"name":"act2-title","text":"YIELD","textPreview":"YIELD","textChars":5,"textLines":1,"bbox":[1178.17,1422.51,422.51,58]}
+{"kind":"textbox","id":"sh/xkvehczq","slide":1,"name":"act2-scenario","text":"Person needs\nroom to pass","textPreview":"Person needs | room to pass","textChars":25,"textLines":2,"bbox":[1180.17,1482.51,418.51,70]}
+{"kind":"textbox","id":"sh/lgru1cru","slide":1,"name":"act2-response","text":"Give room to pass","textPreview":"Give room to pass","textChars":17,"textLines":1,"bbox":[1174.17,1676.51,430.51,42]}
+{"kind":"shape","id":"sh/kfids7a9","slide":1,"name":"act2-person-head","bbox":[1235.17,1557.51,26,26]}
+{"kind":"shape","id":"sh/je9cz29o","slide":1,"name":"act2-person-body","bbox":[1248.17,1590.51,1,34]}
+{"kind":"shape","id":"sh/yd0vqxs3","slide":1,"name":"act2-person-arms","bbox":[1227.17,1594.51,42,15]}
+{"kind":"shape","id":"sh/t4bu5crq","slide":1,"name":"act2-person-legs","bbox":[1229.17,1622.51,38,28]}
+{"kind":"shape","id":"sh/832dwra5","slide":1,"name":"act2-person-motion","bbox":[1296.17,1599.51,151,20]}
+{"kind":"shape","id":"sh/729c3m90","slide":1,"name":"act2-robot-body","bbox":[1487.17,1626.03,42,39.48]}
+{"kind":"shape","id":"sh/6h0vuhsf","slide":1,"name":"act2-robot-head","bbox":[1482.97,1602.51,50.4,31.08]}
+{"kind":"shape","id":"sh/987utsrm","slide":1,"name":"act2-robot-eye1","bbox":[1493.05,1612.59,9.24,9.24]}
+{"kind":"shape","id":"sh/o7ydkna1","slide":1,"name":"act2-robot-eye2","bbox":[1514.05,1612.59,9.24,9.24]}
+{"kind":"shape","id":"sh/e1cjep4n","slide":1,"name":"act2-robot-wheel1","bbox":[1488.85,1661.31,10.92,10.92]}
+{"kind":"shape","id":"sh/f2l07ul8","slide":1,"name":"act2-robot-wheel2","bbox":[1516.57,1661.31,10.92,10.92]}
+{"kind":"shape","id":"sh/03u1gzmt","slide":1,"name":"act2-robot-motion","bbox":[1498.17,1560.51,20,35]}
+{"kind":"shape","id":"sh/25cji94z","slide":1,"name":"act3-shadow","bbox":[1697.68,1425.51,462.51,311.54]}
+{"kind":"shape","id":"sh/n6lkbel4","slide":1,"name":"act3-card","bbox":[1685.68,1412.51,462.51,311.54]}
+{"kind":"textbox","id":"sh/o7e1kjmp","slide":1,"name":"act3-title","text":"CONTINUE","textPreview":"CONTINUE","textChars":8,"textLines":1,"bbox":[1705.68,1422.51,422.51,58]}
+{"kind":"textbox","id":"sh/p8n2do3a","slide":1,"name":"act3-scenario","text":"No sustained\ninterest in interaction","textPreview":"No sustained | interest in interaction","textChars":36,"textLines":2,"bbox":[1707.68,1482.51,418.51,70]}
+{"kind":"textbox","id":"sh/i9sj654f","slide":1,"name":"act3-response","text":"Stay on the route","textPreview":"Stay on the route","textChars":17,"textLines":1,"bbox":[1701.68,1676.51,430.51,42]}
+{"kind":"shape","id":"sh/3a10zal0","slide":1,"name":"act3-robot-body","bbox":[1752.68,1610.51,50,47]}
+{"kind":"shape","id":"sh/j6tg36do","slide":1,"name":"act3-robot-head","bbox":[1747.68,1582.51,60,37]}
+{"kind":"shape","id":"sh/y5kza1wj","slide":1,"name":"act3-robot-eye1","bbox":[1759.68,1594.51,11,11]}
+{"kind":"shape","id":"sh/l8by5gvu","slide":1,"name":"act3-robot-eye2","bbox":[1784.68,1594.51,11,11]}
+{"kind":"shape","id":"sh/k72hcbe9","slide":1,"name":"act3-robot-wheel1","bbox":[1754.68,1652.51,13,13]}
+{"kind":"shape","id":"sh/7utg76d0","slide":1,"name":"act3-robot-wheel2","bbox":[1787.68,1652.51,13,13]}
+{"kind":"shape","id":"sh/69kzelwf","slide":1,"name":"act3-person-head","bbox":[2011.68,1558.51,26,26]}
+{"kind":"shape","id":"sh/twvy9gv6","slide":1,"name":"act3-person-body","bbox":[2024.68,1591.51,1,34]}
+{"kind":"shape","id":"sh/8v2hgbel","slide":1,"name":"act3-person-arms","bbox":[2003.68,1595.51,42,15]}
+{"kind":"shape","id":"sh/fydgbqdw","slide":1,"name":"act3-person-legs","bbox":[2005.68,1623.51,38,28]}
+{"kind":"shape","id":"sh/ux4z2lwb","slide":1,"name":"act3-robot-motion","bbox":[1824.68,1639.51,169,20]}
+{"kind":"shape","id":"sh/c36xsvup","slide":1,"name":"act3-person-motion","bbox":[2058.68,1595.51,53,18]}
+{"kind":"shape","id":"sh/d4fy10ba","slide":1,"name":"branch-from-policies","bbox":[1917.98,1313.29,1,58]}
+{"kind":"shape","id":"sh/q14fqlcj","slide":1,"name":"branch-output-bus","bbox":[334.4,1371.29,1582.53,1]}
+{"kind":"shape","id":"sh/r2dgzqt4","slide":1,"name":"branch-drop-0","bbox":[334.4,1371.29,1,29]}
+{"kind":"shape","id":"sh/4zmxovut","slide":1,"name":"branch-tip-0","bbox":[330.4,1397.8,8,14]}
+{"kind":"shape","id":"sh/p0vyxgby","slide":1,"name":"branch-drop-1","bbox":[861.91,1371.29,1,29]}
+{"kind":"shape","id":"sh/2x4fmlcn","slide":1,"name":"branch-tip-1","bbox":[857.91,1398.14,8,14]}
+{"kind":"shape","id":"sh/3ydgvqt8","slide":1,"name":"branch-drop-2","bbox":[1389.42,1371.29,1,29]}
+{"kind":"shape","id":"sh/gvmxkbuh","slide":1,"name":"branch-tip-2","bbox":[1385.42,1396.29,8,14]}
+{"kind":"shape","id":"sh/hwvytgb2","slide":1,"name":"branch-drop-3","bbox":[1917.93,1370.9,1,29]}
+{"kind":"shape","id":"sh/xg3m18ze","slide":1,"name":"branch-tip-3","bbox":[1914.17,1397.08,7.53,14.21]}
+{"kind":"textbox","id":"sh/wfu583i9","slide":1,"name":"branch-label","text":"Four possible actions","textPreview":"Four possible actions","textChars":21,"textLines":1,"bbox":[978.71,1331.38,305.97,37.39]}
+{"kind":"shape","id":"sh/adsn6t03","slide":1,"name":"background-tab","bbox":[104.71,1015.82,274.74,97.58]}
+{"kind":"textbox","id":"sh/9sjmx8zi","slide":1,"name":"background-heading","text":"Pipeline\n","textPreview":"Pipeline |","textChars":9,"textLines":2,"bbox":[115.38,1020.21,512.3,83.64]}
+{"kind":"shape","id":"sh/ora543ix","slide":1,"name":"background-tab","bbox":[99.96,1751.43,238.44,97.58]}
+{"kind":"textbox","id":"sh/nq14vyhc","slide":1,"name":"background-heading","text":"Results","textPreview":"Results","textChars":7,"textLines":1,"bbox":[110.09,1752.35,512.3,83.64]}
+{"kind":"textbox","id":"sh/8ne5gnih","slide":1,"name":"result-policy-heading","text":"First outputs by scenario","textPreview":"First outputs by scenario","textChars":25,"textLines":1,"bbox":[139.84,1867.09,963.78,68.03]}
+{"kind":"textbox","id":"sh/qtojapgj","slide":1,"name":"result-timing-heading","text":"Timing and delivery","textPreview":"Timing and delivery","textChars":19,"textLines":1,"bbox":[1205.67,1867.09,895.75,68.03]}
+{"kind":"textbox","id":"sh/cvq1czyp","slide":1,"name":"time-label","text":"Median time to first output","textPreview":"Median time to first output","textChars":27,"textLines":1,"bbox":[1205.67,1950.24,907.09,49.13]}
+{"kind":"textbox","id":"sh/dwz254fa","slide":1,"name":"rule-time-label","text":"RULES","textPreview":"RULES","textChars":5,"textLines":1,"bbox":[1205.67,2006.93,400.63,41.57]}
+{"kind":"textbox","id":"sh/2poj6pgn","slide":1,"name":"llm-time-label","text":"LLM","textPreview":"LLM","textChars":3,"textLines":1,"bbox":[1662.99,2006.93,400.63,41.57]}
+{"kind":"textbox","id":"sh/3qxkzax8","slide":1,"name":"rule-time-value","text":"1.09 s","textPreview":"1.09 s","textChars":6,"textLines":1,"bbox":[1205.67,2044.72,411.97,90.71]}
+{"kind":"textbox","id":"sh/4r618fyt","slide":1,"name":"llm-time-value","text":"11.46 s","textPreview":"11.46 s","textChars":7,"textLines":1,"bbox":[1662.99,2044.72,434.65,90.71]}
+{"kind":"textbox","id":"sh/psf21kfe","slide":1,"name":"accept-label","text":"Client accepted per repetition","textPreview":"Client accepted per repetition","textChars":30,"textLines":1,"bbox":[1205.67,2192.13,907.09,49.13]}
+{"kind":"textbox","id":"sh/ml8ji9gr","slide":1,"name":"rule-accept-label","text":"RULES","textPreview":"RULES","textChars":5,"textLines":1,"bbox":[1205.67,2252.6,400.63,41.57]}
+{"kind":"textbox","id":"sh/nm1kbexc","slide":1,"name":"llm-accept-label","text":"LLM","textPreview":"LLM","textChars":3,"textLines":1,"bbox":[1662.99,2252.6,400.63,41.57]}
+{"kind":"textbox","id":"sh/vixkvepg","slide":1,"name":"rule-accept-value","text":"9/9","textPreview":"9/9","textChars":3,"textLines":1,"bbox":[1205.67,2290.39,411.97,90.71]}
+{"kind":"textbox","id":"sh/ahojm98v","slide":1,"name":"llm-accept-value","text":"1/9","textPreview":"1/9","textChars":3,"textLines":1,"bbox":[1662.99,2290.39,434.65,90.71]}
+{"kind":"textbox","id":"sh/x4f2x47m","slide":1,"name":"state-match","text":"Initial SocialState matched in 27/27 paired replays.","textPreview":"Initial SocialState matched in 27/27 paired replays.","textChars":52,"textLines":1,"bbox":[1205.67,2396.22,895.75,52.91]}
+{"kind":"textbox","id":"sh/wj61ojq1","slide":1,"name":"results-note","text":"First validated output, including CONTINUE. Three replays of nine scenarios. Survey judgments concern video endings, so human alignment is not scored here.","textPreview":"First validated output, including CONTINUE. Three replays of nine scenarios. Survey judgments concern video endings, so human alignment i...","textChars":155,"textLines":1,"bbox":[139.84,2479.37,1969.13,75.59]}
+{"kind":"textbox","id":"sh/nedkrupk","slide":1,"name":"conclusion-copy","text":"Both policies produced valid decisions from identical initial evidence. Rules reached the client sooner and were accepted in 9/9 scenarios, compared with 1/9 for the LLM. Further work should align policy decisions with survey video endings and test delivery on new live encounters.","textPreview":"Both policies produced valid decisions from identical initial evidence. Rules reached the client sooner and were accepted in 9/9 scenario...","textChars":281,"textLines":1,"bbox":[136.06,2732.6,1972.91,207.87]}
+{"kind":"textbox","id":"sh/md4jip8z","slide":1,"name":"conclusion-limitation","text":"Offline replay; no robot movement or matched-time human rating of policy outputs.","textPreview":"Offline replay; no robot movement or matched-time human rating of policy outputs.","textChars":81,"textLines":1,"bbox":[136.06,2940.47,1972.91,37.8]}
+{"kind":"table","id":"tb/6pk3utcr","slide":1,"name":"","rows":10,"cols":3,"preview":"Scenario | Rules | LLM (3 runs)","bbox":[139.84,1942.68,1005.35,521.57]}
+{"kind":"image","id":"im/jep0buxc","slide":1,"name":"Picture 74","bbox":[1928.1,32.48,290.89,339.59]}
+{"kind":"image","id":"im/sjihozy9","slide":1,"name":"Picture 135","bbox":[1855.49,2991.73,304.55,154.43]}
+{"kind":"notes","id":"nt/y90nupkv","slide":1,"text":"Draft poster for Project 59. Students: Eddie Kim and Jeruh Kim. Supervisor: Ho Seok Ahn. Contact: hkim807@aucklanduni.ac.nz.\n\nSources: /Users/eddiekim/Downloads/Poster Design Guide.pdf (A1 portrait, required fields, PDF <50 MB). Its 2024 deadline is historical. /Users/eddiekim/Downloads/Speech_Nilushika2023.pdf. Layout reference: /Users/eddiekim/Downloads/Poster_77 (1).pdf.\n\nSurvey source: /Users/eddiekim/Downloads/Human Evaluation of Robot Behaviour (Responses).xlsx, Form responses 1. Preference counts and all 36 rating means independently verified against config/human-reference.json. Every preference bar sums to 37. Unable to judge is a survey response, not an action.\n\nPipeline source: docs/results/first-action-live-output/results.csv, report.md, verification.json. Nine SDK captures, first valid policy output, identical initial eligible states. qwen2.5:7b, temperature 0, seed 42, warmed model. Times are from replay start, not inference latency. All actions NOT_EXECUTED_OFFLINE.\n\nBoth policies produce outputs in S2,S3,S9. Six no-action cases remain in coverage denominator. LLM outputs fail live-client acceptance (S2 stale observation, S3 gaze not ready, S9 person no longer visible). Acceptance/timings reflect one development replay and may vary.\n\nThe survey clips are trimmed and trim offsets are unavailable. This prevents survey-end human-alignment scoring. Initial survey is completed. Human evaluation of actual completed-system behaviour is future work. Do not claim VLM/hybrid results or policy superiority.\n\nNavel product image: https://navelrobotics.com/wp-content/uploads/2025/02/Navel0157-scaled.jpg via https://navelrobotics.com/en/navel-the-new-empathy-robot-for-good-care/. University logo extracted unchanged from supplied exemplar. Official department logo is a labelled draft field. No sponsor confirmed.\n\nFonts Rubik and Noto Sans are design selections evoking the robot, not verified official brand fonts.\n\nEvaluation sources: var/evaluation/poster-20261011-final-first-output-01/graph_data/scenario_comparison.csv and first_output_coverage.csv; output/poster/Evaluation_Findings_and_Poster_Plan_2026-10-11.md. Numbers describe the final scenario preset, first validated policy output, three paired replays, and offline SingleTrial client acceptance. First-output elapsed time includes evidence accumulation. Survey responses concern video endings and were not scored against these outputs. No physical execution.\n"}
