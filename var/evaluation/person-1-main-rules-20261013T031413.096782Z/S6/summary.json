@@ -1,0 +1,129 @@
+{
+  "scenario": "S6",
+  "input": "/home/anyone/Documents/P4P/var/recordings/person-1-S6-sdk.jsonl",
+  "source_sha256": "a4470c102a7c51581e760338bde8a91005a8663d44cfcea4aa4dace8d681a49b",
+  "sdk_packet_counts": {
+    "locomotion": 269,
+    "perception": 270
+  },
+  "perception_frames": 270,
+  "duration_s": 26.875027,
+  "person_count_frames": {
+    "0": 54,
+    "1": 184,
+    "2": 32
+  },
+  "first_decision": {
+    "offset_s": 1.099237,
+    "source_line": 24,
+    "decision": {
+      "action": "CONTINUE",
+      "reason": "No person has been detected throughout the configured observation interval; continue along the route without initiating interaction."
+    },
+    "reason_code": "NO_PERSON_OBSERVED",
+    "decision_state": {
+      "no_person_observed_s": 1.099237,
+      "observation_readiness": "READY",
+      "people": [],
+      "readiness_reason": "OBSERVATIONS_AVAILABLE",
+      "robot": {
+        "motion_description": "Measured robot translation and rotation are within stationary tolerances.",
+        "motion_state": "STATIONARY"
+      },
+      "schema_version": 3
+    }
+  },
+  "first_decision_with_person": {
+    "offset_s": 8.275913,
+    "source_line": 167,
+    "decision": {
+      "action": "CONTINUE",
+      "reason": "Gaze evidence is classified as no attention; continue along the fixed route."
+    },
+    "reason_code": "NO_ATTENTION",
+    "decision_state": {
+      "no_person_observed_s": 0.0,
+      "observation_readiness": "READY",
+      "people": [
+        {
+          "distance_zone": "APPROACHABLE",
+          "evidence": {
+            "distance_trend_valid": false,
+            "gaze_fraction": 0.0,
+            "gaze_valid": true,
+            "latest_distance_valid": true,
+            "latest_gaze_looking": false,
+            "latest_gaze_overlap": 0.5,
+            "looking_bouts": 0,
+            "looking_exit_threshold": 0.9,
+            "looking_time_s": 0.0,
+            "sustained_gaze_s": 0.0
+          },
+          "face_detected": true,
+          "gaze_state": "NONE",
+          "latest_distance_m": 2.232631591796875,
+          "observation_labels": {
+            "attention_over_time": "Little or no looking at the robot during the recent observation window.",
+            "corridor_position": "Position estimate is beside the robot forward corridor; future clearance is unknown.",
+            "current_gaze": "Latest gaze sample is classified as not looking at the robot.",
+            "face_detection": "A face was detected; facing the robot is not established.",
+            "proximity": "Beyond conversation distance, within the configured social range.",
+            "relative_separation": "Recent robot-person distance trend is unavailable or unreliable.",
+            "version": 3
+          },
+          "path_position": "TO_SIDE",
+          "relative_distance_trend": "UNKNOWN",
+          "visibility": "OBSERVED"
+        }
+      ],
+      "readiness_reason": "OBSERVATIONS_AVAILABLE",
+      "robot": {
+        "motion_description": "Measured robot translation and rotation are within stationary tolerances.",
+        "motion_state": "STATIONARY"
+      },
+      "schema_version": 3
+    }
+  },
+  "last_decision": {
+    "offset_s": 26.875027,
+    "source_line": 539,
+    "decision": {
+      "action": "CONTINUE",
+      "reason": "No person has been detected throughout the configured observation interval; continue along the route without initiating interaction."
+    },
+    "reason_code": "NO_PERSON_OBSERVED",
+    "decision_state": {
+      "no_person_observed_s": 3.186121,
+      "observation_readiness": "READY",
+      "people": [],
+      "readiness_reason": "OBSERVATIONS_AVAILABLE",
+      "robot": {
+        "motion_description": "Measured robot translation and rotation are within stationary tolerances.",
+        "motion_state": "STATIONARY"
+      },
+      "schema_version": 3
+    }
+  },
+  "action_counts": {
+    "CONTINUE": 131
+  },
+  "reason_counts": {
+    "NO_PERSON_OBSERVED": 33,
+    "NO_ATTENTION": 60,
+    "PERSON_TO_SIDE": 1,
+    "NO_INTERACTION_CUE": 37
+  },
+  "observing_counts": {
+    "NO_VISIBLE_PERSON": 21,
+    "INSUFFICIENT_GAZE_EVIDENCE": 79,
+    "MULTIPLE_VISIBLE_PEOPLE": 32,
+    "DISTANCE_UNKNOWN": 7
+  },
+  "action_transitions": [
+    {
+      "offset_s": 1.099237,
+      "action": "CONTINUE",
+      "reason_code": "NO_PERSON_OBSERVED"
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "scenario": "S5",
+  "input": "/home/anyone/Documents/P4P/var/recordings/motion-validated-20261013-01/trimmed/person-1-S5-sdk.jsonl",
+  "input_sha256": "40f20fb7caf511f3a0c1f1226d9b7b611031d77dc895598fcdea3513f6c705c1",
+  "status": "RECORDING_ENDED_NO_ACTION",
+  "first_output": null,
+  "frames_ingested": 73,
+  "observing_counts": {
+    "NO_VISIBLE_PERSON": 69,
+    "INSUFFICIENT_GAZE_EVIDENCE": 4
+  },
+  "stop_since_motion_s": 7.260032,
+  "first_perception_since_motion_s": 0.08333,
+  "motion_start_monotonic_us": 88923824852,
+  "last_readiness": {
+    "reason_code": "INSUFFICIENT_GAZE_EVIDENCE",
+    "status": "OBSERVING"
+  },
+  "last_decision_state": {
+    "no_person_observed_s": 0.0,
+    "observation_readiness": "NOT_READY",
+    "people": [
+      {
+        "distance_zone": "APPROACHABLE",
+        "evidence": {
+          "distance_trend_valid": false,
+          "gaze_fraction": 0.0,
+          "gaze_valid": false,
+          "latest_distance_valid": true,
+          "latest_gaze_looking": false,
+          "latest_gaze_overlap": 0.5,
+          "looking_bouts": 0,
+          "looking_exit_threshold": 0.95,
+          "looking_time_s": 0.0,
+          "sustained_gaze_s": 0.0
+        },
+        "face_detected": true,
+        "gaze_state": "UNKNOWN",
+        "latest_distance_m": 3.501176513671875,
+        "observation_labels": {
+          "attention_over_time": "Looking history is unavailable or insufficient.",
+          "corridor_position": "Position estimate is inside the robot forward corridor; future obstruction is unknown.",
+          "current_gaze": "Latest gaze sample is classified as not looking at the robot.",
+          "face_detection": "A face was detected; facing the robot is not established.",
+          "proximity": "Beyond conversation distance, within the configured social range.",
+          "relative_separation": "Recent robot-person distance trend is unavailable or unreliable.",
+          "version": 3
+        },
+        "path_position": "IN_WAY",
+        "relative_distance_trend": "UNKNOWN",
+        "visibility": "OBSERVED"
+      }
+    ],
+    "readiness_reason": "INSUFFICIENT_GAZE_EVIDENCE",
+    "robot": {
+      "motion_description": "Measured robot translation and rotation are within stationary tolerances.",
+      "motion_state": "STATIONARY"
+    },
+    "schema_version": 3
+  },
+  "physical_execution": false
+}

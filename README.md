@@ -27,6 +27,38 @@ provide the foundation for the standalone SocialState policy and
 scripts; the default collector does not invoke them. `--head-focus` calls the
 Navel head API when enabled.
 
+## Reobserve after CONTINUE
+
+For a moving live encounter, add `--reobserve-on-continue` to single-trial
+execution. CONTINUE performs its existing head glance, keeps the original route
+running, and returns to decision-making after the head returns to neutral.
+Observations keep streaming and temporal history is retained. APPROACH, ENGAGE,
+and YIELD execute once and finish the run as before. Without the flag, the
+original first-accepted-action behaviour is unchanged.
+
+On Navel, with the receiver and reverse SSH tunnel already running:
+
+```bash
+python3 -m robot.navel_client.main \
+  --server http://127.0.0.1:16060 \
+  --single-trial --single-trial-execute --single-trial-policy rules \
+  --route-trial --route-distance 10 --route-speed 0.1 --route-acceleration 0.2 \
+  --reobserve-on-continue
+```
+
+Use `--single-trial-policy llm` with the existing LLM-enabled receiver for the
+model condition. Each cycle gets a new trial ID; previous model results cannot
+control the next cycle. The default `--continue-reobserve-delay 1` adds one second
+after the existing head sequence before rearming on a fresh observation. The
+30-second decision wait applies per cycle. The overall `--reobserve-timeout 120`
+bounds the loop, and the original route finishing also ends it. Final non-CONTINUE
+actions retain their existing behaviour timeout. Timeouts and errors stop the
+run rather than restarting the route.
+
+Every accepted action is logged, including CONTINUE, followed by an OBSERVING
+entry for the next cycle. This mode measures a sequence of decisions; retain the
+original mode when evaluating only the first accepted action.
+
 ## Data flow
 
 ```text

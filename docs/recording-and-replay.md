@@ -76,6 +76,50 @@ with an error rather than silently losing records. The SDK itself returns the
 newest available sample, so its API may skip intermediate generated samples
 if collection cannot keep up. A fresh run requires a fresh output path.
 
+## Validate and trim SDK recordings at motion onset
+
+From the repository root, validate every top-level `*sdk.jsonl` recording and
+save separate motion-trimmed copies:
+
+```bash
+.venv/bin/python -m scripts.validate_trim_recordings var/recordings \
+  --output-dir var/recordings/motion-validated-01
+```
+
+Choose a new output directory for each run. For just the person-1 scenarios,
+replace `var/recordings` with `var/recordings/person-1-S*-sdk.jsonl`. Explicit
+file paths also work; `--recursive` includes SDK files in subdirectories.
+
+The tool validates JSON and SDK envelopes, both packet streams, capture session
+identity, contiguous sequences starting at one, receipt order, required perception
+and velocity data, and stream coverage at recording boundaries. Per-stream receipt
+gaps above `--max-gap-s 0.25` are rejected. Native SDK timestamp gaps above
+`--source-gap-factor 1.5` times each stream's median interval are flagged as
+possible skipped sensor samples, including skips before capture sequence numbers
+were assigned. Native timestamp units are not assumed. Unavailable native timing
+is reported explicitly. Different perception/locomotion totals are allowed because
+the streams are independent; zero detected people is valid perception data.
+
+Valid recordings are trimmed from the first locomotion packet with measured
+`abs(linear_x) > 0.02 m/s` or `abs(angular_z) > 0.03 rad/s`, matching the social
+pipeline's default stationary tolerances. Override these using `--linear-threshold`
+and `--angular-threshold`. This uses the first threshold crossing, including a
+brief motion event; it does not require sustained movement. Stationary captures
+are marked `NO_MOVEMENT`, and invalid captures are skipped.
+
+`report.json` records validation issues, source/output hashes, motion timestamps,
+removed packet counts and sequence mappings; `summary.csv` provides one row per
+input. Copies live in `trimmed/` and start with the locomotion packet proving motion.
+Original files, SDK packet contents, session IDs and timestamps are preserved.
+Only envelope sequence numbers restart at one per stream, so existing SDK replay
+readers accept the copies. The report maps these numbers back to the originals.
+
+The command returns 1 if any input is invalid or cannot retain both streams after
+trimming, while still processing the other inputs; 2 means a setup or I/O error.
+Capture sequences can establish missing received packets. Timing checks can suggest
+upstream sample loss, but cannot prove all hardware-generated samples were delivered
+or detect loss before recording started or after it ended.
+
 ## Record through the working reverse tunnel
 
 For offline gaze-vector analysis of a full SDK capture, see the

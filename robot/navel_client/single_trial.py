@@ -39,6 +39,10 @@ class SingleTrial:
         self._decision_person_uid = None
         self.monotonic, self.monotonic_us = monotonic, monotonic_us
         self.deadline = monotonic() + wait_timeout_s
+        self.wait_timeout_s = wait_timeout_s
+        self.overall_deadline = None
+        self.cycle = 1
+        self._observe_after_us = None
         self.max_age_us = round(max_age_s * 1_000_000)
         self.model_max_age_us = round(model_max_age_s * 1_000_000)
 
@@ -65,12 +69,46 @@ class SingleTrial:
         return self.phase in {"COMPLETED", "FAILED"}
 
     def tick(self):
+        if (self.overall_deadline is not None and self.monotonic() >= self.overall_deadline
+                and not self.terminal and (self.decision is None or self.decision["action"] == "CONTINUE")):
+            self.fail("REOBSERVE_TIMEOUT")
         if self.phase == "OBSERVING" and self.monotonic() >= self.deadline:
             self.fail("NO_DECISION_TIMEOUT")
+
+    def reobserve_after_continue(self):
+        """Rearm the same collector-facing object, retaining session and local sensors."""
+        if self.phase != "EXECUTING" or self.decision is None or self.decision["action"] != "CONTINUE":
+            raise ValueError("only an executed CONTINUE can return to observation")
+        previous_trial_id = self.trial_id
+        self.trial_id = uuid4().hex
+        self.cycle += 1
+        self.pending_request = self.retry_request_id = None
+        self._decision = self._source = self._latest_source = None
+        self._decision_person_uid = None
+        self.ready = self._empty_ready = self._latest_trend_valid = False
+        self._readiness_key = None
+        self._observe_after_us = self.monotonic_us()
+        self.deadline = self.monotonic() + self.wait_timeout_s
+        self.phase = "OBSERVING"
+        logger.info("single_trial phase=OBSERVING cycle=%s trial_id=%s previous_trial_id=%s",
+                    self.cycle, self.trial_id, previous_trial_id)
+
+    def complete_continuing_route(self):
+        """The retained route finished after at least one CONTINUE."""
+        if (not self.terminal and (self.cycle > 1 or
+                (self.decision is not None and self.decision["action"] == "CONTINUE"))):
+            self.phase = "COMPLETED"
+            logger.info("single_trial phase=COMPLETED reason=ROUTE_FINISHED_AFTER_CONTINUE")
+            return True
+        return False
 
     def note_observation(self, observation):
         # Called by the collector, including while either HTTP task is waiting.
         self._local_observation = observation
+
+    def is_current_cycle_observation(self, timestamp):
+        return (self._observe_after_us is None or
+                (type(timestamp) is int and timestamp > self._observe_after_us))
 
     def model_identity(self):
         return {"trial_id": self.trial_id, "session_id": self.session_id, "policy": self.policy}
@@ -122,6 +160,8 @@ class SingleTrial:
             return
         state = payload.get("social_state")
         timestamp = observation.get("timestamp")
+        if not self.is_current_cycle_observation(timestamp):
+            return
         if (not isinstance(state, Mapping) or type(timestamp) is not int or timestamp < 0
                 or type(payload.get("timestamp")) is not int or payload["timestamp"] != timestamp
                 or type(state.get("robot_timestamp_us")) is not int or state["robot_timestamp_us"] != timestamp

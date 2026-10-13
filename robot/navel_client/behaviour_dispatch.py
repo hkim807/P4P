@@ -19,7 +19,8 @@ class BehaviourNotImplemented(RuntimeError):
 async def continue_route(context):
     if context.route is None or context.route.task is None or context.route.stopped:
         raise RuntimeError("CONTINUE requires the retained baseline route task")
-    await context.route.task
+    if not context.reobserve_on_continue:
+        await context.route.task
 
 
 async def approach_person(context):
@@ -107,6 +108,7 @@ class BehaviourContext:
     approach_result: object = None
     timeout_s: float = 120.0
     local_target_uid: int | None = None
+    reobserve_on_continue: bool = False
     _tasks: set = field(default_factory=set, init=False, repr=False)
     _closing: bool = field(default=False, init=False, repr=False)
 
@@ -122,7 +124,7 @@ class BehaviourContext:
 
 class BehaviourDispatcher:
     def __init__(self, trial, robot, *, route=None, head=None, trial_head=None,
-                 timeout_s=120.0, handlers=None):
+                 timeout_s=120.0, handlers=None, reobserve_on_continue=False):
         if not math.isfinite(timeout_s) or not 0 < timeout_s <= 3600:
             raise ValueError("behaviour timeout must be positive and at most 3600 seconds")
         self.handlers = {**HANDLERS, **(handlers or {})}
@@ -131,7 +133,8 @@ class BehaviourDispatcher:
             raise ValueError("behaviour handlers must map the four actions to async functions")
         self.trial, self.timeout_s = trial, timeout_s
         self.context = BehaviourContext(robot, None, None, lambda: trial.current_observation,
-                                        route, head, trial_head, timeout_s=timeout_s)
+                                        route, head, trial_head, timeout_s=timeout_s,
+                                        reobserve_on_continue=reobserve_on_continue)
         if self.handlers["APPROACH"] is approach_person or self.handlers["YIELD"] is yield_space:
             self.context.approach = ApproachRuntime(self.context)
         self._dispatched = self._cleaned = False
@@ -197,6 +200,15 @@ class BehaviourDispatcher:
         self._dispatched = True
         self.context.local_target_uid = target_uid
         return await self._execute(action, local=True)
+
+    def reset_after_continue(self):
+        if self.trial.phase != "OBSERVING" or self._cleaned or not self._dispatched:
+            raise ValueError("dispatcher can only reset after CONTINUE reobservation")
+        self._dispatched = False
+        self._handler_task = None
+        self.context.decision = self.context.source = None
+        self.context.decision_person_uid = None
+        self.context._tasks = {task for task in self.context._tasks if not task.done()}
 
     async def _execute(self, action, *, local=False):
         context = self.context
@@ -276,7 +288,11 @@ class BehaviourDispatcher:
         finally:
             if context.approach_result is not None:
                 self.trial.approach_result = asdict(context.approach_result)
-            await self.close()
+            if not (succeeded and action == "CONTINUE" and context.reobserve_on_continue
+                    and not self.trial.terminal):
+                await self.close()
+        if succeeded and action == "CONTINUE" and context.reobserve_on_continue and not self.trial.terminal:
+            return True
         if succeeded:
             self.trial.complete_execution()
         return self.trial.phase == "COMPLETED"

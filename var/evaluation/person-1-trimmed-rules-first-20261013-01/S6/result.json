@@ -1,0 +1,80 @@
+{
+  "scenario": "S6",
+  "input": "/home/anyone/Documents/P4P/var/recordings/motion-validated-20261013-01/trimmed/person-1-S6-sdk.jsonl",
+  "input_sha256": "e1f54338365b897cd2b17c7e1cec7c3bd483d8caaf5ff3cb3945ff420e5fd32f",
+  "status": "ACTION_RESOLVED",
+  "first_output": {
+    "since_motion_s": 1.132044,
+    "since_first_perception_s": 1.071903,
+    "source_line": 24,
+    "source_timestamp_us": 88980255090,
+    "action": "CONTINUE",
+    "reason": "Gaze evidence is classified as no attention; continue along the fixed route.",
+    "reason_code": "NO_ATTENTION",
+    "decision_state": {
+      "no_person_observed_s": 0.0,
+      "observation_readiness": "READY",
+      "people": [
+        {
+          "distance_zone": "APPROACHABLE",
+          "evidence": {
+            "distance_trend_valid": false,
+            "gaze_fraction": 0.17333903913374593,
+            "gaze_valid": true,
+            "latest_distance_valid": true,
+            "latest_gaze_looking": false,
+            "latest_gaze_overlap": 0.8986993432044983,
+            "looking_bouts": 1,
+            "looking_exit_threshold": 0.95,
+            "looking_time_s": 0.170935,
+            "sustained_gaze_s": 0.0
+          },
+          "face_detected": true,
+          "gaze_state": "NONE",
+          "latest_distance_m": 3.33460498046875,
+          "observation_labels": {
+            "attention_over_time": "Little or no looking at the robot during the recent observation window.",
+            "corridor_position": "Position estimate is beside the robot forward corridor; future clearance is unknown.",
+            "current_gaze": "Latest gaze sample is classified as not looking at the robot.",
+            "face_detection": "A face was detected; facing the robot is not established.",
+            "proximity": "Beyond conversation distance, within the configured social range.",
+            "relative_separation": "Recent robot-person distance trend is unavailable or unreliable.",
+            "version": 3
+          },
+          "path_position": "TO_SIDE",
+          "relative_distance_trend": "UNKNOWN",
+          "visibility": "OBSERVED"
+        }
+      ],
+      "readiness_reason": "OBSERVATIONS_AVAILABLE",
+      "robot": {
+        "motion_description": "Measured robot motion exceeds stationary tolerances; it may be translating or turning.",
+        "motion_state": "MOVING"
+      },
+      "schema_version": 3
+    },
+    "policy_decision": {
+      "decision": "CONTINUE",
+      "decision_id": "replay-d8d90d25eac8a431e2222b52:12:social-rules-v7",
+      "policy_version": "social-rules-v7",
+      "reason_code": "NO_ATTENTION",
+      "session_id": "replay-d8d90d25eac8a431e2222b52",
+      "source_state_id": "replay-d8d90d25eac8a431e2222b52:12",
+      "target_track_epoch": null,
+      "target_uid": null
+    }
+  },
+  "frames_ingested": 12,
+  "observing_counts": {
+    "INSUFFICIENT_GAZE_EVIDENCE": 11
+  },
+  "stop_since_motion_s": 1.132044,
+  "first_perception_since_motion_s": 0.060141,
+  "motion_start_monotonic_us": 88979123046,
+  "last_readiness": {
+    "reason_code": null,
+    "status": "READY"
+  },
+  "last_decision_state": null,
+  "physical_execution": false
+}
