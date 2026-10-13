@@ -1,0 +1,1096 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/pe9spa",
+    "id": "pe9spa",
+    "slide": 17,
+    "layoutId": "93275796-de1c-4ac9-8ec4-2c1e0661fdeb",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "4f324ce1-5b3b-4f9e-be61-eecc45112858",
+    "masterLayoutName": "Master",
+    "backgroundColor": "#FFFFFF",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "Noto Sans",
+      "Rubik"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "93275796-de1c-4ac9-8ec4-2c1e0661fdeb",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "4f324ce1-5b3b-4f9e-be61-eecc45112858",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "4f324ce1-5b3b-4f9e-be61-eecc45112858",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ypkva5gj",
+      "id": "1",
+      "bbox": [
+        65,
+        45,
+        1155,
+        72
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#AFC4CC",
+      "lineWidth": 0
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/lsvul0za",
+      "id": "2",
+      "bbox": [
+        60,
+        40,
+        1155,
+        72
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#22577A",
+      "lineWidth": 0
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/kr2dcfyp",
+      "id": "3",
+      "bbox": [
+        82,
+        51,
+        1110,
+        57
+      ],
+      "geometry": "rect",
+      "text": "Distance Fit Quality and Trend Labels",
+      "textPreview": "Distance Fit Quality and Trend Labels",
+      "resolvedFontSize": 40,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 40,
+        "typeface": "Rubik",
+        "color": "#FFFFFF",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Distance Fit Quality and Trend Labels"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Distance Fit Quality and Trend Labels",
+          "resolvedTextStyle": {
+            "fontSize": 40,
+            "typeface": "Rubik",
+            "color": "#FFFFFF",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Distance Fit Quality and Trend Labels",
+              "fontSize": 40,
+              "typeface": "Rubik",
+              "color": "#FFFFFF",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/7udcnahg",
+      "id": "4",
+      "bbox": [
+        60,
+        679,
+        400,
+        22
+      ],
+      "geometry": "rect",
+      "text": "Appendix 10",
+      "textPreview": "Appendix 10",
+      "resolvedFontSize": 15,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 15,
+        "typeface": "Noto Sans",
+        "color": "#22577A",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Appendix 10"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Appendix 10",
+          "resolvedTextStyle": {
+            "fontSize": 15,
+            "typeface": "Noto Sans",
+            "color": "#22577A",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Appendix 10",
+              "fontSize": 15,
+              "typeface": "Noto Sans",
+              "color": "#22577A",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/6t4ve5gv",
+      "id": "5",
+      "bbox": [
+        1160,
+        675,
+        55,
+        26
+      ],
+      "geometry": "rect",
+      "text": "17",
+      "textPreview": "17",
+      "resolvedFontSize": 17,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 17,
+        "typeface": "Noto Sans",
+        "color": "#22577A",
+        "alignment": "right",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "17"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "17",
+          "resolvedTextStyle": {
+            "fontSize": 17,
+            "typeface": "Noto Sans",
+            "color": "#22577A",
+            "alignment": "right"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "17",
+              "fontSize": 17,
+              "typeface": "Noto Sans",
+              "color": "#22577A",
+              "alignment": "right"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 6,
+      "kind": "table",
+      "scope": "slide",
+      "aid": "tb/0r65sbmx",
+      "id": "6",
+      "bbox": [
+        60,
+        156,
+        670,
+        350
+      ],
+      "text": "Fit-quality condition | Final value\nMinimum sample count | 5\nMinimum segment span | 1.0s\nMaximum fit samples | 32, evenly sampled when needed\nMaximum source gap | 0.25s\nJump allowance | 3.0m/s times elapsed time + 0.05m\nMaximum RMS residual | 0.10m",
+      "textPreview": "Fit-quality condition | Final value | Minimum sample count | 5 | Minimum segment span | 1.0s | Maximum fit samples | 32, evenly sampled w...",
+      "rows": 7,
+      "cols": 2,
+      "cells": [
+        {
+          "index": 1,
+          "row": 1,
+          "column": 1,
+          "bbox": [
+            60,
+            156,
+            390,
+            50
+          ],
+          "text": "Fit-quality condition",
+          "textPreview": "Fit-quality condition",
+          "fillColor": "#22577A",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Fit-quality condition",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Fit-quality condition"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "row": 1,
+          "column": 2,
+          "bbox": [
+            450,
+            156,
+            280,
+            50
+          ],
+          "text": "Final value",
+          "textPreview": "Final value",
+          "fillColor": "#22577A",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Final value",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Final value"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "row": 2,
+          "column": 1,
+          "bbox": [
+            60,
+            206,
+            390,
+            50
+          ],
+          "text": "Minimum sample count",
+          "textPreview": "Minimum sample count",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Minimum sample count",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Minimum sample count"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 4,
+          "row": 2,
+          "column": 2,
+          "bbox": [
+            450,
+            206,
+            280,
+            50
+          ],
+          "text": "5",
+          "textPreview": "5",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "5",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "5"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 5,
+          "row": 3,
+          "column": 1,
+          "bbox": [
+            60,
+            256,
+            390,
+            50
+          ],
+          "text": "Minimum segment span",
+          "textPreview": "Minimum segment span",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Minimum segment span",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Minimum segment span"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 6,
+          "row": 3,
+          "column": 2,
+          "bbox": [
+            450,
+            256,
+            280,
+            50
+          ],
+          "text": "1.0s",
+          "textPreview": "1.0s",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "1.0s",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "1.0s"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 7,
+          "row": 4,
+          "column": 1,
+          "bbox": [
+            60,
+            306,
+            390,
+            50
+          ],
+          "text": "Maximum fit samples",
+          "textPreview": "Maximum fit samples",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Maximum fit samples",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Maximum fit samples"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 8,
+          "row": 4,
+          "column": 2,
+          "bbox": [
+            450,
+            306,
+            280,
+            50
+          ],
+          "text": "32, evenly sampled when needed",
+          "textPreview": "32, evenly sampled when needed",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "32, evenly sampled when needed",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "32, evenly sampled when needed"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 9,
+          "row": 5,
+          "column": 1,
+          "bbox": [
+            60,
+            356,
+            390,
+            50
+          ],
+          "text": "Maximum source gap",
+          "textPreview": "Maximum source gap",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Maximum source gap",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Maximum source gap"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 10,
+          "row": 5,
+          "column": 2,
+          "bbox": [
+            450,
+            356,
+            280,
+            50
+          ],
+          "text": "0.25s",
+          "textPreview": "0.25s",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "0.25s",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "0.25s"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 11,
+          "row": 6,
+          "column": 1,
+          "bbox": [
+            60,
+            406,
+            390,
+            50
+          ],
+          "text": "Jump allowance",
+          "textPreview": "Jump allowance",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Jump allowance",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Jump allowance"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 12,
+          "row": 6,
+          "column": 2,
+          "bbox": [
+            450,
+            406,
+            280,
+            50
+          ],
+          "text": "3.0m/s times elapsed time + 0.05m",
+          "textPreview": "3.0m/s times elapsed time + 0.05m",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "3.0m/s times elapsed time + 0.05m",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "3.0m/s times elapsed time + 0.05m"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 13,
+          "row": 7,
+          "column": 1,
+          "bbox": [
+            60,
+            456,
+            390,
+            50
+          ],
+          "text": "Maximum RMS residual",
+          "textPreview": "Maximum RMS residual",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Maximum RMS residual",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Maximum RMS residual"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 14,
+          "row": 7,
+          "column": 2,
+          "bbox": [
+            450,
+            456,
+            280,
+            50
+          ],
+          "text": "0.10m",
+          "textPreview": "0.10m",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "0.10m",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "0.10m"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 7,
+      "kind": "table",
+      "scope": "slide",
+      "aid": "tb/lsf6lg3i",
+      "id": "7",
+      "bbox": [
+        785,
+        156,
+        430,
+        350
+      ],
+      "text": "Valid fitted slope | Trend\nm < -0.10m/s | DECREASING\n-0.10 to +0.10m/s | STABLE\nm > +0.10m/s | INCREASING\nInvalid evidence | UNKNOWN",
+      "textPreview": "Valid fitted slope | Trend | m < -0.10m/s | DECREASING | -0.10 to +0.10m/s | STABLE | m > +0.10m/s | INCREASING | Invalid evidence | UNKNOWN",
+      "rows": 5,
+      "cols": 2,
+      "cells": [
+        {
+          "index": 1,
+          "row": 1,
+          "column": 1,
+          "bbox": [
+            785,
+            156,
+            235,
+            70
+          ],
+          "text": "Valid fitted slope",
+          "textPreview": "Valid fitted slope",
+          "fillColor": "#22577A",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Valid fitted slope",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Valid fitted slope"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "row": 1,
+          "column": 2,
+          "bbox": [
+            1020,
+            156,
+            195,
+            70
+          ],
+          "text": "Trend",
+          "textPreview": "Trend",
+          "fillColor": "#22577A",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Trend",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Trend"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "row": 2,
+          "column": 1,
+          "bbox": [
+            785,
+            226,
+            235,
+            70
+          ],
+          "text": "m < -0.10m/s",
+          "textPreview": "m < -0.10m/s",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "m < -0.10m/s",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "m < -0.10m/s"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 4,
+          "row": 2,
+          "column": 2,
+          "bbox": [
+            1020,
+            226,
+            195,
+            70
+          ],
+          "text": "DECREASING",
+          "textPreview": "DECREASING",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "DECREASING",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "DECREASING"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 5,
+          "row": 3,
+          "column": 1,
+          "bbox": [
+            785,
+            296,
+            235,
+            70
+          ],
+          "text": "-0.10 to +0.10m/s",
+          "textPreview": "-0.10 to +0.10m/s",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "-0.10 to +0.10m/s",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "-0.10 to +0.10m/s"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 6,
+          "row": 3,
+          "column": 2,
+          "bbox": [
+            1020,
+            296,
+            195,
+            70
+          ],
+          "text": "STABLE",
+          "textPreview": "STABLE",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "STABLE",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "STABLE"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 7,
+          "row": 4,
+          "column": 1,
+          "bbox": [
+            785,
+            366,
+            235,
+            70
+          ],
+          "text": "m > +0.10m/s",
+          "textPreview": "m > +0.10m/s",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "m > +0.10m/s",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "m > +0.10m/s"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 8,
+          "row": 4,
+          "column": 2,
+          "bbox": [
+            1020,
+            366,
+            195,
+            70
+          ],
+          "text": "INCREASING",
+          "textPreview": "INCREASING",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "INCREASING",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "INCREASING"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 9,
+          "row": 5,
+          "column": 1,
+          "bbox": [
+            785,
+            436,
+            235,
+            70
+          ],
+          "text": "Invalid evidence",
+          "textPreview": "Invalid evidence",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Invalid evidence",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Invalid evidence"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 10,
+          "row": 5,
+          "column": 2,
+          "bbox": [
+            1020,
+            436,
+            195,
+            70
+          ],
+          "text": "UNKNOWN",
+          "textPreview": "UNKNOWN",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "UNKNOWN",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "UNKNOWN"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ny9cbqhw",
+      "id": "8",
+      "bbox": [
+        65,
+        552,
+        1140,
+        47
+      ],
+      "geometry": "rect",
+      "text": "Null, gap or jump starts a new fitting segment",
+      "textPreview": "Null, gap or jump starts a new fitting segment",
+      "resolvedFontSize": 31,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 31,
+        "typeface": "Rubik",
+        "color": "#22577A",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Null, gap or jump starts a new fitting segment"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Null, gap or jump starts a new fitting segment",
+          "resolvedTextStyle": {
+            "fontSize": 31,
+            "typeface": "Rubik",
+            "color": "#22577A",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Null, gap or jump starts a new fitting segment",
+              "fontSize": 31,
+              "typeface": "Rubik",
+              "color": "#22577A",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/mx0b2lgb",
+      "id": "9",
+      "bbox": [
+        60,
+        615,
+        1160,
+        45
+      ],
+      "geometry": "rect",
+      "text": "The model receives the category and validity. Full diagnostics retain slope, span, residual and jump counts.",
+      "textPreview": "The model receives the category and validity. Full diagnostics retain slope, span, residual and jump counts.",
+      "resolvedFontSize": 18,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 18,
+        "typeface": "Noto Sans",
+        "color": "#437E9D",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "The model receives the category and validity. Full diagnostics retain slope, span, residual and jump counts."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "The model receives the category and validity. Full diagnostics retain slope, span, residual and jump counts.",
+          "resolvedTextStyle": {
+            "fontSize": 18,
+            "typeface": "Noto Sans",
+            "color": "#437E9D",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "The model receives the category and validity. Full diagnostics retain slope, span, residual and jump counts.",
+              "fontSize": 18,
+              "typeface": "Noto Sans",
+              "color": "#437E9D",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    }
+  ],
+  "composeRuns": []
+}

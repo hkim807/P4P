@@ -1,0 +1,1062 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/3x7b7b",
+    "id": "3x7b7b",
+    "slide": 5,
+    "layoutId": "93275796-de1c-4ac9-8ec4-2c1e0661fdeb",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "4f324ce1-5b3b-4f9e-be61-eecc45112858",
+    "masterLayoutName": "Master",
+    "backgroundColor": "#FFFFFF",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "Noto Sans",
+      "Rubik"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "93275796-de1c-4ac9-8ec4-2c1e0661fdeb",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "4f324ce1-5b3b-4f9e-be61-eecc45112858",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "4f324ce1-5b3b-4f9e-be61-eecc45112858",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/zqlkzu5o",
+      "id": "1",
+      "bbox": [
+        65,
+        45,
+        1155,
+        72
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#AFC4CC",
+      "lineWidth": 0
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/0rul8z69",
+      "id": "2",
+      "bbox": [
+        60,
+        40,
+        1155,
+        72
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#22577A",
+      "lineWidth": 0
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ls321kne",
+      "id": "3",
+      "bbox": [
+        82,
+        51,
+        1110,
+        57
+      ],
+      "geometry": "rect",
+      "text": "Compact Evidence Improved LLM Performance",
+      "textPreview": "Compact Evidence Improved LLM Performance",
+      "resolvedFontSize": 44,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 44,
+        "typeface": "Rubik",
+        "color": "#FFFFFF",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Compact Evidence Improved LLM Performance"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Compact Evidence Improved LLM Performance",
+          "resolvedTextStyle": {
+            "fontSize": 44,
+            "typeface": "Rubik",
+            "color": "#FFFFFF",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Compact Evidence Improved LLM Performance",
+              "fontSize": 44,
+              "typeface": "Rubik",
+              "color": "#FFFFFF",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/mtc3apoz",
+      "id": "4",
+      "bbox": [
+        60,
+        679,
+        400,
+        22
+      ],
+      "geometry": "rect",
+      "text": "Project 59",
+      "textPreview": "Project 59",
+      "resolvedFontSize": 15,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 15,
+        "typeface": "Noto Sans",
+        "color": "#22577A",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Project 59"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Project 59",
+          "resolvedTextStyle": {
+            "fontSize": 15,
+            "typeface": "Noto Sans",
+            "color": "#22577A",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Project 59",
+              "fontSize": 15,
+              "typeface": "Noto Sans",
+              "color": "#22577A",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/nu5k3u5k",
+      "id": "5",
+      "bbox": [
+        1160,
+        675,
+        55,
+        26
+      ],
+      "geometry": "rect",
+      "text": "5",
+      "textPreview": "5",
+      "resolvedFontSize": 17,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 17,
+        "typeface": "Noto Sans",
+        "color": "#22577A",
+        "alignment": "right",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "5"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "5",
+          "resolvedTextStyle": {
+            "fontSize": 17,
+            "typeface": "Noto Sans",
+            "color": "#22577A",
+            "alignment": "right"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "5",
+              "fontSize": 17,
+              "typeface": "Noto Sans",
+              "color": "#22577A",
+              "alignment": "right"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 6,
+      "kind": "table",
+      "scope": "slide",
+      "aid": "tb/xkni9s76",
+      "id": "6",
+      "bbox": [
+        60,
+        169,
+        1155,
+        264
+      ],
+      "text": "First decision | Initial | Final selection\nExpected-action agreement | 6/9 | 8/9\nMedian output delay | 6.21s | 3.20s\nMedian input tokens | 1,766 | 917",
+      "textPreview": "First decision | Initial | Final selection | Expected-action agreement | 6/9 | 8/9 | Median output delay | 6.21s | 3.20s | Median input t...",
+      "rows": 4,
+      "cols": 3,
+      "cells": [
+        {
+          "index": 1,
+          "row": 1,
+          "column": 1,
+          "bbox": [
+            60,
+            169,
+            595,
+            66
+          ],
+          "text": "First decision",
+          "textPreview": "First decision",
+          "fillColor": "#22577A",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "First decision",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "First decision"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "row": 1,
+          "column": 2,
+          "bbox": [
+            655,
+            169,
+            280,
+            66
+          ],
+          "text": "Initial",
+          "textPreview": "Initial",
+          "fillColor": "#22577A",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Initial",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Initial"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "row": 1,
+          "column": 3,
+          "bbox": [
+            935,
+            169,
+            280,
+            66
+          ],
+          "text": "Final selection",
+          "textPreview": "Final selection",
+          "fillColor": "#22577A",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Final selection",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Final selection"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 4,
+          "row": 2,
+          "column": 1,
+          "bbox": [
+            60,
+            235,
+            595,
+            66
+          ],
+          "text": "Expected-action agreement",
+          "textPreview": "Expected-action agreement",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Expected-action agreement",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Expected-action agreement"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 5,
+          "row": 2,
+          "column": 2,
+          "bbox": [
+            655,
+            235,
+            280,
+            66
+          ],
+          "text": "6/9",
+          "textPreview": "6/9",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "6/9",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "6/9"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 6,
+          "row": 2,
+          "column": 3,
+          "bbox": [
+            935,
+            235,
+            280,
+            66
+          ],
+          "text": "8/9",
+          "textPreview": "8/9",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "8/9",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "8/9"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 7,
+          "row": 3,
+          "column": 1,
+          "bbox": [
+            60,
+            301,
+            595,
+            66
+          ],
+          "text": "Median output delay",
+          "textPreview": "Median output delay",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Median output delay",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Median output delay"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 8,
+          "row": 3,
+          "column": 2,
+          "bbox": [
+            655,
+            301,
+            280,
+            66
+          ],
+          "text": "6.21s",
+          "textPreview": "6.21s",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "6.21s",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "6.21s"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 9,
+          "row": 3,
+          "column": 3,
+          "bbox": [
+            935,
+            301,
+            280,
+            66
+          ],
+          "text": "3.20s",
+          "textPreview": "3.20s",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "3.20s",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "3.20s"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 10,
+          "row": 4,
+          "column": 1,
+          "bbox": [
+            60,
+            367,
+            595,
+            66
+          ],
+          "text": "Median input tokens",
+          "textPreview": "Median input tokens",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Median input tokens",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Median input tokens"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 11,
+          "row": 4,
+          "column": 2,
+          "bbox": [
+            655,
+            367,
+            280,
+            66
+          ],
+          "text": "1,766",
+          "textPreview": "1,766",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "1,766",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "1,766"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 12,
+          "row": 4,
+          "column": 3,
+          "bbox": [
+            935,
+            367,
+            280,
+            66
+          ],
+          "text": "917",
+          "textPreview": "917",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "917",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "917"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/9gn254nq",
+      "id": "7",
+      "bbox": [
+        65,
+        468,
+        520,
+        44
+      ],
+      "geometry": "rect",
+      "text": "What we retained",
+      "textPreview": "What we retained",
+      "resolvedFontSize": 31,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 31,
+        "typeface": "Rubik",
+        "color": "#22577A",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "What we retained"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "What we retained",
+          "resolvedTextStyle": {
+            "fontSize": 31,
+            "typeface": "Rubik",
+            "color": "#22577A",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "What we retained",
+              "fontSize": 31,
+              "typeface": "Rubik",
+              "color": "#22577A",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ahw3e9ob",
+      "id": "8",
+      "bbox": [
+        65,
+        524,
+        700,
+        93
+      ],
+      "geometry": "rect",
+      "text": "Compact shared evidence\nDescriptive labels and clear instructions",
+      "textPreview": "Compact shared evidence | Descriptive labels and clear instructions",
+      "resolvedFontSize": 26,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 26,
+        "typeface": "Noto Sans",
+        "color": "#26333C",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "• Compact shared evidence"
+          },
+          {
+            "index": 2,
+            "text": "• Descriptive labels and clear instructions"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Compact shared evidence",
+          "bulletCharacter": "•",
+          "marginLeft": 215900,
+          "indent": -114300,
+          "spaceAfter": 700,
+          "resolvedTextStyle": {
+            "anchor": 1,
+            "fontSize": 26,
+            "typeface": "Noto Sans",
+            "color": "#26333C",
+            "alignment": "left",
+            "verticalAlignment": "top",
+            "wrap": "square",
+            "autoFit": "none",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Compact shared evidence",
+              "anchor": 1,
+              "fontSize": 26,
+              "typeface": "Noto Sans",
+              "color": "#26333C",
+              "alignment": "left",
+              "verticalAlignment": "top",
+              "wrap": "square",
+              "autoFit": "none",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "text": "Descriptive labels and clear instructions",
+          "bulletCharacter": "•",
+          "marginLeft": 215900,
+          "indent": -114300,
+          "spaceAfter": 700,
+          "resolvedTextStyle": {
+            "anchor": 1,
+            "fontSize": 26,
+            "typeface": "Noto Sans",
+            "color": "#26333C",
+            "alignment": "left",
+            "verticalAlignment": "top",
+            "wrap": "square",
+            "autoFit": "none",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Descriptive labels and clear instructions",
+              "anchor": 1,
+              "fontSize": 26,
+              "typeface": "Noto Sans",
+              "color": "#26333C",
+              "alignment": "left",
+              "verticalAlignment": "top",
+              "wrap": "square",
+              "autoFit": "none",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ]
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/vi5k7e5w",
+      "id": "9",
+      "bbox": [
+        862,
+        498,
+        350,
+        53
+      ],
+      "geometry": "rect",
+      "text": "Qwen 2.5 7B",
+      "textPreview": "Qwen 2.5 7B",
+      "resolvedFontSize": 34,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 34,
+        "typeface": "Rubik",
+        "color": "#22577A",
+        "bold": true,
+        "alignment": "center",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Qwen 2.5 7B"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Qwen 2.5 7B",
+          "resolvedTextStyle": {
+            "fontSize": 34,
+            "typeface": "Rubik",
+            "color": "#22577A",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Qwen 2.5 7B",
+              "fontSize": 34,
+              "typeface": "Rubik",
+              "color": "#22577A",
+              "bold": true,
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 10,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/vi9gzad8",
+      "id": "10",
+      "bbox": [
+        862,
+        557,
+        350,
+        67
+      ],
+      "geometry": "rect",
+      "text": "DecisionState v3\nInstructions v16",
+      "textPreview": "DecisionState v3 | Instructions v16",
+      "resolvedFontSize": 25,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 25,
+        "typeface": "Noto Sans",
+        "color": "#26333C",
+        "alignment": "center",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "DecisionState v3"
+          },
+          {
+            "index": 2,
+            "text": "Instructions v16"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "DecisionState v3",
+          "resolvedTextStyle": {
+            "fontSize": 25,
+            "typeface": "Noto Sans",
+            "color": "#26333C",
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "DecisionState v3",
+              "fontSize": 25,
+              "typeface": "Noto Sans",
+              "color": "#26333C",
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 2,
+          "text": "Instructions v16",
+          "resolvedTextStyle": {
+            "fontSize": 25,
+            "typeface": "Noto Sans",
+            "color": "#26333C",
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Instructions v16",
+              "fontSize": 25,
+              "typeface": "Noto Sans",
+              "color": "#26333C",
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 11,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/uh0f65wn",
+      "id": "11",
+      "bbox": [
+        60,
+        615,
+        1160,
+        45
+      ],
+      "geometry": "rect",
+      "text": "Delay starts at the first eligible observation. Richer labels did not improve the 8/9 score.",
+      "textPreview": "Delay starts at the first eligible observation. Richer labels did not improve the 8/9 score.",
+      "resolvedFontSize": 18,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 18,
+        "typeface": "Noto Sans",
+        "color": "#437E9D",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Delay starts at the first eligible observation. Richer labels did not improve the 8/9 score."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Delay starts at the first eligible observation. Richer labels did not improve the 8/9 score.",
+          "resolvedTextStyle": {
+            "fontSize": 18,
+            "typeface": "Noto Sans",
+            "color": "#437E9D",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Delay starts at the first eligible observation. Richer labels did not improve the 8/9 score.",
+              "fontSize": 18,
+              "typeface": "Noto Sans",
+              "color": "#437E9D",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    }
+  ],
+  "composeRuns": []
+}

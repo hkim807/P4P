@@ -1,0 +1,1132 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/6tykw3",
+    "id": "6tykw3",
+    "slide": 13,
+    "layoutId": "93275796-de1c-4ac9-8ec4-2c1e0661fdeb",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "4f324ce1-5b3b-4f9e-be61-eecc45112858",
+    "masterLayoutName": "Master",
+    "backgroundColor": "#FFFFFF",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "Noto Sans",
+      "Rubik"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "93275796-de1c-4ac9-8ec4-2c1e0661fdeb",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "4f324ce1-5b3b-4f9e-be61-eecc45112858",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "4f324ce1-5b3b-4f9e-be61-eecc45112858",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/2p8f61cn",
+      "id": "1",
+      "bbox": [
+        65,
+        45,
+        1155,
+        72
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#AFC4CC",
+      "lineWidth": 0
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/pszehgby",
+      "id": "2",
+      "bbox": [
+        60,
+        40,
+        1155,
+        72
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#22577A",
+      "lineWidth": 0
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/4rqx8bad",
+      "id": "3",
+      "bbox": [
+        82,
+        51,
+        1110,
+        57
+      ],
+      "geometry": "rect",
+      "text": "Person History and Detection Continuity",
+      "textPreview": "Person History and Detection Continuity",
+      "resolvedFontSize": 40,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 40,
+        "typeface": "Rubik",
+        "color": "#FFFFFF",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Person History and Detection Continuity"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Person History and Detection Continuity",
+          "resolvedTextStyle": {
+            "fontSize": 40,
+            "typeface": "Rubik",
+            "color": "#FFFFFF",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Person History and Detection Continuity",
+              "fontSize": 40,
+              "typeface": "Rubik",
+              "color": "#FFFFFF",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ruhwjqt4",
+      "id": "4",
+      "bbox": [
+        60,
+        679,
+        400,
+        22
+      ],
+      "geometry": "rect",
+      "text": "Appendix 06",
+      "textPreview": "Appendix 06",
+      "resolvedFontSize": 15,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 15,
+        "typeface": "Noto Sans",
+        "color": "#22577A",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Appendix 06"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Appendix 06",
+          "resolvedTextStyle": {
+            "fontSize": 15,
+            "typeface": "Noto Sans",
+            "color": "#22577A",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Appendix 06",
+              "fontSize": 15,
+              "typeface": "Noto Sans",
+              "color": "#22577A",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/qt8falsj",
+      "id": "5",
+      "bbox": [
+        1160,
+        675,
+        55,
+        26
+      ],
+      "geometry": "rect",
+      "text": "13",
+      "textPreview": "13",
+      "resolvedFontSize": 17,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 17,
+        "typeface": "Noto Sans",
+        "color": "#22577A",
+        "alignment": "right",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "13"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "13",
+          "resolvedTextStyle": {
+            "fontSize": 17,
+            "typeface": "Noto Sans",
+            "color": "#22577A",
+            "alignment": "right"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "13",
+              "fontSize": 17,
+              "typeface": "Noto Sans",
+              "color": "#22577A",
+              "alignment": "right"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/dgjelgba",
+      "id": "6",
+      "name": "ACQUIRED\nNew epoch",
+      "bbox": [
+        60,
+        166,
+        240,
+        86
+      ],
+      "geometry": "roundRect",
+      "text": "ACQUIRED\nNew epoch",
+      "textPreview": "ACQUIRED | New epoch",
+      "resolvedFontSize": 25,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 25,
+        "typeface": "Noto Sans",
+        "color": "#22577A",
+        "bold": true,
+        "alignment": "center",
+        "verticalAlignment": "middle",
+        "autoFit": "none",
+        "insets": {
+          "top": 8,
+          "right": 10,
+          "bottom": 8,
+          "left": 10
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "ACQUIRED"
+          },
+          {
+            "index": 2,
+            "text": "New epoch"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "ACQUIRED",
+          "resolvedTextStyle": {
+            "fontSize": 25,
+            "typeface": "Noto Sans",
+            "color": "#22577A",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "ACQUIRED",
+              "fontSize": 25,
+              "typeface": "Noto Sans",
+              "color": "#22577A",
+              "bold": true,
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 2,
+          "text": "New epoch",
+          "resolvedTextStyle": {
+            "fontSize": 25,
+            "typeface": "Noto Sans",
+            "color": "#22577A",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "New epoch",
+              "fontSize": 25,
+              "typeface": "Noto Sans",
+              "color": "#22577A",
+              "bold": true,
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "fillColor": "#DDECF2",
+      "lineWidth": 0
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/cvaxcvap",
+      "id": "7",
+      "name": "OBSERVED\nCollect samples",
+      "bbox": [
+        355,
+        166,
+        245,
+        86
+      ],
+      "geometry": "roundRect",
+      "text": "OBSERVED\nCollect samples",
+      "textPreview": "OBSERVED | Collect samples",
+      "resolvedFontSize": 25,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 25,
+        "typeface": "Noto Sans",
+        "color": "#22577A",
+        "bold": true,
+        "alignment": "center",
+        "verticalAlignment": "middle",
+        "autoFit": "none",
+        "insets": {
+          "top": 8,
+          "right": 10,
+          "bottom": 8,
+          "left": 10
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "OBSERVED"
+          },
+          {
+            "index": 2,
+            "text": "Collect samples"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "OBSERVED",
+          "resolvedTextStyle": {
+            "fontSize": 25,
+            "typeface": "Noto Sans",
+            "color": "#22577A",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "OBSERVED",
+              "fontSize": 25,
+              "typeface": "Noto Sans",
+              "color": "#22577A",
+              "bold": true,
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 2,
+          "text": "Collect samples",
+          "resolvedTextStyle": {
+            "fontSize": 25,
+            "typeface": "Noto Sans",
+            "color": "#22577A",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Collect samples",
+              "fontSize": 25,
+              "typeface": "Noto Sans",
+              "color": "#22577A",
+              "bold": true,
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "fillColor": "#F3F0E7",
+      "lineWidth": 0
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/7yxw7mt0",
+      "id": "8",
+      "name": "MISSING\nRetain briefly",
+      "bbox": [
+        655,
+        166,
+        245,
+        86
+      ],
+      "geometry": "roundRect",
+      "text": "MISSING\nRetain briefly",
+      "textPreview": "MISSING | Retain briefly",
+      "resolvedFontSize": 25,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 25,
+        "typeface": "Noto Sans",
+        "color": "#22577A",
+        "bold": true,
+        "alignment": "center",
+        "verticalAlignment": "middle",
+        "autoFit": "none",
+        "insets": {
+          "top": 8,
+          "right": 10,
+          "bottom": 8,
+          "left": 10
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "MISSING"
+          },
+          {
+            "index": 2,
+            "text": "Retain briefly"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "MISSING",
+          "resolvedTextStyle": {
+            "fontSize": 25,
+            "typeface": "Noto Sans",
+            "color": "#22577A",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "MISSING",
+              "fontSize": 25,
+              "typeface": "Noto Sans",
+              "color": "#22577A",
+              "bold": true,
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 2,
+          "text": "Retain briefly",
+          "resolvedTextStyle": {
+            "fontSize": 25,
+            "typeface": "Noto Sans",
+            "color": "#22577A",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Retain briefly",
+              "fontSize": 25,
+              "typeface": "Noto Sans",
+              "color": "#22577A",
+              "bold": true,
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "fillColor": "#DDECF2",
+      "lineWidth": 0
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/6xovyhcf",
+      "id": "9",
+      "name": "LOST\nRemove history",
+      "bbox": [
+        955,
+        166,
+        260,
+        86
+      ],
+      "geometry": "roundRect",
+      "text": "LOST\nRemove history",
+      "textPreview": "LOST | Remove history",
+      "resolvedFontSize": 25,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 25,
+        "typeface": "Noto Sans",
+        "color": "#22577A",
+        "bold": true,
+        "alignment": "center",
+        "verticalAlignment": "middle",
+        "autoFit": "none",
+        "insets": {
+          "top": 8,
+          "right": 10,
+          "bottom": 8,
+          "left": 10
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "LOST"
+          },
+          {
+            "index": 2,
+            "text": "Remove history"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "LOST",
+          "resolvedTextStyle": {
+            "fontSize": 25,
+            "typeface": "Noto Sans",
+            "color": "#22577A",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "LOST",
+              "fontSize": 25,
+              "typeface": "Noto Sans",
+              "color": "#22577A",
+              "bold": true,
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        },
+        {
+          "index": 2,
+          "text": "Remove history",
+          "resolvedTextStyle": {
+            "fontSize": 25,
+            "typeface": "Noto Sans",
+            "color": "#22577A",
+            "bold": true,
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Remove history",
+              "fontSize": 25,
+              "typeface": "Noto Sans",
+              "color": "#22577A",
+              "bold": true,
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "fillColor": "#F3F0E7",
+      "lineWidth": 0
+    },
+    {
+      "order": 10,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/gjyxgb6t",
+      "id": "10",
+      "bbox": [
+        300,
+        209,
+        55,
+        0
+      ],
+      "geometry": "straightConnector1",
+      "lineColor": "#22577A",
+      "lineWidth": 2
+    },
+    {
+      "order": 11,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/147ypg7e",
+      "id": "11",
+      "bbox": [
+        600,
+        209,
+        55,
+        0
+      ],
+      "geometry": "straightConnector1",
+      "lineColor": "#22577A",
+      "lineWidth": 2
+    },
+    {
+      "order": 12,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ehgfelon",
+      "id": "12",
+      "bbox": [
+        900,
+        209,
+        55,
+        0
+      ],
+      "geometry": "straightConnector1",
+      "lineColor": "#22577A",
+      "lineWidth": 2
+    },
+    {
+      "order": 13,
+      "kind": "table",
+      "scope": "slide",
+      "aid": "tb/sji98z2h",
+      "id": "13",
+      "bbox": [
+        60,
+        302,
+        1155,
+        290
+      ],
+      "text": "Final tracking setting | Value\nHistory window | 3.0s\nMissing grace | 0.75s\nCapacity | 64 samples per track, 32 tracks\nNose continuity distance | At most 0.45m\nNose continuity time | At most 0.25s, adjacent single-person frames",
+      "textPreview": "Final tracking setting | Value | History window | 3.0s | Missing grace | 0.75s | Capacity | 64 samples per track, 32 tracks | Nose contin...",
+      "rows": 6,
+      "cols": 2,
+      "cells": [
+        {
+          "index": 1,
+          "row": 1,
+          "column": 1,
+          "bbox": [
+            60,
+            302,
+            545,
+            48.33
+          ],
+          "text": "Final tracking setting",
+          "textPreview": "Final tracking setting",
+          "fillColor": "#22577A",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Final tracking setting",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Final tracking setting"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "row": 1,
+          "column": 2,
+          "bbox": [
+            605,
+            302,
+            610,
+            48.33
+          ],
+          "text": "Value",
+          "textPreview": "Value",
+          "fillColor": "#22577A",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Value",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Value"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "row": 2,
+          "column": 1,
+          "bbox": [
+            60,
+            350.33,
+            545,
+            48.33
+          ],
+          "text": "History window",
+          "textPreview": "History window",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "History window",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "History window"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 4,
+          "row": 2,
+          "column": 2,
+          "bbox": [
+            605,
+            350.33,
+            610,
+            48.33
+          ],
+          "text": "3.0s",
+          "textPreview": "3.0s",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "3.0s",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "3.0s"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 5,
+          "row": 3,
+          "column": 1,
+          "bbox": [
+            60,
+            398.67,
+            545,
+            48.33
+          ],
+          "text": "Missing grace",
+          "textPreview": "Missing grace",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Missing grace",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Missing grace"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 6,
+          "row": 3,
+          "column": 2,
+          "bbox": [
+            605,
+            398.67,
+            610,
+            48.33
+          ],
+          "text": "0.75s",
+          "textPreview": "0.75s",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "0.75s",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "0.75s"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 7,
+          "row": 4,
+          "column": 1,
+          "bbox": [
+            60,
+            447,
+            545,
+            48.33
+          ],
+          "text": "Capacity",
+          "textPreview": "Capacity",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Capacity",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Capacity"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 8,
+          "row": 4,
+          "column": 2,
+          "bbox": [
+            605,
+            447,
+            610,
+            48.33
+          ],
+          "text": "64 samples per track, 32 tracks",
+          "textPreview": "64 samples per track, 32 tracks",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "64 samples per track, 32 tracks",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "64 samples per track, 32 tracks"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 9,
+          "row": 5,
+          "column": 1,
+          "bbox": [
+            60,
+            495.33,
+            545,
+            48.33
+          ],
+          "text": "Nose continuity distance",
+          "textPreview": "Nose continuity distance",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Nose continuity distance",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Nose continuity distance"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 10,
+          "row": 5,
+          "column": 2,
+          "bbox": [
+            605,
+            495.33,
+            610,
+            48.33
+          ],
+          "text": "At most 0.45m",
+          "textPreview": "At most 0.45m",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "At most 0.45m",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "At most 0.45m"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 11,
+          "row": 6,
+          "column": 1,
+          "bbox": [
+            60,
+            543.67,
+            545,
+            48.33
+          ],
+          "text": "Nose continuity time",
+          "textPreview": "Nose continuity time",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Nose continuity time",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Nose continuity time"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 12,
+          "row": 6,
+          "column": 2,
+          "bbox": [
+            605,
+            543.67,
+            610,
+            48.33
+          ],
+          "text": "At most 0.25s, adjacent single-person frames",
+          "textPreview": "At most 0.25s, adjacent single-person frames",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "At most 0.25s, adjacent single-person frames",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "At most 0.25s, adjacent single-person frames"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 14,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/o7yxkv6p",
+      "id": "14",
+      "bbox": [
+        60,
+        615,
+        1160,
+        45
+      ],
+      "geometry": "rect",
+      "text": "Same UID within grace preserves its epoch. Geometric continuity is a heuristic, not verified identity.",
+      "textPreview": "Same UID within grace preserves its epoch. Geometric continuity is a heuristic, not verified identity.",
+      "resolvedFontSize": 18,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 18,
+        "typeface": "Noto Sans",
+        "color": "#437E9D",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Same UID within grace preserves its epoch. Geometric continuity is a heuristic, not verified identity."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Same UID within grace preserves its epoch. Geometric continuity is a heuristic, not verified identity.",
+          "resolvedTextStyle": {
+            "fontSize": 18,
+            "typeface": "Noto Sans",
+            "color": "#437E9D",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Same UID within grace preserves its epoch. Geometric continuity is a heuristic, not verified identity.",
+              "fontSize": 18,
+              "typeface": "Noto Sans",
+              "color": "#437E9D",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    }
+  ],
+  "composeRuns": []
+}

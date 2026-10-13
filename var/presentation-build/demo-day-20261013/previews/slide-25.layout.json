@@ -1,0 +1,748 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/bp7x1d",
+    "id": "bp7x1d",
+    "slide": 25,
+    "layoutId": "93275796-de1c-4ac9-8ec4-2c1e0661fdeb",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "4f324ce1-5b3b-4f9e-be61-eecc45112858",
+    "masterLayoutName": "Master",
+    "backgroundColor": "#FFFFFF",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "Noto Sans",
+      "Rubik"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "93275796-de1c-4ac9-8ec4-2c1e0661fdeb",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "4f324ce1-5b3b-4f9e-be61-eecc45112858",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "4f324ce1-5b3b-4f9e-be61-eecc45112858",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/alsjihk7",
+      "id": "1",
+      "bbox": [
+        65,
+        45,
+        1155,
+        72
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#AFC4CC",
+      "lineWidth": 0
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/xoj2dwjy",
+      "id": "2",
+      "bbox": [
+        60,
+        40,
+        1155,
+        72
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#22577A",
+      "lineWidth": 0
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/wna1kr2d",
+      "id": "3",
+      "bbox": [
+        82,
+        51,
+        1110,
+        57
+      ],
+      "geometry": "rect",
+      "text": "Readable Labels and Their Measurement Meaning",
+      "textPreview": "Readable Labels and Their Measurement Meaning",
+      "resolvedFontSize": 40,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 40,
+        "typeface": "Rubik",
+        "color": "#FFFFFF",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Readable Labels and Their Measurement Meaning"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Readable Labels and Their Measurement Meaning",
+          "resolvedTextStyle": {
+            "fontSize": 40,
+            "typeface": "Rubik",
+            "color": "#FFFFFF",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Readable Labels and Their Measurement Meaning",
+              "fontSize": 40,
+              "typeface": "Rubik",
+              "color": "#FFFFFF",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/jqlkf61o",
+      "id": "4",
+      "bbox": [
+        60,
+        679,
+        400,
+        22
+      ],
+      "geometry": "rect",
+      "text": "Appendix 18",
+      "textPreview": "Appendix 18",
+      "resolvedFontSize": 15,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 15,
+        "typeface": "Noto Sans",
+        "color": "#22577A",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Appendix 18"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Appendix 18",
+          "resolvedTextStyle": {
+            "fontSize": 15,
+            "typeface": "Noto Sans",
+            "color": "#22577A",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Appendix 18",
+              "fontSize": 15,
+              "typeface": "Noto Sans",
+              "color": "#22577A",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ipsjm1kj",
+      "id": "5",
+      "bbox": [
+        1160,
+        675,
+        55,
+        26
+      ],
+      "geometry": "rect",
+      "text": "25",
+      "textPreview": "25",
+      "resolvedFontSize": 17,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 17,
+        "typeface": "Noto Sans",
+        "color": "#22577A",
+        "alignment": "right",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "25"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "25",
+          "resolvedTextStyle": {
+            "fontSize": 17,
+            "typeface": "Noto Sans",
+            "color": "#22577A",
+            "alignment": "right"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "25",
+              "fontSize": 17,
+              "typeface": "Noto Sans",
+              "color": "#22577A",
+              "alignment": "right"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 6,
+      "kind": "table",
+      "scope": "slide",
+      "aid": "tb/w76xg7mp",
+      "id": "6",
+      "bbox": [
+        60,
+        158,
+        1155,
+        404
+      ],
+      "text": "Label | Meaning supplied to the LLM\nCurrent gaze | Latest sample classified looking, not looking or unavailable\nAttention over time | Recent little/no, intermittent or high-fraction looking\nProximity | Configured conversation/social-distance band\nRelative separation | Robot-person distance getting closer, steady or farther\nCorridor position | Current estimate inside, beside or behind the forward corridor\nFace detection | Face detected, absent or unavailable",
+      "textPreview": "Label | Meaning supplied to the LLM | Current gaze | Latest sample classified looking, not looking or unavailable | Attention over time |...",
+      "rows": 7,
+      "cols": 2,
+      "cells": [
+        {
+          "index": 1,
+          "row": 1,
+          "column": 1,
+          "bbox": [
+            60,
+            158,
+            365,
+            57.71
+          ],
+          "text": "Label",
+          "textPreview": "Label",
+          "fillColor": "#22577A",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Label",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Label"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "row": 1,
+          "column": 2,
+          "bbox": [
+            425,
+            158,
+            790,
+            57.71
+          ],
+          "text": "Meaning supplied to the LLM",
+          "textPreview": "Meaning supplied to the LLM",
+          "fillColor": "#22577A",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Meaning supplied to the LLM",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Meaning supplied to the LLM"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "row": 2,
+          "column": 1,
+          "bbox": [
+            60,
+            215.71,
+            365,
+            57.71
+          ],
+          "text": "Current gaze",
+          "textPreview": "Current gaze",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Current gaze",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Current gaze"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 4,
+          "row": 2,
+          "column": 2,
+          "bbox": [
+            425,
+            215.71,
+            790,
+            57.71
+          ],
+          "text": "Latest sample classified looking, not looking or unavailable",
+          "textPreview": "Latest sample classified looking, not looking or unavailable",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Latest sample classified looking, not looking or unavailable",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Latest sample classified looking, not looking or unavailable"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 5,
+          "row": 3,
+          "column": 1,
+          "bbox": [
+            60,
+            273.43,
+            365,
+            57.71
+          ],
+          "text": "Attention over time",
+          "textPreview": "Attention over time",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Attention over time",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Attention over time"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 6,
+          "row": 3,
+          "column": 2,
+          "bbox": [
+            425,
+            273.43,
+            790,
+            57.71
+          ],
+          "text": "Recent little/no, intermittent or high-fraction looking",
+          "textPreview": "Recent little/no, intermittent or high-fraction looking",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Recent little/no, intermittent or high-fraction looking",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Recent little/no, intermittent or high-fraction looking"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 7,
+          "row": 4,
+          "column": 1,
+          "bbox": [
+            60,
+            331.14,
+            365,
+            57.71
+          ],
+          "text": "Proximity",
+          "textPreview": "Proximity",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Proximity",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Proximity"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 8,
+          "row": 4,
+          "column": 2,
+          "bbox": [
+            425,
+            331.14,
+            790,
+            57.71
+          ],
+          "text": "Configured conversation/social-distance band",
+          "textPreview": "Configured conversation/social-distance band",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Configured conversation/social-distance band",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Configured conversation/social-distance band"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 9,
+          "row": 5,
+          "column": 1,
+          "bbox": [
+            60,
+            388.86,
+            365,
+            57.71
+          ],
+          "text": "Relative separation",
+          "textPreview": "Relative separation",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Relative separation",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Relative separation"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 10,
+          "row": 5,
+          "column": 2,
+          "bbox": [
+            425,
+            388.86,
+            790,
+            57.71
+          ],
+          "text": "Robot-person distance getting closer, steady or farther",
+          "textPreview": "Robot-person distance getting closer, steady or farther",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Robot-person distance getting closer, steady or farther",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Robot-person distance getting closer, steady or farther"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 11,
+          "row": 6,
+          "column": 1,
+          "bbox": [
+            60,
+            446.57,
+            365,
+            57.71
+          ],
+          "text": "Corridor position",
+          "textPreview": "Corridor position",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Corridor position",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Corridor position"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 12,
+          "row": 6,
+          "column": 2,
+          "bbox": [
+            425,
+            446.57,
+            790,
+            57.71
+          ],
+          "text": "Current estimate inside, beside or behind the forward corridor",
+          "textPreview": "Current estimate inside, beside or behind the forward corridor",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Current estimate inside, beside or behind the forward corridor",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Current estimate inside, beside or behind the forward corridor"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 13,
+          "row": 7,
+          "column": 1,
+          "bbox": [
+            60,
+            504.29,
+            365,
+            57.71
+          ],
+          "text": "Face detection",
+          "textPreview": "Face detection",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Face detection",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Face detection"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 14,
+          "row": 7,
+          "column": 2,
+          "bbox": [
+            425,
+            504.29,
+            790,
+            57.71
+          ],
+          "text": "Face detected, absent or unavailable",
+          "textPreview": "Face detected, absent or unavailable",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Face detected, absent or unavailable",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Face detected, absent or unavailable"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/kbu1or29",
+      "id": "7",
+      "bbox": [
+        60,
+        615,
+        1160,
+        45
+      ],
+      "geometry": "rect",
+      "text": "Either participant may change relative separation. Labels describe evidence without encoding an action or intention.",
+      "textPreview": "Either participant may change relative separation. Labels describe evidence without encoding an action or intention.",
+      "resolvedFontSize": 18,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 18,
+        "typeface": "Noto Sans",
+        "color": "#437E9D",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Either participant may change relative separation. Labels describe evidence without encoding an action or intention."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Either participant may change relative separation. Labels describe evidence without encoding an action or intention.",
+          "resolvedTextStyle": {
+            "fontSize": 18,
+            "typeface": "Noto Sans",
+            "color": "#437E9D",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Either participant may change relative separation. Labels describe evidence without encoding an action or intention.",
+              "fontSize": 18,
+              "typeface": "Noto Sans",
+              "color": "#437E9D",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    }
+  ],
+  "composeRuns": []
+}

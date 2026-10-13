@@ -1,0 +1,1079 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/dw9fxn",
+    "id": "dw9fxn",
+    "slide": 32,
+    "layoutId": "93275796-de1c-4ac9-8ec4-2c1e0661fdeb",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "4f324ce1-5b3b-4f9e-be61-eecc45112858",
+    "masterLayoutName": "Master",
+    "backgroundColor": "#FFFFFF",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "Noto Sans",
+      "Rubik"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "93275796-de1c-4ac9-8ec4-2c1e0661fdeb",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "4f324ce1-5b3b-4f9e-be61-eecc45112858",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "4f324ce1-5b3b-4f9e-be61-eecc45112858",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/a98r2xk3",
+      "id": "1",
+      "bbox": [
+        65,
+        45,
+        1155,
+        72
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#AFC4CC",
+      "lineWidth": 0
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/xcjadcju",
+      "id": "2",
+      "bbox": [
+        60,
+        40,
+        1155,
+        72
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#22577A",
+      "lineWidth": 0
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/cba94729",
+      "id": "3",
+      "bbox": [
+        82,
+        51,
+        1110,
+        57
+      ],
+      "geometry": "rect",
+      "text": "Latency Components and Live Delivery",
+      "textPreview": "Latency Components and Live Delivery",
+      "resolvedFontSize": 40,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 40,
+        "typeface": "Rubik",
+        "color": "#FFFFFF",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Latency Components and Live Delivery"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Latency Components and Live Delivery",
+          "resolvedTextStyle": {
+            "fontSize": 40,
+            "typeface": "Rubik",
+            "color": "#FFFFFF",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Latency Components and Live Delivery",
+              "fontSize": 40,
+              "typeface": "Rubik",
+              "color": "#FFFFFF",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ze1sf210",
+      "id": "4",
+      "bbox": [
+        60,
+        679,
+        400,
+        22
+      ],
+      "geometry": "rect",
+      "text": "Appendix 25",
+      "textPreview": "Appendix 25",
+      "resolvedFontSize": 15,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 15,
+        "typeface": "Noto Sans",
+        "color": "#22577A",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Appendix 25"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Appendix 25",
+          "resolvedTextStyle": {
+            "fontSize": 15,
+            "typeface": "Noto Sans",
+            "color": "#22577A",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Appendix 25",
+              "fontSize": 15,
+              "typeface": "Noto Sans",
+              "color": "#22577A",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ydsr6hkf",
+      "id": "5",
+      "bbox": [
+        1160,
+        675,
+        55,
+        26
+      ],
+      "geometry": "rect",
+      "text": "32",
+      "textPreview": "32",
+      "resolvedFontSize": 17,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 17,
+        "typeface": "Noto Sans",
+        "color": "#22577A",
+        "alignment": "right",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "32"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "32",
+          "resolvedTextStyle": {
+            "fontSize": 17,
+            "typeface": "Noto Sans",
+            "color": "#22577A",
+            "alignment": "right"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "32",
+              "fontSize": 17,
+              "typeface": "Noto Sans",
+              "color": "#22577A",
+              "alignment": "right"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 6,
+      "kind": "table",
+      "scope": "slide",
+      "aid": "tb/cjix4rix",
+      "id": "6",
+      "bbox": [
+        60,
+        160,
+        710,
+        392
+      ],
+      "text": "Latest Qwen 7B measure | Value\nNative prompt evaluation median | 1.88s\nNative answer generation median | 1.27s\nNative model-loading median | 0.003s\nEligibility to complete observed output | 3.20s median, 6.34s 95th percentile\nRecorded motion to complete output | 4.31s median\nAccepted / aligned and accepted | 20/27 / 17/27",
+      "textPreview": "Latest Qwen 7B measure | Value | Native prompt evaluation median | 1.88s | Native answer generation median | 1.27s | Native model-loading...",
+      "rows": 7,
+      "cols": 2,
+      "cells": [
+        {
+          "index": 1,
+          "row": 1,
+          "column": 1,
+          "bbox": [
+            60,
+            160,
+            435,
+            56
+          ],
+          "text": "Latest Qwen 7B measure",
+          "textPreview": "Latest Qwen 7B measure",
+          "fillColor": "#22577A",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Latest Qwen 7B measure",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Latest Qwen 7B measure"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "row": 1,
+          "column": 2,
+          "bbox": [
+            495,
+            160,
+            275,
+            56
+          ],
+          "text": "Value",
+          "textPreview": "Value",
+          "fillColor": "#22577A",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Value",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Value"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "row": 2,
+          "column": 1,
+          "bbox": [
+            60,
+            216,
+            435,
+            56
+          ],
+          "text": "Native prompt evaluation median",
+          "textPreview": "Native prompt evaluation median",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Native prompt evaluation median",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Native prompt evaluation median"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 4,
+          "row": 2,
+          "column": 2,
+          "bbox": [
+            495,
+            216,
+            275,
+            56
+          ],
+          "text": "1.88s",
+          "textPreview": "1.88s",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "1.88s",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "1.88s"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 5,
+          "row": 3,
+          "column": 1,
+          "bbox": [
+            60,
+            272,
+            435,
+            56
+          ],
+          "text": "Native answer generation median",
+          "textPreview": "Native answer generation median",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Native answer generation median",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Native answer generation median"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 6,
+          "row": 3,
+          "column": 2,
+          "bbox": [
+            495,
+            272,
+            275,
+            56
+          ],
+          "text": "1.27s",
+          "textPreview": "1.27s",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "1.27s",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "1.27s"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 7,
+          "row": 4,
+          "column": 1,
+          "bbox": [
+            60,
+            328,
+            435,
+            56
+          ],
+          "text": "Native model-loading median",
+          "textPreview": "Native model-loading median",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Native model-loading median",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Native model-loading median"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 8,
+          "row": 4,
+          "column": 2,
+          "bbox": [
+            495,
+            328,
+            275,
+            56
+          ],
+          "text": "0.003s",
+          "textPreview": "0.003s",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "0.003s",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "0.003s"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 9,
+          "row": 5,
+          "column": 1,
+          "bbox": [
+            60,
+            384,
+            435,
+            56
+          ],
+          "text": "Eligibility to complete observed output",
+          "textPreview": "Eligibility to complete observed output",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Eligibility to complete observed output",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Eligibility to complete observed output"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 10,
+          "row": 5,
+          "column": 2,
+          "bbox": [
+            495,
+            384,
+            275,
+            56
+          ],
+          "text": "3.20s median, 6.34s 95th percentile",
+          "textPreview": "3.20s median, 6.34s 95th percentile",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "3.20s median, 6.34s 95th percentile",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "3.20s median, 6.34s 95th percentile"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 11,
+          "row": 6,
+          "column": 1,
+          "bbox": [
+            60,
+            440,
+            435,
+            56
+          ],
+          "text": "Recorded motion to complete output",
+          "textPreview": "Recorded motion to complete output",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Recorded motion to complete output",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Recorded motion to complete output"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 12,
+          "row": 6,
+          "column": 2,
+          "bbox": [
+            495,
+            440,
+            275,
+            56
+          ],
+          "text": "4.31s median",
+          "textPreview": "4.31s median",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "4.31s median",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "4.31s median"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 13,
+          "row": 7,
+          "column": 1,
+          "bbox": [
+            60,
+            496,
+            435,
+            56
+          ],
+          "text": "Accepted / aligned and accepted",
+          "textPreview": "Accepted / aligned and accepted",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Accepted / aligned and accepted",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Accepted / aligned and accepted"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 14,
+          "row": 7,
+          "column": 2,
+          "bbox": [
+            495,
+            496,
+            275,
+            56
+          ],
+          "text": "20/27 / 17/27",
+          "textPreview": "20/27 / 17/27",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "20/27 / 17/27",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "20/27 / 17/27"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 7,
+      "kind": "table",
+      "scope": "slide",
+      "aid": "tb/x4byxwzi",
+      "id": "7",
+      "bbox": [
+        825,
+        160,
+        390,
+        392
+      ],
+      "text": "Delivery check | Limit\nCurrent observation age | 1s\nModel source age | 10s\nTrial deadline | 30s\nCurrent readiness | Required\nCorrelation identity | Required",
+      "textPreview": "Delivery check | Limit | Current observation age | 1s | Model source age | 10s | Trial deadline | 30s | Current readiness | Required | Co...",
+      "rows": 6,
+      "cols": 2,
+      "cells": [
+        {
+          "index": 1,
+          "row": 1,
+          "column": 1,
+          "bbox": [
+            825,
+            160,
+            245,
+            65.33
+          ],
+          "text": "Delivery check",
+          "textPreview": "Delivery check",
+          "fillColor": "#22577A",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Delivery check",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Delivery check"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "row": 1,
+          "column": 2,
+          "bbox": [
+            1070,
+            160,
+            145,
+            65.33
+          ],
+          "text": "Limit",
+          "textPreview": "Limit",
+          "fillColor": "#22577A",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Limit",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Limit"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "row": 2,
+          "column": 1,
+          "bbox": [
+            825,
+            225.33,
+            245,
+            65.33
+          ],
+          "text": "Current observation age",
+          "textPreview": "Current observation age",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Current observation age",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Current observation age"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 4,
+          "row": 2,
+          "column": 2,
+          "bbox": [
+            1070,
+            225.33,
+            145,
+            65.33
+          ],
+          "text": "1s",
+          "textPreview": "1s",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "1s",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "1s"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 5,
+          "row": 3,
+          "column": 1,
+          "bbox": [
+            825,
+            290.67,
+            245,
+            65.33
+          ],
+          "text": "Model source age",
+          "textPreview": "Model source age",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Model source age",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Model source age"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 6,
+          "row": 3,
+          "column": 2,
+          "bbox": [
+            1070,
+            290.67,
+            145,
+            65.33
+          ],
+          "text": "10s",
+          "textPreview": "10s",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "10s",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "10s"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 7,
+          "row": 4,
+          "column": 1,
+          "bbox": [
+            825,
+            356,
+            245,
+            65.33
+          ],
+          "text": "Trial deadline",
+          "textPreview": "Trial deadline",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Trial deadline",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Trial deadline"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 8,
+          "row": 4,
+          "column": 2,
+          "bbox": [
+            1070,
+            356,
+            145,
+            65.33
+          ],
+          "text": "30s",
+          "textPreview": "30s",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "30s",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "30s"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 9,
+          "row": 5,
+          "column": 1,
+          "bbox": [
+            825,
+            421.33,
+            245,
+            65.33
+          ],
+          "text": "Current readiness",
+          "textPreview": "Current readiness",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Current readiness",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Current readiness"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 10,
+          "row": 5,
+          "column": 2,
+          "bbox": [
+            1070,
+            421.33,
+            145,
+            65.33
+          ],
+          "text": "Required",
+          "textPreview": "Required",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Required",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Required"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 11,
+          "row": 6,
+          "column": 1,
+          "bbox": [
+            825,
+            486.67,
+            245,
+            65.33
+          ],
+          "text": "Correlation identity",
+          "textPreview": "Correlation identity",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Correlation identity",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Correlation identity"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 12,
+          "row": 6,
+          "column": 2,
+          "bbox": [
+            1070,
+            486.67,
+            145,
+            65.33
+          ],
+          "text": "Required",
+          "textPreview": "Required",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Required",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Required"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/7ilsjm1w",
+      "id": "8",
+      "bbox": [
+        60,
+        615,
+        1160,
+        45
+      ],
+      "geometry": "rect",
+      "text": "Medians of timing components do not add. Valid output can fail delivery as observations age or readiness changes.",
+      "textPreview": "Medians of timing components do not add. Valid output can fail delivery as observations age or readiness changes.",
+      "resolvedFontSize": 18,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 18,
+        "typeface": "Noto Sans",
+        "color": "#437E9D",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Medians of timing components do not add. Valid output can fail delivery as observations age or readiness changes."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Medians of timing components do not add. Valid output can fail delivery as observations age or readiness changes.",
+          "resolvedTextStyle": {
+            "fontSize": 18,
+            "typeface": "Noto Sans",
+            "color": "#437E9D",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Medians of timing components do not add. Valid output can fail delivery as observations age or readiness changes.",
+              "fontSize": 18,
+              "typeface": "Noto Sans",
+              "color": "#437E9D",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    }
+  ],
+  "composeRuns": []
+}

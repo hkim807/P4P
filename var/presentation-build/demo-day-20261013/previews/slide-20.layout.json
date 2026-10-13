@@ -1,0 +1,1086 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/1sq5qt",
+    "id": "1sq5qt",
+    "slide": 20,
+    "layoutId": "93275796-de1c-4ac9-8ec4-2c1e0661fdeb",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "4f324ce1-5b3b-4f9e-be61-eecc45112858",
+    "masterLayoutName": "Master",
+    "backgroundColor": "#FFFFFF",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "Noto Sans",
+      "Rubik"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "93275796-de1c-4ac9-8ec4-2c1e0661fdeb",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "4f324ce1-5b3b-4f9e-be61-eecc45112858",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "4f324ce1-5b3b-4f9e-be61-eecc45112858",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/3a5ofq9w",
+      "id": "1",
+      "bbox": [
+        65,
+        45,
+        1155,
+        72
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#AFC4CC",
+      "lineWidth": 0
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/4bep8vqh",
+      "id": "2",
+      "bbox": [
+        60,
+        40,
+        1155,
+        72
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#22577A",
+      "lineWidth": 0
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/pc76hgr2",
+      "id": "3",
+      "bbox": [
+        82,
+        51,
+        1110,
+        57
+      ],
+      "geometry": "rect",
+      "text": "Rule Refinements and Final Parameter Choices",
+      "textPreview": "Rule Refinements and Final Parameter Choices",
+      "resolvedFontSize": 40,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 40,
+        "typeface": "Rubik",
+        "color": "#FFFFFF",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Rule Refinements and Final Parameter Choices"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Rule Refinements and Final Parameter Choices",
+          "resolvedTextStyle": {
+            "fontSize": 40,
+            "typeface": "Rubik",
+            "color": "#FFFFFF",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Rule Refinements and Final Parameter Choices",
+              "fontSize": 40,
+              "typeface": "Rubik",
+              "color": "#FFFFFF",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/qdg7al8n",
+      "id": "4",
+      "bbox": [
+        60,
+        679,
+        400,
+        22
+      ],
+      "geometry": "rect",
+      "text": "Appendix 13",
+      "textPreview": "Appendix 13",
+      "resolvedFontSize": 15,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 15,
+        "typeface": "Noto Sans",
+        "color": "#22577A",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Appendix 13"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Appendix 13",
+          "resolvedTextStyle": {
+            "fontSize": 15,
+            "typeface": "Noto Sans",
+            "color": "#22577A",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Appendix 13",
+              "fontSize": 15,
+              "typeface": "Noto Sans",
+              "color": "#22577A",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/rypo3q9s",
+      "id": "5",
+      "bbox": [
+        1160,
+        675,
+        55,
+        26
+      ],
+      "geometry": "rect",
+      "text": "20",
+      "textPreview": "20",
+      "resolvedFontSize": 17,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 17,
+        "typeface": "Noto Sans",
+        "color": "#22577A",
+        "alignment": "right",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "20"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "20",
+          "resolvedTextStyle": {
+            "fontSize": 17,
+            "typeface": "Noto Sans",
+            "color": "#22577A",
+            "alignment": "right"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "20",
+              "fontSize": 17,
+              "typeface": "Noto Sans",
+              "color": "#22577A",
+              "alignment": "right"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 6,
+      "kind": "table",
+      "scope": "slide",
+      "aid": "tb/54n6pg3i",
+      "id": "6",
+      "bbox": [
+        60,
+        153,
+        1155,
+        446
+      ],
+      "text": "Setting | Final value | Design purpose\nConversation / social range | 2m / 6m | Approach versus speaking nearby\nNear gaze entry / exit | 0.93 / 0.90 | Classify compressed SDK scores\nFar gaze entry / exit | 0.97 / 0.95 | Stronger gaze beyond 2.75m\nHistory / minimum span | 3s / 1s | Build evidence within short encounters\nMinimum gaze coverage | 0.6s and 50% | Preserve missing-data boundaries\nExtra dwell / trailing run | 0s / 0s | Avoid additional decision delay\nClosing YIELD range | At most 3.5m | Detect closing in the corridor\nRecurring-looking trigger | Disabled | Avoid interaction after incidental looks",
+      "textPreview": "Setting | Final value | Design purpose | Conversation / social range | 2m / 6m | Approach versus speaking nearby | Near gaze entry / exit...",
+      "rows": 9,
+      "cols": 3,
+      "cells": [
+        {
+          "index": 1,
+          "row": 1,
+          "column": 1,
+          "bbox": [
+            60,
+            153,
+            390,
+            49.56
+          ],
+          "text": "Setting",
+          "textPreview": "Setting",
+          "fillColor": "#22577A",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Setting",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Setting"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "row": 1,
+          "column": 2,
+          "bbox": [
+            450,
+            153,
+            285,
+            49.56
+          ],
+          "text": "Final value",
+          "textPreview": "Final value",
+          "fillColor": "#22577A",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Final value",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Final value"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "row": 1,
+          "column": 3,
+          "bbox": [
+            735,
+            153,
+            480,
+            49.56
+          ],
+          "text": "Design purpose",
+          "textPreview": "Design purpose",
+          "fillColor": "#22577A",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Design purpose",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Design purpose"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 4,
+          "row": 2,
+          "column": 1,
+          "bbox": [
+            60,
+            202.56,
+            390,
+            49.56
+          ],
+          "text": "Conversation / social range",
+          "textPreview": "Conversation / social range",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Conversation / social range",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Conversation / social range"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 5,
+          "row": 2,
+          "column": 2,
+          "bbox": [
+            450,
+            202.56,
+            285,
+            49.56
+          ],
+          "text": "2m / 6m",
+          "textPreview": "2m / 6m",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "2m / 6m",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "2m / 6m"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 6,
+          "row": 2,
+          "column": 3,
+          "bbox": [
+            735,
+            202.56,
+            480,
+            49.56
+          ],
+          "text": "Approach versus speaking nearby",
+          "textPreview": "Approach versus speaking nearby",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Approach versus speaking nearby",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Approach versus speaking nearby"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 7,
+          "row": 3,
+          "column": 1,
+          "bbox": [
+            60,
+            252.11,
+            390,
+            49.56
+          ],
+          "text": "Near gaze entry / exit",
+          "textPreview": "Near gaze entry / exit",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Near gaze entry / exit",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Near gaze entry / exit"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 8,
+          "row": 3,
+          "column": 2,
+          "bbox": [
+            450,
+            252.11,
+            285,
+            49.56
+          ],
+          "text": "0.93 / 0.90",
+          "textPreview": "0.93 / 0.90",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "0.93 / 0.90",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "0.93 / 0.90"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 9,
+          "row": 3,
+          "column": 3,
+          "bbox": [
+            735,
+            252.11,
+            480,
+            49.56
+          ],
+          "text": "Classify compressed SDK scores",
+          "textPreview": "Classify compressed SDK scores",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Classify compressed SDK scores",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Classify compressed SDK scores"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 10,
+          "row": 4,
+          "column": 1,
+          "bbox": [
+            60,
+            301.67,
+            390,
+            49.56
+          ],
+          "text": "Far gaze entry / exit",
+          "textPreview": "Far gaze entry / exit",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Far gaze entry / exit",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Far gaze entry / exit"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 11,
+          "row": 4,
+          "column": 2,
+          "bbox": [
+            450,
+            301.67,
+            285,
+            49.56
+          ],
+          "text": "0.97 / 0.95",
+          "textPreview": "0.97 / 0.95",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "0.97 / 0.95",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "0.97 / 0.95"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 12,
+          "row": 4,
+          "column": 3,
+          "bbox": [
+            735,
+            301.67,
+            480,
+            49.56
+          ],
+          "text": "Stronger gaze beyond 2.75m",
+          "textPreview": "Stronger gaze beyond 2.75m",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Stronger gaze beyond 2.75m",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Stronger gaze beyond 2.75m"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 13,
+          "row": 5,
+          "column": 1,
+          "bbox": [
+            60,
+            351.22,
+            390,
+            49.56
+          ],
+          "text": "History / minimum span",
+          "textPreview": "History / minimum span",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "History / minimum span",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "History / minimum span"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 14,
+          "row": 5,
+          "column": 2,
+          "bbox": [
+            450,
+            351.22,
+            285,
+            49.56
+          ],
+          "text": "3s / 1s",
+          "textPreview": "3s / 1s",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "3s / 1s",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "3s / 1s"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 15,
+          "row": 5,
+          "column": 3,
+          "bbox": [
+            735,
+            351.22,
+            480,
+            49.56
+          ],
+          "text": "Build evidence within short encounters",
+          "textPreview": "Build evidence within short encounters",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Build evidence within short encounters",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Build evidence within short encounters"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 16,
+          "row": 6,
+          "column": 1,
+          "bbox": [
+            60,
+            400.78,
+            390,
+            49.56
+          ],
+          "text": "Minimum gaze coverage",
+          "textPreview": "Minimum gaze coverage",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Minimum gaze coverage",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Minimum gaze coverage"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 17,
+          "row": 6,
+          "column": 2,
+          "bbox": [
+            450,
+            400.78,
+            285,
+            49.56
+          ],
+          "text": "0.6s and 50%",
+          "textPreview": "0.6s and 50%",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "0.6s and 50%",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "0.6s and 50%"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 18,
+          "row": 6,
+          "column": 3,
+          "bbox": [
+            735,
+            400.78,
+            480,
+            49.56
+          ],
+          "text": "Preserve missing-data boundaries",
+          "textPreview": "Preserve missing-data boundaries",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Preserve missing-data boundaries",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Preserve missing-data boundaries"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 19,
+          "row": 7,
+          "column": 1,
+          "bbox": [
+            60,
+            450.33,
+            390,
+            49.56
+          ],
+          "text": "Extra dwell / trailing run",
+          "textPreview": "Extra dwell / trailing run",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Extra dwell / trailing run",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Extra dwell / trailing run"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 20,
+          "row": 7,
+          "column": 2,
+          "bbox": [
+            450,
+            450.33,
+            285,
+            49.56
+          ],
+          "text": "0s / 0s",
+          "textPreview": "0s / 0s",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "0s / 0s",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "0s / 0s"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 21,
+          "row": 7,
+          "column": 3,
+          "bbox": [
+            735,
+            450.33,
+            480,
+            49.56
+          ],
+          "text": "Avoid additional decision delay",
+          "textPreview": "Avoid additional decision delay",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Avoid additional decision delay",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Avoid additional decision delay"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 22,
+          "row": 8,
+          "column": 1,
+          "bbox": [
+            60,
+            499.89,
+            390,
+            49.56
+          ],
+          "text": "Closing YIELD range",
+          "textPreview": "Closing YIELD range",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Closing YIELD range",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Closing YIELD range"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 23,
+          "row": 8,
+          "column": 2,
+          "bbox": [
+            450,
+            499.89,
+            285,
+            49.56
+          ],
+          "text": "At most 3.5m",
+          "textPreview": "At most 3.5m",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "At most 3.5m",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "At most 3.5m"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 24,
+          "row": 8,
+          "column": 3,
+          "bbox": [
+            735,
+            499.89,
+            480,
+            49.56
+          ],
+          "text": "Detect closing in the corridor",
+          "textPreview": "Detect closing in the corridor",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Detect closing in the corridor",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Detect closing in the corridor"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 25,
+          "row": 9,
+          "column": 1,
+          "bbox": [
+            60,
+            549.44,
+            390,
+            49.56
+          ],
+          "text": "Recurring-looking trigger",
+          "textPreview": "Recurring-looking trigger",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Recurring-looking trigger",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Recurring-looking trigger"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 26,
+          "row": 9,
+          "column": 2,
+          "bbox": [
+            450,
+            549.44,
+            285,
+            49.56
+          ],
+          "text": "Disabled",
+          "textPreview": "Disabled",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Disabled",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Disabled"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 27,
+          "row": 9,
+          "column": 3,
+          "bbox": [
+            735,
+            549.44,
+            480,
+            49.56
+          ],
+          "text": "Avoid interaction after incidental looks",
+          "textPreview": "Avoid interaction after incidental looks",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Avoid interaction after incidental looks",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Avoid interaction after incidental looks"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/d07650ry",
+      "id": "7",
+      "bbox": [
+        60,
+        615,
+        1160,
+        45
+      ],
+      "geometry": "rect",
+      "text": "The preset fits these nine tuning recordings. Thresholds do not establish human interest or universal social rules.",
+      "textPreview": "The preset fits these nine tuning recordings. Thresholds do not establish human interest or universal social rules.",
+      "resolvedFontSize": 18,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 18,
+        "typeface": "Noto Sans",
+        "color": "#437E9D",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "The preset fits these nine tuning recordings. Thresholds do not establish human interest or universal social rules."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "The preset fits these nine tuning recordings. Thresholds do not establish human interest or universal social rules.",
+          "resolvedTextStyle": {
+            "fontSize": 18,
+            "typeface": "Noto Sans",
+            "color": "#437E9D",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "The preset fits these nine tuning recordings. Thresholds do not establish human interest or universal social rules.",
+              "fontSize": 18,
+              "typeface": "Noto Sans",
+              "color": "#437E9D",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    }
+  ],
+  "composeRuns": []
+}

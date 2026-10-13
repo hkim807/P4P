@@ -1,0 +1,988 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/cc8spy",
+    "id": "cc8spy",
+    "slide": 28,
+    "layoutId": "93275796-de1c-4ac9-8ec4-2c1e0661fdeb",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "4f324ce1-5b3b-4f9e-be61-eecc45112858",
+    "masterLayoutName": "Master",
+    "backgroundColor": "#FFFFFF",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "Noto Sans",
+      "Rubik"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "93275796-de1c-4ac9-8ec4-2c1e0661fdeb",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "4f324ce1-5b3b-4f9e-be61-eecc45112858",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "4f324ce1-5b3b-4f9e-be61-eecc45112858",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ydsr6ts7",
+      "id": "1",
+      "bbox": [
+        65,
+        45,
+        1155,
+        72
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#AFC4CC",
+      "lineWidth": 0
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/lg3ah8by",
+      "id": "2",
+      "bbox": [
+        60,
+        40,
+        1155,
+        72
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#22577A",
+      "lineWidth": 0
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/kfat83ad",
+      "id": "3",
+      "bbox": [
+        82,
+        51,
+        1110,
+        57
+      ],
+      "geometry": "rect",
+      "text": "Temporal Summary Ablations: No First-Action Gain",
+      "textPreview": "Temporal Summary Ablations: No First-Action Gain",
+      "resolvedFontSize": 40,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 40,
+        "typeface": "Rubik",
+        "color": "#FFFFFF",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Temporal Summary Ablations: No First-Action Gain"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Temporal Summary Ablations: No First-Action Gain",
+          "resolvedTextStyle": {
+            "fontSize": 40,
+            "typeface": "Rubik",
+            "color": "#FFFFFF",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Temporal Summary Ablations: No First-Action Gain",
+              "fontSize": 40,
+              "typeface": "Rubik",
+              "color": "#FFFFFF",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/7ilsjyt4",
+      "id": "4",
+      "bbox": [
+        60,
+        679,
+        400,
+        22
+      ],
+      "geometry": "rect",
+      "text": "Appendix 21",
+      "textPreview": "Appendix 21",
+      "resolvedFontSize": 15,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 15,
+        "typeface": "Noto Sans",
+        "color": "#22577A",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Appendix 21"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Appendix 21",
+          "resolvedTextStyle": {
+            "fontSize": 15,
+            "typeface": "Noto Sans",
+            "color": "#22577A",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Appendix 21",
+              "fontSize": 15,
+              "typeface": "Noto Sans",
+              "color": "#22577A",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/mhcbatsj",
+      "id": "5",
+      "bbox": [
+        1160,
+        675,
+        55,
+        26
+      ],
+      "geometry": "rect",
+      "text": "28",
+      "textPreview": "28",
+      "resolvedFontSize": 17,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 17,
+        "typeface": "Noto Sans",
+        "color": "#22577A",
+        "alignment": "right",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "28"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "28",
+          "resolvedTextStyle": {
+            "fontSize": 17,
+            "typeface": "Noto Sans",
+            "color": "#22577A",
+            "alignment": "right"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "28",
+              "fontSize": 17,
+              "typeface": "Noto Sans",
+              "color": "#22577A",
+              "alignment": "right"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 6,
+      "kind": "table",
+      "scope": "slide",
+      "aid": "tb/wzut87q9",
+      "id": "6",
+      "bbox": [
+        60,
+        161,
+        1155,
+        273
+      ],
+      "text": "Summary | Active first cases | Primary score | Measured delay\nEarlier looking, latest not looking | S4, S6, S7 | 8/9 | 3.05s\nRepeated measured looking | None | No new primary trials | Not measured\nDetection resumed after a gap | S7 | 8/9 | 3.06s",
+      "textPreview": "Summary | Active first cases | Primary score | Measured delay | Earlier looking, latest not looking | S4, S6, S7 | 8/9 | 3.05s | Repeated...",
+      "rows": 4,
+      "cols": 4,
+      "cells": [
+        {
+          "index": 1,
+          "row": 1,
+          "column": 1,
+          "bbox": [
+            60,
+            161,
+            420,
+            68.25
+          ],
+          "text": "Summary",
+          "textPreview": "Summary",
+          "fillColor": "#22577A",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Summary",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Summary"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "row": 1,
+          "column": 2,
+          "bbox": [
+            480,
+            161,
+            260,
+            68.25
+          ],
+          "text": "Active first cases",
+          "textPreview": "Active first cases",
+          "fillColor": "#22577A",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Active first cases",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Active first cases"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "row": 1,
+          "column": 3,
+          "bbox": [
+            740,
+            161,
+            270,
+            68.25
+          ],
+          "text": "Primary score",
+          "textPreview": "Primary score",
+          "fillColor": "#22577A",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Primary score",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Primary score"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 4,
+          "row": 1,
+          "column": 4,
+          "bbox": [
+            1010,
+            161,
+            205,
+            68.25
+          ],
+          "text": "Measured delay",
+          "textPreview": "Measured delay",
+          "fillColor": "#22577A",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Measured delay",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Measured delay"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 5,
+          "row": 2,
+          "column": 1,
+          "bbox": [
+            60,
+            229.25,
+            420,
+            68.25
+          ],
+          "text": "Earlier looking, latest not looking",
+          "textPreview": "Earlier looking, latest not looking",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Earlier looking, latest not looking",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Earlier looking, latest not looking"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 6,
+          "row": 2,
+          "column": 2,
+          "bbox": [
+            480,
+            229.25,
+            260,
+            68.25
+          ],
+          "text": "S4, S6, S7",
+          "textPreview": "S4, S6, S7",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "S4, S6, S7",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "S4, S6, S7"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 7,
+          "row": 2,
+          "column": 3,
+          "bbox": [
+            740,
+            229.25,
+            270,
+            68.25
+          ],
+          "text": "8/9",
+          "textPreview": "8/9",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "8/9",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "8/9"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 8,
+          "row": 2,
+          "column": 4,
+          "bbox": [
+            1010,
+            229.25,
+            205,
+            68.25
+          ],
+          "text": "3.05s",
+          "textPreview": "3.05s",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "3.05s",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "3.05s"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 9,
+          "row": 3,
+          "column": 1,
+          "bbox": [
+            60,
+            297.5,
+            420,
+            68.25
+          ],
+          "text": "Repeated measured looking",
+          "textPreview": "Repeated measured looking",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Repeated measured looking",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Repeated measured looking"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 10,
+          "row": 3,
+          "column": 2,
+          "bbox": [
+            480,
+            297.5,
+            260,
+            68.25
+          ],
+          "text": "None",
+          "textPreview": "None",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "None",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "None"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 11,
+          "row": 3,
+          "column": 3,
+          "bbox": [
+            740,
+            297.5,
+            270,
+            68.25
+          ],
+          "text": "No new primary trials",
+          "textPreview": "No new primary trials",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "No new primary trials",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "No new primary trials"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 12,
+          "row": 3,
+          "column": 4,
+          "bbox": [
+            1010,
+            297.5,
+            205,
+            68.25
+          ],
+          "text": "Not measured",
+          "textPreview": "Not measured",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Not measured",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Not measured"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 13,
+          "row": 4,
+          "column": 1,
+          "bbox": [
+            60,
+            365.75,
+            420,
+            68.25
+          ],
+          "text": "Detection resumed after a gap",
+          "textPreview": "Detection resumed after a gap",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Detection resumed after a gap",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Detection resumed after a gap"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 14,
+          "row": 4,
+          "column": 2,
+          "bbox": [
+            480,
+            365.75,
+            260,
+            68.25
+          ],
+          "text": "S7",
+          "textPreview": "S7",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "S7",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "S7"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 15,
+          "row": 4,
+          "column": 3,
+          "bbox": [
+            740,
+            365.75,
+            270,
+            68.25
+          ],
+          "text": "8/9",
+          "textPreview": "8/9",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "8/9",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "8/9"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 16,
+          "row": 4,
+          "column": 4,
+          "bbox": [
+            1010,
+            365.75,
+            205,
+            68.25
+          ],
+          "text": "3.06s",
+          "textPreview": "3.06s",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "3.06s",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "3.06s"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/8jutc3ap",
+      "id": "7",
+      "bbox": [
+        65,
+        474,
+        1110,
+        43
+      ],
+      "geometry": "rect",
+      "text": "Why the additions stay disabled",
+      "textPreview": "Why the additions stay disabled",
+      "resolvedFontSize": 31,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 31,
+        "typeface": "Rubik",
+        "color": "#22577A",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Why the additions stay disabled"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Why the additions stay disabled",
+          "resolvedTextStyle": {
+            "fontSize": 31,
+            "typeface": "Rubik",
+            "color": "#22577A",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Why the additions stay disabled",
+              "fontSize": 31,
+              "typeface": "Rubik",
+              "color": "#22577A",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/nmhs7etk",
+      "id": "8",
+      "bbox": [
+        65,
+        532,
+        1120,
+        117
+      ],
+      "geometry": "rect",
+      "text": "No improvement in the frozen first actions\nExtra text costs 36 to 37 tokens in affected inputs\nLater diagnostic changes cannot repair the primary score",
+      "textPreview": "No improvement in the frozen first actions | Extra text costs 36 to 37 tokens in affected inputs | Later diagnostic changes cannot repair...",
+      "resolvedFontSize": 25,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 25,
+        "typeface": "Noto Sans",
+        "color": "#26333C",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 3,
+        "lines": [
+          {
+            "index": 1,
+            "text": "• No improvement in the frozen first actions"
+          },
+          {
+            "index": 2,
+            "text": "• Extra text costs 36 to 37 tokens in affected inputs"
+          },
+          {
+            "index": 3,
+            "text": "• Later diagnostic changes cannot repair the primary score"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "No improvement in the frozen first actions",
+          "bulletCharacter": "•",
+          "marginLeft": 215900,
+          "indent": -114300,
+          "spaceAfter": 700,
+          "resolvedTextStyle": {
+            "anchor": 1,
+            "fontSize": 25,
+            "typeface": "Noto Sans",
+            "color": "#26333C",
+            "alignment": "left",
+            "verticalAlignment": "top",
+            "wrap": "square",
+            "autoFit": "none",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "No improvement in the frozen first actions",
+              "anchor": 1,
+              "fontSize": 25,
+              "typeface": "Noto Sans",
+              "color": "#26333C",
+              "alignment": "left",
+              "verticalAlignment": "top",
+              "wrap": "square",
+              "autoFit": "none",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "text": "Extra text costs 36 to 37 tokens in affected inputs",
+          "bulletCharacter": "•",
+          "marginLeft": 215900,
+          "indent": -114300,
+          "spaceAfter": 700,
+          "resolvedTextStyle": {
+            "anchor": 1,
+            "fontSize": 25,
+            "typeface": "Noto Sans",
+            "color": "#26333C",
+            "alignment": "left",
+            "verticalAlignment": "top",
+            "wrap": "square",
+            "autoFit": "none",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Extra text costs 36 to 37 tokens in affected inputs",
+              "anchor": 1,
+              "fontSize": 25,
+              "typeface": "Noto Sans",
+              "color": "#26333C",
+              "alignment": "left",
+              "verticalAlignment": "top",
+              "wrap": "square",
+              "autoFit": "none",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "text": "Later diagnostic changes cannot repair the primary score",
+          "bulletCharacter": "•",
+          "marginLeft": 215900,
+          "indent": -114300,
+          "spaceAfter": 700,
+          "resolvedTextStyle": {
+            "anchor": 1,
+            "fontSize": 25,
+            "typeface": "Noto Sans",
+            "color": "#26333C",
+            "alignment": "left",
+            "verticalAlignment": "top",
+            "wrap": "square",
+            "autoFit": "none",
+            "insets": {
+              "top": 0,
+              "right": 0,
+              "bottom": 0,
+              "left": 0
+            }
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Later diagnostic changes cannot repair the primary score",
+              "anchor": 1,
+              "fontSize": 25,
+              "typeface": "Noto Sans",
+              "color": "#26333C",
+              "alignment": "left",
+              "verticalAlignment": "top",
+              "wrap": "square",
+              "autoFit": "none",
+              "insets": {
+                "top": 0,
+                "right": 0,
+                "bottom": 0,
+                "left": 0
+              }
+            }
+          ]
+        }
+      ],
+      "lineWidth": 0
+    }
+  ],
+  "composeRuns": []
+}

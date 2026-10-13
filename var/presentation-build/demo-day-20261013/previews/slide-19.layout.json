@@ -1,0 +1,1086 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/tb942e",
+    "id": "tb942e",
+    "slide": 19,
+    "layoutId": "93275796-de1c-4ac9-8ec4-2c1e0661fdeb",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "4f324ce1-5b3b-4f9e-be61-eecc45112858",
+    "masterLayoutName": "Master",
+    "backgroundColor": "#FFFFFF",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "Noto Sans",
+      "Rubik"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "93275796-de1c-4ac9-8ec4-2c1e0661fdeb",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "4f324ce1-5b3b-4f9e-be61-eecc45112858",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "4f324ce1-5b3b-4f9e-be61-eecc45112858",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/0ri58jmx",
+      "id": "1",
+      "bbox": [
+        65,
+        45,
+        1155,
+        72
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#AFC4CC",
+      "lineWidth": 0
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/z69ofe5c",
+      "id": "2",
+      "bbox": [
+        60,
+        40,
+        1155,
+        72
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#22577A",
+      "lineWidth": 0
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/e50n694r",
+      "id": "3",
+      "bbox": [
+        82,
+        51,
+        1110,
+        57
+      ],
+      "geometry": "rect",
+      "text": "Supported Rule Precedence",
+      "textPreview": "Supported Rule Precedence",
+      "resolvedFontSize": 40,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 40,
+        "typeface": "Rubik",
+        "color": "#FFFFFF",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Supported Rule Precedence"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Supported Rule Precedence",
+          "resolvedTextStyle": {
+            "fontSize": 40,
+            "typeface": "Rubik",
+            "color": "#FFFFFF",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Supported Rule Precedence",
+              "fontSize": 40,
+              "typeface": "Rubik",
+              "color": "#FFFFFF",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/9wb6l8ne",
+      "id": "4",
+      "bbox": [
+        60,
+        679,
+        400,
+        22
+      ],
+      "geometry": "rect",
+      "text": "Appendix 12",
+      "textPreview": "Appendix 12",
+      "resolvedFontSize": 15,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 15,
+        "typeface": "Noto Sans",
+        "color": "#22577A",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Appendix 12"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Appendix 12",
+          "resolvedTextStyle": {
+            "fontSize": 15,
+            "typeface": "Noto Sans",
+            "color": "#22577A",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Appendix 12",
+              "fontSize": 15,
+              "typeface": "Noto Sans",
+              "color": "#22577A",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ov25c3m9",
+      "id": "5",
+      "bbox": [
+        1160,
+        675,
+        55,
+        26
+      ],
+      "geometry": "rect",
+      "text": "19",
+      "textPreview": "19",
+      "resolvedFontSize": 17,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 17,
+        "typeface": "Noto Sans",
+        "color": "#22577A",
+        "alignment": "right",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "19"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "19",
+          "resolvedTextStyle": {
+            "fontSize": 17,
+            "typeface": "Noto Sans",
+            "color": "#22577A",
+            "alignment": "right"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "19",
+              "fontSize": 17,
+              "typeface": "Noto Sans",
+              "color": "#22577A",
+              "alignment": "right"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 6,
+      "kind": "table",
+      "scope": "slide",
+      "aid": "tb/2toj6don",
+      "id": "6",
+      "bbox": [
+        60,
+        156,
+        1155,
+        439
+      ],
+      "text": "Order | Eligible evidence | Action\n1 | Configured continuous empty interval complete | CONTINUE\n2 | IN_WAY, valid closing, low gaze, face, within 3.5m | YIELD\n3 | Same closing and low-gaze evidence, TO_SIDE | CONTINUE\n4 | Held SUSTAINED category, latest gaze not looking | CONTINUE\n5 | Attentive and already within conversation range | ENGAGE\n6 | Reliable increasing separation outside conversation range | CONTINUE\n7 | Attentive within approach distance | APPROACH\n8 | Other eligible evidence | CONTINUE",
+      "textPreview": "Order | Eligible evidence | Action | 1 | Configured continuous empty interval complete | CONTINUE | 2 | IN_WAY, valid closing, low gaze, ...",
+      "rows": 9,
+      "cols": 3,
+      "cells": [
+        {
+          "index": 1,
+          "row": 1,
+          "column": 1,
+          "bbox": [
+            60,
+            156,
+            95,
+            48.78
+          ],
+          "text": "Order",
+          "textPreview": "Order",
+          "fillColor": "#22577A",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Order",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Order"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "row": 1,
+          "column": 2,
+          "bbox": [
+            155,
+            156,
+            870,
+            48.78
+          ],
+          "text": "Eligible evidence",
+          "textPreview": "Eligible evidence",
+          "fillColor": "#22577A",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Eligible evidence",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Eligible evidence"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "row": 1,
+          "column": 3,
+          "bbox": [
+            1025,
+            156,
+            190,
+            48.78
+          ],
+          "text": "Action",
+          "textPreview": "Action",
+          "fillColor": "#22577A",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Action",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Action"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 4,
+          "row": 2,
+          "column": 1,
+          "bbox": [
+            60,
+            204.78,
+            95,
+            48.78
+          ],
+          "text": "1",
+          "textPreview": "1",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "1",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "1"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 5,
+          "row": 2,
+          "column": 2,
+          "bbox": [
+            155,
+            204.78,
+            870,
+            48.78
+          ],
+          "text": "Configured continuous empty interval complete",
+          "textPreview": "Configured continuous empty interval complete",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Configured continuous empty interval complete",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Configured continuous empty interval complete"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 6,
+          "row": 2,
+          "column": 3,
+          "bbox": [
+            1025,
+            204.78,
+            190,
+            48.78
+          ],
+          "text": "CONTINUE",
+          "textPreview": "CONTINUE",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "CONTINUE",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "CONTINUE"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 7,
+          "row": 3,
+          "column": 1,
+          "bbox": [
+            60,
+            253.56,
+            95,
+            48.78
+          ],
+          "text": "2",
+          "textPreview": "2",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "2",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "2"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 8,
+          "row": 3,
+          "column": 2,
+          "bbox": [
+            155,
+            253.56,
+            870,
+            48.78
+          ],
+          "text": "IN_WAY, valid closing, low gaze, face, within 3.5m",
+          "textPreview": "IN_WAY, valid closing, low gaze, face, within 3.5m",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "IN_WAY, valid closing, low gaze, face, within 3.5m",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "IN_WAY, valid closing, low gaze, face, within 3.5m"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 9,
+          "row": 3,
+          "column": 3,
+          "bbox": [
+            1025,
+            253.56,
+            190,
+            48.78
+          ],
+          "text": "YIELD",
+          "textPreview": "YIELD",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "YIELD",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "YIELD"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 10,
+          "row": 4,
+          "column": 1,
+          "bbox": [
+            60,
+            302.33,
+            95,
+            48.78
+          ],
+          "text": "3",
+          "textPreview": "3",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "3",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "3"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 11,
+          "row": 4,
+          "column": 2,
+          "bbox": [
+            155,
+            302.33,
+            870,
+            48.78
+          ],
+          "text": "Same closing and low-gaze evidence, TO_SIDE",
+          "textPreview": "Same closing and low-gaze evidence, TO_SIDE",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Same closing and low-gaze evidence, TO_SIDE",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Same closing and low-gaze evidence, TO_SIDE"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 12,
+          "row": 4,
+          "column": 3,
+          "bbox": [
+            1025,
+            302.33,
+            190,
+            48.78
+          ],
+          "text": "CONTINUE",
+          "textPreview": "CONTINUE",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "CONTINUE",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "CONTINUE"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 13,
+          "row": 5,
+          "column": 1,
+          "bbox": [
+            60,
+            351.11,
+            95,
+            48.78
+          ],
+          "text": "4",
+          "textPreview": "4",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "4",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "4"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 14,
+          "row": 5,
+          "column": 2,
+          "bbox": [
+            155,
+            351.11,
+            870,
+            48.78
+          ],
+          "text": "Held SUSTAINED category, latest gaze not looking",
+          "textPreview": "Held SUSTAINED category, latest gaze not looking",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Held SUSTAINED category, latest gaze not looking",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Held SUSTAINED category, latest gaze not looking"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 15,
+          "row": 5,
+          "column": 3,
+          "bbox": [
+            1025,
+            351.11,
+            190,
+            48.78
+          ],
+          "text": "CONTINUE",
+          "textPreview": "CONTINUE",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "CONTINUE",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "CONTINUE"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 16,
+          "row": 6,
+          "column": 1,
+          "bbox": [
+            60,
+            399.89,
+            95,
+            48.78
+          ],
+          "text": "5",
+          "textPreview": "5",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "5",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "5"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 17,
+          "row": 6,
+          "column": 2,
+          "bbox": [
+            155,
+            399.89,
+            870,
+            48.78
+          ],
+          "text": "Attentive and already within conversation range",
+          "textPreview": "Attentive and already within conversation range",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Attentive and already within conversation range",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Attentive and already within conversation range"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 18,
+          "row": 6,
+          "column": 3,
+          "bbox": [
+            1025,
+            399.89,
+            190,
+            48.78
+          ],
+          "text": "ENGAGE",
+          "textPreview": "ENGAGE",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "ENGAGE",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "ENGAGE"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 19,
+          "row": 7,
+          "column": 1,
+          "bbox": [
+            60,
+            448.67,
+            95,
+            48.78
+          ],
+          "text": "6",
+          "textPreview": "6",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "6",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "6"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 20,
+          "row": 7,
+          "column": 2,
+          "bbox": [
+            155,
+            448.67,
+            870,
+            48.78
+          ],
+          "text": "Reliable increasing separation outside conversation range",
+          "textPreview": "Reliable increasing separation outside conversation range",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Reliable increasing separation outside conversation range",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Reliable increasing separation outside conversation range"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 21,
+          "row": 7,
+          "column": 3,
+          "bbox": [
+            1025,
+            448.67,
+            190,
+            48.78
+          ],
+          "text": "CONTINUE",
+          "textPreview": "CONTINUE",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "CONTINUE",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "CONTINUE"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 22,
+          "row": 8,
+          "column": 1,
+          "bbox": [
+            60,
+            497.44,
+            95,
+            48.78
+          ],
+          "text": "7",
+          "textPreview": "7",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "7",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "7"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 23,
+          "row": 8,
+          "column": 2,
+          "bbox": [
+            155,
+            497.44,
+            870,
+            48.78
+          ],
+          "text": "Attentive within approach distance",
+          "textPreview": "Attentive within approach distance",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Attentive within approach distance",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Attentive within approach distance"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 24,
+          "row": 8,
+          "column": 3,
+          "bbox": [
+            1025,
+            497.44,
+            190,
+            48.78
+          ],
+          "text": "APPROACH",
+          "textPreview": "APPROACH",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "APPROACH",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "APPROACH"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 25,
+          "row": 9,
+          "column": 1,
+          "bbox": [
+            60,
+            546.22,
+            95,
+            48.78
+          ],
+          "text": "8",
+          "textPreview": "8",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "8",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "8"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 26,
+          "row": 9,
+          "column": 2,
+          "bbox": [
+            155,
+            546.22,
+            870,
+            48.78
+          ],
+          "text": "Other eligible evidence",
+          "textPreview": "Other eligible evidence",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Other eligible evidence",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Other eligible evidence"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 27,
+          "row": 9,
+          "column": 3,
+          "bbox": [
+            1025,
+            546.22,
+            190,
+            48.78
+          ],
+          "text": "CONTINUE",
+          "textPreview": "CONTINUE",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "CONTINUE",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "CONTINUE"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/mt0nat43",
+      "id": "7",
+      "bbox": [
+        60,
+        615,
+        1160,
+        45
+      ],
+      "geometry": "rect",
+      "text": "Readiness precedes this table. No policy output is supplied for an unready observation.",
+      "textPreview": "Readiness precedes this table. No policy output is supplied for an unready observation.",
+      "resolvedFontSize": 18,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 18,
+        "typeface": "Noto Sans",
+        "color": "#437E9D",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Readiness precedes this table. No policy output is supplied for an unready observation."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Readiness precedes this table. No policy output is supplied for an unready observation.",
+          "resolvedTextStyle": {
+            "fontSize": 18,
+            "typeface": "Noto Sans",
+            "color": "#437E9D",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Readiness precedes this table. No policy output is supplied for an unready observation.",
+              "fontSize": 18,
+              "typeface": "Noto Sans",
+              "color": "#437E9D",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    }
+  ],
+  "composeRuns": []
+}

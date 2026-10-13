@@ -1,0 +1,1684 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/jglesb",
+    "id": "jglesb",
+    "slide": 9,
+    "layoutId": "93275796-de1c-4ac9-8ec4-2c1e0661fdeb",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "4f324ce1-5b3b-4f9e-be61-eecc45112858",
+    "masterLayoutName": "Master",
+    "backgroundColor": "#FFFFFF",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "Noto Sans",
+      "Rubik"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "93275796-de1c-4ac9-8ec4-2c1e0661fdeb",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "4f324ce1-5b3b-4f9e-be61-eecc45112858",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "4f324ce1-5b3b-4f9e-be61-eecc45112858",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/h8bq1sna",
+      "id": "1",
+      "bbox": [
+        65,
+        45,
+        1155,
+        72
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#AFC4CC",
+      "lineWidth": 0
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/u5k76doj",
+      "id": "2",
+      "bbox": [
+        60,
+        40,
+        1155,
+        72
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#22577A",
+      "lineWidth": 0
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/v6t8zi54",
+      "id": "3",
+      "bbox": [
+        82,
+        51,
+        1110,
+        57
+      ],
+      "geometry": "rect",
+      "text": "Frozen First-Decision Evaluation",
+      "textPreview": "Frozen First-Decision Evaluation",
+      "resolvedFontSize": 40,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 40,
+        "typeface": "Rubik",
+        "color": "#FFFFFF",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Frozen First-Decision Evaluation"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Frozen First-Decision Evaluation",
+          "resolvedTextStyle": {
+            "fontSize": 40,
+            "typeface": "Rubik",
+            "color": "#FFFFFF",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Frozen First-Decision Evaluation",
+              "fontSize": 40,
+              "typeface": "Rubik",
+              "color": "#FFFFFF",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/8jip436t",
+      "id": "4",
+      "bbox": [
+        60,
+        679,
+        400,
+        22
+      ],
+      "geometry": "rect",
+      "text": "Appendix 02",
+      "textPreview": "Appendix 02",
+      "resolvedFontSize": 15,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 15,
+        "typeface": "Noto Sans",
+        "color": "#22577A",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Appendix 02"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Appendix 02",
+          "resolvedTextStyle": {
+            "fontSize": 15,
+            "typeface": "Noto Sans",
+            "color": "#22577A",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Appendix 02",
+              "fontSize": 15,
+              "typeface": "Noto Sans",
+              "color": "#22577A",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/9kbqx8ny",
+      "id": "5",
+      "bbox": [
+        1160,
+        675,
+        55,
+        26
+      ],
+      "geometry": "rect",
+      "text": "9",
+      "textPreview": "9",
+      "resolvedFontSize": 17,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 17,
+        "typeface": "Noto Sans",
+        "color": "#22577A",
+        "alignment": "right",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "9"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "9",
+          "resolvedTextStyle": {
+            "fontSize": 17,
+            "typeface": "Noto Sans",
+            "color": "#22577A",
+            "alignment": "right"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "9",
+              "fontSize": 17,
+              "typeface": "Noto Sans",
+              "color": "#22577A",
+              "alignment": "right"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 6,
+      "kind": "table",
+      "scope": "slide",
+      "aid": "tb/vq5k7udc",
+      "id": "6",
+      "bbox": [
+        60,
+        152,
+        1155,
+        440
+      ],
+      "text": "Case | Allowed first actions | Rules | LLM | Eligible after motion\nS1 | CONTINUE | CONTINUE | CONTINUE | 1.18s\nS2 | APPROACH | APPROACH | APPROACH | 1.10s\nS3 | ENGAGE / APPROACH | ENGAGE | ENGAGE | 1.21s\nS4 | YIELD | YIELD | CONTINUE | 1.10s\nS5 | CONTINUE | CONTINUE | CONTINUE | 1.17s\nS6 | CONTINUE | CONTINUE | CONTINUE | 1.11s\nS7 | CONTINUE | CONTINUE | CONTINUE | 1.71s\nS8 | APPROACH / ENGAGE / CONTINUE | CONTINUE | CONTINUE | 1.17s\nS9 | APPROACH | APPROACH | APPROACH | 1.14s",
+      "textPreview": "Case | Allowed first actions | Rules | LLM | Eligible after motion | S1 | CONTINUE | CONTINUE | CONTINUE | 1.18s | S2 | APPROACH | APPROA...",
+      "rows": 10,
+      "cols": 5,
+      "cells": [
+        {
+          "index": 1,
+          "row": 1,
+          "column": 1,
+          "bbox": [
+            60,
+            152,
+            105,
+            44
+          ],
+          "text": "Case",
+          "textPreview": "Case",
+          "fillColor": "#22577A",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Case",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Case"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "row": 1,
+          "column": 2,
+          "bbox": [
+            165,
+            152,
+            395,
+            44
+          ],
+          "text": "Allowed first actions",
+          "textPreview": "Allowed first actions",
+          "fillColor": "#22577A",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Allowed first actions",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Allowed first actions"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "row": 1,
+          "column": 3,
+          "bbox": [
+            560,
+            152,
+            175,
+            44
+          ],
+          "text": "Rules",
+          "textPreview": "Rules",
+          "fillColor": "#22577A",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Rules",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Rules"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 4,
+          "row": 1,
+          "column": 4,
+          "bbox": [
+            735,
+            152,
+            175,
+            44
+          ],
+          "text": "LLM",
+          "textPreview": "LLM",
+          "fillColor": "#22577A",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "LLM",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "LLM"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 5,
+          "row": 1,
+          "column": 5,
+          "bbox": [
+            910,
+            152,
+            305,
+            44
+          ],
+          "text": "Eligible after motion",
+          "textPreview": "Eligible after motion",
+          "fillColor": "#22577A",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Eligible after motion",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Eligible after motion"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 6,
+          "row": 2,
+          "column": 1,
+          "bbox": [
+            60,
+            196,
+            105,
+            44
+          ],
+          "text": "S1",
+          "textPreview": "S1",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "S1",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "S1"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 7,
+          "row": 2,
+          "column": 2,
+          "bbox": [
+            165,
+            196,
+            395,
+            44
+          ],
+          "text": "CONTINUE",
+          "textPreview": "CONTINUE",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "CONTINUE",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "CONTINUE"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 8,
+          "row": 2,
+          "column": 3,
+          "bbox": [
+            560,
+            196,
+            175,
+            44
+          ],
+          "text": "CONTINUE",
+          "textPreview": "CONTINUE",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "CONTINUE",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "CONTINUE"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 9,
+          "row": 2,
+          "column": 4,
+          "bbox": [
+            735,
+            196,
+            175,
+            44
+          ],
+          "text": "CONTINUE",
+          "textPreview": "CONTINUE",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "CONTINUE",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "CONTINUE"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 10,
+          "row": 2,
+          "column": 5,
+          "bbox": [
+            910,
+            196,
+            305,
+            44
+          ],
+          "text": "1.18s",
+          "textPreview": "1.18s",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "1.18s",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "1.18s"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 11,
+          "row": 3,
+          "column": 1,
+          "bbox": [
+            60,
+            240,
+            105,
+            44
+          ],
+          "text": "S2",
+          "textPreview": "S2",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "S2",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "S2"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 12,
+          "row": 3,
+          "column": 2,
+          "bbox": [
+            165,
+            240,
+            395,
+            44
+          ],
+          "text": "APPROACH",
+          "textPreview": "APPROACH",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "APPROACH",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "APPROACH"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 13,
+          "row": 3,
+          "column": 3,
+          "bbox": [
+            560,
+            240,
+            175,
+            44
+          ],
+          "text": "APPROACH",
+          "textPreview": "APPROACH",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "APPROACH",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "APPROACH"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 14,
+          "row": 3,
+          "column": 4,
+          "bbox": [
+            735,
+            240,
+            175,
+            44
+          ],
+          "text": "APPROACH",
+          "textPreview": "APPROACH",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "APPROACH",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "APPROACH"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 15,
+          "row": 3,
+          "column": 5,
+          "bbox": [
+            910,
+            240,
+            305,
+            44
+          ],
+          "text": "1.10s",
+          "textPreview": "1.10s",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "1.10s",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "1.10s"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 16,
+          "row": 4,
+          "column": 1,
+          "bbox": [
+            60,
+            284,
+            105,
+            44
+          ],
+          "text": "S3",
+          "textPreview": "S3",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "S3",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "S3"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 17,
+          "row": 4,
+          "column": 2,
+          "bbox": [
+            165,
+            284,
+            395,
+            44
+          ],
+          "text": "ENGAGE / APPROACH",
+          "textPreview": "ENGAGE / APPROACH",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "ENGAGE / APPROACH",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "ENGAGE / APPROACH"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 18,
+          "row": 4,
+          "column": 3,
+          "bbox": [
+            560,
+            284,
+            175,
+            44
+          ],
+          "text": "ENGAGE",
+          "textPreview": "ENGAGE",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "ENGAGE",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "ENGAGE"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 19,
+          "row": 4,
+          "column": 4,
+          "bbox": [
+            735,
+            284,
+            175,
+            44
+          ],
+          "text": "ENGAGE",
+          "textPreview": "ENGAGE",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "ENGAGE",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "ENGAGE"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 20,
+          "row": 4,
+          "column": 5,
+          "bbox": [
+            910,
+            284,
+            305,
+            44
+          ],
+          "text": "1.21s",
+          "textPreview": "1.21s",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "1.21s",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "1.21s"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 21,
+          "row": 5,
+          "column": 1,
+          "bbox": [
+            60,
+            328,
+            105,
+            44
+          ],
+          "text": "S4",
+          "textPreview": "S4",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "S4",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "S4"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 22,
+          "row": 5,
+          "column": 2,
+          "bbox": [
+            165,
+            328,
+            395,
+            44
+          ],
+          "text": "YIELD",
+          "textPreview": "YIELD",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "YIELD",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "YIELD"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 23,
+          "row": 5,
+          "column": 3,
+          "bbox": [
+            560,
+            328,
+            175,
+            44
+          ],
+          "text": "YIELD",
+          "textPreview": "YIELD",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "YIELD",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "YIELD"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 24,
+          "row": 5,
+          "column": 4,
+          "bbox": [
+            735,
+            328,
+            175,
+            44
+          ],
+          "text": "CONTINUE",
+          "textPreview": "CONTINUE",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "CONTINUE",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "CONTINUE"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 25,
+          "row": 5,
+          "column": 5,
+          "bbox": [
+            910,
+            328,
+            305,
+            44
+          ],
+          "text": "1.10s",
+          "textPreview": "1.10s",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "1.10s",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "1.10s"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 26,
+          "row": 6,
+          "column": 1,
+          "bbox": [
+            60,
+            372,
+            105,
+            44
+          ],
+          "text": "S5",
+          "textPreview": "S5",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "S5",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "S5"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 27,
+          "row": 6,
+          "column": 2,
+          "bbox": [
+            165,
+            372,
+            395,
+            44
+          ],
+          "text": "CONTINUE",
+          "textPreview": "CONTINUE",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "CONTINUE",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "CONTINUE"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 28,
+          "row": 6,
+          "column": 3,
+          "bbox": [
+            560,
+            372,
+            175,
+            44
+          ],
+          "text": "CONTINUE",
+          "textPreview": "CONTINUE",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "CONTINUE",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "CONTINUE"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 29,
+          "row": 6,
+          "column": 4,
+          "bbox": [
+            735,
+            372,
+            175,
+            44
+          ],
+          "text": "CONTINUE",
+          "textPreview": "CONTINUE",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "CONTINUE",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "CONTINUE"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 30,
+          "row": 6,
+          "column": 5,
+          "bbox": [
+            910,
+            372,
+            305,
+            44
+          ],
+          "text": "1.17s",
+          "textPreview": "1.17s",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "1.17s",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "1.17s"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 31,
+          "row": 7,
+          "column": 1,
+          "bbox": [
+            60,
+            416,
+            105,
+            44
+          ],
+          "text": "S6",
+          "textPreview": "S6",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "S6",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "S6"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 32,
+          "row": 7,
+          "column": 2,
+          "bbox": [
+            165,
+            416,
+            395,
+            44
+          ],
+          "text": "CONTINUE",
+          "textPreview": "CONTINUE",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "CONTINUE",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "CONTINUE"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 33,
+          "row": 7,
+          "column": 3,
+          "bbox": [
+            560,
+            416,
+            175,
+            44
+          ],
+          "text": "CONTINUE",
+          "textPreview": "CONTINUE",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "CONTINUE",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "CONTINUE"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 34,
+          "row": 7,
+          "column": 4,
+          "bbox": [
+            735,
+            416,
+            175,
+            44
+          ],
+          "text": "CONTINUE",
+          "textPreview": "CONTINUE",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "CONTINUE",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "CONTINUE"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 35,
+          "row": 7,
+          "column": 5,
+          "bbox": [
+            910,
+            416,
+            305,
+            44
+          ],
+          "text": "1.11s",
+          "textPreview": "1.11s",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "1.11s",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "1.11s"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 36,
+          "row": 8,
+          "column": 1,
+          "bbox": [
+            60,
+            460,
+            105,
+            44
+          ],
+          "text": "S7",
+          "textPreview": "S7",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "S7",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "S7"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 37,
+          "row": 8,
+          "column": 2,
+          "bbox": [
+            165,
+            460,
+            395,
+            44
+          ],
+          "text": "CONTINUE",
+          "textPreview": "CONTINUE",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "CONTINUE",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "CONTINUE"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 38,
+          "row": 8,
+          "column": 3,
+          "bbox": [
+            560,
+            460,
+            175,
+            44
+          ],
+          "text": "CONTINUE",
+          "textPreview": "CONTINUE",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "CONTINUE",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "CONTINUE"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 39,
+          "row": 8,
+          "column": 4,
+          "bbox": [
+            735,
+            460,
+            175,
+            44
+          ],
+          "text": "CONTINUE",
+          "textPreview": "CONTINUE",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "CONTINUE",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "CONTINUE"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 40,
+          "row": 8,
+          "column": 5,
+          "bbox": [
+            910,
+            460,
+            305,
+            44
+          ],
+          "text": "1.71s",
+          "textPreview": "1.71s",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "1.71s",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "1.71s"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 41,
+          "row": 9,
+          "column": 1,
+          "bbox": [
+            60,
+            504,
+            105,
+            44
+          ],
+          "text": "S8",
+          "textPreview": "S8",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "S8",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "S8"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 42,
+          "row": 9,
+          "column": 2,
+          "bbox": [
+            165,
+            504,
+            395,
+            44
+          ],
+          "text": "APPROACH / ENGAGE / CONTINUE",
+          "textPreview": "APPROACH / ENGAGE / CONTINUE",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "APPROACH / ENGAGE / CONTINUE",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "APPROACH / ENGAGE / CONTINUE"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 43,
+          "row": 9,
+          "column": 3,
+          "bbox": [
+            560,
+            504,
+            175,
+            44
+          ],
+          "text": "CONTINUE",
+          "textPreview": "CONTINUE",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "CONTINUE",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "CONTINUE"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 44,
+          "row": 9,
+          "column": 4,
+          "bbox": [
+            735,
+            504,
+            175,
+            44
+          ],
+          "text": "CONTINUE",
+          "textPreview": "CONTINUE",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "CONTINUE",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "CONTINUE"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 45,
+          "row": 9,
+          "column": 5,
+          "bbox": [
+            910,
+            504,
+            305,
+            44
+          ],
+          "text": "1.17s",
+          "textPreview": "1.17s",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "1.17s",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "1.17s"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 46,
+          "row": 10,
+          "column": 1,
+          "bbox": [
+            60,
+            548,
+            105,
+            44
+          ],
+          "text": "S9",
+          "textPreview": "S9",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "S9",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "S9"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 47,
+          "row": 10,
+          "column": 2,
+          "bbox": [
+            165,
+            548,
+            395,
+            44
+          ],
+          "text": "APPROACH",
+          "textPreview": "APPROACH",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "APPROACH",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "APPROACH"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 48,
+          "row": 10,
+          "column": 3,
+          "bbox": [
+            560,
+            548,
+            175,
+            44
+          ],
+          "text": "APPROACH",
+          "textPreview": "APPROACH",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "APPROACH",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "APPROACH"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 49,
+          "row": 10,
+          "column": 4,
+          "bbox": [
+            735,
+            548,
+            175,
+            44
+          ],
+          "text": "APPROACH",
+          "textPreview": "APPROACH",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "APPROACH",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "APPROACH"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 50,
+          "row": 10,
+          "column": 5,
+          "bbox": [
+            910,
+            548,
+            305,
+            44
+          ],
+          "text": "1.14s",
+          "textPreview": "1.14s",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "1.14s",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "1.14s"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ni98vy58",
+      "id": "7",
+      "bbox": [
+        60,
+        615,
+        1160,
+        45
+      ],
+      "geometry": "rect",
+      "text": "S8 first uses an empty scene. These expected-action labels are evaluator metadata and never enter policy input.",
+      "textPreview": "S8 first uses an empty scene. These expected-action labels are evaluator metadata and never enter policy input.",
+      "resolvedFontSize": 18,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 18,
+        "typeface": "Noto Sans",
+        "color": "#437E9D",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "S8 first uses an empty scene. These expected-action labels are evaluator metadata and never enter policy input."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "S8 first uses an empty scene. These expected-action labels are evaluator metadata and never enter policy input.",
+          "resolvedTextStyle": {
+            "fontSize": 18,
+            "typeface": "Noto Sans",
+            "color": "#437E9D",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "S8 first uses an empty scene. These expected-action labels are evaluator metadata and never enter policy input.",
+              "fontSize": 18,
+              "typeface": "Noto Sans",
+              "color": "#437E9D",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    }
+  ],
+  "composeRuns": []
+}

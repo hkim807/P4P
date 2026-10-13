@@ -1,0 +1,751 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/zvlsi4",
+    "id": "zvlsi4",
+    "slide": 24,
+    "layoutId": "93275796-de1c-4ac9-8ec4-2c1e0661fdeb",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "4f324ce1-5b3b-4f9e-be61-eecc45112858",
+    "masterLayoutName": "Master",
+    "backgroundColor": "#FFFFFF",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "Noto Sans",
+      "Rubik"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "93275796-de1c-4ac9-8ec4-2c1e0661fdeb",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "4f324ce1-5b3b-4f9e-be61-eecc45112858",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "4f324ce1-5b3b-4f9e-be61-eecc45112858",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/mtw7yp4v",
+      "id": "1",
+      "bbox": [
+        65,
+        45,
+        1155,
+        72
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#AFC4CC",
+      "lineWidth": 0
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/9gnqt436",
+      "id": "2",
+      "bbox": [
+        60,
+        40,
+        1155,
+        72
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#22577A",
+      "lineWidth": 0
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ofep0z2l",
+      "id": "3",
+      "bbox": [
+        82,
+        51,
+        1110,
+        57
+      ],
+      "geometry": "rect",
+      "text": "DecisionState v3: Included and Excluded Evidence",
+      "textPreview": "DecisionState v3: Included and Excluded Evidence",
+      "resolvedFontSize": 40,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 40,
+        "typeface": "Rubik",
+        "color": "#FFFFFF",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "DecisionState v3: Included and Excluded Evidence"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "DecisionState v3: Included and Excluded Evidence",
+          "resolvedTextStyle": {
+            "fontSize": 40,
+            "typeface": "Rubik",
+            "color": "#FFFFFF",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "DecisionState v3: Included and Excluded Evidence",
+              "fontSize": 40,
+              "typeface": "Rubik",
+              "color": "#FFFFFF",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/bi58vulc",
+      "id": "4",
+      "bbox": [
+        60,
+        679,
+        400,
+        22
+      ],
+      "geometry": "rect",
+      "text": "Appendix 17",
+      "textPreview": "Appendix 17",
+      "resolvedFontSize": 15,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 15,
+        "typeface": "Noto Sans",
+        "color": "#22577A",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Appendix 17"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Appendix 17",
+          "resolvedTextStyle": {
+            "fontSize": 15,
+            "typeface": "Noto Sans",
+            "color": "#22577A",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Appendix 17",
+              "fontSize": 15,
+              "typeface": "Noto Sans",
+              "color": "#22577A",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ahw72pkr",
+      "id": "5",
+      "bbox": [
+        1160,
+        675,
+        55,
+        26
+      ],
+      "geometry": "rect",
+      "text": "24",
+      "textPreview": "24",
+      "resolvedFontSize": 17,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 17,
+        "typeface": "Noto Sans",
+        "color": "#22577A",
+        "alignment": "right",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "24"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "24",
+          "resolvedTextStyle": {
+            "fontSize": 17,
+            "typeface": "Noto Sans",
+            "color": "#22577A",
+            "alignment": "right"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "24",
+              "fontSize": 17,
+              "typeface": "Noto Sans",
+              "color": "#22577A",
+              "alignment": "right"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 6,
+      "kind": "table",
+      "scope": "slide",
+      "aid": "tb/k3ilg7at",
+      "id": "6",
+      "bbox": [
+        60,
+        159,
+        1155,
+        400
+      ],
+      "text": "Compact shared input | Full diagnostics or separate context\nReadiness and empty-scene duration | Session/state IDs and timestamps\nRobot motion category and description | Raw velocities and configuration\nCurrent observed people | Missing-track lifecycle and events\nDistance, gaze, trend and corridor categories | Raw head/nose geometry and fit statistics\nFace evidence and descriptive labels | Detailed quality flags and provenance\nTen exact evidence operands | Cached rule settings outside observations",
+      "textPreview": "Compact shared input | Full diagnostics or separate context | Readiness and empty-scene duration | Session/state IDs and timestamps | Rob...",
+      "rows": 7,
+      "cols": 2,
+      "cells": [
+        {
+          "index": 1,
+          "row": 1,
+          "column": 1,
+          "bbox": [
+            60,
+            159,
+            575,
+            57.14
+          ],
+          "text": "Compact shared input",
+          "textPreview": "Compact shared input",
+          "fillColor": "#22577A",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Compact shared input",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Compact shared input"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "row": 1,
+          "column": 2,
+          "bbox": [
+            635,
+            159,
+            580,
+            57.14
+          ],
+          "text": "Full diagnostics or separate context",
+          "textPreview": "Full diagnostics or separate context",
+          "fillColor": "#22577A",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Full diagnostics or separate context",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Full diagnostics or separate context"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "row": 2,
+          "column": 1,
+          "bbox": [
+            60,
+            216.14,
+            575,
+            57.14
+          ],
+          "text": "Readiness and empty-scene duration",
+          "textPreview": "Readiness and empty-scene duration",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Readiness and empty-scene duration",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Readiness and empty-scene duration"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 4,
+          "row": 2,
+          "column": 2,
+          "bbox": [
+            635,
+            216.14,
+            580,
+            57.14
+          ],
+          "text": "Session/state IDs and timestamps",
+          "textPreview": "Session/state IDs and timestamps",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Session/state IDs and timestamps",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Session/state IDs and timestamps"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 5,
+          "row": 3,
+          "column": 1,
+          "bbox": [
+            60,
+            273.29,
+            575,
+            57.14
+          ],
+          "text": "Robot motion category and description",
+          "textPreview": "Robot motion category and description",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Robot motion category and description",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Robot motion category and description"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 6,
+          "row": 3,
+          "column": 2,
+          "bbox": [
+            635,
+            273.29,
+            580,
+            57.14
+          ],
+          "text": "Raw velocities and configuration",
+          "textPreview": "Raw velocities and configuration",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Raw velocities and configuration",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Raw velocities and configuration"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 7,
+          "row": 4,
+          "column": 1,
+          "bbox": [
+            60,
+            330.43,
+            575,
+            57.14
+          ],
+          "text": "Current observed people",
+          "textPreview": "Current observed people",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Current observed people",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Current observed people"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 8,
+          "row": 4,
+          "column": 2,
+          "bbox": [
+            635,
+            330.43,
+            580,
+            57.14
+          ],
+          "text": "Missing-track lifecycle and events",
+          "textPreview": "Missing-track lifecycle and events",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Missing-track lifecycle and events",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Missing-track lifecycle and events"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 9,
+          "row": 5,
+          "column": 1,
+          "bbox": [
+            60,
+            387.57,
+            575,
+            57.14
+          ],
+          "text": "Distance, gaze, trend and corridor categories",
+          "textPreview": "Distance, gaze, trend and corridor categories",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Distance, gaze, trend and corridor categories",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Distance, gaze, trend and corridor categories"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 10,
+          "row": 5,
+          "column": 2,
+          "bbox": [
+            635,
+            387.57,
+            580,
+            57.14
+          ],
+          "text": "Raw head/nose geometry and fit statistics",
+          "textPreview": "Raw head/nose geometry and fit statistics",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Raw head/nose geometry and fit statistics",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Raw head/nose geometry and fit statistics"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 11,
+          "row": 6,
+          "column": 1,
+          "bbox": [
+            60,
+            444.71,
+            575,
+            57.14
+          ],
+          "text": "Face evidence and descriptive labels",
+          "textPreview": "Face evidence and descriptive labels",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Face evidence and descriptive labels",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Face evidence and descriptive labels"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 12,
+          "row": 6,
+          "column": 2,
+          "bbox": [
+            635,
+            444.71,
+            580,
+            57.14
+          ],
+          "text": "Detailed quality flags and provenance",
+          "textPreview": "Detailed quality flags and provenance",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Detailed quality flags and provenance",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Detailed quality flags and provenance"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 13,
+          "row": 7,
+          "column": 1,
+          "bbox": [
+            60,
+            501.86,
+            575,
+            57.14
+          ],
+          "text": "Ten exact evidence operands",
+          "textPreview": "Ten exact evidence operands",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Ten exact evidence operands",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Ten exact evidence operands"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 14,
+          "row": 7,
+          "column": 2,
+          "bbox": [
+            635,
+            501.86,
+            580,
+            57.14
+          ],
+          "text": "Cached rule settings outside observations",
+          "textPreview": "Cached rule settings outside observations",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Cached rule settings outside observations",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Cached rule settings outside observations"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/wjyp4z2x",
+      "id": "7",
+      "bbox": [
+        65,
+        585,
+        1140,
+        47
+      ],
+      "geometry": "rect",
+      "text": "One canonical observation object for both policies",
+      "textPreview": "One canonical observation object for both policies",
+      "resolvedFontSize": 32,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 32,
+        "typeface": "Rubik",
+        "color": "#22577A",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "One canonical observation object for both policies"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "One canonical observation object for both policies",
+          "resolvedTextStyle": {
+            "fontSize": 32,
+            "typeface": "Rubik",
+            "color": "#22577A",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "One canonical observation object for both policies",
+              "fontSize": 32,
+              "typeface": "Rubik",
+              "color": "#22577A",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    }
+  ],
+  "composeRuns": []
+}

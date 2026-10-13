@@ -1,0 +1,949 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/p45juh",
+    "id": "p45juh",
+    "slide": 10,
+    "layoutId": "93275796-de1c-4ac9-8ec4-2c1e0661fdeb",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "4f324ce1-5b3b-4f9e-be61-eecc45112858",
+    "masterLayoutName": "Master",
+    "backgroundColor": "#FFFFFF",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "Noto Sans",
+      "Rubik"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "93275796-de1c-4ac9-8ec4-2c1e0661fdeb",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "4f324ce1-5b3b-4f9e-be61-eecc45112858",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "4f324ce1-5b3b-4f9e-be61-eecc45112858",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/sf2hsrup",
+      "id": "1",
+      "bbox": [
+        65,
+        45,
+        1155,
+        72
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#AFC4CC",
+      "lineWidth": 0
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/retgjmd4",
+      "id": "2",
+      "bbox": [
+        60,
+        40,
+        1155,
+        72
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#22577A",
+      "lineWidth": 0
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/6dkzqhcj",
+      "id": "3",
+      "bbox": [
+        82,
+        51,
+        1110,
+        57
+      ],
+      "geometry": "rect",
+      "text": "Human Reference: Available Evidence",
+      "textPreview": "Human Reference: Available Evidence",
+      "resolvedFontSize": 40,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 40,
+        "typeface": "Rubik",
+        "color": "#FFFFFF",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Human Reference: Available Evidence"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Human Reference: Available Evidence",
+          "resolvedTextStyle": {
+            "fontSize": 40,
+            "typeface": "Rubik",
+            "color": "#FFFFFF",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Human Reference: Available Evidence",
+              "fontSize": 40,
+              "typeface": "Rubik",
+              "color": "#FFFFFF",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/1kvipwv6",
+      "id": "4",
+      "bbox": [
+        60,
+        679,
+        400,
+        22
+      ],
+      "geometry": "rect",
+      "text": "Appendix 03",
+      "textPreview": "Appendix 03",
+      "resolvedFontSize": 15,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 15,
+        "typeface": "Noto Sans",
+        "color": "#22577A",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Appendix 03"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Appendix 03",
+          "resolvedTextStyle": {
+            "fontSize": 15,
+            "typeface": "Noto Sans",
+            "color": "#22577A",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Appendix 03",
+              "fontSize": 15,
+              "typeface": "Noto Sans",
+              "color": "#22577A",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/gjmhwrul",
+      "id": "5",
+      "bbox": [
+        1160,
+        675,
+        55,
+        26
+      ],
+      "geometry": "rect",
+      "text": "10",
+      "textPreview": "10",
+      "resolvedFontSize": 17,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 17,
+        "typeface": "Noto Sans",
+        "color": "#22577A",
+        "alignment": "right",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "10"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "10",
+          "resolvedTextStyle": {
+            "fontSize": 17,
+            "typeface": "Noto Sans",
+            "color": "#22577A",
+            "alignment": "right"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "10",
+              "fontSize": 17,
+              "typeface": "Noto Sans",
+              "color": "#22577A",
+              "alignment": "right"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 6,
+      "kind": "table",
+      "scope": "slide",
+      "aid": "tb/edgv698v",
+      "id": "6",
+      "bbox": [
+        60,
+        155,
+        1155,
+        292
+      ],
+      "text": "Reference | Status\nHistorical source | 37 responses per scenario, verified\nLater workbook update | 42 expected, source unavailable/unverified\nSurvey decision point | Immediate next action at clip end\nOperational decision point | First eligible observation\nDirect survey-end scoring | Clip-to-sensor mapping unverified",
+      "textPreview": "Reference | Status | Historical source | 37 responses per scenario, verified | Later workbook update | 42 expected, source unavailable/un...",
+      "rows": 6,
+      "cols": 2,
+      "cells": [
+        {
+          "index": 1,
+          "row": 1,
+          "column": 1,
+          "bbox": [
+            60,
+            155,
+            410,
+            48.67
+          ],
+          "text": "Reference",
+          "textPreview": "Reference",
+          "fillColor": "#22577A",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Reference",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Reference"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "row": 1,
+          "column": 2,
+          "bbox": [
+            470,
+            155,
+            745,
+            48.67
+          ],
+          "text": "Status",
+          "textPreview": "Status",
+          "fillColor": "#22577A",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Status",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Status"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "row": 2,
+          "column": 1,
+          "bbox": [
+            60,
+            203.67,
+            410,
+            48.67
+          ],
+          "text": "Historical source",
+          "textPreview": "Historical source",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Historical source",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Historical source"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 4,
+          "row": 2,
+          "column": 2,
+          "bbox": [
+            470,
+            203.67,
+            745,
+            48.67
+          ],
+          "text": "37 responses per scenario, verified",
+          "textPreview": "37 responses per scenario, verified",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "37 responses per scenario, verified",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "37 responses per scenario, verified"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 5,
+          "row": 3,
+          "column": 1,
+          "bbox": [
+            60,
+            252.33,
+            410,
+            48.67
+          ],
+          "text": "Later workbook update",
+          "textPreview": "Later workbook update",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Later workbook update",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Later workbook update"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 6,
+          "row": 3,
+          "column": 2,
+          "bbox": [
+            470,
+            252.33,
+            745,
+            48.67
+          ],
+          "text": "42 expected, source unavailable/unverified",
+          "textPreview": "42 expected, source unavailable/unverified",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "42 expected, source unavailable/unverified",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "42 expected, source unavailable/unverified"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 7,
+          "row": 4,
+          "column": 1,
+          "bbox": [
+            60,
+            301,
+            410,
+            48.67
+          ],
+          "text": "Survey decision point",
+          "textPreview": "Survey decision point",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Survey decision point",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Survey decision point"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 8,
+          "row": 4,
+          "column": 2,
+          "bbox": [
+            470,
+            301,
+            745,
+            48.67
+          ],
+          "text": "Immediate next action at clip end",
+          "textPreview": "Immediate next action at clip end",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Immediate next action at clip end",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Immediate next action at clip end"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 9,
+          "row": 5,
+          "column": 1,
+          "bbox": [
+            60,
+            349.67,
+            410,
+            48.67
+          ],
+          "text": "Operational decision point",
+          "textPreview": "Operational decision point",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Operational decision point",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Operational decision point"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 10,
+          "row": 5,
+          "column": 2,
+          "bbox": [
+            470,
+            349.67,
+            745,
+            48.67
+          ],
+          "text": "First eligible observation",
+          "textPreview": "First eligible observation",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "First eligible observation",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "First eligible observation"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 11,
+          "row": 6,
+          "column": 1,
+          "bbox": [
+            60,
+            398.33,
+            410,
+            48.67
+          ],
+          "text": "Direct survey-end scoring",
+          "textPreview": "Direct survey-end scoring",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Direct survey-end scoring",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Direct survey-end scoring"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 12,
+          "row": 6,
+          "column": 2,
+          "bbox": [
+            470,
+            398.33,
+            745,
+            48.67
+          ],
+          "text": "Clip-to-sensor mapping unverified",
+          "textPreview": "Clip-to-sensor mapping unverified",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Clip-to-sensor mapping unverified",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Clip-to-sensor mapping unverified"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 7,
+      "kind": "table",
+      "scope": "slide",
+      "aid": "tb/fe9wze9g",
+      "id": "7",
+      "bbox": [
+        60,
+        480,
+        1155,
+        115
+      ],
+      "text": "Historical S3 example | YIELD | ENGAGE\nPreferred-action votes | 18 | 12\nMean appropriateness | 3.57 | 3.78",
+      "textPreview": "Historical S3 example | YIELD | ENGAGE | Preferred-action votes | 18 | 12 | Mean appropriateness | 3.57 | 3.78",
+      "rows": 3,
+      "cols": 3,
+      "cells": [
+        {
+          "index": 1,
+          "row": 1,
+          "column": 1,
+          "bbox": [
+            60,
+            480,
+            595,
+            38.33
+          ],
+          "text": "Historical S3 example",
+          "textPreview": "Historical S3 example",
+          "fillColor": "#22577A",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Historical S3 example",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Historical S3 example"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "row": 1,
+          "column": 2,
+          "bbox": [
+            655,
+            480,
+            280,
+            38.33
+          ],
+          "text": "YIELD",
+          "textPreview": "YIELD",
+          "fillColor": "#22577A",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "YIELD",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "YIELD"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "row": 1,
+          "column": 3,
+          "bbox": [
+            935,
+            480,
+            280,
+            38.33
+          ],
+          "text": "ENGAGE",
+          "textPreview": "ENGAGE",
+          "fillColor": "#22577A",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "ENGAGE",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "ENGAGE"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 4,
+          "row": 2,
+          "column": 1,
+          "bbox": [
+            60,
+            518.33,
+            595,
+            38.33
+          ],
+          "text": "Preferred-action votes",
+          "textPreview": "Preferred-action votes",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Preferred-action votes",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Preferred-action votes"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 5,
+          "row": 2,
+          "column": 2,
+          "bbox": [
+            655,
+            518.33,
+            280,
+            38.33
+          ],
+          "text": "18",
+          "textPreview": "18",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "18",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "18"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 6,
+          "row": 2,
+          "column": 3,
+          "bbox": [
+            935,
+            518.33,
+            280,
+            38.33
+          ],
+          "text": "12",
+          "textPreview": "12",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "12",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "12"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 7,
+          "row": 3,
+          "column": 1,
+          "bbox": [
+            60,
+            556.67,
+            595,
+            38.33
+          ],
+          "text": "Mean appropriateness",
+          "textPreview": "Mean appropriateness",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Mean appropriateness",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Mean appropriateness"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 8,
+          "row": 3,
+          "column": 2,
+          "bbox": [
+            655,
+            556.67,
+            280,
+            38.33
+          ],
+          "text": "3.57",
+          "textPreview": "3.57",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "3.57",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "3.57"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 9,
+          "row": 3,
+          "column": 3,
+          "bbox": [
+            935,
+            556.67,
+            280,
+            38.33
+          ],
+          "text": "3.78",
+          "textPreview": "3.78",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "3.78",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "3.78"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/horytcv2",
+      "id": "8",
+      "bbox": [
+        60,
+        615,
+        1160,
+        45
+      ],
+      "geometry": "rect",
+      "text": "Human preference and mean appropriateness can disagree. Current 9/9 and 8/9 scores use expected first actions.",
+      "textPreview": "Human preference and mean appropriateness can disagree. Current 9/9 and 8/9 scores use expected first actions.",
+      "resolvedFontSize": 18,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 18,
+        "typeface": "Noto Sans",
+        "color": "#437E9D",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Human preference and mean appropriateness can disagree. Current 9/9 and 8/9 scores use expected first actions."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Human preference and mean appropriateness can disagree. Current 9/9 and 8/9 scores use expected first actions.",
+          "resolvedTextStyle": {
+            "fontSize": 18,
+            "typeface": "Noto Sans",
+            "color": "#437E9D",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Human preference and mean appropriateness can disagree. Current 9/9 and 8/9 scores use expected first actions.",
+              "fontSize": 18,
+              "typeface": "Noto Sans",
+              "color": "#437E9D",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    }
+  ],
+  "composeRuns": []
+}

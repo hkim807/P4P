@@ -1,0 +1,54 @@
+Inspect result written to file: /Users/eddiekim/Documents/Projects/P4P/var/presentation-build/demo-day-20261013/candidate.pptx.inspect.ndjson
+Exported draft 36 slides
+Rendered 1
+Rendered 2
+Rendered 3
+Rendered 4
+Rendered 5
+Rendered 6
+Rendered 7
+Rendered 8
+Rendered 9
+Rendered 10
+Rendered 11
+Rendered 12
+Rendered 13
+Rendered 14
+Rendered 15
+Rendered 16
+Rendered 17
+Rendered 18
+Rendered 19
+Rendered 20
+Rendered 21
+Rendered 22
+Rendered 23
+Rendered 24
+Rendered 25
+Rendered 26
+Rendered 27
+Rendered 28
+Rendered 29
+Rendered 30
+Rendered 31
+Rendered 32
+Rendered 33
+Rendered 34
+Rendered 35
+Rendered 36
+node:internal/fs/promises:697
+  return new FileHandle(await PromisePrototypeThen(
+                        ^
+
+Error: EEXIST: file already exists, open '/Users/eddiekim/Documents/Projects/P4P/var/presentation-build/demo-day-20261013/validation.json'
+    at async open (node:internal/fs/promises:697:25)
+    at async Object.writeFile (node:internal/fs/promises:1317:14)
+    at async finalizePresentation (file:///Users/eddiekim/.codex/plugins/cache/openai-primary-runtime/presentations/26.909.12148/skills/presentations/container_tools/artifact_tool_utils.mjs:1058:5)
+    at async file:///Users/eddiekim/Documents/Projects/P4P/var/presentation-build/demo-day-20261013/build.mjs:373:14 {
+  errno: -17,
+  code: 'EEXIST',
+  syscall: 'open',
+  path: '/Users/eddiekim/Documents/Projects/P4P/var/presentation-build/demo-day-20261013/validation.json'
+}
+
+Node.js v24.19.0

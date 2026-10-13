@@ -1,0 +1,1008 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/f96bm7",
+    "id": "f96bm7",
+    "slide": 12,
+    "layoutId": "93275796-de1c-4ac9-8ec4-2c1e0661fdeb",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "4f324ce1-5b3b-4f9e-be61-eecc45112858",
+    "masterLayoutName": "Master",
+    "backgroundColor": "#FFFFFF",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "Noto Sans",
+      "Rubik"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "93275796-de1c-4ac9-8ec4-2c1e0661fdeb",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "4f324ce1-5b3b-4f9e-be61-eecc45112858",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "4f324ce1-5b3b-4f9e-be61-eecc45112858",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/9kvytgna",
+      "id": "1",
+      "bbox": [
+        65,
+        45,
+        1155,
+        72
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#AFC4CC",
+      "lineWidth": 0
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/mxkfy1oj",
+      "id": "2",
+      "bbox": [
+        60,
+        40,
+        1155,
+        72
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#22577A",
+      "lineWidth": 0
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/nytgr654",
+      "id": "3",
+      "bbox": [
+        82,
+        51,
+        1110,
+        57
+      ],
+      "geometry": "rect",
+      "text": "Navel Sensor Inputs and Mapping",
+      "textPreview": "Navel Sensor Inputs and Mapping",
+      "resolvedFontSize": 40,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 40,
+        "typeface": "Rubik",
+        "color": "#FFFFFF",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Navel Sensor Inputs and Mapping"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Navel Sensor Inputs and Mapping",
+          "resolvedTextStyle": {
+            "fontSize": 40,
+            "typeface": "Rubik",
+            "color": "#FFFFFF",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Navel Sensor Inputs and Mapping",
+              "fontSize": 40,
+              "typeface": "Rubik",
+              "color": "#FFFFFF",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/wnmx4b61",
+      "id": "4",
+      "bbox": [
+        60,
+        679,
+        400,
+        22
+      ],
+      "geometry": "rect",
+      "text": "Appendix 05",
+      "textPreview": "Appendix 05",
+      "resolvedFontSize": 15,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 15,
+        "typeface": "Noto Sans",
+        "color": "#22577A",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Appendix 05"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Appendix 05",
+          "resolvedTextStyle": {
+            "fontSize": 15,
+            "typeface": "Noto Sans",
+            "color": "#22577A",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Appendix 05",
+              "fontSize": 15,
+              "typeface": "Noto Sans",
+              "color": "#22577A",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/xovyxgn6",
+      "id": "5",
+      "bbox": [
+        1160,
+        675,
+        55,
+        26
+      ],
+      "geometry": "rect",
+      "text": "12",
+      "textPreview": "12",
+      "resolvedFontSize": 17,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 17,
+        "typeface": "Noto Sans",
+        "color": "#22577A",
+        "alignment": "right",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "12"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "12",
+          "resolvedTextStyle": {
+            "fontSize": 17,
+            "typeface": "Noto Sans",
+            "color": "#22577A",
+            "alignment": "right"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "12",
+              "fontSize": 17,
+              "typeface": "Noto Sans",
+              "color": "#22577A",
+              "alignment": "right"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 6,
+      "kind": "table",
+      "scope": "slide",
+      "aid": "tb/b2twj6pk",
+      "id": "6",
+      "bbox": [
+        60,
+        157,
+        1155,
+        420
+      ],
+      "text": "SDK observation | Shared evidence | Interpretation\nPerson UID | Track identity and epoch | Bookkeeping outside LLM text\ndist_mm | distance_m = dist_mm / 1000 | Measured robot-person range\ngaze_overlap | Latest gaze score | Thresholded measurement\nFace bounding box | face_detected | Face detection only\ng_nose in CAM_HEAD | Corridor position | Fixed-head position estimate\nForward and yaw velocity | Robot motion state | Translation or rotation\nMissing or invalid values | null / UNKNOWN | Unavailable evidence",
+      "textPreview": "SDK observation | Shared evidence | Interpretation | Person UID | Track identity and epoch | Bookkeeping outside LLM text | dist_mm | dis...",
+      "rows": 8,
+      "cols": 3,
+      "cells": [
+        {
+          "index": 1,
+          "row": 1,
+          "column": 1,
+          "bbox": [
+            60,
+            157,
+            330,
+            52.5
+          ],
+          "text": "SDK observation",
+          "textPreview": "SDK observation",
+          "fillColor": "#22577A",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "SDK observation",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "SDK observation"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "row": 1,
+          "column": 2,
+          "bbox": [
+            390,
+            157,
+            410,
+            52.5
+          ],
+          "text": "Shared evidence",
+          "textPreview": "Shared evidence",
+          "fillColor": "#22577A",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Shared evidence",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Shared evidence"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "row": 1,
+          "column": 3,
+          "bbox": [
+            800,
+            157,
+            415,
+            52.5
+          ],
+          "text": "Interpretation",
+          "textPreview": "Interpretation",
+          "fillColor": "#22577A",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Interpretation",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Interpretation"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 4,
+          "row": 2,
+          "column": 1,
+          "bbox": [
+            60,
+            209.5,
+            330,
+            52.5
+          ],
+          "text": "Person UID",
+          "textPreview": "Person UID",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Person UID",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Person UID"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 5,
+          "row": 2,
+          "column": 2,
+          "bbox": [
+            390,
+            209.5,
+            410,
+            52.5
+          ],
+          "text": "Track identity and epoch",
+          "textPreview": "Track identity and epoch",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Track identity and epoch",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Track identity and epoch"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 6,
+          "row": 2,
+          "column": 3,
+          "bbox": [
+            800,
+            209.5,
+            415,
+            52.5
+          ],
+          "text": "Bookkeeping outside LLM text",
+          "textPreview": "Bookkeeping outside LLM text",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Bookkeeping outside LLM text",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Bookkeeping outside LLM text"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 7,
+          "row": 3,
+          "column": 1,
+          "bbox": [
+            60,
+            262,
+            330,
+            52.5
+          ],
+          "text": "dist_mm",
+          "textPreview": "dist_mm",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "dist_mm",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "dist_mm"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 8,
+          "row": 3,
+          "column": 2,
+          "bbox": [
+            390,
+            262,
+            410,
+            52.5
+          ],
+          "text": "distance_m = dist_mm / 1000",
+          "textPreview": "distance_m = dist_mm / 1000",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "distance_m = dist_mm / 1000",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "distance_m = dist_mm / 1000"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 9,
+          "row": 3,
+          "column": 3,
+          "bbox": [
+            800,
+            262,
+            415,
+            52.5
+          ],
+          "text": "Measured robot-person range",
+          "textPreview": "Measured robot-person range",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Measured robot-person range",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Measured robot-person range"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 10,
+          "row": 4,
+          "column": 1,
+          "bbox": [
+            60,
+            314.5,
+            330,
+            52.5
+          ],
+          "text": "gaze_overlap",
+          "textPreview": "gaze_overlap",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "gaze_overlap",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "gaze_overlap"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 11,
+          "row": 4,
+          "column": 2,
+          "bbox": [
+            390,
+            314.5,
+            410,
+            52.5
+          ],
+          "text": "Latest gaze score",
+          "textPreview": "Latest gaze score",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Latest gaze score",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Latest gaze score"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 12,
+          "row": 4,
+          "column": 3,
+          "bbox": [
+            800,
+            314.5,
+            415,
+            52.5
+          ],
+          "text": "Thresholded measurement",
+          "textPreview": "Thresholded measurement",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Thresholded measurement",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Thresholded measurement"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 13,
+          "row": 5,
+          "column": 1,
+          "bbox": [
+            60,
+            367,
+            330,
+            52.5
+          ],
+          "text": "Face bounding box",
+          "textPreview": "Face bounding box",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Face bounding box",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Face bounding box"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 14,
+          "row": 5,
+          "column": 2,
+          "bbox": [
+            390,
+            367,
+            410,
+            52.5
+          ],
+          "text": "face_detected",
+          "textPreview": "face_detected",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "face_detected",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "face_detected"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 15,
+          "row": 5,
+          "column": 3,
+          "bbox": [
+            800,
+            367,
+            415,
+            52.5
+          ],
+          "text": "Face detection only",
+          "textPreview": "Face detection only",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Face detection only",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Face detection only"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 16,
+          "row": 6,
+          "column": 1,
+          "bbox": [
+            60,
+            419.5,
+            330,
+            52.5
+          ],
+          "text": "g_nose in CAM_HEAD",
+          "textPreview": "g_nose in CAM_HEAD",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "g_nose in CAM_HEAD",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "g_nose in CAM_HEAD"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 17,
+          "row": 6,
+          "column": 2,
+          "bbox": [
+            390,
+            419.5,
+            410,
+            52.5
+          ],
+          "text": "Corridor position",
+          "textPreview": "Corridor position",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Corridor position",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Corridor position"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 18,
+          "row": 6,
+          "column": 3,
+          "bbox": [
+            800,
+            419.5,
+            415,
+            52.5
+          ],
+          "text": "Fixed-head position estimate",
+          "textPreview": "Fixed-head position estimate",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Fixed-head position estimate",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Fixed-head position estimate"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 19,
+          "row": 7,
+          "column": 1,
+          "bbox": [
+            60,
+            472,
+            330,
+            52.5
+          ],
+          "text": "Forward and yaw velocity",
+          "textPreview": "Forward and yaw velocity",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Forward and yaw velocity",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Forward and yaw velocity"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 20,
+          "row": 7,
+          "column": 2,
+          "bbox": [
+            390,
+            472,
+            410,
+            52.5
+          ],
+          "text": "Robot motion state",
+          "textPreview": "Robot motion state",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Robot motion state",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Robot motion state"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 21,
+          "row": 7,
+          "column": 3,
+          "bbox": [
+            800,
+            472,
+            415,
+            52.5
+          ],
+          "text": "Translation or rotation",
+          "textPreview": "Translation or rotation",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Translation or rotation",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Translation or rotation"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 22,
+          "row": 8,
+          "column": 1,
+          "bbox": [
+            60,
+            524.5,
+            330,
+            52.5
+          ],
+          "text": "Missing or invalid values",
+          "textPreview": "Missing or invalid values",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Missing or invalid values",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Missing or invalid values"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 23,
+          "row": 8,
+          "column": 2,
+          "bbox": [
+            390,
+            524.5,
+            410,
+            52.5
+          ],
+          "text": "null / UNKNOWN",
+          "textPreview": "null / UNKNOWN",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "null / UNKNOWN",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "null / UNKNOWN"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 24,
+          "row": 8,
+          "column": 3,
+          "bbox": [
+            800,
+            524.5,
+            415,
+            52.5
+          ],
+          "text": "Unavailable evidence",
+          "textPreview": "Unavailable evidence",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Unavailable evidence",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Unavailable evidence"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/bmdgvq5g",
+      "id": "7",
+      "bbox": [
+        60,
+        615,
+        1160,
+        45
+      ],
+      "geometry": "rect",
+      "text": "HTTP POST /api/v1/observations. No measured pass gesture or path-relation input is available from Navel.",
+      "textPreview": "HTTP POST /api/v1/observations. No measured pass gesture or path-relation input is available from Navel.",
+      "resolvedFontSize": 18,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 18,
+        "typeface": "Noto Sans",
+        "color": "#437E9D",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "HTTP POST /api/v1/observations. No measured pass gesture or path-relation input is available from Navel."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "HTTP POST /api/v1/observations. No measured pass gesture or path-relation input is available from Navel.",
+          "resolvedTextStyle": {
+            "fontSize": 18,
+            "typeface": "Noto Sans",
+            "color": "#437E9D",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "HTTP POST /api/v1/observations. No measured pass gesture or path-relation input is available from Navel.",
+              "fontSize": 18,
+              "typeface": "Noto Sans",
+              "color": "#437E9D",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    }
+  ],
+  "composeRuns": []
+}

@@ -1,0 +1,748 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/wkuaxk",
+    "id": "wkuaxk",
+    "slide": 34,
+    "layoutId": "93275796-de1c-4ac9-8ec4-2c1e0661fdeb",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "4f324ce1-5b3b-4f9e-be61-eecc45112858",
+    "masterLayoutName": "Master",
+    "backgroundColor": "#FFFFFF",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "Noto Sans",
+      "Rubik"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "93275796-de1c-4ac9-8ec4-2c1e0661fdeb",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "4f324ce1-5b3b-4f9e-be61-eecc45112858",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "4f324ce1-5b3b-4f9e-be61-eecc45112858",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/l4fu5ofe",
+      "id": "1",
+      "bbox": [
+        65,
+        45,
+        1155,
+        72
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#AFC4CC",
+      "lineWidth": 0
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/yhobutg3",
+      "id": "2",
+      "bbox": [
+        60,
+        40,
+        1155,
+        72
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#22577A",
+      "lineWidth": 0
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/zixc3ex8",
+      "id": "3",
+      "bbox": [
+        82,
+        51,
+        1110,
+        57
+      ],
+      "geometry": "rect",
+      "text": "Research Findings and Remaining Limits",
+      "textPreview": "Research Findings and Remaining Limits",
+      "resolvedFontSize": 40,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 40,
+        "typeface": "Rubik",
+        "color": "#FFFFFF",
+        "bold": true,
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Research Findings and Remaining Limits"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Research Findings and Remaining Limits",
+          "resolvedTextStyle": {
+            "fontSize": 40,
+            "typeface": "Rubik",
+            "color": "#FFFFFF",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Research Findings and Remaining Limits",
+              "fontSize": 40,
+              "typeface": "Rubik",
+              "color": "#FFFFFF",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/87qt03e5",
+      "id": "4",
+      "bbox": [
+        60,
+        679,
+        400,
+        22
+      ],
+      "geometry": "rect",
+      "text": "Appendix 27",
+      "textPreview": "Appendix 27",
+      "resolvedFontSize": 15,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 15,
+        "typeface": "Noto Sans",
+        "color": "#22577A",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Appendix 27"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Appendix 27",
+          "resolvedTextStyle": {
+            "fontSize": 15,
+            "typeface": "Noto Sans",
+            "color": "#22577A",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Appendix 27",
+              "fontSize": 15,
+              "typeface": "Noto Sans",
+              "color": "#22577A",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/98zu98fq",
+      "id": "5",
+      "bbox": [
+        1160,
+        675,
+        55,
+        26
+      ],
+      "geometry": "rect",
+      "text": "34",
+      "textPreview": "34",
+      "resolvedFontSize": 17,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 17,
+        "typeface": "Noto Sans",
+        "color": "#22577A",
+        "alignment": "right",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "34"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "34",
+          "resolvedTextStyle": {
+            "fontSize": 17,
+            "typeface": "Noto Sans",
+            "color": "#22577A",
+            "alignment": "right"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "34",
+              "fontSize": 17,
+              "typeface": "Noto Sans",
+              "color": "#22577A",
+              "alignment": "right"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 6,
+      "kind": "table",
+      "scope": "slide",
+      "aid": "tb/n2hs3yd0",
+      "id": "6",
+      "bbox": [
+        60,
+        159,
+        1155,
+        413
+      ],
+      "text": "Research finding | Evidence boundary\nShared state supports policy comparison | Same inputs; rules unchanged across 574 frames\nCompact input improves action match and delay | 6/9 to 8/9; roughly half the initial delay\nRules lead on these tuning cases | 9/9 expected first actions versus 8/9 LLM\nExtra temporal descriptions add no gain | No improvement in expected first actions\nDirect human alignment remains incomplete | Verify survey reference and endpoint mapping\nPhysical execution needs separate evidence | Recorded replay and scripted demos differ",
+      "textPreview": "Research finding | Evidence boundary | Shared state supports policy comparison | Same inputs; rules unchanged across 574 frames | Compact...",
+      "rows": 7,
+      "cols": 2,
+      "cells": [
+        {
+          "index": 1,
+          "row": 1,
+          "column": 1,
+          "bbox": [
+            60,
+            159,
+            575,
+            59
+          ],
+          "text": "Research finding",
+          "textPreview": "Research finding",
+          "fillColor": "#22577A",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Research finding",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Research finding"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "row": 1,
+          "column": 2,
+          "bbox": [
+            635,
+            159,
+            580,
+            59
+          ],
+          "text": "Evidence boundary",
+          "textPreview": "Evidence boundary",
+          "fillColor": "#22577A",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Evidence boundary",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Evidence boundary"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "row": 2,
+          "column": 1,
+          "bbox": [
+            60,
+            218,
+            575,
+            59
+          ],
+          "text": "Shared state supports policy comparison",
+          "textPreview": "Shared state supports policy comparison",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Shared state supports policy comparison",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Shared state supports policy comparison"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 4,
+          "row": 2,
+          "column": 2,
+          "bbox": [
+            635,
+            218,
+            580,
+            59
+          ],
+          "text": "Same inputs; rules unchanged across 574 frames",
+          "textPreview": "Same inputs; rules unchanged across 574 frames",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Same inputs; rules unchanged across 574 frames",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Same inputs; rules unchanged across 574 frames"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 5,
+          "row": 3,
+          "column": 1,
+          "bbox": [
+            60,
+            277,
+            575,
+            59
+          ],
+          "text": "Compact input improves action match and delay",
+          "textPreview": "Compact input improves action match and delay",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Compact input improves action match and delay",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Compact input improves action match and delay"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 6,
+          "row": 3,
+          "column": 2,
+          "bbox": [
+            635,
+            277,
+            580,
+            59
+          ],
+          "text": "6/9 to 8/9; roughly half the initial delay",
+          "textPreview": "6/9 to 8/9; roughly half the initial delay",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "6/9 to 8/9; roughly half the initial delay",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "6/9 to 8/9; roughly half the initial delay"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 7,
+          "row": 4,
+          "column": 1,
+          "bbox": [
+            60,
+            336,
+            575,
+            59
+          ],
+          "text": "Rules lead on these tuning cases",
+          "textPreview": "Rules lead on these tuning cases",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Rules lead on these tuning cases",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Rules lead on these tuning cases"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 8,
+          "row": 4,
+          "column": 2,
+          "bbox": [
+            635,
+            336,
+            580,
+            59
+          ],
+          "text": "9/9 expected first actions versus 8/9 LLM",
+          "textPreview": "9/9 expected first actions versus 8/9 LLM",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "9/9 expected first actions versus 8/9 LLM",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "9/9 expected first actions versus 8/9 LLM"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 9,
+          "row": 5,
+          "column": 1,
+          "bbox": [
+            60,
+            395,
+            575,
+            59
+          ],
+          "text": "Extra temporal descriptions add no gain",
+          "textPreview": "Extra temporal descriptions add no gain",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Extra temporal descriptions add no gain",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Extra temporal descriptions add no gain"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 10,
+          "row": 5,
+          "column": 2,
+          "bbox": [
+            635,
+            395,
+            580,
+            59
+          ],
+          "text": "No improvement in expected first actions",
+          "textPreview": "No improvement in expected first actions",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "No improvement in expected first actions",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "No improvement in expected first actions"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 11,
+          "row": 6,
+          "column": 1,
+          "bbox": [
+            60,
+            454,
+            575,
+            59
+          ],
+          "text": "Direct human alignment remains incomplete",
+          "textPreview": "Direct human alignment remains incomplete",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Direct human alignment remains incomplete",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Direct human alignment remains incomplete"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 12,
+          "row": 6,
+          "column": 2,
+          "bbox": [
+            635,
+            454,
+            580,
+            59
+          ],
+          "text": "Verify survey reference and endpoint mapping",
+          "textPreview": "Verify survey reference and endpoint mapping",
+          "fillColor": "#DDECF2",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Verify survey reference and endpoint mapping",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Verify survey reference and endpoint mapping"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 13,
+          "row": 7,
+          "column": 1,
+          "bbox": [
+            60,
+            513,
+            575,
+            59
+          ],
+          "text": "Physical execution needs separate evidence",
+          "textPreview": "Physical execution needs separate evidence",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Physical execution needs separate evidence",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Physical execution needs separate evidence"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "index": 14,
+          "row": 7,
+          "column": 2,
+          "bbox": [
+            635,
+            513,
+            580,
+            59
+          ],
+          "text": "Recorded replay and scripted demos differ",
+          "textPreview": "Recorded replay and scripted demos differ",
+          "fillColor": "#F3F0E7",
+          "paragraphs": [
+            {
+              "index": 1,
+              "text": "Recorded replay and scripted demos differ",
+              "runs": [
+                {
+                  "index": 1,
+                  "text": "Recorded replay and scripted demos differ"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/n6hc7yxk",
+      "id": "7",
+      "bbox": [
+        60,
+        615,
+        1160,
+        45
+      ],
+      "geometry": "rect",
+      "text": "Sources and exact values appear in each slide’s speaker notes. Main presentation ends at slide 7.",
+      "textPreview": "Sources and exact values appear in each slide’s speaker notes. Main presentation ends at slide 7.",
+      "resolvedFontSize": 18,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 18,
+        "typeface": "Noto Sans",
+        "color": "#437E9D",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "wrap": "square",
+        "autoFit": "none",
+        "insets": {
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Sources and exact values appear in each slide’s speaker notes. Main presentation ends at slide 7."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Sources and exact values appear in each slide’s speaker notes. Main presentation ends at slide 7.",
+          "resolvedTextStyle": {
+            "fontSize": 18,
+            "typeface": "Noto Sans",
+            "color": "#437E9D",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Sources and exact values appear in each slide’s speaker notes. Main presentation ends at slide 7.",
+              "fontSize": 18,
+              "typeface": "Noto Sans",
+              "color": "#437E9D",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    }
+  ],
+  "composeRuns": []
+}
