@@ -1,0 +1,4751 @@
+{
+  "settings": {
+    "max_gap_s": 0.25,
+    "source_gap_factor": 1.5,
+    "linear_threshold_mps": 0.02,
+    "angular_threshold_rps": 0.03
+  },
+  "recording_count": 37,
+  "status_counts": {
+    "NO_MOVEMENT": 10,
+    "TRIMMED": 25,
+    "INVALID": 2
+  },
+  "source_integrity_limit": "Capture sequences detect missing received packets. Native SDK time gaps suggest skipped samples, but these files cannot prove every hardware-generated frame was received or detect loss before capture start/after capture end.",
+  "motion_definition": "First locomotion packet with abs(linear_x) > linear_threshold or abs(angular_z) > angular_threshold; no sustained-motion filter.",
+  "recordings": [
+    {
+      "input": "/home/anyone/Documents/P4P/var/recordings/-sdk.jsonl",
+      "validation": "VALID",
+      "status": "NO_MOVEMENT",
+      "source_sha256": "a99c45764aefc718bceb41b232cd5ce5e70f4862c0be2422e914bffeab838f4e",
+      "settings": {
+        "max_gap_s": 0.25,
+        "source_gap_factor": 1.5,
+        "linear_threshold_mps": 0.02,
+        "angular_threshold_rps": 0.03
+      },
+      "issues": [],
+      "issue_counts": {},
+      "error_count": 0,
+      "warning_count": 0,
+      "streams": {
+        "perception": {
+          "packet_count": 503,
+          "first_sequence": 1,
+          "last_sequence": 503,
+          "first_receipt_us": 88394047764,
+          "last_receipt_us": 88444222726,
+          "max_receipt_gap_s": 0.128872,
+          "missing_capture_packets": 0,
+          "source_timestamp_count": 503,
+          "missing_source_timestamp_count": 0,
+          "nominal_source_interval": 99985.0,
+          "estimated_missing_sdk_samples": 0
+        },
+        "locomotion": {
+          "packet_count": 502,
+          "first_sequence": 1,
+          "last_sequence": 502,
+          "first_receipt_us": 88394088103,
+          "last_receipt_us": 88444181757,
+          "max_receipt_gap_s": 0.127826,
+          "missing_capture_packets": 0,
+          "source_timestamp_count": 502,
+          "missing_source_timestamp_count": 0,
+          "nominal_source_interval": 99997,
+          "estimated_missing_sdk_samples": 0
+        }
+      },
+      "motion_start": null,
+      "trimmed_output": null,
+      "session_id": "28f9fe760b954d4cb3780eafc02cfdfb",
+      "issues_truncated": false,
+      "duration_s": 50.174962
+    },
+    {
+      "input": "/home/anyone/Documents/P4P/var/recordings/final_scenario_1-sdk.jsonl",
+      "validation": "VALID",
+      "status": "TRIMMED",
+      "source_sha256": "91519faf46e607878196dbe181ea8da775dda7065dc5c9dd5f721d3fbac418aa",
+      "settings": {
+        "max_gap_s": 0.25,
+        "source_gap_factor": 1.5,
+        "linear_threshold_mps": 0.02,
+        "angular_threshold_rps": 0.03
+      },
+      "issues": [],
+      "issue_counts": {},
+      "error_count": 0,
+      "warning_count": 0,
+      "streams": {
+        "perception": {
+          "packet_count": 172,
+          "first_sequence": 1,
+          "last_sequence": 172,
+          "first_receipt_us": 1890165487,
+          "last_receipt_us": 1907261075,
+          "max_receipt_gap_s": 0.13071,
+          "missing_capture_packets": 0,
+          "source_timestamp_count": 172,
+          "missing_source_timestamp_count": 0,
+          "nominal_source_interval": 99994,
+          "estimated_missing_sdk_samples": 0
+        },
+        "locomotion": {
+          "packet_count": 172,
+          "first_sequence": 1,
+          "last_sequence": 172,
+          "first_receipt_us": 1890205727,
+          "last_receipt_us": 1907302398,
+          "max_receipt_gap_s": 0.128995,
+          "missing_capture_packets": 0,
+          "source_timestamp_count": 172,
+          "missing_source_timestamp_count": 0,
+          "nominal_source_interval": 99998,
+          "estimated_missing_sdk_samples": 0
+        }
+      },
+      "motion_start": {
+        "source_line": 135,
+        "source_record_index": 134,
+        "received_monotonic_us": 1896870484,
+        "received_unix_us": 1791694854171340,
+        "original_sequence": 68,
+        "linear_x_mps": 0.04,
+        "angular_z_rps": 0.0,
+        "offset_s": 6.704997
+      },
+      "trimmed_output": "/home/anyone/Documents/P4P/var/recordings/motion-validated-20261013-01/trimmed/final_scenario_1-sdk.jsonl",
+      "session_id": "44d0d977d0cd40dfb25f41f894dcc4a4",
+      "issues_truncated": false,
+      "duration_s": 17.136911,
+      "trimmed_sha256": "b449f3b8c24fde1fb4a346a2c0a6d07d6107dad7c11c799f7896c3966f1f468d",
+      "removed_packets": 134,
+      "kept_packets": {
+        "locomotion": 105,
+        "perception": 105
+      },
+      "original_first_kept_sequences": {
+        "locomotion": 68,
+        "perception": 68
+      },
+      "trimmed_duration_s": 10.431914,
+      "sequence_mapping": "original sequence = trimmed sequence + original_first_kept_sequences[stream] - 1"
+    },
+    {
+      "input": "/home/anyone/Documents/P4P/var/recordings/final_scenario_2-sdk.jsonl",
+      "validation": "VALID",
+      "status": "TRIMMED",
+      "source_sha256": "dcd6e49db87d4249ee45160e5dc7383c245aac1907d67de176f377d02b6c6a93",
+      "settings": {
+        "max_gap_s": 0.25,
+        "source_gap_factor": 1.5,
+        "linear_threshold_mps": 0.02,
+        "angular_threshold_rps": 0.03
+      },
+      "issues": [],
+      "issue_counts": {},
+      "error_count": 0,
+      "warning_count": 0,
+      "streams": {
+        "perception": {
+          "packet_count": 76,
+          "first_sequence": 1,
+          "last_sequence": 76,
+          "first_receipt_us": 2007129566,
+          "last_receipt_us": 2014613135,
+          "max_receipt_gap_s": 0.128705,
+          "missing_capture_packets": 0,
+          "source_timestamp_count": 76,
+          "missing_source_timestamp_count": 0,
+          "nominal_source_interval": 99989,
+          "estimated_missing_sdk_samples": 0
+        },
+        "locomotion": {
+          "packet_count": 75,
+          "first_sequence": 1,
+          "last_sequence": 75,
+          "first_receipt_us": 2007169115,
+          "last_receipt_us": 2014570785,
+          "max_receipt_gap_s": 0.132108,
+          "missing_capture_packets": 0,
+          "source_timestamp_count": 75,
+          "missing_source_timestamp_count": 0,
+          "nominal_source_interval": 99996.5,
+          "estimated_missing_sdk_samples": 0
+        }
+      },
+      "motion_start": {
+        "source_line": 56,
+        "source_record_index": 55,
+        "received_monotonic_us": 2009906601,
+        "received_unix_us": 1791694967207457,
+        "original_sequence": 28,
+        "linear_x_mps": 0.021,
+        "angular_z_rps": 0.0,
+        "offset_s": 2.777035
+      },
+      "trimmed_output": "/home/anyone/Documents/P4P/var/recordings/motion-validated-20261013-01/trimmed/final_scenario_2-sdk.jsonl",
+      "session_id": "452221626cc04764a10b0d078c82ba77",
+      "issues_truncated": false,
+      "duration_s": 7.483569,
+      "trimmed_sha256": "08a9f4e035e8ff1b5ca4ad5f807dd5b9a4e94bc55c916da9412365813df506bb",
+      "removed_packets": 55,
+      "kept_packets": {
+        "locomotion": 48,
+        "perception": 48
+      },
+      "original_first_kept_sequences": {
+        "locomotion": 28,
+        "perception": 29
+      },
+      "trimmed_duration_s": 4.706534,
+      "sequence_mapping": "original sequence = trimmed sequence + original_first_kept_sequences[stream] - 1"
+    },
+    {
+      "input": "/home/anyone/Documents/P4P/var/recordings/final_scenario_3-sdk.jsonl",
+      "validation": "VALID",
+      "status": "TRIMMED",
+      "source_sha256": "a1bd0d9665869c9eac2e98ba1aa9725f64b9c51679b2f2a6121eea32a07ca067",
+      "settings": {
+        "max_gap_s": 0.25,
+        "source_gap_factor": 1.5,
+        "linear_threshold_mps": 0.02,
+        "angular_threshold_rps": 0.03
+      },
+      "issues": [],
+      "issue_counts": {},
+      "error_count": 0,
+      "warning_count": 0,
+      "streams": {
+        "perception": {
+          "packet_count": 77,
+          "first_sequence": 1,
+          "last_sequence": 77,
+          "first_receipt_us": 2043208359,
+          "last_receipt_us": 2050804770,
+          "max_receipt_gap_s": 0.129731,
+          "missing_capture_packets": 0,
+          "source_timestamp_count": 77,
+          "missing_source_timestamp_count": 0,
+          "nominal_source_interval": 99989.0,
+          "estimated_missing_sdk_samples": 0
+        },
+        "locomotion": {
+          "packet_count": 77,
+          "first_sequence": 1,
+          "last_sequence": 77,
+          "first_receipt_us": 2043205710,
+          "last_receipt_us": 2050781359,
+          "max_receipt_gap_s": 0.1341,
+          "missing_capture_packets": 0,
+          "source_timestamp_count": 77,
+          "missing_source_timestamp_count": 0,
+          "nominal_source_interval": 99990.0,
+          "estimated_missing_sdk_samples": 0
+        }
+      },
+      "motion_start": {
+        "source_line": 62,
+        "source_record_index": 61,
+        "received_monotonic_us": 2046194474,
+        "received_unix_us": 1791695003495331,
+        "original_sequence": 31,
+        "linear_x_mps": 0.031,
+        "angular_z_rps": 0.0,
+        "offset_s": 2.988764
+      },
+      "trimmed_output": "/home/anyone/Documents/P4P/var/recordings/motion-validated-20261013-01/trimmed/final_scenario_3-sdk.jsonl",
+      "session_id": "33136d0d0ed841c098dedb5175a90e72",
+      "issues_truncated": false,
+      "duration_s": 7.59906,
+      "trimmed_sha256": "67f223b7eddbbb07bf448289668c4d6e914378b0a4c025c731ec4bbea270dea0",
+      "removed_packets": 61,
+      "kept_packets": {
+        "locomotion": 47,
+        "perception": 46
+      },
+      "original_first_kept_sequences": {
+        "locomotion": 31,
+        "perception": 32
+      },
+      "trimmed_duration_s": 4.610296,
+      "sequence_mapping": "original sequence = trimmed sequence + original_first_kept_sequences[stream] - 1"
+    },
+    {
+      "input": "/home/anyone/Documents/P4P/var/recordings/final_scenario_4-sdk.jsonl",
+      "validation": "VALID",
+      "status": "TRIMMED",
+      "source_sha256": "6a3e10575de2817a8799eb1f4a27500c67daba7e05d5f4bc8fcb59391d5ae7d7",
+      "settings": {
+        "max_gap_s": 0.25,
+        "source_gap_factor": 1.5,
+        "linear_threshold_mps": 0.02,
+        "angular_threshold_rps": 0.03
+      },
+      "issues": [],
+      "issue_counts": {},
+      "error_count": 0,
+      "warning_count": 0,
+      "streams": {
+        "perception": {
+          "packet_count": 119,
+          "first_sequence": 1,
+          "last_sequence": 119,
+          "first_receipt_us": 2090402263,
+          "last_receipt_us": 2102162250,
+          "max_receipt_gap_s": 0.133188,
+          "missing_capture_packets": 0,
+          "source_timestamp_count": 119,
+          "missing_source_timestamp_count": 0,
+          "nominal_source_interval": 99980.5,
+          "estimated_missing_sdk_samples": 0
+        },
+        "locomotion": {
+          "packet_count": 118,
+          "first_sequence": 1,
+          "last_sequence": 118,
+          "first_receipt_us": 2090400915,
+          "last_receipt_us": 2102088123,
+          "max_receipt_gap_s": 0.130773,
+          "missing_capture_packets": 0,
+          "source_timestamp_count": 118,
+          "missing_source_timestamp_count": 0,
+          "nominal_source_interval": 99960,
+          "estimated_missing_sdk_samples": 0
+        }
+      },
+      "motion_start": {
+        "source_line": 115,
+        "source_record_index": 114,
+        "received_monotonic_us": 2096080866,
+        "received_unix_us": 1791695053381723,
+        "original_sequence": 58,
+        "linear_x_mps": 0.025,
+        "angular_z_rps": 0.0,
+        "offset_s": 5.679951
+      },
+      "trimmed_output": "/home/anyone/Documents/P4P/var/recordings/motion-validated-20261013-01/trimmed/final_scenario_4-sdk.jsonl",
+      "session_id": "07b46842b60a4390a4b6fe0d29dbd788",
+      "issues_truncated": false,
+      "duration_s": 11.761335,
+      "trimmed_sha256": "37a122fd2fa1aa2e62772c10a9d88152e0dcc1d3ba08f84428c59ae7d8d290d6",
+      "removed_packets": 114,
+      "kept_packets": {
+        "locomotion": 61,
+        "perception": 62
+      },
+      "original_first_kept_sequences": {
+        "locomotion": 58,
+        "perception": 58
+      },
+      "trimmed_duration_s": 6.081384,
+      "sequence_mapping": "original sequence = trimmed sequence + original_first_kept_sequences[stream] - 1"
+    },
+    {
+      "input": "/home/anyone/Documents/P4P/var/recordings/final_scenario_5-sdk.jsonl",
+      "validation": "VALID",
+      "status": "TRIMMED",
+      "source_sha256": "212fe9df98bfd900ae3cb7c520b29ddcebe3bdde6dbcc71123d3b84ec62ab9a2",
+      "settings": {
+        "max_gap_s": 0.25,
+        "source_gap_factor": 1.5,
+        "linear_threshold_mps": 0.02,
+        "angular_threshold_rps": 0.03
+      },
+      "issues": [],
+      "issue_counts": {},
+      "error_count": 0,
+      "warning_count": 0,
+      "streams": {
+        "perception": {
+          "packet_count": 107,
+          "first_sequence": 1,
+          "last_sequence": 107,
+          "first_receipt_us": 2134577553,
+          "last_receipt_us": 2145178517,
+          "max_receipt_gap_s": 0.128146,
+          "missing_capture_packets": 0,
+          "source_timestamp_count": 107,
+          "missing_source_timestamp_count": 0,
+          "nominal_source_interval": 99979.0,
+          "estimated_missing_sdk_samples": 0
+        },
+        "locomotion": {
+          "packet_count": 107,
+          "first_sequence": 1,
+          "last_sequence": 107,
+          "first_receipt_us": 2134576219,
+          "last_receipt_us": 2145217027,
+          "max_receipt_gap_s": 0.134574,
+          "missing_capture_packets": 0,
+          "source_timestamp_count": 107,
+          "missing_source_timestamp_count": 0,
+          "nominal_source_interval": 100009.0,
+          "estimated_missing_sdk_samples": 0
+        }
+      },
+      "motion_start": {
+        "source_line": 78,
+        "source_record_index": 77,
+        "received_monotonic_us": 2138390323,
+        "received_unix_us": 1791695095691181,
+        "original_sequence": 39,
+        "linear_x_mps": 0.021,
+        "angular_z_rps": 0.0,
+        "offset_s": 3.814104
+      },
+      "trimmed_output": "/home/anyone/Documents/P4P/var/recordings/motion-validated-20261013-01/trimmed/final_scenario_5-sdk.jsonl",
+      "session_id": "393a20cdb19a447d8387eea25819dad8",
+      "issues_truncated": false,
+      "duration_s": 10.640808,
+      "trimmed_sha256": "57b24d22ca3c65ef8a7a681c248ab443c3866d17417feff4647f06e7ead342ca",
+      "removed_packets": 77,
+      "kept_packets": {
+        "locomotion": 69,
+        "perception": 68
+      },
+      "original_first_kept_sequences": {
+        "locomotion": 39,
+        "perception": 40
+      },
+      "trimmed_duration_s": 6.826704,
+      "sequence_mapping": "original sequence = trimmed sequence + original_first_kept_sequences[stream] - 1"
+    },
+    {
+      "input": "/home/anyone/Documents/P4P/var/recordings/final_scenario_6-sdk.jsonl",
+      "validation": "VALID",
+      "status": "TRIMMED",
+      "source_sha256": "4b7f1e6cffaa700d4fbe89e3462958b95186dbf4dd3a866e9128a70eb27e4b1b",
+      "settings": {
+        "max_gap_s": 0.25,
+        "source_gap_factor": 1.5,
+        "linear_threshold_mps": 0.02,
+        "angular_threshold_rps": 0.03
+      },
+      "issues": [],
+      "issue_counts": {},
+      "error_count": 0,
+      "warning_count": 0,
+      "streams": {
+        "perception": {
+          "packet_count": 287,
+          "first_sequence": 1,
+          "last_sequence": 287,
+          "first_receipt_us": 2174162040,
+          "last_receipt_us": 2202727824,
+          "max_receipt_gap_s": 0.131676,
+          "missing_capture_packets": 0,
+          "source_timestamp_count": 287,
+          "missing_source_timestamp_count": 0,
+          "nominal_source_interval": 99991.5,
+          "estimated_missing_sdk_samples": 0
+        },
+        "locomotion": {
+          "packet_count": 287,
+          "first_sequence": 1,
+          "last_sequence": 287,
+          "first_receipt_us": 2174202253,
+          "last_receipt_us": 2202786132,
+          "max_receipt_gap_s": 0.13033,
+          "missing_capture_packets": 0,
+          "source_timestamp_count": 287,
+          "missing_source_timestamp_count": 0,
+          "nominal_source_interval": 99998.5,
+          "estimated_missing_sdk_samples": 0
+        }
+      },
+      "motion_start": {
+        "source_line": 484,
+        "source_record_index": 483,
+        "received_monotonic_us": 2198284394,
+        "received_unix_us": 1791695155585250,
+        "original_sequence": 242,
+        "linear_x_mps": 0.042,
+        "angular_z_rps": 0.0,
+        "offset_s": 24.122354
+      },
+      "trimmed_output": "/home/anyone/Documents/P4P/var/recordings/motion-validated-20261013-01/trimmed/final_scenario_6-sdk.jsonl",
+      "session_id": "16cfef6a68734f41b3c70b3505bc93c0",
+      "issues_truncated": false,
+      "duration_s": 28.624092,
+      "trimmed_sha256": "0fdb16cea031d7c012c902ef5a85471eb8524063693460f8e5fc36a288432d31",
+      "removed_packets": 483,
+      "kept_packets": {
+        "locomotion": 46,
+        "perception": 45
+      },
+      "original_first_kept_sequences": {
+        "locomotion": 242,
+        "perception": 243
+      },
+      "trimmed_duration_s": 4.501738,
+      "sequence_mapping": "original sequence = trimmed sequence + original_first_kept_sequences[stream] - 1"
+    },
+    {
+      "input": "/home/anyone/Documents/P4P/var/recordings/final_scenario_7-sdk.jsonl",
+      "validation": "VALID",
+      "status": "TRIMMED",
+      "source_sha256": "e70ef01cf0e320bc8f24d76e811b41ecfac953f16a2cb13b8c60f351624bb72b",
+      "settings": {
+        "max_gap_s": 0.25,
+        "source_gap_factor": 1.5,
+        "linear_threshold_mps": 0.02,
+        "angular_threshold_rps": 0.03
+      },
+      "issues": [],
+      "issue_counts": {},
+      "error_count": 0,
+      "warning_count": 0,
+      "streams": {
+        "perception": {
+          "packet_count": 143,
+          "first_sequence": 1,
+          "last_sequence": 143,
+          "first_receipt_us": 2241717213,
+          "last_receipt_us": 2255911225,
+          "max_receipt_gap_s": 0.131068,
+          "missing_capture_packets": 0,
+          "source_timestamp_count": 143,
+          "missing_source_timestamp_count": 0,
+          "nominal_source_interval": 99987.0,
+          "estimated_missing_sdk_samples": 0
+        },
+        "locomotion": {
+          "packet_count": 144,
+          "first_sequence": 1,
+          "last_sequence": 144,
+          "first_receipt_us": 2241715894,
+          "last_receipt_us": 2255996352,
+          "max_receipt_gap_s": 0.13506,
+          "missing_capture_packets": 0,
+          "source_timestamp_count": 144,
+          "missing_source_timestamp_count": 0,
+          "nominal_source_interval": 100003,
+          "estimated_missing_sdk_samples": 0
+        }
+      },
+      "motion_start": {
+        "source_line": 114,
+        "source_record_index": 113,
+        "received_monotonic_us": 2247312258,
+        "received_unix_us": 1791695204613114,
+        "original_sequence": 57,
+        "linear_x_mps": 0.05,
+        "angular_z_rps": 0.0,
+        "offset_s": 5.596364
+      },
+      "trimmed_output": "/home/anyone/Documents/P4P/var/recordings/motion-validated-20261013-01/trimmed/final_scenario_7-sdk.jsonl",
+      "session_id": "4bdb1eb5d1524b8f8b81207eab43435e",
+      "issues_truncated": false,
+      "duration_s": 14.280458,
+      "trimmed_sha256": "3c489375ea24cbdd8c51d039681b2bd91973d4853d7092b793c562d206b075d8",
+      "removed_packets": 113,
+      "kept_packets": {
+        "locomotion": 88,
+        "perception": 86
+      },
+      "original_first_kept_sequences": {
+        "locomotion": 57,
+        "perception": 58
+      },
+      "trimmed_duration_s": 8.684094,
+      "sequence_mapping": "original sequence = trimmed sequence + original_first_kept_sequences[stream] - 1"
+    },
+    {
+      "input": "/home/anyone/Documents/P4P/var/recordings/final_scenario_8-sdk.jsonl",
+      "validation": "VALID",
+      "status": "TRIMMED",
+      "source_sha256": "39ff392ae731673b1324c37c5f66f2a1e362d0b9998c5f8bfeb1456ca034b992",
+      "settings": {
+        "max_gap_s": 0.25,
+        "source_gap_factor": 1.5,
+        "linear_threshold_mps": 0.02,
+        "angular_threshold_rps": 0.03
+      },
+      "issues": [],
+      "issue_counts": {},
+      "error_count": 0,
+      "warning_count": 0,
+      "streams": {
+        "perception": {
+          "packet_count": 102,
+          "first_sequence": 1,
+          "last_sequence": 102,
+          "first_receipt_us": 2288310096,
+          "last_receipt_us": 2298399676,
+          "max_receipt_gap_s": 0.127694,
+          "missing_capture_packets": 0,
+          "source_timestamp_count": 102,
+          "missing_source_timestamp_count": 0,
+          "nominal_source_interval": 100003,
+          "estimated_missing_sdk_samples": 0
+        },
+        "locomotion": {
+          "packet_count": 102,
+          "first_sequence": 1,
+          "last_sequence": 102,
+          "first_receipt_us": 2288227138,
+          "last_receipt_us": 2298310432,
+          "max_receipt_gap_s": 0.128972,
+          "missing_capture_packets": 0,
+          "source_timestamp_count": 102,
+          "missing_source_timestamp_count": 0,
+          "nominal_source_interval": 99981,
+          "estimated_missing_sdk_samples": 0
+        }
+      },
+      "motion_start": {
+        "source_line": 62,
+        "source_record_index": 61,
+        "received_monotonic_us": 2291320575,
+        "received_unix_us": 1791695248621432,
+        "original_sequence": 32,
+        "linear_x_mps": 0.028,
+        "angular_z_rps": 0.0,
+        "offset_s": 3.093437
+      },
+      "trimmed_output": "/home/anyone/Documents/P4P/var/recordings/motion-validated-20261013-01/trimmed/final_scenario_8-sdk.jsonl",
+      "session_id": "c0ccd1be0e724eb6ab9e5bee0e3300e4",
+      "issues_truncated": false,
+      "duration_s": 10.172538,
+      "trimmed_sha256": "00f846fe7603257ccf4fb928ec72d7a43cd536e21a0f9145d0032f6225579d40",
+      "removed_packets": 61,
+      "kept_packets": {
+        "locomotion": 71,
+        "perception": 72
+      },
+      "original_first_kept_sequences": {
+        "locomotion": 32,
+        "perception": 31
+      },
+      "trimmed_duration_s": 7.079101,
+      "sequence_mapping": "original sequence = trimmed sequence + original_first_kept_sequences[stream] - 1"
+    },
+    {
+      "input": "/home/anyone/Documents/P4P/var/recordings/final_scenario_9-sdk.jsonl",
+      "validation": "VALID",
+      "status": "TRIMMED",
+      "source_sha256": "926beadd5d9abbe0bdab97f89b81a676ffe905c7142fce0285c25d4f9f74733a",
+      "settings": {
+        "max_gap_s": 0.25,
+        "source_gap_factor": 1.5,
+        "linear_threshold_mps": 0.02,
+        "angular_threshold_rps": 0.03
+      },
+      "issues": [],
+      "issue_counts": {},
+      "error_count": 0,
+      "warning_count": 0,
+      "streams": {
+        "perception": {
+          "packet_count": 237,
+          "first_sequence": 1,
+          "last_sequence": 237,
+          "first_receipt_us": 2317884931,
+          "last_receipt_us": 2341464704,
+          "max_receipt_gap_s": 0.130459,
+          "missing_capture_packets": 0,
+          "source_timestamp_count": 237,
+          "missing_source_timestamp_count": 0,
+          "nominal_source_interval": 99987.5,
+          "estimated_missing_sdk_samples": 0
+        },
+        "locomotion": {
+          "packet_count": 237,
+          "first_sequence": 1,
+          "last_sequence": 237,
+          "first_receipt_us": 2317843338,
+          "last_receipt_us": 2341434137,
+          "max_receipt_gap_s": 0.129811,
+          "missing_capture_packets": 0,
+          "source_timestamp_count": 237,
+          "missing_source_timestamp_count": 0,
+          "nominal_source_interval": 100005.5,
+          "estimated_missing_sdk_samples": 0
+        }
+      },
+      "motion_start": {
+        "source_line": 407,
+        "source_record_index": 406,
+        "received_monotonic_us": 2338133688,
+        "received_unix_us": 1791695295434544,
+        "original_sequence": 204,
+        "linear_x_mps": 0.034,
+        "angular_z_rps": 0.0,
+        "offset_s": 20.29035
+      },
+      "trimmed_output": "/home/anyone/Documents/P4P/var/recordings/motion-validated-20261013-01/trimmed/final_scenario_9-sdk.jsonl",
+      "session_id": "e1f3996f5422479b917903e2dbc0db7c",
+      "issues_truncated": false,
+      "duration_s": 23.621366,
+      "trimmed_sha256": "d43d6bfcb252473764eb007695099acbbf8af69d943d4811cf82eddcbf370714",
+      "removed_packets": 406,
+      "kept_packets": {
+        "locomotion": 34,
+        "perception": 34
+      },
+      "original_first_kept_sequences": {
+        "locomotion": 204,
+        "perception": 204
+      },
+      "trimmed_duration_s": 3.331016,
+      "sequence_mapping": "original sequence = trimmed sequence + original_first_kept_sequences[stream] - 1"
+    },
+    {
+      "input": "/home/anyone/Documents/P4P/var/recordings/freestyle-sdk.jsonl",
+      "validation": "INVALID",
+      "status": "INVALID",
+      "source_sha256": "0f20a6b479d9c8feec2d068397fcebd6cd5425031df4b3b3987382310fb8683b",
+      "settings": {
+        "max_gap_s": 0.25,
+        "source_gap_factor": 1.5,
+        "linear_threshold_mps": 0.02,
+        "angular_threshold_rps": 0.03
+      },
+      "issues": [
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 1,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 2,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 3,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 4,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 5,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 6,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 7,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 8,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 9,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 10,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 11,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 12,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 13,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 14,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 15,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 16,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 17,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 18,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 19,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 20,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 21,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 22,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 23,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 24,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 25,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 26,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 27,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 28,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 29,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 30,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 31,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 32,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 33,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 34,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 35,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 36,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 37,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 38,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 39,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 40,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 41,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 42,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 43,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 44,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 45,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 46,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 47,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 48,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 49,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 50,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 51,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 52,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 53,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 54,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 55,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 56,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 57,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 58,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 59,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 60,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 61,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 62,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 63,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 64,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 65,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 66,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 67,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 68,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 69,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 70,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 71,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 72,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 73,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 74,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 75,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 76,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 77,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 78,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 79,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 80,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 81,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 82,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 83,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 84,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 85,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 86,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 87,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 88,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 89,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 90,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 91,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 92,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 93,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 94,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 95,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 96,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 97,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 98,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 99,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 100,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 101,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 102,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 103,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 104,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 105,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 106,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 107,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 108,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 109,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 110,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 111,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 112,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 113,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 114,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 115,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 116,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 117,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 118,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 119,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 120,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 121,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 122,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 123,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 124,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 125,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 126,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 127,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 128,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 129,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 130,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 131,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 132,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 133,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 134,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 135,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 136,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 137,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 138,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 139,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 140,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 141,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 142,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 143,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 144,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 145,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 146,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 147,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 148,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 149,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 150,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 151,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 152,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 153,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 154,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 155,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 156,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 157,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 158,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 159,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 160,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 161,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 162,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 163,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 164,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 165,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 166,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 167,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 168,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 169,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 170,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 171,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 172,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 173,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 174,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 175,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 176,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 177,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 178,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 179,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 180,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 181,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 182,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 183,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 184,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 185,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 186,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 187,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 188,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 189,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 190,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 191,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 192,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 193,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 194,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 195,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 196,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 197,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 198,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 199,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 200,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        }
+      ],
+      "issue_counts": {
+        "INVALID_PACKET": 1495,
+        "EMPTY_CAPTURE": 1,
+        "MISSING_STREAM": 2
+      },
+      "error_count": 1498,
+      "warning_count": 0,
+      "streams": {
+        "perception": {
+          "packet_count": 0,
+          "first_sequence": null,
+          "last_sequence": null,
+          "first_receipt_us": null,
+          "last_receipt_us": null,
+          "max_receipt_gap_s": 0.0,
+          "missing_capture_packets": 0,
+          "source_timestamp_count": 0,
+          "missing_source_timestamp_count": 0,
+          "nominal_source_interval": null,
+          "estimated_missing_sdk_samples": 0
+        },
+        "locomotion": {
+          "packet_count": 0,
+          "first_sequence": null,
+          "last_sequence": null,
+          "first_receipt_us": null,
+          "last_receipt_us": null,
+          "max_receipt_gap_s": 0.0,
+          "missing_capture_packets": 0,
+          "source_timestamp_count": 0,
+          "missing_source_timestamp_count": 0,
+          "nominal_source_interval": null,
+          "estimated_missing_sdk_samples": 0
+        }
+      },
+      "motion_start": null,
+      "trimmed_output": null,
+      "session_id": null,
+      "issues_truncated": true
+    },
+    {
+      "input": "/home/anyone/Documents/P4P/var/recordings/freestyle_2-sdk.jsonl",
+      "validation": "INVALID",
+      "status": "INVALID",
+      "source_sha256": "ac69dd8feb497402fd6ffbfa9b81eedca9adf874f719dc3ca80865c8c1427044",
+      "settings": {
+        "max_gap_s": 0.25,
+        "source_gap_factor": 1.5,
+        "linear_threshold_mps": 0.02,
+        "angular_threshold_rps": 0.03
+      },
+      "issues": [
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 1,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 2,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 3,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 4,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 5,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 6,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 7,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 8,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 9,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 10,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 11,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 12,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 13,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 14,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 15,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 16,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 17,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 18,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 19,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 20,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 21,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 22,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 23,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 24,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 25,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 26,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 27,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 28,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 29,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 30,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 31,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 32,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 33,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 34,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 35,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 36,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 37,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 38,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 39,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 40,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 41,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 42,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 43,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 44,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 45,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 46,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 47,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 48,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 49,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 50,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 51,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 52,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 53,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 54,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 55,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 56,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 57,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 58,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 59,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 60,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 61,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 62,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 63,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 64,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 65,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 66,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 67,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 68,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 69,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 70,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 71,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 72,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 73,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 74,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 75,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 76,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 77,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 78,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 79,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 80,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 81,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 82,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 83,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 84,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 85,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 86,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 87,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 88,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 89,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 90,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 91,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 92,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 93,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 94,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 95,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 96,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 97,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 98,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 99,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 100,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 101,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 102,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 103,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 104,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 105,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 106,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 107,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 108,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 109,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 110,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 111,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 112,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 113,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 114,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 115,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 116,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 117,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 118,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 119,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 120,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 121,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 122,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 123,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 124,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 125,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 126,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 127,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 128,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 129,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 130,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 131,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 132,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 133,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 134,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 135,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 136,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 137,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "INVALID_PACKET",
+          "severity": "error",
+          "line": 138,
+          "stream": null,
+          "message": "invalid SDK capture envelope"
+        },
+        {
+          "code": "EMPTY_CAPTURE",
+          "severity": "error",
+          "line": null,
+          "stream": null,
+          "message": "No valid SDK packets found"
+        },
+        {
+          "code": "MISSING_STREAM",
+          "severity": "error",
+          "line": null,
+          "stream": "perception",
+          "message": "No perception packets"
+        },
+        {
+          "code": "MISSING_STREAM",
+          "severity": "error",
+          "line": null,
+          "stream": "locomotion",
+          "message": "No locomotion packets"
+        }
+      ],
+      "issue_counts": {
+        "INVALID_PACKET": 138,
+        "EMPTY_CAPTURE": 1,
+        "MISSING_STREAM": 2
+      },
+      "error_count": 141,
+      "warning_count": 0,
+      "streams": {
+        "perception": {
+          "packet_count": 0,
+          "first_sequence": null,
+          "last_sequence": null,
+          "first_receipt_us": null,
+          "last_receipt_us": null,
+          "max_receipt_gap_s": 0.0,
+          "missing_capture_packets": 0,
+          "source_timestamp_count": 0,
+          "missing_source_timestamp_count": 0,
+          "nominal_source_interval": null,
+          "estimated_missing_sdk_samples": 0
+        },
+        "locomotion": {
+          "packet_count": 0,
+          "first_sequence": null,
+          "last_sequence": null,
+          "first_receipt_us": null,
+          "last_receipt_us": null,
+          "max_receipt_gap_s": 0.0,
+          "missing_capture_packets": 0,
+          "source_timestamp_count": 0,
+          "missing_source_timestamp_count": 0,
+          "nominal_source_interval": null,
+          "estimated_missing_sdk_samples": 0
+        }
+      },
+      "motion_start": null,
+      "trimmed_output": null,
+      "session_id": null,
+      "issues_truncated": false
+    },
+    {
+      "input": "/home/anyone/Documents/P4P/var/recordings/gaze-tracking-no-head-test-sdk.jsonl",
+      "validation": "VALID",
+      "status": "NO_MOVEMENT",
+      "source_sha256": "c5c98e0d73b3ae9dfd7631979cec694a7a220466fa774e6f2429be8158748209",
+      "settings": {
+        "max_gap_s": 0.25,
+        "source_gap_factor": 1.5,
+        "linear_threshold_mps": 0.02,
+        "angular_threshold_rps": 0.03
+      },
+      "issues": [],
+      "issue_counts": {},
+      "error_count": 0,
+      "warning_count": 0,
+      "streams": {
+        "perception": {
+          "packet_count": 1803,
+          "first_sequence": 1,
+          "last_sequence": 1803,
+          "first_receipt_us": 103235214,
+          "last_receipt_us": 283357736,
+          "max_receipt_gap_s": 0.134198,
+          "missing_capture_packets": 0,
+          "source_timestamp_count": 1803,
+          "missing_source_timestamp_count": 0,
+          "nominal_source_interval": 99986.0,
+          "estimated_missing_sdk_samples": 0
+        },
+        "locomotion": {
+          "packet_count": 1802,
+          "first_sequence": 1,
+          "last_sequence": 1802,
+          "first_receipt_us": 103277037,
+          "last_receipt_us": 283398799,
+          "max_receipt_gap_s": 0.135733,
+          "missing_capture_packets": 0,
+          "source_timestamp_count": 1802,
+          "missing_source_timestamp_count": 0,
+          "nominal_source_interval": 99999,
+          "estimated_missing_sdk_samples": 0
+        }
+      },
+      "motion_start": null,
+      "trimmed_output": null,
+      "session_id": "aca364ee19ba4d8191f6ff05ac683a5b",
+      "issues_truncated": false,
+      "duration_s": 180.163585
+    },
+    {
+      "input": "/home/anyone/Documents/P4P/var/recordings/gaze-v2-calibration-2-sdk.jsonl",
+      "validation": "VALID",
+      "status": "NO_MOVEMENT",
+      "source_sha256": "f808e02fb71c040779297a42f1b583849acc74cc2a348790cf0eadb5894cbd26",
+      "settings": {
+        "max_gap_s": 0.25,
+        "source_gap_factor": 1.5,
+        "linear_threshold_mps": 0.02,
+        "angular_threshold_rps": 0.03
+      },
+      "issues": [],
+      "issue_counts": {},
+      "error_count": 0,
+      "warning_count": 0,
+      "streams": {
+        "perception": {
+          "packet_count": 1168,
+          "first_sequence": 1,
+          "last_sequence": 1168,
+          "first_receipt_us": 170753803337,
+          "last_receipt_us": 170870444549,
+          "max_receipt_gap_s": 0.134096,
+          "missing_capture_packets": 0,
+          "source_timestamp_count": 1168,
+          "missing_source_timestamp_count": 0,
+          "nominal_source_interval": 99994,
+          "estimated_missing_sdk_samples": 0
+        },
+        "locomotion": {
+          "packet_count": 1169,
+          "first_sequence": 1,
+          "last_sequence": 1169,
+          "first_receipt_us": 170753761765,
+          "last_receipt_us": 170870557780,
+          "max_receipt_gap_s": 0.136013,
+          "missing_capture_packets": 0,
+          "source_timestamp_count": 1169,
+          "missing_source_timestamp_count": 0,
+          "nominal_source_interval": 100002.0,
+          "estimated_missing_sdk_samples": 0
+        }
+      },
+      "motion_start": null,
+      "trimmed_output": null,
+      "session_id": "cf56291137a9444ca244d97b899e697c",
+      "issues_truncated": false,
+      "duration_s": 116.796015
+    },
+    {
+      "input": "/home/anyone/Documents/P4P/var/recordings/gaze-v2-calibration-sdk.jsonl",
+      "validation": "VALID",
+      "status": "NO_MOVEMENT",
+      "source_sha256": "f77d6fd7d8feea74074a3726edd3cb423e7fcd5b9172214b84047dff1871c52c",
+      "settings": {
+        "max_gap_s": 0.25,
+        "source_gap_factor": 1.5,
+        "linear_threshold_mps": 0.02,
+        "angular_threshold_rps": 0.03
+      },
+      "issues": [],
+      "issue_counts": {},
+      "error_count": 0,
+      "warning_count": 0,
+      "streams": {
+        "perception": {
+          "packet_count": 1882,
+          "first_sequence": 1,
+          "last_sequence": 1882,
+          "first_receipt_us": 169907022553,
+          "last_receipt_us": 170095041228,
+          "max_receipt_gap_s": 0.158375,
+          "missing_capture_packets": 0,
+          "source_timestamp_count": 1882,
+          "missing_source_timestamp_count": 0,
+          "nominal_source_interval": 99979,
+          "estimated_missing_sdk_samples": 0
+        },
+        "locomotion": {
+          "packet_count": 1881,
+          "first_sequence": 1,
+          "last_sequence": 1881,
+          "first_receipt_us": 169906980893,
+          "last_receipt_us": 170094998044,
+          "max_receipt_gap_s": 0.137935,
+          "missing_capture_packets": 0,
+          "source_timestamp_count": 1881,
+          "missing_source_timestamp_count": 0,
+          "nominal_source_interval": 100001.0,
+          "estimated_missing_sdk_samples": 0
+        }
+      },
+      "motion_start": null,
+      "trimmed_output": null,
+      "session_id": "06cad32ab19d426ca73f8ce75a4b964a",
+      "issues_truncated": false,
+      "duration_s": 188.060335
+    },
+    {
+      "input": "/home/anyone/Documents/P4P/var/recordings/perf-off-a-sdk.jsonl",
+      "validation": "VALID",
+      "status": "NO_MOVEMENT",
+      "source_sha256": "c6f4cbf7a3adb3b60bdcc27db732ac0f95a3ee6565fc87325d2663f50297955b",
+      "settings": {
+        "max_gap_s": 0.25,
+        "source_gap_factor": 1.5,
+        "linear_threshold_mps": 0.02,
+        "angular_threshold_rps": 0.03
+      },
+      "issues": [],
+      "issue_counts": {},
+      "error_count": 0,
+      "warning_count": 0,
+      "streams": {
+        "perception": {
+          "packet_count": 507,
+          "first_sequence": 1,
+          "last_sequence": 507,
+          "first_receipt_us": 159501924824,
+          "last_receipt_us": 159552493491,
+          "max_receipt_gap_s": 0.131558,
+          "missing_capture_packets": 0,
+          "source_timestamp_count": 507,
+          "missing_source_timestamp_count": 0,
+          "nominal_source_interval": 99991.0,
+          "estimated_missing_sdk_samples": 0
+        },
+        "locomotion": {
+          "packet_count": 507,
+          "first_sequence": 1,
+          "last_sequence": 507,
+          "first_receipt_us": 159501923026,
+          "last_receipt_us": 159552527863,
+          "max_receipt_gap_s": 0.132801,
+          "missing_capture_packets": 0,
+          "source_timestamp_count": 507,
+          "missing_source_timestamp_count": 0,
+          "nominal_source_interval": 100003.0,
+          "estimated_missing_sdk_samples": 0
+        }
+      },
+      "motion_start": null,
+      "trimmed_output": null,
+      "session_id": "5800c6ff9bd446499d407f20dbc3dda8",
+      "issues_truncated": false,
+      "duration_s": 50.604837
+    },
+    {
+      "input": "/home/anyone/Documents/P4P/var/recordings/perf-off-b-sdk.jsonl",
+      "validation": "VALID",
+      "status": "NO_MOVEMENT",
+      "source_sha256": "b3a28da57922cdbf5f5491852b29f47989f6612e95e8904c2a4958e7a0c016d7",
+      "settings": {
+        "max_gap_s": 0.25,
+        "source_gap_factor": 1.5,
+        "linear_threshold_mps": 0.02,
+        "angular_threshold_rps": 0.03
+      },
+      "issues": [],
+      "issue_counts": {},
+      "error_count": 0,
+      "warning_count": 0,
+      "streams": {
+        "perception": {
+          "packet_count": 369,
+          "first_sequence": 1,
+          "last_sequence": 369,
+          "first_receipt_us": 161656972130,
+          "last_receipt_us": 161693740836,
+          "max_receipt_gap_s": 0.131907,
+          "missing_capture_packets": 0,
+          "source_timestamp_count": 369,
+          "missing_source_timestamp_count": 0,
+          "nominal_source_interval": 99982.0,
+          "estimated_missing_sdk_samples": 0
+        },
+        "locomotion": {
+          "packet_count": 370,
+          "first_sequence": 1,
+          "last_sequence": 370,
+          "first_receipt_us": 161656930495,
+          "last_receipt_us": 161693825235,
+          "max_receipt_gap_s": 0.134875,
+          "missing_capture_packets": 0,
+          "source_timestamp_count": 370,
+          "missing_source_timestamp_count": 0,
+          "nominal_source_interval": 100000,
+          "estimated_missing_sdk_samples": 0
+        }
+      },
+      "motion_start": null,
+      "trimmed_output": null,
+      "session_id": "0c3338fac7084d71b482a8891789b983",
+      "issues_truncated": false,
+      "duration_s": 36.89474
+    },
+    {
+      "input": "/home/anyone/Documents/P4P/var/recordings/perf-on-a-sdk.jsonl",
+      "validation": "VALID",
+      "status": "NO_MOVEMENT",
+      "source_sha256": "e548d313a3794499254ecf533cedac3417352baee1c91c072e5cf98464dc5819",
+      "settings": {
+        "max_gap_s": 0.25,
+        "source_gap_factor": 1.5,
+        "linear_threshold_mps": 0.02,
+        "angular_threshold_rps": 0.03
+      },
+      "issues": [],
+      "issue_counts": {},
+      "error_count": 0,
+      "warning_count": 0,
+      "streams": {
+        "perception": {
+          "packet_count": 53,
+          "first_sequence": 1,
+          "last_sequence": 53,
+          "first_receipt_us": 161797505428,
+          "last_receipt_us": 161802723525,
+          "max_receipt_gap_s": 0.137357,
+          "missing_capture_packets": 0,
+          "source_timestamp_count": 53,
+          "missing_source_timestamp_count": 0,
+          "nominal_source_interval": 99993.5,
+          "estimated_missing_sdk_samples": 0
+        },
+        "locomotion": {
+          "packet_count": 53,
+          "first_sequence": 1,
+          "last_sequence": 53,
+          "first_receipt_us": 161797547138,
+          "last_receipt_us": 161802726171,
+          "max_receipt_gap_s": 0.144155,
+          "missing_capture_packets": 0,
+          "source_timestamp_count": 53,
+          "missing_source_timestamp_count": 0,
+          "nominal_source_interval": 99985.0,
+          "estimated_missing_sdk_samples": 0
+        }
+      },
+      "motion_start": null,
+      "trimmed_output": null,
+      "session_id": "27bebefdbb8e4782a1142af044c53aea",
+      "issues_truncated": false,
+      "duration_s": 5.220743
+    },
+    {
+      "input": "/home/anyone/Documents/P4P/var/recordings/perf-on-b-sdk.jsonl",
+      "validation": "VALID",
+      "status": "NO_MOVEMENT",
+      "source_sha256": "3b4a9afc85305d546c0c53f2bda4ac44f8081275076640ba96860be68a82deb7",
+      "settings": {
+        "max_gap_s": 0.25,
+        "source_gap_factor": 1.5,
+        "linear_threshold_mps": 0.02,
+        "angular_threshold_rps": 0.03
+      },
+      "issues": [],
+      "issue_counts": {},
+      "error_count": 0,
+      "warning_count": 0,
+      "streams": {
+        "perception": {
+          "packet_count": 93,
+          "first_sequence": 1,
+          "last_sequence": 93,
+          "first_receipt_us": 159844653800,
+          "last_receipt_us": 159853856425,
+          "max_receipt_gap_s": 0.133014,
+          "missing_capture_packets": 0,
+          "source_timestamp_count": 93,
+          "missing_source_timestamp_count": 0,
+          "nominal_source_interval": 100004.0,
+          "estimated_missing_sdk_samples": 0
+        },
+        "locomotion": {
+          "packet_count": 93,
+          "first_sequence": 1,
+          "last_sequence": 93,
+          "first_receipt_us": 159844652413,
+          "last_receipt_us": 159853857339,
+          "max_receipt_gap_s": 0.150329,
+          "missing_capture_packets": 0,
+          "source_timestamp_count": 93,
+          "missing_source_timestamp_count": 0,
+          "nominal_source_interval": 99982.0,
+          "estimated_missing_sdk_samples": 0
+        }
+      },
+      "motion_start": null,
+      "trimmed_output": null,
+      "session_id": "007b8eff587247ecb1b430b92faf9134",
+      "issues_truncated": false,
+      "duration_s": 9.204926
+    },
+    {
+      "input": "/home/anyone/Documents/P4P/var/recordings/person-1-S1-sdk.jsonl",
+      "validation": "VALID",
+      "status": "TRIMMED",
+      "source_sha256": "271cde582f8aaa43cddd483cb48ac66d40ecc82a397b29abc17247b0088df118",
+      "settings": {
+        "max_gap_s": 0.25,
+        "source_gap_factor": 1.5,
+        "linear_threshold_mps": 0.02,
+        "angular_threshold_rps": 0.03
+      },
+      "issues": [],
+      "issue_counts": {},
+      "error_count": 0,
+      "warning_count": 0,
+      "streams": {
+        "perception": {
+          "packet_count": 446,
+          "first_sequence": 1,
+          "last_sequence": 446,
+          "first_receipt_us": 88520894918,
+          "last_receipt_us": 88565361253,
+          "max_receipt_gap_s": 0.132173,
+          "missing_capture_packets": 0,
+          "source_timestamp_count": 446,
+          "missing_source_timestamp_count": 0,
+          "nominal_source_interval": 99987,
+          "estimated_missing_sdk_samples": 0
+        },
+        "locomotion": {
+          "packet_count": 446,
+          "first_sequence": 1,
+          "last_sequence": 446,
+          "first_receipt_us": 88520893596,
+          "last_receipt_us": 88565383221,
+          "max_receipt_gap_s": 0.134981,
+          "missing_capture_packets": 0,
+          "source_timestamp_count": 446,
+          "missing_source_timestamp_count": 0,
+          "nominal_source_interval": 99994,
+          "estimated_missing_sdk_samples": 0
+        }
+      },
+      "motion_start": {
+        "source_line": 624,
+        "source_record_index": 623,
+        "received_monotonic_us": 88551994195,
+        "received_unix_us": 1791860424924718,
+        "original_sequence": 312,
+        "linear_x_mps": 0.021,
+        "angular_z_rps": 0.0,
+        "offset_s": 31.100599
+      },
+      "trimmed_output": "/home/anyone/Documents/P4P/var/recordings/motion-validated-20261013-01/trimmed/person-1-S1-sdk.jsonl",
+      "session_id": "b48b54f19ff643d387d9d8c04bf132db",
+      "issues_truncated": false,
+      "duration_s": 44.489625,
+      "trimmed_sha256": "1a881552950a1db5e74b416df93e0af11b78f990c5f03d94af3530c5872d6023",
+      "removed_packets": 623,
+      "kept_packets": {
+        "locomotion": 135,
+        "perception": 134
+      },
+      "original_first_kept_sequences": {
+        "locomotion": 312,
+        "perception": 313
+      },
+      "trimmed_duration_s": 13.389026,
+      "sequence_mapping": "original sequence = trimmed sequence + original_first_kept_sequences[stream] - 1"
+    },
+    {
+      "input": "/home/anyone/Documents/P4P/var/recordings/person-1-S2-sdk.jsonl",
+      "validation": "VALID",
+      "status": "TRIMMED",
+      "source_sha256": "dbed33ca66b41123193721190b363f1578009f1f0df032c22b5ed8fc7f7fcab6",
+      "settings": {
+        "max_gap_s": 0.25,
+        "source_gap_factor": 1.5,
+        "linear_threshold_mps": 0.02,
+        "angular_threshold_rps": 0.03
+      },
+      "issues": [],
+      "issue_counts": {},
+      "error_count": 0,
+      "warning_count": 0,
+      "streams": {
+        "perception": {
+          "packet_count": 254,
+          "first_sequence": 1,
+          "last_sequence": 254,
+          "first_receipt_us": 88664425860,
+          "last_receipt_us": 88689705802,
+          "max_receipt_gap_s": 0.130614,
+          "missing_capture_packets": 0,
+          "source_timestamp_count": 254,
+          "missing_source_timestamp_count": 0,
+          "nominal_source_interval": 99988,
+          "estimated_missing_sdk_samples": 0
+        },
+        "locomotion": {
+          "packet_count": 254,
+          "first_sequence": 1,
+          "last_sequence": 254,
+          "first_receipt_us": 88664383473,
+          "last_receipt_us": 88689683071,
+          "max_receipt_gap_s": 0.13611,
+          "missing_capture_packets": 0,
+          "source_timestamp_count": 254,
+          "missing_source_timestamp_count": 0,
+          "nominal_source_interval": 100010,
+          "estimated_missing_sdk_samples": 0
+        }
+      },
+      "motion_start": {
+        "source_line": 191,
+        "source_record_index": 190,
+        "received_monotonic_us": 88673896638,
+        "received_unix_us": 1791860546827162,
+        "original_sequence": 96,
+        "linear_x_mps": 0.04,
+        "angular_z_rps": 0.0,
+        "offset_s": 9.513165
+      },
+      "trimmed_output": "/home/anyone/Documents/P4P/var/recordings/motion-validated-20261013-01/trimmed/person-1-S2-sdk.jsonl",
+      "session_id": "0d4ef70c40a64edaae406d905e9a2aa5",
+      "issues_truncated": false,
+      "duration_s": 25.322329,
+      "trimmed_sha256": "16f822a38137dbe48ffdab4591487bb3305229e768360b3498390d907bcac946",
+      "removed_packets": 190,
+      "kept_packets": {
+        "locomotion": 159,
+        "perception": 159
+      },
+      "original_first_kept_sequences": {
+        "locomotion": 96,
+        "perception": 96
+      },
+      "trimmed_duration_s": 15.809164,
+      "sequence_mapping": "original sequence = trimmed sequence + original_first_kept_sequences[stream] - 1"
+    },
+    {
+      "input": "/home/anyone/Documents/P4P/var/recordings/person-1-S3-sdk.jsonl",
+      "validation": "VALID",
+      "status": "TRIMMED",
+      "source_sha256": "94f32aab25e87528cecaefddf2cd472fea5f62de0b69de0a780ea604aa85ffd8",
+      "settings": {
+        "max_gap_s": 0.25,
+        "source_gap_factor": 1.5,
+        "linear_threshold_mps": 0.02,
+        "angular_threshold_rps": 0.03
+      },
+      "issues": [],
+      "issue_counts": {},
+      "error_count": 0,
+      "warning_count": 0,
+      "streams": {
+        "perception": {
+          "packet_count": 240,
+          "first_sequence": 1,
+          "last_sequence": 240,
+          "first_receipt_us": 88710507392,
+          "last_receipt_us": 88734383922,
+          "max_receipt_gap_s": 0.132688,
+          "missing_capture_packets": 0,
+          "source_timestamp_count": 240,
+          "missing_source_timestamp_count": 0,
+          "nominal_source_interval": 99996,
+          "estimated_missing_sdk_samples": 0
+        },
+        "locomotion": {
+          "packet_count": 240,
+          "first_sequence": 1,
+          "last_sequence": 240,
+          "first_receipt_us": 88710505874,
+          "last_receipt_us": 88734394936,
+          "max_receipt_gap_s": 0.132673,
+          "missing_capture_packets": 0,
+          "source_timestamp_count": 240,
+          "missing_source_timestamp_count": 0,
+          "nominal_source_interval": 99994,
+          "estimated_missing_sdk_samples": 0
+        }
+      },
+      "motion_start": {
+        "source_line": 92,
+        "source_record_index": 91,
+        "received_monotonic_us": 88715000140,
+        "received_unix_us": 1791860587930666,
+        "original_sequence": 46,
+        "linear_x_mps": 0.039,
+        "angular_z_rps": 0.0,
+        "offset_s": 4.494266
+      },
+      "trimmed_output": "/home/anyone/Documents/P4P/var/recordings/motion-validated-20261013-01/trimmed/person-1-S3-sdk.jsonl",
+      "session_id": "8fc9e031cece4630b69851613172b57c",
+      "issues_truncated": false,
+      "duration_s": 23.889062,
+      "trimmed_sha256": "27ae4b73754ecd2f8890fcbcaa4cd92c0d65e2f88a34969da90b047ea30287c2",
+      "removed_packets": 91,
+      "kept_packets": {
+        "locomotion": 195,
+        "perception": 194
+      },
+      "original_first_kept_sequences": {
+        "locomotion": 46,
+        "perception": 47
+      },
+      "trimmed_duration_s": 19.394796,
+      "sequence_mapping": "original sequence = trimmed sequence + original_first_kept_sequences[stream] - 1"
+    },
+    {
+      "input": "/home/anyone/Documents/P4P/var/recordings/person-1-S4-sdk.jsonl",
+      "validation": "VALID",
+      "status": "TRIMMED",
+      "source_sha256": "4a5d31283aff731f0ad091223481f807deb9e40bff8b02cdc0d8439c9d553835",
+      "settings": {
+        "max_gap_s": 0.25,
+        "source_gap_factor": 1.5,
+        "linear_threshold_mps": 0.02,
+        "angular_threshold_rps": 0.03
+      },
+      "issues": [],
+      "issue_counts": {},
+      "error_count": 0,
+      "warning_count": 0,
+      "streams": {
+        "perception": {
+          "packet_count": 241,
+          "first_sequence": 1,
+          "last_sequence": 241,
+          "first_receipt_us": 88852623738,
+          "last_receipt_us": 88876602667,
+          "max_receipt_gap_s": 0.132343,
+          "missing_capture_packets": 0,
+          "source_timestamp_count": 241,
+          "missing_source_timestamp_count": 0,
+          "nominal_source_interval": 99985.0,
+          "estimated_missing_sdk_samples": 0
+        },
+        "locomotion": {
+          "packet_count": 241,
+          "first_sequence": 1,
+          "last_sequence": 241,
+          "first_receipt_us": 88852622415,
+          "last_receipt_us": 88876603380,
+          "max_receipt_gap_s": 0.137626,
+          "missing_capture_packets": 0,
+          "source_timestamp_count": 241,
+          "missing_source_timestamp_count": 0,
+          "nominal_source_interval": 100006.5,
+          "estimated_missing_sdk_samples": 0
+        }
+      },
+      "motion_start": {
+        "source_line": 334,
+        "source_record_index": 333,
+        "received_monotonic_us": 88869223550,
+        "received_unix_us": 1791860742154211,
+        "original_sequence": 167,
+        "linear_x_mps": 0.021,
+        "angular_z_rps": 0.0,
+        "offset_s": 16.601135
+      },
+      "trimmed_output": "/home/anyone/Documents/P4P/var/recordings/motion-validated-20261013-01/trimmed/person-1-S4-sdk.jsonl",
+      "session_id": "485c3864cc10438d89151f39b2015c57",
+      "issues_truncated": false,
+      "duration_s": 23.980965,
+      "trimmed_sha256": "142c677f9d9fdd47933492b3aa13f90ffff91f82bf2f9e21b9036ac29398cfeb",
+      "removed_packets": 333,
+      "kept_packets": {
+        "locomotion": 75,
+        "perception": 74
+      },
+      "original_first_kept_sequences": {
+        "locomotion": 167,
+        "perception": 168
+      },
+      "trimmed_duration_s": 7.37983,
+      "sequence_mapping": "original sequence = trimmed sequence + original_first_kept_sequences[stream] - 1"
+    },
+    {
+      "input": "/home/anyone/Documents/P4P/var/recordings/person-1-S5-sdk.jsonl",
+      "validation": "VALID",
+      "status": "TRIMMED",
+      "source_sha256": "5082cccc044204b14f2b36cd4e5d20d478ad32dbdd14dc1c9926c28eaf9d0e67",
+      "settings": {
+        "max_gap_s": 0.25,
+        "source_gap_factor": 1.5,
+        "linear_threshold_mps": 0.02,
+        "angular_threshold_rps": 0.03
+      },
+      "issues": [],
+      "issue_counts": {},
+      "error_count": 0,
+      "warning_count": 0,
+      "streams": {
+        "perception": {
+          "packet_count": 155,
+          "first_sequence": 1,
+          "last_sequence": 155,
+          "first_receipt_us": 88915713750,
+          "last_receipt_us": 88931084884,
+          "max_receipt_gap_s": 0.129106,
+          "missing_capture_packets": 0,
+          "source_timestamp_count": 155,
+          "missing_source_timestamp_count": 0,
+          "nominal_source_interval": 99987.5,
+          "estimated_missing_sdk_samples": 0
+        },
+        "locomotion": {
+          "packet_count": 154,
+          "first_sequence": 1,
+          "last_sequence": 154,
+          "first_receipt_us": 88915712262,
+          "last_receipt_us": 88931022642,
+          "max_receipt_gap_s": 0.128426,
+          "missing_capture_packets": 0,
+          "source_timestamp_count": 154,
+          "missing_source_timestamp_count": 0,
+          "nominal_source_interval": 100002,
+          "estimated_missing_sdk_samples": 0
+        }
+      },
+      "motion_start": {
+        "source_line": 164,
+        "source_record_index": 163,
+        "received_monotonic_us": 88923824852,
+        "received_unix_us": 1791860796755375,
+        "original_sequence": 82,
+        "linear_x_mps": 0.031,
+        "angular_z_rps": 0.0,
+        "offset_s": 8.11259
+      },
+      "trimmed_output": "/home/anyone/Documents/P4P/var/recordings/motion-validated-20261013-01/trimmed/person-1-S5-sdk.jsonl",
+      "session_id": "f6e8939bf8404d6383e5837473cd24d3",
+      "issues_truncated": false,
+      "duration_s": 15.372622,
+      "trimmed_sha256": "40f20fb7caf511f3a0c1f1226d9b7b611031d77dc895598fcdea3513f6c705c1",
+      "removed_packets": 163,
+      "kept_packets": {
+        "locomotion": 73,
+        "perception": 73
+      },
+      "original_first_kept_sequences": {
+        "locomotion": 82,
+        "perception": 83
+      },
+      "trimmed_duration_s": 7.260032,
+      "sequence_mapping": "original sequence = trimmed sequence + original_first_kept_sequences[stream] - 1"
+    },
+    {
+      "input": "/home/anyone/Documents/P4P/var/recordings/person-1-S6-sdk.jsonl",
+      "validation": "VALID",
+      "status": "TRIMMED",
+      "source_sha256": "a4470c102a7c51581e760338bde8a91005a8663d44cfcea4aa4dace8d681a49b",
+      "settings": {
+        "max_gap_s": 0.25,
+        "source_gap_factor": 1.5,
+        "linear_threshold_mps": 0.02,
+        "angular_threshold_rps": 0.03
+      },
+      "issues": [],
+      "issue_counts": {},
+      "error_count": 0,
+      "warning_count": 0,
+      "streams": {
+        "perception": {
+          "packet_count": 270,
+          "first_sequence": 1,
+          "last_sequence": 270,
+          "first_receipt_us": 88959990521,
+          "last_receipt_us": 88986865548,
+          "max_receipt_gap_s": 0.131932,
+          "missing_capture_packets": 0,
+          "source_timestamp_count": 270,
+          "missing_source_timestamp_count": 0,
+          "nominal_source_interval": 99986,
+          "estimated_missing_sdk_samples": 0
+        },
+        "locomotion": {
+          "packet_count": 269,
+          "first_sequence": 1,
+          "last_sequence": 269,
+          "first_receipt_us": 88959988936,
+          "last_receipt_us": 88986822876,
+          "max_receipt_gap_s": 0.130133,
+          "missing_capture_packets": 0,
+          "source_timestamp_count": 269,
+          "missing_source_timestamp_count": 0,
+          "nominal_source_interval": 100001.0,
+          "estimated_missing_sdk_samples": 0
+        }
+      },
+      "motion_start": {
+        "source_line": 384,
+        "source_record_index": 383,
+        "received_monotonic_us": 88979123046,
+        "received_unix_us": 1791860852053569,
+        "original_sequence": 192,
+        "linear_x_mps": 0.056,
+        "angular_z_rps": 0.0,
+        "offset_s": 19.13411
+      },
+      "trimmed_output": "/home/anyone/Documents/P4P/var/recordings/motion-validated-20261013-01/trimmed/person-1-S6-sdk.jsonl",
+      "session_id": "1435eaceb23d488d8232953a8888178b",
+      "issues_truncated": false,
+      "duration_s": 26.876612,
+      "trimmed_sha256": "e1f54338365b897cd2b17c7e1cec7c3bd483d8caaf5ff3cb3945ff420e5fd32f",
+      "removed_packets": 383,
+      "kept_packets": {
+        "locomotion": 78,
+        "perception": 78
+      },
+      "original_first_kept_sequences": {
+        "locomotion": 192,
+        "perception": 193
+      },
+      "trimmed_duration_s": 7.742502,
+      "sequence_mapping": "original sequence = trimmed sequence + original_first_kept_sequences[stream] - 1"
+    },
+    {
+      "input": "/home/anyone/Documents/P4P/var/recordings/person-1-S7-sdk.jsonl",
+      "validation": "VALID",
+      "status": "TRIMMED",
+      "source_sha256": "57d3e03a2a888c7b48a7c9349d9447d069e325c0dcf851d791f725f564de83fa",
+      "settings": {
+        "max_gap_s": 0.25,
+        "source_gap_factor": 1.5,
+        "linear_threshold_mps": 0.02,
+        "angular_threshold_rps": 0.03
+      },
+      "issues": [],
+      "issue_counts": {},
+      "error_count": 0,
+      "warning_count": 0,
+      "streams": {
+        "perception": {
+          "packet_count": 165,
+          "first_sequence": 1,
+          "last_sequence": 165,
+          "first_receipt_us": 89012473752,
+          "last_receipt_us": 89028859448,
+          "max_receipt_gap_s": 0.131028,
+          "missing_capture_packets": 0,
+          "source_timestamp_count": 165,
+          "missing_source_timestamp_count": 0,
+          "nominal_source_interval": 99966.5,
+          "estimated_missing_sdk_samples": 0
+        },
+        "locomotion": {
+          "packet_count": 164,
+          "first_sequence": 1,
+          "last_sequence": 164,
+          "first_receipt_us": 89012514047,
+          "last_receipt_us": 89028807873,
+          "max_receipt_gap_s": 0.130021,
+          "missing_capture_packets": 0,
+          "source_timestamp_count": 164,
+          "missing_source_timestamp_count": 0,
+          "nominal_source_interval": 100012,
+          "estimated_missing_sdk_samples": 0
+        }
+      },
+      "motion_start": {
+        "source_line": 124,
+        "source_record_index": 123,
+        "received_monotonic_us": 89018617297,
+        "received_unix_us": 1791860891547819,
+        "original_sequence": 62,
+        "linear_x_mps": 0.031,
+        "angular_z_rps": 0.0,
+        "offset_s": 6.143545
+      },
+      "trimmed_output": "/home/anyone/Documents/P4P/var/recordings/motion-validated-20261013-01/trimmed/person-1-S7-sdk.jsonl",
+      "session_id": "3b8098e07aca4f2a8871a6a4c13aced1",
+      "issues_truncated": false,
+      "duration_s": 16.385696,
+      "trimmed_sha256": "4c923782204adbc38bd4687eac310c8f58c9be1088c13fd77bcf78216747de70",
+      "removed_packets": 123,
+      "kept_packets": {
+        "locomotion": 103,
+        "perception": 103
+      },
+      "original_first_kept_sequences": {
+        "locomotion": 62,
+        "perception": 63
+      },
+      "trimmed_duration_s": 10.242151,
+      "sequence_mapping": "original sequence = trimmed sequence + original_first_kept_sequences[stream] - 1"
+    },
+    {
+      "input": "/home/anyone/Documents/P4P/var/recordings/person-1-S8-sdk.jsonl",
+      "validation": "VALID",
+      "status": "TRIMMED",
+      "source_sha256": "77475924f93f8c5b6c78e66c781fb21f24b72e70e43596709618005d986be05e",
+      "settings": {
+        "max_gap_s": 0.25,
+        "source_gap_factor": 1.5,
+        "linear_threshold_mps": 0.02,
+        "angular_threshold_rps": 0.03
+      },
+      "issues": [],
+      "issue_counts": {},
+      "error_count": 0,
+      "warning_count": 0,
+      "streams": {
+        "perception": {
+          "packet_count": 609,
+          "first_sequence": 1,
+          "last_sequence": 609,
+          "first_receipt_us": 89057940151,
+          "last_receipt_us": 89118712826,
+          "max_receipt_gap_s": 0.129352,
+          "missing_capture_packets": 0,
+          "source_timestamp_count": 609,
+          "missing_source_timestamp_count": 0,
+          "nominal_source_interval": 99989.0,
+          "estimated_missing_sdk_samples": 0
+        },
+        "locomotion": {
+          "packet_count": 607,
+          "first_sequence": 1,
+          "last_sequence": 607,
+          "first_receipt_us": 89058021778,
+          "last_receipt_us": 89118597789,
+          "max_receipt_gap_s": 0.131829,
+          "missing_capture_packets": 0,
+          "source_timestamp_count": 607,
+          "missing_source_timestamp_count": 0,
+          "nominal_source_interval": 99998.0,
+          "estimated_missing_sdk_samples": 0
+        }
+      },
+      "motion_start": {
+        "source_line": 89,
+        "source_record_index": 88,
+        "received_monotonic_us": 89062318445,
+        "received_unix_us": 1791860935248966,
+        "original_sequence": 44,
+        "linear_x_mps": 0.04,
+        "angular_z_rps": 0.0,
+        "offset_s": 4.378294
+      },
+      "trimmed_output": "/home/anyone/Documents/P4P/var/recordings/motion-validated-20261013-01/trimmed/person-1-S8-sdk.jsonl",
+      "session_id": "584214469e034e89acecdf3b5c8f6f3a",
+      "issues_truncated": false,
+      "duration_s": 60.772675,
+      "trimmed_sha256": "9467692a2ce899d555cb17f9c681c73b92cd5e8f9ce83b60b5be9a6bb94bdaf1",
+      "removed_packets": 88,
+      "kept_packets": {
+        "locomotion": 564,
+        "perception": 564
+      },
+      "original_first_kept_sequences": {
+        "locomotion": 44,
+        "perception": 46
+      },
+      "trimmed_duration_s": 56.394381,
+      "sequence_mapping": "original sequence = trimmed sequence + original_first_kept_sequences[stream] - 1"
+    },
+    {
+      "input": "/home/anyone/Documents/P4P/var/recordings/person-1-S9-sdk.jsonl",
+      "validation": "VALID",
+      "status": "TRIMMED",
+      "source_sha256": "2e0cb4ef80ef3c34f07ea92560eb29c426600a651ac404eead1588d2c8fa0b53",
+      "settings": {
+        "max_gap_s": 0.25,
+        "source_gap_factor": 1.5,
+        "linear_threshold_mps": 0.02,
+        "angular_threshold_rps": 0.03
+      },
+      "issues": [],
+      "issue_counts": {},
+      "error_count": 0,
+      "warning_count": 0,
+      "streams": {
+        "perception": {
+          "packet_count": 166,
+          "first_sequence": 1,
+          "last_sequence": 166,
+          "first_receipt_us": 89167290952,
+          "last_receipt_us": 89183768670,
+          "max_receipt_gap_s": 0.130411,
+          "missing_capture_packets": 0,
+          "source_timestamp_count": 166,
+          "missing_source_timestamp_count": 0,
+          "nominal_source_interval": 99984,
+          "estimated_missing_sdk_samples": 0
+        },
+        "locomotion": {
+          "packet_count": 165,
+          "first_sequence": 1,
+          "last_sequence": 165,
+          "first_receipt_us": 89167330334,
+          "last_receipt_us": 89183723839,
+          "max_receipt_gap_s": 0.130544,
+          "missing_capture_packets": 0,
+          "source_timestamp_count": 165,
+          "missing_source_timestamp_count": 0,
+          "nominal_source_interval": 100009.0,
+          "estimated_missing_sdk_samples": 0
+        }
+      },
+      "motion_start": {
+        "source_line": 126,
+        "source_record_index": 125,
+        "received_monotonic_us": 89173524869,
+        "received_unix_us": 1791861046455392,
+        "original_sequence": 63,
+        "linear_x_mps": 0.028,
+        "angular_z_rps": 0.0,
+        "offset_s": 6.233917
+      },
+      "trimmed_output": "/home/anyone/Documents/P4P/var/recordings/motion-validated-20261013-01/trimmed/person-1-S9-sdk.jsonl",
+      "session_id": "c54f675f92a64f39b353fcff9d4e3a64",
+      "issues_truncated": false,
+      "duration_s": 16.477718,
+      "trimmed_sha256": "697c41eaf9cf5e1d06cb2ebca59c54bb332bb09f88e0233f40d30f10c0759b95",
+      "removed_packets": 125,
+      "kept_packets": {
+        "locomotion": 103,
+        "perception": 103
+      },
+      "original_first_kept_sequences": {
+        "locomotion": 63,
+        "perception": 64
+      },
+      "trimmed_duration_s": 10.243801,
+      "sequence_mapping": "original sequence = trimmed sequence + original_first_kept_sequences[stream] - 1"
+    },
+    {
+      "input": "/home/anyone/Documents/P4P/var/recordings/scenario-01.sdk.jsonl",
+      "validation": "VALID",
+      "status": "TRIMMED",
+      "source_sha256": "d334471b1995c3c8fd556266fc41a3e34a0ebc527396f71776deafa053a6ffe1",
+      "settings": {
+        "max_gap_s": 0.25,
+        "source_gap_factor": 1.5,
+        "linear_threshold_mps": 0.02,
+        "angular_threshold_rps": 0.03
+      },
+      "issues": [],
+      "issue_counts": {},
+      "error_count": 0,
+      "warning_count": 0,
+      "streams": {
+        "perception": {
+          "packet_count": 91,
+          "first_sequence": 1,
+          "last_sequence": 91,
+          "first_receipt_us": 13351772547,
+          "last_receipt_us": 13360773995,
+          "max_receipt_gap_s": 0.138407,
+          "missing_capture_packets": 0,
+          "source_timestamp_count": 91,
+          "missing_source_timestamp_count": 0,
+          "nominal_source_interval": 99990.5,
+          "estimated_missing_sdk_samples": 0
+        },
+        "locomotion": {
+          "packet_count": 90,
+          "first_sequence": 1,
+          "last_sequence": 90,
+          "first_receipt_us": 13351771205,
+          "last_receipt_us": 13360691763,
+          "max_receipt_gap_s": 0.131402,
+          "missing_capture_packets": 0,
+          "source_timestamp_count": 90,
+          "missing_source_timestamp_count": 0,
+          "nominal_source_interval": 100014,
+          "estimated_missing_sdk_samples": 0
+        }
+      },
+      "motion_start": {
+        "source_line": 143,
+        "source_record_index": 142,
+        "received_monotonic_us": 13358851866,
+        "received_unix_us": 1791271635889526,
+        "original_sequence": 72,
+        "linear_x_mps": 0.034,
+        "angular_z_rps": 0.0,
+        "offset_s": 7.080661
+      },
+      "trimmed_output": "/home/anyone/Documents/P4P/var/recordings/motion-validated-20261013-01/trimmed/scenario-01.sdk.jsonl",
+      "session_id": "bb414cc5b139453885f52d9895b1f97a",
+      "issues_truncated": false,
+      "duration_s": 9.00279,
+      "trimmed_sha256": "784561a43dcfb92886827e899aa81e4bbbda79609822ebedd50ba42953b6ecd0",
+      "removed_packets": 142,
+      "kept_packets": {
+        "locomotion": 19,
+        "perception": 20
+      },
+      "original_first_kept_sequences": {
+        "locomotion": 72,
+        "perception": 72
+      },
+      "trimmed_duration_s": 1.922129,
+      "sequence_mapping": "original sequence = trimmed sequence + original_first_kept_sequences[stream] - 1"
+    },
+    {
+      "input": "/home/anyone/Documents/P4P/var/recordings/scenario-02.sdk.jsonl",
+      "validation": "VALID",
+      "status": "TRIMMED",
+      "source_sha256": "018f091688c8fa0637ceaef053b79c62c7017c532f2cba33570d7f42e06603d9",
+      "settings": {
+        "max_gap_s": 0.25,
+        "source_gap_factor": 1.5,
+        "linear_threshold_mps": 0.02,
+        "angular_threshold_rps": 0.03
+      },
+      "issues": [],
+      "issue_counts": {},
+      "error_count": 0,
+      "warning_count": 0,
+      "streams": {
+        "perception": {
+          "packet_count": 84,
+          "first_sequence": 1,
+          "last_sequence": 84,
+          "first_receipt_us": 13671520592,
+          "last_receipt_us": 13679790093,
+          "max_receipt_gap_s": 0.142974,
+          "missing_capture_packets": 0,
+          "source_timestamp_count": 84,
+          "missing_source_timestamp_count": 0,
+          "nominal_source_interval": 99992,
+          "estimated_missing_sdk_samples": 0
+        },
+        "locomotion": {
+          "packet_count": 82,
+          "first_sequence": 1,
+          "last_sequence": 82,
+          "first_receipt_us": 13671607049,
+          "last_receipt_us": 13679670893,
+          "max_receipt_gap_s": 0.135154,
+          "missing_capture_packets": 0,
+          "source_timestamp_count": 82,
+          "missing_source_timestamp_count": 0,
+          "nominal_source_interval": 100029,
+          "estimated_missing_sdk_samples": 0
+        }
+      },
+      "motion_start": {
+        "source_line": 82,
+        "source_record_index": 81,
+        "received_monotonic_us": 13675577873,
+        "received_unix_us": 1791271952615534,
+        "original_sequence": 41,
+        "linear_x_mps": 0.05,
+        "angular_z_rps": 0.0,
+        "offset_s": 4.057281
+      },
+      "trimmed_output": "/home/anyone/Documents/P4P/var/recordings/motion-validated-20261013-01/trimmed/scenario-02.sdk.jsonl",
+      "session_id": "c7c78bdcd4534653ba9e4826e9f3dd75",
+      "issues_truncated": false,
+      "duration_s": 8.269501,
+      "trimmed_sha256": "37594b0dacbc349d3d64d3c19aa95a08afd1004cfd20218eaa5a8445fea3ab06",
+      "removed_packets": 81,
+      "kept_packets": {
+        "locomotion": 42,
+        "perception": 43
+      },
+      "original_first_kept_sequences": {
+        "locomotion": 41,
+        "perception": 42
+      },
+      "trimmed_duration_s": 4.21222,
+      "sequence_mapping": "original sequence = trimmed sequence + original_first_kept_sequences[stream] - 1"
+    },
+    {
+      "input": "/home/anyone/Documents/P4P/var/recordings/scenario-03.sdk.jsonl",
+      "validation": "VALID",
+      "status": "TRIMMED",
+      "source_sha256": "f01522167bb74c2f91b5930beb80267d04268e00270e061cf1acb4e486babe58",
+      "settings": {
+        "max_gap_s": 0.25,
+        "source_gap_factor": 1.5,
+        "linear_threshold_mps": 0.02,
+        "angular_threshold_rps": 0.03
+      },
+      "issues": [],
+      "issue_counts": {},
+      "error_count": 0,
+      "warning_count": 0,
+      "streams": {
+        "perception": {
+          "packet_count": 115,
+          "first_sequence": 1,
+          "last_sequence": 115,
+          "first_receipt_us": 13766270418,
+          "last_receipt_us": 13777649720,
+          "max_receipt_gap_s": 0.137722,
+          "missing_capture_packets": 0,
+          "source_timestamp_count": 115,
+          "missing_source_timestamp_count": 0,
+          "nominal_source_interval": 99993.5,
+          "estimated_missing_sdk_samples": 0
+        },
+        "locomotion": {
+          "packet_count": 114,
+          "first_sequence": 1,
+          "last_sequence": 114,
+          "first_receipt_us": 13766327105,
+          "last_receipt_us": 13777605751,
+          "max_receipt_gap_s": 0.141251,
+          "missing_capture_packets": 0,
+          "source_timestamp_count": 114,
+          "missing_source_timestamp_count": 0,
+          "nominal_source_interval": 100010,
+          "estimated_missing_sdk_samples": 0
+        }
+      },
+      "motion_start": {
+        "source_line": 64,
+        "source_record_index": 63,
+        "received_monotonic_us": 13769409310,
+        "received_unix_us": 1791272046446969,
+        "original_sequence": 32,
+        "linear_x_mps": 0.043000000000000003,
+        "angular_z_rps": 0.0,
+        "offset_s": 3.138892
+      },
+      "trimmed_output": "/home/anyone/Documents/P4P/var/recordings/motion-validated-20261013-01/trimmed/scenario-03.sdk.jsonl",
+      "session_id": "3425596259d0482da6d9275fa8b10c83",
+      "issues_truncated": false,
+      "duration_s": 11.379302,
+      "trimmed_sha256": "139c22693405ae9a4aa01fafcde7f4e1b161695d2361e2c23749b30a7c3ef011",
+      "removed_packets": 63,
+      "kept_packets": {
+        "locomotion": 83,
+        "perception": 83
+      },
+      "original_first_kept_sequences": {
+        "locomotion": 32,
+        "perception": 33
+      },
+      "trimmed_duration_s": 8.24041,
+      "sequence_mapping": "original sequence = trimmed sequence + original_first_kept_sequences[stream] - 1"
+    },
+    {
+      "input": "/home/anyone/Documents/P4P/var/recordings/scenario-04.sdk.jsonl",
+      "validation": "VALID",
+      "status": "TRIMMED",
+      "source_sha256": "4a517097a7b67f8b860e5dc8ef364d7a4578126a1f207767517630cf8d956341",
+      "settings": {
+        "max_gap_s": 0.25,
+        "source_gap_factor": 1.5,
+        "linear_threshold_mps": 0.02,
+        "angular_threshold_rps": 0.03
+      },
+      "issues": [],
+      "issue_counts": {},
+      "error_count": 0,
+      "warning_count": 0,
+      "streams": {
+        "perception": {
+          "packet_count": 55,
+          "first_sequence": 1,
+          "last_sequence": 55,
+          "first_receipt_us": 13829116327,
+          "last_receipt_us": 13834515508,
+          "max_receipt_gap_s": 0.136764,
+          "missing_capture_packets": 0,
+          "source_timestamp_count": 55,
+          "missing_source_timestamp_count": 0,
+          "nominal_source_interval": 99988.0,
+          "estimated_missing_sdk_samples": 0
+        },
+        "locomotion": {
+          "packet_count": 56,
+          "first_sequence": 1,
+          "last_sequence": 56,
+          "first_receipt_us": 13829115022,
+          "last_receipt_us": 13834638923,
+          "max_receipt_gap_s": 0.126704,
+          "missing_capture_packets": 0,
+          "source_timestamp_count": 56,
+          "missing_source_timestamp_count": 0,
+          "nominal_source_interval": 100003,
+          "estimated_missing_sdk_samples": 0
+        }
+      },
+      "motion_start": {
+        "source_line": 79,
+        "source_record_index": 78,
+        "received_monotonic_us": 13833038989,
+        "received_unix_us": 1791272110076650,
+        "original_sequence": 40,
+        "linear_x_mps": 0.028,
+        "angular_z_rps": 0.0,
+        "offset_s": 3.923967
+      },
+      "trimmed_output": "/home/anyone/Documents/P4P/var/recordings/motion-validated-20261013-01/trimmed/scenario-04.sdk.jsonl",
+      "session_id": "02c47e877dd54a68a56ad6099b503783",
+      "issues_truncated": false,
+      "duration_s": 5.523901,
+      "trimmed_sha256": "b4b92da9d296d08d0cbc402e90befbbc7830961679776a65b9fb448ce62bf9c6",
+      "removed_packets": 78,
+      "kept_packets": {
+        "locomotion": 17,
+        "perception": 16
+      },
+      "original_first_kept_sequences": {
+        "locomotion": 40,
+        "perception": 40
+      },
+      "trimmed_duration_s": 1.599934,
+      "sequence_mapping": "original sequence = trimmed sequence + original_first_kept_sequences[stream] - 1"
+    },
+    {
+      "input": "/home/anyone/Documents/P4P/var/recordings/scenario-05.sdk.jsonl",
+      "validation": "VALID",
+      "status": "NO_MOVEMENT",
+      "source_sha256": "f065d390e0af0e253fb715aa54d4378d0ef6141222409867e06de312af99526a",
+      "settings": {
+        "max_gap_s": 0.25,
+        "source_gap_factor": 1.5,
+        "linear_threshold_mps": 0.02,
+        "angular_threshold_rps": 0.03
+      },
+      "issues": [],
+      "issue_counts": {},
+      "error_count": 0,
+      "warning_count": 0,
+      "streams": {
+        "perception": {
+          "packet_count": 40,
+          "first_sequence": 1,
+          "last_sequence": 40,
+          "first_receipt_us": 13864626926,
+          "last_receipt_us": 13868495952,
+          "max_receipt_gap_s": 0.130428,
+          "missing_capture_packets": 0,
+          "source_timestamp_count": 40,
+          "missing_source_timestamp_count": 0,
+          "nominal_source_interval": 99976,
+          "estimated_missing_sdk_samples": 0
+        },
+        "locomotion": {
+          "packet_count": 41,
+          "first_sequence": 1,
+          "last_sequence": 41,
+          "first_receipt_us": 13864625305,
+          "last_receipt_us": 13868617483,
+          "max_receipt_gap_s": 0.130982,
+          "missing_capture_packets": 0,
+          "source_timestamp_count": 41,
+          "missing_source_timestamp_count": 0,
+          "nominal_source_interval": 100004.0,
+          "estimated_missing_sdk_samples": 0
+        }
+      },
+      "motion_start": null,
+      "trimmed_output": null,
+      "session_id": "de3643062cab4790bb0eb331a739fa15",
+      "issues_truncated": false,
+      "duration_s": 3.992178
+    },
+    {
+      "input": "/home/anyone/Documents/P4P/var/recordings/scenario-06.sdk.jsonl",
+      "validation": "VALID",
+      "status": "TRIMMED",
+      "source_sha256": "cc98d6355cd8a424151be36618a58da7649f39b76787e5791e91b88ec99c5ec3",
+      "settings": {
+        "max_gap_s": 0.25,
+        "source_gap_factor": 1.5,
+        "linear_threshold_mps": 0.02,
+        "angular_threshold_rps": 0.03
+      },
+      "issues": [],
+      "issue_counts": {},
+      "error_count": 0,
+      "warning_count": 0,
+      "streams": {
+        "perception": {
+          "packet_count": 77,
+          "first_sequence": 1,
+          "last_sequence": 77,
+          "first_receipt_us": 14118690824,
+          "last_receipt_us": 14126307539,
+          "max_receipt_gap_s": 0.127234,
+          "missing_capture_packets": 0,
+          "source_timestamp_count": 77,
+          "missing_source_timestamp_count": 0,
+          "nominal_source_interval": 99951.5,
+          "estimated_missing_sdk_samples": 0
+        },
+        "locomotion": {
+          "packet_count": 77,
+          "first_sequence": 1,
+          "last_sequence": 77,
+          "first_receipt_us": 14118649035,
+          "last_receipt_us": 14126265693,
+          "max_receipt_gap_s": 0.133641,
+          "missing_capture_packets": 0,
+          "source_timestamp_count": 77,
+          "missing_source_timestamp_count": 0,
+          "nominal_source_interval": 99994.0,
+          "estimated_missing_sdk_samples": 0
+        }
+      },
+      "motion_start": {
+        "source_line": 61,
+        "source_record_index": 60,
+        "received_monotonic_us": 14121668703,
+        "received_unix_us": 1791272398706363,
+        "original_sequence": 31,
+        "linear_x_mps": 0.025,
+        "angular_z_rps": 0.0,
+        "offset_s": 3.019668
+      },
+      "trimmed_output": "/home/anyone/Documents/P4P/var/recordings/motion-validated-20261013-01/trimmed/scenario-06.sdk.jsonl",
+      "session_id": "f29e8470090c4bfcb2551f61615196d4",
+      "issues_truncated": false,
+      "duration_s": 7.658504,
+      "trimmed_sha256": "aaed61dd4a8edecdafa0c160b3a09ee82f28fc877d07cae2fbcdf3b456fe98c9",
+      "removed_packets": 60,
+      "kept_packets": {
+        "locomotion": 47,
+        "perception": 47
+      },
+      "original_first_kept_sequences": {
+        "locomotion": 31,
+        "perception": 31
+      },
+      "trimmed_duration_s": 4.638836,
+      "sequence_mapping": "original sequence = trimmed sequence + original_first_kept_sequences[stream] - 1"
+    },
+    {
+      "input": "/home/anyone/Documents/P4P/var/recordings/scenario-07.sdk.jsonl",
+      "validation": "VALID",
+      "status": "NO_MOVEMENT",
+      "source_sha256": "14632cb1e500d408f21e2b55ded5727f42c46bb02a46178b991a34ef90340d8d",
+      "settings": {
+        "max_gap_s": 0.25,
+        "source_gap_factor": 1.5,
+        "linear_threshold_mps": 0.02,
+        "angular_threshold_rps": 0.03
+      },
+      "issues": [],
+      "issue_counts": {},
+      "error_count": 0,
+      "warning_count": 0,
+      "streams": {
+        "perception": {
+          "packet_count": 29,
+          "first_sequence": 1,
+          "last_sequence": 29,
+          "first_receipt_us": 14237540516,
+          "last_receipt_us": 14240307014,
+          "max_receipt_gap_s": 0.128287,
+          "missing_capture_packets": 0,
+          "source_timestamp_count": 29,
+          "missing_source_timestamp_count": 0,
+          "nominal_source_interval": 99950.0,
+          "estimated_missing_sdk_samples": 0
+        },
+        "locomotion": {
+          "packet_count": 28,
+          "first_sequence": 1,
+          "last_sequence": 28,
+          "first_receipt_us": 14237585979,
+          "last_receipt_us": 14240265160,
+          "max_receipt_gap_s": 0.137349,
+          "missing_capture_packets": 0,
+          "source_timestamp_count": 28,
+          "missing_source_timestamp_count": 0,
+          "nominal_source_interval": 99976,
+          "estimated_missing_sdk_samples": 0
+        }
+      },
+      "motion_start": null,
+      "trimmed_output": null,
+      "session_id": "d9e943aae88d421c8581fa1c2322c178",
+      "issues_truncated": false,
+      "duration_s": 2.766498
+    },
+    {
+      "input": "/home/anyone/Documents/P4P/var/recordings/scenario-08.sdk.jsonl",
+      "validation": "VALID",
+      "status": "TRIMMED",
+      "source_sha256": "650d8ac08c5e3cba26722c3ebdfd0f5de4525fd35d639ec536d043a25bbf47bc",
+      "settings": {
+        "max_gap_s": 0.25,
+        "source_gap_factor": 1.5,
+        "linear_threshold_mps": 0.02,
+        "angular_threshold_rps": 0.03
+      },
+      "issues": [],
+      "issue_counts": {},
+      "error_count": 0,
+      "warning_count": 0,
+      "streams": {
+        "perception": {
+          "packet_count": 117,
+          "first_sequence": 1,
+          "last_sequence": 117,
+          "first_receipt_us": 14287695041,
+          "last_receipt_us": 14299278413,
+          "max_receipt_gap_s": 0.133291,
+          "missing_capture_packets": 0,
+          "source_timestamp_count": 117,
+          "missing_source_timestamp_count": 0,
+          "nominal_source_interval": 99988.0,
+          "estimated_missing_sdk_samples": 0
+        },
+        "locomotion": {
+          "packet_count": 118,
+          "first_sequence": 1,
+          "last_sequence": 118,
+          "first_receipt_us": 14287693317,
+          "last_receipt_us": 14299377981,
+          "max_receipt_gap_s": 0.135064,
+          "missing_capture_packets": 0,
+          "source_timestamp_count": 118,
+          "missing_source_timestamp_count": 0,
+          "nominal_source_interval": 100001,
+          "estimated_missing_sdk_samples": 0
+        }
+      },
+      "motion_start": {
+        "source_line": 61,
+        "source_record_index": 60,
+        "received_monotonic_us": 14290681144,
+        "received_unix_us": 1791272567718803,
+        "original_sequence": 31,
+        "linear_x_mps": 0.043000000000000003,
+        "angular_z_rps": 0.0,
+        "offset_s": 2.987827
+      },
+      "trimmed_output": "/home/anyone/Documents/P4P/var/recordings/motion-validated-20261013-01/trimmed/scenario-08.sdk.jsonl",
+      "session_id": "f2be67f3489a4f78919f5c16e13b8457",
+      "issues_truncated": false,
+      "duration_s": 11.684664,
+      "trimmed_sha256": "66a618436adbaab1ec2989a1834bb0b2a06ae86ffea4fa367eec10eef2301264",
+      "removed_packets": 60,
+      "kept_packets": {
+        "locomotion": 88,
+        "perception": 87
+      },
+      "original_first_kept_sequences": {
+        "locomotion": 31,
+        "perception": 31
+      },
+      "trimmed_duration_s": 8.696837,
+      "sequence_mapping": "original sequence = trimmed sequence + original_first_kept_sequences[stream] - 1"
+    },
+    {
+      "input": "/home/anyone/Documents/P4P/var/recordings/scenario-09.sdk.jsonl",
+      "validation": "VALID",
+      "status": "TRIMMED",
+      "source_sha256": "37ccb101be89048ce1fe1f09fe0ef614488f2be60038e635c24f21cb54880eb7",
+      "settings": {
+        "max_gap_s": 0.25,
+        "source_gap_factor": 1.5,
+        "linear_threshold_mps": 0.02,
+        "angular_threshold_rps": 0.03
+      },
+      "issues": [],
+      "issue_counts": {},
+      "error_count": 0,
+      "warning_count": 0,
+      "streams": {
+        "perception": {
+          "packet_count": 122,
+          "first_sequence": 1,
+          "last_sequence": 122,
+          "first_receipt_us": 14471421879,
+          "last_receipt_us": 14483510522,
+          "max_receipt_gap_s": 0.131144,
+          "missing_capture_packets": 0,
+          "source_timestamp_count": 122,
+          "missing_source_timestamp_count": 0,
+          "nominal_source_interval": 99979,
+          "estimated_missing_sdk_samples": 0
+        },
+        "locomotion": {
+          "packet_count": 121,
+          "first_sequence": 1,
+          "last_sequence": 121,
+          "first_receipt_us": 14471420841,
+          "last_receipt_us": 14483427196,
+          "max_receipt_gap_s": 0.145337,
+          "missing_capture_packets": 0,
+          "source_timestamp_count": 121,
+          "missing_source_timestamp_count": 0,
+          "nominal_source_interval": 100012.5,
+          "estimated_missing_sdk_samples": 0
+        }
+      },
+      "motion_start": {
+        "source_line": 79,
+        "source_record_index": 78,
+        "received_monotonic_us": 14475290024,
+        "received_unix_us": 1791272752327683,
+        "original_sequence": 40,
+        "linear_x_mps": 0.043000000000000003,
+        "angular_z_rps": 0.0,
+        "offset_s": 3.869183
+      },
+      "trimmed_output": "/home/anyone/Documents/P4P/var/recordings/motion-validated-20261013-01/trimmed/scenario-09.sdk.jsonl",
+      "session_id": "62f64e4e89da4f06bcc373742f34d14e",
+      "issues_truncated": false,
+      "duration_s": 12.089681,
+      "trimmed_sha256": "6a4894c4c99ea309fcdd0b335e32e2806256dc19ae3af6197130a0a85fac5062",
+      "removed_packets": 78,
+      "kept_packets": {
+        "locomotion": 82,
+        "perception": 83
+      },
+      "original_first_kept_sequences": {
+        "locomotion": 40,
+        "perception": 40
+      },
+      "trimmed_duration_s": 8.220498,
+      "sequence_mapping": "original sequence = trimmed sequence + original_first_kept_sequences[stream] - 1"
+    }
+  ]
+}

@@ -39,5 +39,5 @@
   "far_looking_exit": 0.95,
   "gaze_unavailable_score": null,
   "allow_recurring_attention": false,
-  "no_person_continue_after_s": 1.0
+  "no_person_continue_after_s": null
 }

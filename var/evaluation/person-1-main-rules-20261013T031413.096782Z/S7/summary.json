@@ -1,0 +1,184 @@
+{
+  "scenario": "S7",
+  "input": "/home/anyone/Documents/P4P/var/recordings/person-1-S7-sdk.jsonl",
+  "source_sha256": "57d3e03a2a888c7b48a7c9349d9447d069e325c0dcf851d791f725f564de83fa",
+  "sdk_packet_counts": {
+    "perception": 165,
+    "locomotion": 164
+  },
+  "perception_frames": 165,
+  "duration_s": 16.385696,
+  "person_count_frames": {
+    "1": 165
+  },
+  "first_decision": {
+    "offset_s": 1.099271,
+    "source_line": 23,
+    "decision": {
+      "action": "CONTINUE",
+      "reason": "Separation is increasing outside conversation range; avoid pursuing the person."
+    },
+    "reason_code": "RELATIVE_SEPARATION_INCREASING",
+    "decision_state": {
+      "no_person_observed_s": 0.0,
+      "observation_readiness": "READY",
+      "people": [
+        {
+          "distance_zone": "INTERACTION_RANGE",
+          "evidence": {
+            "distance_trend_valid": true,
+            "gaze_fraction": 0.0,
+            "gaze_valid": true,
+            "latest_distance_valid": true,
+            "latest_gaze_looking": false,
+            "latest_gaze_overlap": 0.8120769262313843,
+            "looking_bouts": 0,
+            "looking_exit_threshold": 0.9,
+            "looking_time_s": 0.0,
+            "sustained_gaze_s": 0.0
+          },
+          "face_detected": true,
+          "gaze_state": "NONE",
+          "latest_distance_m": 1.80100146484375,
+          "observation_labels": {
+            "attention_over_time": "Little or no looking at the robot during the recent observation window.",
+            "corridor_position": "Position estimate is beside the robot forward corridor; future clearance is unknown.",
+            "current_gaze": "Latest gaze sample is classified as not looking at the robot.",
+            "face_detection": "A face was detected; facing the robot is not established.",
+            "proximity": "Within the configured conversation distance.",
+            "relative_separation": "Robot-person distance is increasing; either participant may cause this.",
+            "version": 3
+          },
+          "path_position": "TO_SIDE",
+          "relative_distance_trend": "INCREASING",
+          "visibility": "OBSERVED"
+        }
+      ],
+      "readiness_reason": "OBSERVATIONS_AVAILABLE",
+      "robot": {
+        "motion_description": "Measured robot translation and rotation are within stationary tolerances.",
+        "motion_state": "STATIONARY"
+      },
+      "schema_version": 3
+    }
+  },
+  "first_decision_with_person": {
+    "offset_s": 1.099271,
+    "source_line": 23,
+    "decision": {
+      "action": "CONTINUE",
+      "reason": "Separation is increasing outside conversation range; avoid pursuing the person."
+    },
+    "reason_code": "RELATIVE_SEPARATION_INCREASING",
+    "decision_state": {
+      "no_person_observed_s": 0.0,
+      "observation_readiness": "READY",
+      "people": [
+        {
+          "distance_zone": "INTERACTION_RANGE",
+          "evidence": {
+            "distance_trend_valid": true,
+            "gaze_fraction": 0.0,
+            "gaze_valid": true,
+            "latest_distance_valid": true,
+            "latest_gaze_looking": false,
+            "latest_gaze_overlap": 0.8120769262313843,
+            "looking_bouts": 0,
+            "looking_exit_threshold": 0.9,
+            "looking_time_s": 0.0,
+            "sustained_gaze_s": 0.0
+          },
+          "face_detected": true,
+          "gaze_state": "NONE",
+          "latest_distance_m": 1.80100146484375,
+          "observation_labels": {
+            "attention_over_time": "Little or no looking at the robot during the recent observation window.",
+            "corridor_position": "Position estimate is beside the robot forward corridor; future clearance is unknown.",
+            "current_gaze": "Latest gaze sample is classified as not looking at the robot.",
+            "face_detection": "A face was detected; facing the robot is not established.",
+            "proximity": "Within the configured conversation distance.",
+            "relative_separation": "Robot-person distance is increasing; either participant may cause this.",
+            "version": 3
+          },
+          "path_position": "TO_SIDE",
+          "relative_distance_trend": "INCREASING",
+          "visibility": "OBSERVED"
+        }
+      ],
+      "readiness_reason": "OBSERVATIONS_AVAILABLE",
+      "robot": {
+        "motion_description": "Measured robot translation and rotation are within stationary tolerances.",
+        "motion_state": "STATIONARY"
+      },
+      "schema_version": 3
+    }
+  },
+  "last_decision": {
+    "offset_s": 16.385696,
+    "source_line": 329,
+    "decision": {
+      "action": "CONTINUE",
+      "reason": "Gaze evidence is classified as no attention; continue along the fixed route."
+    },
+    "reason_code": "NO_ATTENTION",
+    "decision_state": {
+      "no_person_observed_s": 0.0,
+      "observation_readiness": "READY",
+      "people": [
+        {
+          "distance_zone": "INTERACTION_RANGE",
+          "evidence": {
+            "distance_trend_valid": true,
+            "gaze_fraction": 0.0,
+            "gaze_valid": true,
+            "latest_distance_valid": true,
+            "latest_gaze_looking": false,
+            "latest_gaze_overlap": 0.9174401164054871,
+            "looking_bouts": 0,
+            "looking_exit_threshold": 0.9,
+            "looking_time_s": 0.0,
+            "sustained_gaze_s": 0.0
+          },
+          "face_detected": true,
+          "gaze_state": "NONE",
+          "latest_distance_m": 1.1823980712890625,
+          "observation_labels": {
+            "attention_over_time": "Little or no looking at the robot during the recent observation window.",
+            "corridor_position": "Position estimate is inside the robot forward corridor; future obstruction is unknown.",
+            "current_gaze": "Latest gaze sample is classified as not looking at the robot.",
+            "face_detection": "A face was detected; facing the robot is not established.",
+            "proximity": "Within the configured conversation distance.",
+            "relative_separation": "Robot-person distance is approximately steady; individual motion is unknown.",
+            "version": 3
+          },
+          "path_position": "IN_WAY",
+          "relative_distance_trend": "STABLE",
+          "visibility": "OBSERVED"
+        }
+      ],
+      "readiness_reason": "OBSERVATIONS_AVAILABLE",
+      "robot": {
+        "motion_description": "Measured robot translation and rotation are within stationary tolerances.",
+        "motion_state": "STATIONARY"
+      },
+      "schema_version": 3
+    }
+  },
+  "action_counts": {
+    "CONTINUE": 152
+  },
+  "reason_counts": {
+    "RELATIVE_SEPARATION_INCREASING": 1,
+    "NO_ATTENTION": 151
+  },
+  "observing_counts": {
+    "INSUFFICIENT_GAZE_EVIDENCE": 13
+  },
+  "action_transitions": [
+    {
+      "offset_s": 1.099271,
+      "action": "CONTINUE",
+      "reason_code": "RELATIVE_SEPARATION_INCREASING"
+    }
+  ]
+}

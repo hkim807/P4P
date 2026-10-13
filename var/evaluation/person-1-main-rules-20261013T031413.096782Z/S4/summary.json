@@ -1,0 +1,152 @@
+{
+  "scenario": "S4",
+  "input": "/home/anyone/Documents/P4P/var/recordings/person-1-S4-sdk.jsonl",
+  "source_sha256": "4a5d31283aff731f0ad091223481f807deb9e40bff8b02cdc0d8439c9d553835",
+  "sdk_packet_counts": {
+    "locomotion": 241,
+    "perception": 241
+  },
+  "perception_frames": 241,
+  "duration_s": 23.978929,
+  "person_count_frames": {
+    "0": 56,
+    "1": 156,
+    "2": 29
+  },
+  "first_decision": {
+    "offset_s": 1.697276,
+    "source_line": 35,
+    "decision": {
+      "action": "CONTINUE",
+      "reason": "No person has been detected throughout the configured observation interval; continue along the route without initiating interaction."
+    },
+    "reason_code": "NO_PERSON_OBSERVED",
+    "decision_state": {
+      "no_person_observed_s": 1.004658,
+      "observation_readiness": "READY",
+      "people": [],
+      "readiness_reason": "OBSERVATIONS_AVAILABLE",
+      "robot": {
+        "motion_description": "Measured robot translation and rotation are within stationary tolerances.",
+        "motion_state": "STATIONARY"
+      },
+      "schema_version": 3
+    }
+  },
+  "first_decision_with_person": {
+    "offset_s": 4.505976,
+    "source_line": 92,
+    "decision": {
+      "action": "APPROACH",
+      "reason": "The person is looking steadily at the robot and is within approach distance."
+    },
+    "reason_code": "SUSTAINED_GAZE_IN_APPROACHABLE_RANGE",
+    "decision_state": {
+      "no_person_observed_s": 0.0,
+      "observation_readiness": "READY",
+      "people": [
+        {
+          "distance_zone": "APPROACHABLE",
+          "evidence": {
+            "distance_trend_valid": false,
+            "gaze_fraction": 0.916350456712708,
+            "gaze_valid": true,
+            "latest_distance_valid": true,
+            "latest_gaze_looking": true,
+            "latest_gaze_overlap": 0.9759511351585388,
+            "looking_bouts": 0,
+            "looking_exit_threshold": 0.95,
+            "looking_time_s": 0.969595,
+            "sustained_gaze_s": 0.087444
+          },
+          "face_detected": true,
+          "gaze_state": "SUSTAINED",
+          "latest_distance_m": 3.735664306640625,
+          "observation_labels": {
+            "attention_over_time": "Looking at the robot for a high fraction of covered recent time; not necessarily continuously.",
+            "corridor_position": "Position estimate is beside the robot forward corridor; future clearance is unknown.",
+            "current_gaze": "Latest gaze sample is classified as looking at the robot.",
+            "face_detection": "A face was detected; facing the robot is not established.",
+            "proximity": "Beyond conversation distance, within the configured social range.",
+            "relative_separation": "Recent robot-person distance trend is unavailable or unreliable.",
+            "version": 3
+          },
+          "path_position": "TO_SIDE",
+          "relative_distance_trend": "UNKNOWN",
+          "visibility": "OBSERVED"
+        }
+      ],
+      "readiness_reason": "OBSERVATIONS_AVAILABLE",
+      "robot": {
+        "motion_description": "Measured robot translation and rotation are within stationary tolerances.",
+        "motion_state": "STATIONARY"
+      },
+      "schema_version": 3
+    }
+  },
+  "last_decision": {
+    "offset_s": 23.978929,
+    "source_line": 481,
+    "decision": {
+      "action": "CONTINUE",
+      "reason": "No person has been detected throughout the configured observation interval; continue along the route without initiating interaction."
+    },
+    "reason_code": "NO_PERSON_OBSERVED",
+    "decision_state": {
+      "no_person_observed_s": 2.772973,
+      "observation_readiness": "READY",
+      "people": [],
+      "readiness_reason": "OBSERVATIONS_AVAILABLE",
+      "robot": {
+        "motion_description": "Measured robot translation and rotation are within stationary tolerances.",
+        "motion_state": "STATIONARY"
+      },
+      "schema_version": 3
+    }
+  },
+  "action_counts": {
+    "CONTINUE": 148,
+    "APPROACH": 1,
+    "YIELD": 1
+  },
+  "reason_counts": {
+    "NO_PERSON_OBSERVED": 25,
+    "SUSTAINED_GAZE_IN_APPROACHABLE_RANGE": 1,
+    "NO_INTERACTION_CUE": 41,
+    "NO_ATTENTION": 82,
+    "IN_WAY_CLOSING_WITH_LOW_GAZE": 1
+  },
+  "observing_counts": {
+    "NO_VISIBLE_PERSON": 31,
+    "INSUFFICIENT_GAZE_EVIDENCE": 24,
+    "DISTANCE_UNKNOWN": 7,
+    "MULTIPLE_VISIBLE_PEOPLE": 29
+  },
+  "action_transitions": [
+    {
+      "offset_s": 1.697276,
+      "action": "CONTINUE",
+      "reason_code": "NO_PERSON_OBSERVED"
+    },
+    {
+      "offset_s": 4.505976,
+      "action": "APPROACH",
+      "reason_code": "SUSTAINED_GAZE_IN_APPROACHABLE_RANGE"
+    },
+    {
+      "offset_s": 4.722925,
+      "action": "CONTINUE",
+      "reason_code": "NO_INTERACTION_CUE"
+    },
+    {
+      "offset_s": 10.498594,
+      "action": "YIELD",
+      "reason_code": "IN_WAY_CLOSING_WITH_LOW_GAZE"
+    },
+    {
+      "offset_s": 10.710716,
+      "action": "CONTINUE",
+      "reason_code": "NO_ATTENTION"
+    }
+  ]
+}

@@ -133,7 +133,10 @@ async def _send_observations(
     trial: SingleTrial | None = None,
     route_trial: bool = False,
     execute_trial: bool = False,
+    decision_event: asyncio.Event | None = None,
+    trial_lock: asyncio.Lock | None = None,
 ) -> None:
+    trial_lock = trial_lock or asyncio.Lock()
     last_sent_at = -math.inf
     while True:
         queued = await queue.get()
@@ -145,17 +148,26 @@ async def _send_observations(
                 queue.task_done()
                 queued = queue.get_nowait()
             observation = queued.observation if isinstance(queued, ModelObservation) else queued
+            if (trial is not None and trial.phase == "OBSERVING"
+                    and not trial.is_current_cycle_observation(observation["timestamp"])):
+                continue
             last_sent_at = time.monotonic()
             if print_only:
                 print(json.dumps(observation, allow_nan=False, separators=(",", ":")), flush=True)
                 continue
             try:
                 if trial is not None and trial.policy != "rules":
-                    if trial.phase != "OBSERVING":
+                    if trial.phase != "OBSERVING" and decision_event is None:
                         return
-                    response = await asyncio.to_thread(transport.send_trial_observation,
-                        observation, queued.capture if isinstance(queued, ModelObservation) else None,
-                        {**trial.model_identity(), "retry_request_id": trial.retry_request_id})
+                    async with trial_lock:
+                        if not trial.is_current_cycle_observation(observation["timestamp"]):
+                            continue
+                        identity = trial.model_identity()
+                        response = await asyncio.to_thread(transport.send_trial_observation,
+                            observation, queued.capture if isinstance(queued, ModelObservation) else None,
+                            {**identity, "retry_request_id": trial.retry_request_id})
+                    if identity != trial.model_identity():
+                        continue  # A response from the previous cycle cannot rearm readiness.
                 else:
                     response = (await asyncio.to_thread(transport.send_model_observation,
                                                          observation, queued.capture)
@@ -187,7 +199,7 @@ async def _send_observations(
                     await decision_dispatcher.accept(response.payload, observation)
                 if trial is not None:
                     trial.accept_rule_response(response.payload, observation)
-                    if trial.policy != "rules":
+                    if trial.policy != "rules" and trial.phase == "OBSERVING":
                         delivery = response.payload.get("model_trial")
                         if not isinstance(delivery, dict):
                             trial.fail("MODEL_DELIVERY_UNAVAILABLE")
@@ -197,7 +209,11 @@ async def _send_observations(
                         trial.fail("SOCIAL_PIPELINE_UNAVAILABLE")
                         return
                     if (route_trial or execute_trial) and (trial.phase == "DECIDED" or trial.terminal):
-                        return
+                        if decision_event is not None and trial.phase == "DECIDED":
+                            decision_event.set()
+                        if (decision_event is None or trial.terminal
+                                or trial.decision["action"] != "CONTINUE"):
+                            return
                 if command_executor is not None:
                     try:
                         events = command_executor.accept(response.payload, observation)
@@ -234,25 +250,40 @@ async def _send_observations(
             queue.task_done()
 
 
-async def _poll_model_trial(trial: SingleTrial, transport: ObservationTransport) -> None:
-    while trial.phase == "OBSERVING":
+async def _poll_model_trial(trial: SingleTrial, transport: ObservationTransport,
+                            decision_event: asyncio.Event | None = None,
+                            trial_lock: asyncio.Lock | None = None) -> None:
+    trial_lock = trial_lock or asyncio.Lock()
+    while trial.phase == "OBSERVING" or (decision_event is not None and not trial.terminal):
         trial.tick()
+        if trial.phase != "OBSERVING":
+            await asyncio.sleep(0.1)
+            continue
         pending = trial.pending_request
         if pending is not None:
             if not 0 <= trial.monotonic_us() - pending["source_robot_timestamp_us"] <= trial.model_max_age_us:
                 trial.expire_request()
             else:
                 try:
-                    response = await asyncio.to_thread(transport.poll_model_trial, dict(pending))
+                    async with trial_lock:
+                        if trial.pending_request != pending:
+                            continue
+                        response = await asyncio.to_thread(transport.poll_model_trial, dict(pending))
                 except TransportError:
                     trial.fail("TRANSPORT_INVALIDATED")
                     return
+                if trial.pending_request != pending:
+                    continue
                 if response.status_code != 200 or response.payload.get("accepted") is not True:
                     trial.fail("MODEL_POLL_INVALIDATED")
                     return
                 trial.accept_model_result(response.payload.get("result"))
                 if trial.phase != "OBSERVING":
-                    return
+                    if decision_event is not None and trial.phase == "DECIDED":
+                        decision_event.set()
+                    if (decision_event is None or trial.terminal
+                            or trial.decision["action"] != "CONTINUE"):
+                        return
         await asyncio.sleep(0.1)
 
 
@@ -324,6 +355,72 @@ async def _execute_trial(trial, dispatcher, tasks, decision_tasks, route):
         return
 
 
+async def _execute_reobserving_trial(trial, dispatcher, tasks, decision_tasks, route,
+                                    decision_event, resume_observing):
+    """Keep sensor/HTTP tasks and the original route alive across CONTINUE cycles."""
+    monitored = set(tasks)
+    waiter = asyncio.create_task(decision_event.wait())
+    tasks.append(waiter)
+    monitored.add(waiter)
+    execution = resumption = None
+    while monitored:
+        done, _ = await asyncio.wait(monitored, return_when=asyncio.FIRST_COMPLETED)
+        for task in done:
+            if task.cancelled() and trial.terminal:
+                return  # A failed CONTINUE can cancel the retained route during cleanup.
+            task.result()
+        if trial.terminal:
+            return
+        expected = set(decision_tasks) | {waiter, execution, resumption, route.task}
+        if done - expected:
+            trial.fail("SUPERVISED_TASK_STOPPED")
+            return
+        if route.task in done:
+            monitored.discard(route.task)
+            if trial.decision is None or trial.decision["action"] == "CONTINUE":
+                if not trial.complete_continuing_route():
+                    trial.fail("ROUTE_FINISHED_WITHOUT_DECISION")
+                return
+        if trial.phase == "DECIDED" and execution is None:
+            waiter.cancel()
+            monitored.discard(waiter)
+            if trial.decision["action"] != "CONTINUE":
+                for task in decision_tasks:
+                    task.cancel()
+                monitored.difference_update(decision_tasks)
+                monitored.discard(route.task)
+            execution = asyncio.create_task(dispatcher.dispatch())
+            tasks.append(execution)
+            monitored.add(execution)
+        if execution is not None and execution in done:
+            monitored.discard(execution)
+            if trial.terminal or not execution.result():
+                return
+            decision_event.clear()
+            resumption = asyncio.create_task(resume_observing())
+            tasks.append(resumption)
+            monitored.add(resumption)
+        if resumption is not None and resumption in done:
+            monitored.discard(resumption)
+            execution = resumption = None
+            waiter = asyncio.create_task(decision_event.wait())
+            tasks.append(waiter)
+            monitored.add(waiter)
+
+
+async def _open_model_trial(trial, transport, wait_s, max_age_s):
+    registered = await asyncio.to_thread(transport.open_model_trial, trial.trial_id,
+                                         trial.policy, wait_s, max_age_s)
+    if (registered.status_code != 200 or registered.payload.get("accepted") is not True
+            or registered.payload.get("trial_id") != trial.trial_id
+            or registered.payload.get("policy") != trial.policy
+            or not isinstance(registered.payload.get("session_id"), str)):
+        raise ValueError(f"Model trial configuration rejected: {registered.payload}")
+    if trial.session_id is not None and registered.payload["session_id"] != trial.session_id:
+        raise ValueError("Model trial session changed during reobservation")
+    trial.session_id = registered.payload["session_id"]
+
+
 async def collect_and_stream(robot: Any, args: argparse.Namespace,
                              camera_types: dict[str, Any] | None = None,
                              navel_module: Any | None = None) -> SingleTrial | None:
@@ -350,23 +447,22 @@ async def collect_and_stream(robot: Any, args: argparse.Namespace,
              if args.single_trial else None)
     behaviour_dispatcher = (BehaviourDispatcher(trial, robot, route=route, head=head_focus,
                                                 trial_head=trial_head,
-                                                timeout_s=args.behaviour_timeout)
+                                                timeout_s=args.behaviour_timeout,
+                                                reobserve_on_continue=args.reobserve_on_continue)
                             if args.single_trial_execute else None)
+    decision_event = asyncio.Event() if args.reobserve_on_continue else None
+    trial_lock = asyncio.Lock()
+    if args.reobserve_on_continue:
+        trial.overall_deadline = trial.monotonic() + args.reobserve_timeout
     if behaviour_dispatcher is not None:
         behaviour_dispatcher.preflight()
     if trial_head is not None:
         # Establish the fixed forward target before route motion or perception starts.
         await trial_head.neutral()
     model_trial = trial is not None and trial.policy != "rules"
+    model_wait_s = args.reobserve_timeout if args.reobserve_on_continue else args.decision_wait_timeout
     if model_trial:
-        registered = await asyncio.to_thread(transport.open_model_trial, trial.trial_id, trial.policy,
-                                             args.decision_wait_timeout, args.model_result_max_age)
-        if (registered.status_code != 200 or registered.payload.get("accepted") is not True
-                or registered.payload.get("trial_id") != trial.trial_id
-                or registered.payload.get("policy") != trial.policy
-                or not isinstance(registered.payload.get("session_id"), str)):
-            raise ValueError(f"Model trial configuration rejected: {registered.payload}")
-        trial.session_id = registered.payload["session_id"]
+        await _open_model_trial(trial, transport, model_wait_s, args.model_result_max_age)
     decision_dispatcher = (DecisionDispatcher(DryRunHandlers(robot),
                            max_age_s=args.max_decision_age,
                            timeout_s=args.decision_timeout)
@@ -408,6 +504,8 @@ async def collect_and_stream(robot: Any, args: argparse.Namespace,
             trial=trial,
             route_trial=route is not None,
             execute_trial=behaviour_dispatcher is not None,
+            decision_event=decision_event,
+            trial_lock=trial_lock,
         ))
     decision_tasks = [sender]
     tasks = collectors + [sender]
@@ -424,11 +522,12 @@ async def collect_and_stream(robot: Any, args: argparse.Namespace,
         tasks.append(asyncio.create_task(decision_dispatcher.watchdog()))
     if trial is not None:
         watchdog = asyncio.create_task(trial.watchdog(
-            stop_on_decision=route is not None or model_trial or behaviour_dispatcher is not None))
+            stop_on_decision=not args.reobserve_on_continue and (
+                route is not None or model_trial or behaviour_dispatcher is not None)))
         tasks.append(watchdog)
         decision_tasks.append(watchdog)
     if model_trial:
-        poller = asyncio.create_task(_poll_model_trial(trial, transport))
+        poller = asyncio.create_task(_poll_model_trial(trial, transport, decision_event, trial_lock))
         tasks.append(poller)
         decision_tasks.append(poller)
     if physical_executor is not None:
@@ -442,7 +541,25 @@ async def collect_and_stream(robot: Any, args: argparse.Namespace,
         if trial is None:
             await asyncio.shield(group)
         elif behaviour_dispatcher is not None:
-            await _execute_trial(trial, behaviour_dispatcher, tasks, decision_tasks, route)
+            if args.reobserve_on_continue:
+                async def resume_observing():
+                    await asyncio.sleep(args.continue_reobserve_delay)
+                    if trial.terminal:
+                        return
+                    async with trial_lock:
+                        if model_trial:
+                            closed = await asyncio.to_thread(transport.close_model_trial, trial.model_identity())
+                            if closed.status_code != 200 or closed.payload.get("accepted") is not True:
+                                raise ValueError(f"Model trial close rejected: {closed.payload}")
+                        trial.reobserve_after_continue()
+                        if model_trial:
+                            await _open_model_trial(trial, transport, model_wait_s,
+                                                    args.model_result_max_age)
+                        behaviour_dispatcher.reset_after_continue()
+                await _execute_reobserving_trial(trial, behaviour_dispatcher, tasks, decision_tasks,
+                                                route, decision_event, resume_observing)
+            else:
+                await _execute_trial(trial, behaviour_dispatcher, tasks, decision_tasks, route)
         else:
             done, _ = await asyncio.wait(tasks, return_when=asyncio.FIRST_COMPLETED)
             for task in done:
@@ -720,6 +837,12 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
                         help="Latch one final decision; requires decision dry-run or single-trial execution")
     parser.add_argument("--single-trial-execute", action="store_true",
                         help="Execute one of the four actions on the shared SDK connection; requires --route-trial")
+    parser.add_argument("--reobserve-on-continue", action="store_true",
+                        help="Keep the original route and observe again after CONTINUE; requires single-trial execution and route")
+    parser.add_argument("--continue-reobserve-delay", type=float, default=1.0,
+                        help="Seconds after the CONTINUE head sequence before rearming (default: 1)")
+    parser.add_argument("--reobserve-timeout", type=float, default=120.0,
+                        help="Overall decision-loop deadline in seconds; final non-CONTINUE handlers retain their timeout (default: 120)")
     parser.add_argument("--behaviour-timeout", type=float, default=120.0,
                         help="Maximum handler duration in seconds (default: 120; max: 3600)")
     parser.add_argument("--single-trial-policy", choices=("rules", "llm", "vlm"), default="rules")
@@ -771,6 +894,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
             "--resume-route-script", "--stop-script", "--print-only",
             "--sdk-capture", "--sdk-capture-only", "--camera-capture", "--model-provenance",
             "--head-focus", "--no-head-focus",
+            "--reobserve-on-continue", "--continue-reobserve-delay", "--reobserve-timeout",
         }
         conflicts = {option for option in conflicting_options
                      if any(option.startswith(flag) for flag in supplied)}
@@ -784,6 +908,12 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         return args
     if args.route_trial and not args.single_trial:
         parser.error("--route-trial requires --single-trial and a dry-run or execution mode")
+    if args.reobserve_on_continue and not (args.single_trial and args.single_trial_execute and args.route_trial):
+        parser.error("--reobserve-on-continue requires --single-trial --single-trial-execute --route-trial")
+    if not math.isfinite(args.continue_reobserve_delay) or args.continue_reobserve_delay < 0:
+        parser.error("--continue-reobserve-delay must be finite and nonnegative")
+    if not math.isfinite(args.reobserve_timeout) or not 0 < args.reobserve_timeout <= 3600:
+        parser.error("--reobserve-timeout must be positive, finite and at most 3600")
     if args.single_trial_execute and (not args.single_trial or args.decision_dry_run
             or args.command_dry_run or args.physical_executor or args.sdk_capture_only or args.print_only):
         parser.error("--single-trial-execute requires --single-trial and excludes dry-run modes, scripts, SDK-only and print-only")

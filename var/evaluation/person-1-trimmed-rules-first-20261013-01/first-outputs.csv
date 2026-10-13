@@ -1,0 +1,10 @@
+scenario,status,first_action,since_motion_s,reason_code,reason,frames_ingested,stop_since_motion_s
+S1,ACTION_RESOLVED,CONTINUE,1.09473,NO_INTERACTION_CUE,Usable gaze evidence does not show sustained attention; continue along the fixed route.,11,1.09473
+S2,ACTION_RESOLVED,CONTINUE,1.032726,NO_INTERACTION_CUE,Usable gaze evidence does not show sustained attention; continue along the fixed route.,11,1.032726
+S3,ACTION_RESOLVED,ENGAGE,1.116655,SUSTAINED_GAZE_IN_INTERACTION_RANGE,The person is looking steadily at the robot and is within conversation distance.,11,1.116655
+S4,ACTION_RESOLVED,CONTINUE,1.205545,NO_INTERACTION_CUE,Usable gaze evidence does not show sustained attention; continue along the fixed route.,12,1.205545
+S5,RECORDING_ENDED_NO_ACTION,,,,,73,7.260032
+S6,ACTION_RESOLVED,CONTINUE,1.132044,NO_ATTENTION,Gaze evidence is classified as no attention; continue along the fixed route.,12,1.132044
+S7,ACTION_RESOLVED,CONTINUE,1.117624,PERSON_TO_SIDE,The current nose position is to the side of the configured forward corridor and gaze does not show attention; continue along the route.,12,1.117624
+S8,RECORDING_ENDED_NO_ACTION,,,,,564,56.394381
+S9,ACTION_RESOLVED,CONTINUE,1.178006,NO_ATTENTION,Gaze evidence is classified as no attention; continue along the fixed route.,12,1.178006

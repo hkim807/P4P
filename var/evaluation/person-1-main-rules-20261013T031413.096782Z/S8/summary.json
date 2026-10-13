@@ -1,0 +1,74 @@
+{
+  "scenario": "S8",
+  "input": "/home/anyone/Documents/P4P/var/recordings/person-1-S8-sdk.jsonl",
+  "source_sha256": "77475924f93f8c5b6c78e66c781fb21f24b72e70e43596709618005d986be05e",
+  "sdk_packet_counts": {
+    "perception": 609,
+    "locomotion": 607
+  },
+  "perception_frames": 609,
+  "duration_s": 60.772675,
+  "person_count_frames": {
+    "0": 570,
+    "1": 39
+  },
+  "first_decision": {
+    "offset_s": 1.102751,
+    "source_line": 23,
+    "decision": {
+      "action": "CONTINUE",
+      "reason": "No person has been detected throughout the configured observation interval; continue along the route without initiating interaction."
+    },
+    "reason_code": "NO_PERSON_OBSERVED",
+    "decision_state": {
+      "no_person_observed_s": 1.102751,
+      "observation_readiness": "READY",
+      "people": [],
+      "readiness_reason": "OBSERVATIONS_AVAILABLE",
+      "robot": {
+        "motion_description": "Measured robot translation and rotation are within stationary tolerances.",
+        "motion_state": "STATIONARY"
+      },
+      "schema_version": 3
+    }
+  },
+  "first_decision_with_person": null,
+  "last_decision": {
+    "offset_s": 59.97262,
+    "source_line": 1200,
+    "decision": {
+      "action": "CONTINUE",
+      "reason": "No person has been detected throughout the configured observation interval; continue along the route without initiating interaction."
+    },
+    "reason_code": "NO_PERSON_OBSERVED",
+    "decision_state": {
+      "no_person_observed_s": 1.298045,
+      "observation_readiness": "READY",
+      "people": [],
+      "readiness_reason": "OBSERVATIONS_AVAILABLE",
+      "robot": {
+        "motion_description": "Measured robot translation and rotation are within stationary tolerances.",
+        "motion_state": "STATIONARY"
+      },
+      "schema_version": 3
+    }
+  },
+  "action_counts": {
+    "CONTINUE": 395
+  },
+  "reason_counts": {
+    "NO_PERSON_OBSERVED": 395
+  },
+  "observing_counts": {
+    "NO_VISIBLE_PERSON": 175,
+    "INSUFFICIENT_GAZE_EVIDENCE": 38,
+    "DISTANCE_UNKNOWN": 1
+  },
+  "action_transitions": [
+    {
+      "offset_s": 1.102751,
+      "action": "CONTINUE",
+      "reason_code": "NO_PERSON_OBSERVED"
+    }
+  ]
+}
