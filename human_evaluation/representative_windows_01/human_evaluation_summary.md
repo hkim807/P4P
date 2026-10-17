@@ -20,10 +20,27 @@ All 72 required recording identities are represented, nine per retained scenario
 | S4 | S4 | A person walks towards the robot along its route without looking at it. | YIELD | YIELD |
 | S5 | S6 | A person walks past beside the robot, briefly glances at it, and then looks ahead again. | CONTINUE | CONTINUE |
 | S6 | S7 | A person stands beside the route and initially looks intermittently at the robot. | APPROACH | APPROACH |
-| S7 | S8 | A person walks away from the robot while continuously looking at it. | ENGAGE | ENGAGE |
+| S7 | S8 | A person walks away from the robot while continuously looking at it. | CONTINUE | ENGAGE |
 | S8 | S9 | A person stands beside the route, continuously looks at the robot, and gestures for it to pass. | CONTINUE | CONTINUE |
 
-The primary metric is **agreement with evaluation targets**. New S3 deliberately uses the project-defined ENGAGE target, although YIELD was the original survey modal action. The resulting metric is therefore not presented as agreement with the survey mode or objective accuracy. The full-dataset denominator is 72 and each scenario denominator is 9; errors remain non-matches in those denominators.
+The primary metric is **agreement with evaluation targets**. New S3 and S7 use project-defined targets that differ from the survey modal actions. These targets reflect researcher judgement about the intended behaviour in this fixed-route guide-robot context; they do not establish that the survey responses were incorrect or that one action is universally appropriate. The metric is therefore not presented as agreement with the survey mode or objective accuracy. The full-dataset denominator is 72 and each scenario denominator is 9; errors remain non-matches in those denominators.
+
+### Rationale for S3 and S7 targets
+
+For **S3**, the evaluation target is **ENGAGE**, although **YIELD** was the survey modal action. The intended situation combines sustained attention with a person already within interaction range. For this project, these cues were judged to support stopping route progress to initiate an interaction. The person's position on the route was not, by itself, treated as a request for the robot to give way. This is a context-specific design judgement, not evidence that yielding would always be inappropriate. S3 was already scored against ENGAGE when this representative-window evaluation was executed.
+
+For **S7**, the revised evaluation target is **CONTINUE**, although **ENGAGE** was the survey modal action. The person is walking away while continuing to look at the robot. For this fixed-route guide-robot task, continued looking during departure was not considered a sufficient invitation to interrupt route progress and initiate an interaction. CONTINUE was therefore adopted as the project-defined target. This is a judgement about the intended response, not proof of the person's intention or of reliable departure detection in every recording.
+
+### Target revision and rescoring
+
+On **18 October 2026 (Pacific/Auckland)**, after reviewing the completed evaluation results, the researcher revised the S7 target from ENGAGE to CONTINUE. This is a **post hoc target revision**. Existing outcomes were rescored without rerunning the pipeline or model. Windows, endpoint inputs, final actions, policy reasons, readiness outcomes, inference durations and survey reference actions remain unchanged. Only the `evaluation_target` and `target_agreement` fields of the 36 S7 outcome rows were updated.
+
+| Scoring definition | Rule-based target agreement | Primary LLM target agreement |
+| --- | --- | --- |
+| Before S7 revision: S3 = ENGAGE, S7 = ENGAGE | 37/72 (51.4%) | 30/72 (41.7%) |
+| Revised targets: S3 = ENGAGE, S7 = CONTINUE | 46/72 (63.9%) | 39/72 (54.2%) |
+
+The original representative-window results are preserved in Git commit `b9f9c93`. Both pipelines had already returned CONTINUE for all nine S7 recordings, comprising five explicit decisions and four defaults per pipeline/repetition. Rescoring therefore adds nine target matches, or 12.5 percentage points, to each pipeline. The rule-based advantage remains seven recordings (9.7 percentage points). The higher scores reflect the changed target definition, not improved measured behaviour. Unless explicitly labelled as historical, the results below use the revised targets.
 
 ## Evaluated implementation and settings
 
@@ -53,7 +70,7 @@ The primary metric is **agreement with evaluation targets**. New S3 deliberately
 | Other attention settings | recurring attention False; no-person explicit readiness null |
 | Tracking | history 3.0 s; missing grace 0.75 s; nose reassociation maximum 0.45 m/0.25 s |
 
-The actual implementation supplies prompt `decision-state-llm-v16`; the comparison configuration retains the older `social-state-llm-v14` annotation, which is not the prompt used. Model, prompt and parameters remained fixed for this evaluation. Production code, configuration and source recordings were not modified. No physical robot was connected or controlled, and no commit or push was performed.
+The actual implementation supplies prompt `decision-state-llm-v16`; the comparison configuration retains the older `social-state-llm-v14` annotation, which is not the prompt used. Model, prompt and parameters remained fixed for this evaluation. Production code, configuration and source recordings were not modified. No physical robot was connected or controlled during evaluation.
 
 ## Frozen evaluation windows
 
@@ -140,12 +157,12 @@ For **person-1/original S8 (new S7)**, the fallback finds the first valid percep
 
 | Pipeline | Rows | Completed | Errors | Target matches/all 72 | Matches/completed only |
 | --- | --- | --- | --- | --- | --- |
-| Rule-based | 72 | 72 | 0 | 37/72 (51.4%) | 37/72 (51.4%) |
-| LLM run 1 (primary) | 72 | 72 | 0 | 30/72 (41.7%) | 30/72 (41.7%) |
-| LLM run 2 | 72 | 72 | 0 | 30/72 (41.7%) | 30/72 (41.7%) |
-| LLM run 3 | 72 | 72 | 0 | 30/72 (41.7%) | 30/72 (41.7%) |
+| Rule-based | 72 | 72 | 0 | 46/72 (63.9%) | 46/72 (63.9%) |
+| LLM run 1 (primary) | 72 | 72 | 0 | 39/72 (54.2%) | 39/72 (54.2%) |
+| LLM run 2 | 72 | 72 | 0 | 39/72 (54.2%) | 39/72 (54.2%) |
+| LLM run 3 | 72 | 72 | 0 | 39/72 (54.2%) | 39/72 (54.2%) |
 
-Rule-based target agreement was 37/72 (51.4%); primary LLM agreement was 30/72 (41.7%). The two pipelines chose the same final action on 58/72 (80.6%) of all recordings (58/72 (80.6%) among paired completed outcomes). Default CONTINUE is included in these counts.
+Rule-based target agreement was 46/72 (63.9%); primary LLM agreement was 39/72 (54.2%). The two pipelines chose the same final action on 58/72 (80.6%) of all recordings (58/72 (80.6%) among paired completed outcomes). Default CONTINUE is included in these counts.
 
 | Pipeline | CONTINUE | APPROACH | YIELD | ENGAGE | Policy decisions | Default continuation |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -156,10 +173,10 @@ Rule-based target agreement was 37/72 (51.4%); primary LLM agreement was 30/72 (
 
 | Pipeline | Target matches/explicit decisions | Target matches/default outcomes |
 | --- | --- | --- |
-| Rule-based | 28/51 (54.9%) | 9/21 (42.9%) |
-| LLM run 1 (primary) | 21/51 (41.2%) | 9/21 (42.9%) |
-| LLM run 2 | 21/51 (41.2%) | 9/21 (42.9%) |
-| LLM run 3 | 21/51 (41.2%) | 9/21 (42.9%) |
+| Rule-based | 33/51 (64.7%) | 13/21 (61.9%) |
+| LLM run 1 (primary) | 26/51 (51.0%) | 13/21 (61.9%) |
+| LLM run 2 | 26/51 (51.0%) | 13/21 (61.9%) |
+| LLM run 3 | 26/51 (51.0%) | 13/21 (61.9%) |
 
 The origin-specific percentages describe their subsets and do not replace the primary denominator of 72. A default target match means the required baseline action agreed with the target; it does not mean the action policy made that decision.
 
@@ -192,7 +209,7 @@ The origin-specific percentages describe their subsets and do not replace the pr
 | S4 | S4 | YIELD | 2/9 (22.2%) | 0/9 (0.0%) | 0/9 (0.0%) | 0/9 (0.0%) | 4/9 (44.4%) |
 | S5 | S6 | CONTINUE | 9/9 (100.0%) | 6/9 (66.7%) | 6/9 (66.7%) | 6/9 (66.7%) | 6/9 (66.7%) |
 | S6 | S7 | APPROACH | 3/9 (33.3%) | 2/9 (22.2%) | 2/9 (22.2%) | 2/9 (22.2%) | 8/9 (88.9%) |
-| S7 | S8 | ENGAGE | 0/9 (0.0%) | 0/9 (0.0%) | 0/9 (0.0%) | 0/9 (0.0%) | 9/9 (100.0%) |
+| S7 | S8 | CONTINUE | 9/9 (100.0%) | 9/9 (100.0%) | 9/9 (100.0%) | 9/9 (100.0%) | 9/9 (100.0%) |
 | S8 | S9 | CONTINUE | 4/9 (44.4%) | 5/9 (55.6%) | 5/9 (55.6%) | 5/9 (55.6%) | 8/9 (88.9%) |
 
 Every cell uses nine recordings, including defaults and errors. Rule/LLM1 measures final-action agreement between pipelines, independently of target agreement.
@@ -293,7 +310,7 @@ Within the selected windows, 27/72 recordings contain at least one no-detection 
 | S3 | person-2 | CONTINUE | ENGAGE | distance 1.338 m, gaze INTERMITTENT, latest looking False, corridor IN_WAY, separation STABLE |
 | S4 | person-1 | CONTINUE | YIELD | distance 1.959 m, gaze NONE, latest looking True, corridor IN_WAY, separation UNKNOWN |
 | S6 | person-1 | CONTINUE | APPROACH | distance 2.008 m, gaze NONE, latest looking False, corridor TO_SIDE, separation STABLE |
-| S7 | person-1 | CONTINUE | ENGAGE | NO_VISIBLE_PERSON |
+| S7 | person-1 | CONTINUE | CONTINUE | NO_VISIBLE_PERSON; default target match without an explicit policy decision |
 | S8 | person-1 | ENGAGE | CONTINUE | distance 1.953 m, gaze SUSTAINED, latest looking True, corridor IN_WAY, separation STABLE |
 
 | Person/scenario | Rule | LLM1 | Rule reason/cause | LLM reason/cause |
@@ -313,7 +330,7 @@ Within the selected windows, 27/72 recordings contain at least one no-detection 
 | person-8/S4 | C | E | Usable gaze evidence does not show sustained attention; continue along the fixed route. | Intermittent looking and high gaze fraction within interaction range |
 | person-9/S5 | C | E | Usable gaze evidence does not show sustained attention; continue along the fixed route. | Intermittent looking and recent gaze overlap within interaction range |
 
-The rules matched the target in all nine S1 and all nine S5 recordings, while the primary LLM selected interaction actions in two S1 and three S5 recordings. Both pipelines matched the revised ENGAGE target in seven of nine S3 recordings. In S4, rules returned YIELD for persons 6 and 7, whose endpoint states contain valid decreasing separation, low gaze and IN_WAY corridor position; the LLM returned CONTINUE for both. Neither pipeline matched the ENGAGE target in S7: each produced five explicit and four default CONTINUE outcomes. These are differences on the same frozen evidence, rather than differences in readiness or observation timing.
+The rules matched the target in all nine S1 and all nine S5 recordings, while the primary LLM selected interaction actions in two S1 and three S5 recordings. Both pipelines matched the revised ENGAGE target in seven of nine S3 recordings. In S4, rules returned YIELD for persons 6 and 7, whose endpoint states contain valid decreasing separation, low gaze and IN_WAY corridor position; the LLM returned CONTINUE for both. Both pipelines matched the revised CONTINUE target in all nine S7 recordings: each produced five explicit and four default CONTINUE outcomes. Under the previous ENGAGE target, these same nine outcomes were all non-matches. The four defaults do not demonstrate that the action policy recognised a departing person. These are differences on the same frozen evidence, rather than differences in readiness or observation timing.
 
 Some primary LLM interaction outcomes occur with latest-looking=true but recent-window gaze category NONE, including person-3/S1, person-7/S1, person-1/S2, person-5/S2, person-1/S4 and person-2/S5. The saved reasons mention current looking in these cases. This describes an observed association between input features and outputs; it does not establish the model’s internal decision process.
 
@@ -323,8 +340,8 @@ Neither the adapter-derived DecisionState nor the structured LLM input contains 
 
 ## Interpretation and validation
 
-This revised sensor-window comparison is exploratory. Window selection was fixed for this run, but it is not an independently video-verified or randomly sampled evaluation. S3 uses a project-defined target different from the survey mode. Results describe agreement with these targets on these recordings; they do not establish participant satisfaction, successful physical robot behaviour or general performance beyond this dataset. The next evaluation could independently verify sensor/video alignment and examine perception continuity and readiness on a newly frozen dataset. No policies or windows were tuned to these results.
+This revised sensor-window comparison is exploratory. Window selection was fixed for this run, but it is not an independently video-verified or randomly sampled evaluation. S3 and S7 use project-defined targets different from the survey modes. S7 was revised after the outputs were inspected, so the revised scores are exploratory rescoring results rather than an independent test against fully prespecified targets. Results describe agreement with these targets on these recordings; they do not establish participant satisfaction, successful physical robot behaviour or general performance beyond this dataset. The next evaluation could independently verify sensor/video alignment and examine perception continuity and readiness on a newly frozen dataset. No policies or windows were tuned to these results; the S7 scoring target was revised post hoc as documented above.
 
-The CSV contains 288 unique recording–policy–repetition rows for 72 recordings: 72 rule-based and 216 LLM rows. All four rows for each recording carry the same selected window and identical frozen DecisionState JSON where input construction succeeded. The report aggregates were recomputed from the CSV, retaining errors as non-matches. Endpoint matching, the no-future-observation boundary, identical policy inputs and unchanged protected source/configuration/recording hashes were verified.
+The CSV contains 288 unique recording–policy–repetition rows for 72 recordings: 72 rule-based and 216 LLM rows. All four rows for each recording carry the same selected window and identical frozen DecisionState JSON where input construction succeeded. The report aggregates were recomputed from the CSV, retaining errors as non-matches. The original evaluation verified endpoint matching, the no-future-observation boundary, identical policy inputs and unchanged protected source/configuration/recording hashes. For this rescoring, row-by-row comparison confirmed that only the two scoring fields in the 36 S7 rows changed. All other CSV values and all 288 recorded outcomes were preserved, and the revised aggregate and subset scores were recomputed from the CSV.
 
 The new evaluation directory contains only [human_evaluation_results.csv](human_evaluation_results.csv) and this summary. The CSV stores the endpoint input, observation notes, fallback causes and any errors; no separate per-trial logs or manifests are delivered. The earlier evaluation is preserved.
